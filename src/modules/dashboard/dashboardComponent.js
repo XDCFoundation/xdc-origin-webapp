@@ -32,8 +32,8 @@ const dashboardComponent = (props) => {
   return (
     <>
       <DashboardContainer>
-        <HeaderComponent />
-        <DesktopSideMenu />
+        <HeaderComponent/>
+        <DesktopSideMenu/>
       </DashboardContainer>
     </>
   );
