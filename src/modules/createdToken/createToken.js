@@ -1,24 +1,11 @@
 import React, { PureComponent } from 'react'
-import styled from "styled-components";
 import {Row,Column} from "simple-flexbox";
-
-const ParentContainer = styled.div`
-            width: 688px;
-            height: 588px;
-            background: #FFFFFF 0% 0% no-repeat padding-box;
-            border-radius: 6px;
-            margin: 0 auto;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 25px;`;
 
 export default class createToken extends PureComponent {
     render() {
         return (
             <div>
-                <ParentContainer>
+                <div className='successfullyCreatedToken'>
                     <div className="successTokenIcon">
                         <img src="images/Success.svg"></img>
                     </div>
@@ -47,7 +34,7 @@ export default class createToken extends PureComponent {
                             </div>
                         </button>
                     </div>
-                </ParentContainer>
+                </div>
             </div>
         )
     }
