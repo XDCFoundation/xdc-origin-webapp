@@ -23,7 +23,7 @@ class Routes extends BaseComponent {
                 <Router history={history}>
                     <Switch>
 
-                        <Route exact path={'/'} component={CreatedToken}/>
+                        <Route exact path={'/created-token'} component={CreatedToken}/>
                         <Route exact path={'/'} component={Login}/>
                         <Route exact path={'/sign-up'} component={SignUp}/>
                         <Route exact path={'/dashboard'} component={Dashboard}/>
