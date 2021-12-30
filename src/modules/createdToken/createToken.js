@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const ParentContainer = styled.div`
@@ -101,73 +101,73 @@ const ButtonContent = styled.div`
 const ButtonIcon = styled.img`
     margin-right: 10px`;
 
-export default class createToken extends PureComponent {
-    render() {
-        return (
-            <div>
-                <ParentContainer>
-                    <SuccessTokenIcon>
-                        <img src="images/Success.svg"></img>
-                    </SuccessTokenIcon>
-                    <SuccessTokenText>
-                        Successfully Created Meta Tokens
-                    </SuccessTokenText>
-                    <SuccessTokenDetails>
-                        <SuccessRows>
-                            <SuccessTokenKey >
-                                <KeyInfo src="images/Info.svg"></KeyInfo>
-                                Transaction Hash:
-                            </SuccessTokenKey>
-                            <ValueDiv>
-                                <SuccessTokenValues>0x0336730a6a614ae4008e9760e…e878</SuccessTokenValues>
-                                <CopyIcon src="images/Copy.svg"></CopyIcon>
-                            </ValueDiv>
-                        </SuccessRows>
-                        <SuccessRows>
-                            <SuccessTokenKey>
-                                <KeyInfo src="images/Info.svg"></KeyInfo>
-                                Contract Address:
-                            </SuccessTokenKey>
-                            <ValueDiv>
-                                <SuccessTokenValues>0x0336730a6a614ae4008e9760e…e878</SuccessTokenValues>
-                                <CopyIcon src="images/Copy.svg"></CopyIcon>
-                            </ValueDiv>
-                        </SuccessRows>
-                        <SuccessRows>
-                            <SuccessTokenKey>
-                                <KeyInfo src="images/Info.svg"></KeyInfo>
-                                Tokens Minted:
-                            </SuccessTokenKey>
-                            <ValueDiv>
-                                10000000
-                            </ValueDiv>
-                        </SuccessRows>
-                        <SuccessRows>
-                            <SuccessTokenKey>
-                                <KeyInfo src="images/Info.svg"></KeyInfo>
-                                Gas Fee:
-                            </SuccessTokenKey>
-                            <ValueDiv>
-                                0.00000000025 XDC (0.25 Gwei)
-                            </ValueDiv>
-                        </SuccessRows>
-                    </SuccessTokenDetails>
-                    <Buttons>
-                        <ButtonAddToXDCPay>
-                            <ButtonContent>
-                               Add to XDCPay
-                                <ButtonIcon src="images/XDC-Icon-128X128.svg"></ButtonIcon>
-                            </ButtonContent>
-                        </ButtonAddToXDCPay>
-                        <ButtonManageToken>
-                            <ButtonContent>
-                                Manage Token
-                                <ButtonIcon src="images/Button_Next_Arrow.svg"></ButtonIcon>
-                            </ButtonContent>
-                        </ButtonManageToken>
-                    </Buttons>
-                </ParentContainer>
-            </div>
-        )
-    }
+
+const CreateToken= ()=>{
+    return <div>
+            <ParentContainer>
+                <SuccessTokenIcon>
+                    <img src="images/Success.svg"></img>
+                </SuccessTokenIcon>
+                <SuccessTokenText>
+                    Successfully Created Meta Tokens
+                </SuccessTokenText>
+                <SuccessTokenDetails>
+                    <SuccessRows>
+                        <SuccessTokenKey >
+                            <KeyInfo src="images/Info.svg"></KeyInfo>
+                            Transaction Hash:
+                        </SuccessTokenKey>
+                        <ValueDiv>
+                            <SuccessTokenValues>0x0336730a6a614ae4008e9760e…e878</SuccessTokenValues>
+                            <CopyIcon src="images/Copy.svg"></CopyIcon>
+                        </ValueDiv>
+                    </SuccessRows>
+                    <SuccessRows>
+                        <SuccessTokenKey>
+                            <KeyInfo src="images/Info.svg"></KeyInfo>
+                            Contract Address:
+                        </SuccessTokenKey>
+                        <ValueDiv>
+                            <SuccessTokenValues>0x0336730a6a614ae4008e9760e…e878</SuccessTokenValues>
+                            <CopyIcon src="images/Copy.svg"></CopyIcon>
+                        </ValueDiv>
+                    </SuccessRows>
+                    <SuccessRows>
+                        <SuccessTokenKey>
+                            <KeyInfo src="images/Info.svg"></KeyInfo>
+                            Tokens Minted:
+                        </SuccessTokenKey>
+                        <ValueDiv>
+                            10000000
+                        </ValueDiv>
+                    </SuccessRows>
+                    <SuccessRows>
+                        <SuccessTokenKey>
+                            <KeyInfo src="images/Info.svg"></KeyInfo>
+                            Gas Fee:
+                        </SuccessTokenKey>
+                        <ValueDiv>
+                            0.00000000025 XDC (0.25 Gwei)
+                        </ValueDiv>
+                    </SuccessRows>
+                </SuccessTokenDetails>
+                <Buttons>
+                    <ButtonAddToXDCPay>
+                        <ButtonContent>
+                            Add to XDCPay
+                            <ButtonIcon src="images/XDC-Icon-128X128.svg"></ButtonIcon>
+                        </ButtonContent>
+                    </ButtonAddToXDCPay>
+                    <ButtonManageToken>
+                        <ButtonContent>
+                            Manage Token
+                            <ButtonIcon src="images/Button_Next_Arrow.svg"></ButtonIcon>
+                        </ButtonContent>
+                    </ButtonManageToken>
+                </Buttons>
+            </ParentContainer>
+        </div>
 }
+
+
+export default CreateToken;
