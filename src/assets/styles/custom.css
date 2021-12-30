@@ -249,6 +249,18 @@ input:focus {
     box-shadow: 0px 3px 21px 0 rgba(0, 0, 0, 0.07);
 }
 
+.successfullyCreatedToken{
+    width: 688px;
+    height: 588px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px;
+}
 .successTokenText{
     width: 398px;
     height: 29px;
