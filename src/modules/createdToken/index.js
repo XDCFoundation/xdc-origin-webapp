@@ -6,9 +6,7 @@ import CreateToken from './createToken';
 class CreateTokenComponent extends BaseComponent {
   render() {
     return (
-      <>
         <CreateToken state={this.state} />
-      </>
     );
   }
 }
