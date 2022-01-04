@@ -13,8 +13,6 @@ const SidebarContainer = styled.div`
   @media (min-width:0px) and (max-width:1024px) {
     display:none;
   }
- 
-  
 `;
 const Icon = styled.img`
   cursor: pointer;
