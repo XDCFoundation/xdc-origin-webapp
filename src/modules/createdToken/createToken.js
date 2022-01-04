@@ -2,18 +2,25 @@ import React from 'react'
 import styled from 'styled-components'
 import {Row, Column} from "simple-flexbox"
 
-const ParentContainer = styled.div`
+const BgContainer = styled.div`
+    background-color: #ECF0F7;
     height: 100%;
+    width: 100%;
+    background-size: cover;
+    padding-top: 4%;
+    padding-bottom: 4%;`;
+
+const ParentContainer = styled.div`
     max-width: 688px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border-radius: 6px;
-    margin: 0 auto;
+    margin: auto;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 25px;
-    @media (max-width: 375px){
+    @media (max-width: 768px){
         background: #FFFFFF 0% 0% no-repeat padding-box;
         border-radius: 6px;
         margin: 0 auto;
@@ -32,15 +39,14 @@ const SuccessTokenIcon = styled.div`
 const SuccessTokenText = styled.div`
     overflow-wrap: break-word;
     text-align: center;
-    font: normal normal medium 24px/29px Inter;
-    letter-spacing: 0px;
     font-size: 24px;
+    letter-spacing: 0px;
     color: #1F1F1F;
     font-weight: bold;
     margin: 0 auto;
     opacity: 1;
     margin-bottom: 8%;
-    @media (max-width: 375px) {
+    @media (max-width: 768px) {
         text-align: center;
         font-size: 18px;
         letter-spacing: 0px;
@@ -52,22 +58,23 @@ const SuccessTokenText = styled.div`
 const SuccessTokenDetails = styled.div`
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border: 1px solid #F4F4F4;
-    padding-left: 10px;
     font-weight: 600;
     border-radius: 8px;
     opacity: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 8%;
-    @media (max-width: 375px) {
+    margin-bottom: 8% !important;
+    margin: auto;
+    @media (max-width: 768px) {
         text-align: center;
         font-weight: 600;
         border-radius: 8px;
         letter-spacing: 0px;
         color: #1F1F1F;
         opacity: 1;
-        margin-bottom: 8%;
+        margin-bottom: 8% !important;
+        margin: auto;
     };`;
 
 const SuccessRows = styled.div`
@@ -83,9 +90,10 @@ const SuccessTokenKey = styled.span`
     letter-spacing: 0px;
     color: #1F1F1F;
     opacity: 1;
-    @media (max-width: 375px) {
-        font-size: 14px;
+    @media (max-width: 768px) {
+        width: 180px;
         text-align: left;
+        font-size: 14px;
         font: normal normal medium 14px/17px Inter;
         letter-spacing: 0px;
         color: #1F1F1F;
@@ -103,18 +111,29 @@ const ValueDiv = styled.div`
     font: normal normal normal 16px/20px Inter;
     letter-spacing: 0px;
     color: #1F1F1F;
-    opacity: 1;`
+    opacity: 1;
+    @media (max-width: 768px){
+        font: normal normal normal 14px/17px Inter;
+        overflow-wrap: anywhere;
+    }`;
 
 const SuccessTokenValues = styled.div`
     text-align: left;
     font: normal normal normal 16px/20px Inter;
     letter-spacing: 0px;
     font-family: "sans-serif";
-    font-size: 14px;
     color: #3163F0;
     opacity: 1;
     margin-left: 15px;
-    overflow-wrap: anywhere;`;
+    @media (max-width: 768px){
+        text-align: left;
+        font: normal normal normal 14px/17px Inter;
+        letter-spacing: 0px;
+        font-family: "sans-serif";
+        color: #3163F0;
+        opacity: 1;
+        overflow-wrap: anywhere;
+    }`;
 
 const CopyIcon = styled.img`
     margin-left: 8px;
@@ -124,7 +143,7 @@ const Buttons = styled.div`
 width: 100%;
     justify-content: space-evenly;
     margin-bottom: 8%;
-    @media (max-width: 375px) {
+    @media (max-width: 768px) {
         display: flex;
         flex-direction: column;
         margin-bottom: 8%;
@@ -137,7 +156,7 @@ const ButtonAddToXDCPay = styled.button`
     opacity: 1;
     margin-right: 25px;
     color: black;
-    @media (max-width: 375px) {
+    @media (max-width: 768px) {
         order: 2;
         width: 100%;
         background: #FFFFFF 0% 0% no-repeat padding-box;
@@ -152,7 +171,7 @@ const ButtonManageToken = styled.button`
     border-width: 0px;
     color:#FFFFFF;
     opacity: 1;
-    @media (max-width: 375px) {
+    @media (max-width: 768px) {
         order: 1;
         width: 100%;
         background: #3163F0 0% 0% no-repeat padding-box;
@@ -171,15 +190,15 @@ const ButtonContent = styled.div`
     letter-spacing: 0px;
     color: #FFFFFF;
     opacity: 1;
-    @media (max-width: 375px){
+    @media (max-width: 768px){
         display: flex;
         flex-direction: row;
         justify-content: center;
         padding: 5px;
     }`;
 const ButtonIcon = styled.img`
-    margin-right: 10px;
-    @media (max-width: 375px){
+    margin-left: 10px;
+    @media (max-width: 768px){
         margin-left: 20px;
     }`;
 
@@ -189,17 +208,17 @@ const ButtonName = styled.div`
     letter-spacing: 0px;
     color: #4B4B4B;
     opacity: 1;
-    @media (max-width: 375px){
+    @media (max-width: 768px){
         text-align: left;
         font: normal normal medium 16px/20px Inter;
         letter-spacing: 0px;
         color: #4B4B4B;
         opacity: 1;
-    }`
+    }`;
 
 
 const CreateToken= ()=>{
-    return <div>
+    return <BgContainer>
             <ParentContainer>
                 <SuccessTokenIcon>
                     <img src="images/Success.svg"></img>
@@ -262,7 +281,7 @@ const CreateToken= ()=>{
                     </ButtonManageToken>
                 </Buttons>
             </ParentContainer>
-        </div>
+        </BgContainer>
 }
 
 
