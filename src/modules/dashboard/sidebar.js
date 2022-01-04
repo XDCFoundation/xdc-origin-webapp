@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+
 const SidebarContainer = styled.div`
   background: #102c78 0% 0% no-repeat padding-box;
   display: flex;
@@ -8,12 +9,12 @@ const SidebarContainer = styled.div`
   width: 250px;
   height: 1080px;
   padding-top: 40px;
-  @media (max-width: 375px) {
-    display: none;
+
+  @media (min-width:0px) and (max-width:1024px) {
+    display:none;
   }
-  @media (max-width: 768px) {
-    display: none;
-  }
+ 
+  
 `;
 const Icon = styled.img`
   cursor: pointer;
