@@ -96,73 +96,56 @@ export default function About(props) {
 const MainContainer = styled.div`
   display: flex;
   justify-content: center;
-  width: 100%;
-  top: 0px;
-  left: 0px;
-  @media (max-width: 355px) {
+  ${'' /* @media (min-width:375px) and (max-width:768px) {
     margin-bottom: 5px;
     background: #ecf0f7 0% 0% no-repeat padding-box;
     opacity: 1;
-  }
+  } */}
 `;
 const MainBoxContainer = styled.div`
   background: #ecf0f7 0% 0% no-repeat padding-box;
-  width: 100%;
+  ${'' /* width: 100%; */}
   display: flex;
   flex-direction: column;
   align-item: center;
   padding: 3.125rem;
-  @media (max-width: 375px) {
+  ${'' /* @media (min-width:375px) and (max-width:768px) {
     padding: 0.5rem;
-  }
+  } */}
 `;
 const Container = styled.div`
   background-color: #ffffff;
   border-radius: 0.375rem;
-  width: 100%;
+  ${'' /* width: 100%; */}
   display: flex;
-  left: 435px;
-  ${"" /* width: 1301px; */}
-  ${
-    "" /* height: 468px
   justify-content: center;
-  align-self: center; */
-  }
-  ${
-    "" /* height: 500px;
-  max-width: 1306px; */
-  }
-  ${
-    "" /* @media (min-width:355px) {
-    ${'' /* padding:10% 10% 10% 10%;
-    box-sizing:border-box; */
-  }
-  
-${
-    "" /* width: 355px;
-height: 735px; */
-  }
-  @media (max-width: 375px) {
+  align-self: center;
+  height: 500px;
+  max-width: 1306px;
+${'' /* width: 1301px; */}
+${'' /* height: 468px; */}
+ 
+  ${'' /* @media (min-width:375px) and (max-width:768px) {
     margin: 0px;
     padding: 0;
     display: flex;
     flex-direction: column;
-  }
+  } */}
 `;
 const RightContainer = styled.div`
-  width: 100%;
+   ${'' /* width: 100%; */}
   padding: 4.375rem;
-  @media (max-width: 375px) {
+  ${'' /* @media (min-width:375px) and (max-width:768px) {
   ${"" /* display:block; */}
-  padding: 0px;
-  height: 188px;
+  ${'' /* padding: 0px;
+  height: 188px;  */}
 `;
 const LeftContainer = styled.div`
-  width: 100%;
+  ${'' /* width: 100%; */}
   padding: 2.5rem;
-  @media (max-width: 355px) {
+  ${'' /* @media (min-width:375px) and (max-width:768px) {
     padding: 1.5rem;
-  }
+  } */}
 `;
 const Span = styled.span`
   color: #0089ff;
@@ -173,29 +156,31 @@ const IconRow = styled.div`
   justify-content: space-between;
   max-width: 47.438rem;
   width: 100%;
-  @media (max-width: 375px) {
+  ${'' /* @media (min-width:375px) and (max-width:768px) {
     display: block;
-  }
+  } */}
 `;
 const DataBox = styled.div`
   display: flex;
   width: 100%;
   font-size: 1rem;
-  @media (max-width: 355px) {
+  ${'' /* width: 520px;
+height: 117px; */}
+  ${'' /* @media (min-width:375px) and (max-width:768px) {
     margin-left: 50px;
-  }
+  } */}
 `;
 const DetailBox = styled.div`
   width: 100%;
   padding-bottom: 0.938rem;
   font-size: 2rem;
   font-weight: 600;
-  @media (max-width: 355px) {
+  ${'' /* @media (min-width:375px) and (max-width:768px) {
     margin: 0px 0px 2rem 0px !important;
     ${"" /* margin-left: 50px; */}
-    font-size: 1rem;
-    padding: 0px;
-  }
+    ${'' /* font-size: 1rem;
+    padding: 0px; */}
+  } */}
 `;
 const Button = styled.div`
   display: flex;
@@ -219,6 +204,7 @@ const Button = styled.div`
 `;
 
 const VideoBox = styled.div`
+width: 540px;
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 0.125rem solid #d8d8d8;
   border-radius: 0.125rem;
