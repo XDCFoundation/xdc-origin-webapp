@@ -79,7 +79,6 @@ const SuccessTokenDetails = styled.div`
 
 const SuccessRows = styled.div`
     width: 100%;
-    margin: 0 0 20px 0;
     display: flex;`;
 
 const SuccessTokenKey = styled.span`
@@ -107,6 +106,7 @@ const ValueDiv = styled.div`
     margin-left: 15px;
     width: 60%;
     font-weight: 100;
+    margin-top: 3.5px;
     text-align: left;
     font: normal normal normal 16px/20px Inter;
     letter-spacing: 0px;
@@ -124,6 +124,7 @@ const SuccessTokenValues = styled.div`
     font-family: "sans-serif";
     color: #3163F0;
     opacity: 1;
+    margin-top: 3.5px;
     margin-left: 15px;
     @media (max-width: 768px){
         text-align: left;
@@ -216,6 +217,10 @@ const ButtonName = styled.div`
         opacity: 1;
     }`;
 
+const LineSeparation = styled.hr`
+    border-top: 1px solid #F4F4F4;
+    width: 100%;`
+
 
 const CreateToken= ()=>{
     return <BgContainer>
@@ -237,6 +242,7 @@ const CreateToken= ()=>{
                             <CopyIcon src="images/Copy.svg"></CopyIcon>
                         </SuccessTokenValues>
                     </SuccessRows>
+                    <LineSeparation></LineSeparation>
                     <SuccessRows>
                         <SuccessTokenKey>
                             <KeyInfo src="images/Info.svg"></KeyInfo>
@@ -247,6 +253,7 @@ const CreateToken= ()=>{
                             <CopyIcon src="images/Copy.svg"></CopyIcon>
                         </SuccessTokenValues>
                     </SuccessRows>
+                    <LineSeparation></LineSeparation>
                     <SuccessRows>
                         <SuccessTokenKey>
                             <KeyInfo src="images/Info.svg"></KeyInfo>
@@ -256,6 +263,7 @@ const CreateToken= ()=>{
                             10000000
                         </ValueDiv>
                     </SuccessRows>
+                    <LineSeparation></LineSeparation>
                     <SuccessRows>
                         <SuccessTokenKey>
                             <KeyInfo src="images/Info.svg"></KeyInfo>
