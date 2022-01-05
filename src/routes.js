@@ -18,9 +18,9 @@ class Routes extends BaseComponent {
         <Router history={history}>
           <Switch>
             {/* <Route exact from="/" to="/dashboard/about" /> */}
-            <Route exact path={"/"} component={Login} />
-            <Route exact path={"/sign-up"} component={SignUp} />
-            <Route exact path={"/dashboard"} component={Dashboard} />
+            {/*<Route exact path={"/"} component={Login} />*/}
+            {/*<Route exact path={"/sign-up"} component={SignUp} />*/}
+            <Route exact path={"/"} component={Dashboard} />
             <Route exact path={"/about"} component={About} />
             <Route exact path={'/created-token'} component={CreatedToken}/>
             <Redirect exact from="*" to="/" />
