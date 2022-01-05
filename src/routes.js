@@ -8,6 +8,7 @@ import {Login, SignUp} from "./modules";
 import {history} from "./managers/history";
 import Dashboard from "./modules/dashboard/dashboardComponent";
 import BaseComponent from "./modules/baseComponent";
+import ChangeNetwork from './modules/changeNetworkPopup/index'
 
 class Routes extends BaseComponent {
 
@@ -23,6 +24,7 @@ class Routes extends BaseComponent {
                     <Switch>
                
                         <Route exact path={'/'} component={Login}/>
+                        <Route exact path={'/change-network'} component={ChangeNetwork}/>
                         <Route exact path={'/sign-up'} component={SignUp}/>
                         <Route exact path={'/dashboard'} component={Dashboard}/>
                         <Redirect exact from='*' to="/"/>
