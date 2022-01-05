@@ -1,0 +1,88 @@
+.tokenIcon {
+  width: 169px;
+  min-width: 136px;
+}
+.tokenName {
+  width: 170px;
+  min-width: 136px;
+}
+.tokenSymbol {
+  width: 186px;
+  min-width: 151px;
+}
+.network {
+  width: 258px;
+  min-width: 136px;
+}
+.supply {
+  width: 173px;
+  min-width: 136px;
+}
+.status {
+  width: 150px;
+  min-width: 136px;
+}
+.icons {
+  width: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.deployIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #3163f0 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  opacity: 1;
+}
+.deleteIcon,
+.editIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+  opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .tokenIcon {
+    min-width: 169px;
+  }
+  .tokenName {
+    min-width: 170px;
+  }
+  .tokenSymbol {
+    min-width: 186px;
+  }
+  .network {
+    min-width: 258px;
+  }
+  .supply {
+    min-width: 173px;
+  }
+  .status {
+    min-width: 140px;
+  }
+  .icons {
+    width: 142px;
+    min-width: 142px;
+  }
+  .deployIcon,
+  .deleteIcon,
+  .editIcon {
+    margin-right: 12px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+}
