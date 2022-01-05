@@ -92,7 +92,7 @@ export default function FormDialog() {
       <Button variant="outlined" onClick={handleClickOpen}>
         Change Network
       </Button>
-      <Dialog open={open}>
+      <Dialog style={ {displayPosition: "top"}} open={open}>
         <Header>
             <DialogTitle>Change Network</DialogTitle>
             <Cross onClick={handleClose} src= 'images/Cross.svg'></Cross>
