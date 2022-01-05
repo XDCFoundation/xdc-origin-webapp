@@ -8,6 +8,7 @@ import { Login, SignUp } from "./modules";
 import { history } from "./managers/history";
 import Dashboard from "./modules/dashboard/dashboardComponent";
 import BaseComponent from "./modules/baseComponent";
+import CreatedToken from './modules/createdToken';
 import About from "./modules/aboutScreen/about";
 class Routes extends BaseComponent {
   componentDidMount() {}
@@ -21,6 +22,7 @@ class Routes extends BaseComponent {
             <Route exact path={"/sign-up"} component={SignUp} />
             <Route exact path={"/dashboard"} component={Dashboard} />
             <Route exact path={"/about"} component={About} />
+            <Route exact path={'/created-token'} component={CreatedToken}/>
             <Redirect exact from="*" to="/" />
           </Switch>
         </Router>
