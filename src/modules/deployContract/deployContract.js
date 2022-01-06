@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import "./deployContract.css";
 import styled from "styled-components";
 import { Delete, Edit } from "@material-ui/icons";
+import DeleteContract from "./deleteContract";
 
 function DeployContract() {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const tableData = [
     {
       tokenIcon: "image",
@@ -63,7 +74,7 @@ function DeployContract() {
                   <div className="deployIcon">
                     <img src="/images/deploy_contract.png" alt="" />
                   </div>
-                  <div className="deleteIcon">
+                  <div className="deleteIcon" onClick={handleClickOpen}>
                     <Delete />
                   </div>
                   <div className="editIcon">
@@ -76,6 +87,11 @@ function DeployContract() {
           ))}
         </DataContainer>
       </TableContainer>
+      <DeleteContract
+        open={open}
+        onClose={handleClose}
+        handleClose={handleClose}
+      />
     </Container>
   );
 }
