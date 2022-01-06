@@ -1,6 +1,6 @@
 import React from "react";
 import BaseComponent from "../baseComponent";
-import Token from "./token";
+import Token from "./basicInformation";
 import HeaderComponent from "../header/header";
 import DesktopSideMenu from "../dashboard/sidebar";
 import { Column, Row } from "simple-flexbox";
