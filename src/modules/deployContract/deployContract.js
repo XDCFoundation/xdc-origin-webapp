@@ -3,9 +3,11 @@ import "./deployContract.css";
 import styled from "styled-components";
 import { Delete, Edit } from "@material-ui/icons";
 import DeleteContract from "./deleteContract";
+import DeployPopup from "./deployPopup";
 
 function DeployContract() {
   const [open, setOpen] = useState(false);
+  const [openDeployPopup, setOpenDeployPopup] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -13,6 +15,13 @@ function DeployContract() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleDeployPopup = () => {
+    setOpenDeployPopup(true);
+  };
+
+  const deployPopupClose = () => {
+    setOpenDeployPopup(false);
   };
 
   const tableData = [
@@ -71,7 +80,7 @@ function DeployContract() {
                   <TableContent>{item.status}</TableContent>
                 </div>
                 <div className="icons">
-                  <div className="deployIcon">
+                  <div className="deployIcon" onClick={handleDeployPopup}>
                     <img src="/images/deploy_contract.png" alt="" />
                   </div>
                   <div className="deleteIcon" onClick={handleClickOpen}>
@@ -91,6 +100,11 @@ function DeployContract() {
         open={open}
         onClose={handleClose}
         handleClose={handleClose}
+      />
+      <DeployPopup
+        open={openDeployPopup}
+        onClose={deployPopupClose}
+        deployPopupClose={deployPopupClose}
       />
     </Container>
   );
