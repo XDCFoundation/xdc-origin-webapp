@@ -61,7 +61,7 @@ function DeployContract() {
                 </div>
                 <div className="icons">
                   <div className="deployIcon">
-                    <img src="/images/DeployContract_InActive.svg" alt="" />
+                    <img src="/images/deploy_contract.png" alt="" />
                   </div>
                   <div className="deleteIcon">
                     <Delete />
@@ -86,7 +86,7 @@ const Container = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 1080px;
   background: #ecf0f7 0% 0% no-repeat padding-box;
   opacity: 1;
 `;
@@ -100,6 +100,12 @@ const Heading = styled.span`
   letter-spacing: 0px;
   color: #1f1f1f;
   opacity: 1;
+  @media screen and (max-width: 1660px) and (min-width: 1440px) {
+    margin-left: 20px;
+  }
+  @media screen and (max-width: 1440px) and (min-width: 1280px) {
+    margin-left: 20px;
+  }
   @media screen and (max-width: 768px) and (min-width: 425px) {
     margin-top: 32px;
     margin-left: 24px;
@@ -123,6 +129,24 @@ const TableContainer = styled.div`
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 6px;
   opacity: 1;
+  @media screen and (max-width: 1660px) and (min-width: 1440px) {
+    margin-left: 20px;
+  }
+  @media screen and (max-width: 1440px) and (min-width: 1280px) {
+    margin-left: 20px;
+    width: 1060px;
+    max-width: 1060px;
+    overflow-x: scroll;
+    ::-webkit-scrollbar {
+      display: none;
+      /* width: 55px;
+      height: 5px;
+      background: #c4c4c4 0% 0% no-repeat padding-box;
+      border-radius: 12px;
+      opacity: 1; */
+    }
+  }
+
   @media screen and (max-width: 768px) and (min-width: 425px) {
     margin-top: 0px;
     margin-left: 24px;
@@ -164,6 +188,9 @@ const Title = styled.p`
   letter-spacing: 0px;
   color: #102c78;
   opacity: 1;
+  @media screen and (min-width: 375px) and (max-width: 425px) {
+    font-size: 14px;
+  }
 `;
 const TitleNetwork = styled.p`
   width: 222px;
@@ -178,6 +205,9 @@ const TitleNetwork = styled.p`
   letter-spacing: 0px;
   color: #102c78;
   opacity: 1;
+  @media screen and (min-width: 375px) and (max-width: 425px) {
+    font-size: 14px;
+  }
 `;
 const Line = styled.hr`
   margin: 0.5rem auto 0 auto;
@@ -206,4 +236,10 @@ const TableContent = styled.span`
   letter-spacing: 0px;
   color: #191919;
   opacity: 1;
+  @media screen and (min-width: 375px) and (max-width: 425px) {
+    width: 70px;
+    height: 17px;
+    text-align: left;
+    font: normal normal normal 14px/17px Inter;
+  }
 `;
