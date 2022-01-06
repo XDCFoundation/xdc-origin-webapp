@@ -225,19 +225,3 @@ input:focus {
 .subscription-plan-card-shadow {
     box-shadow: 0px 3px 21px 0 rgba(0, 0, 0, 0.07);
 }
-
-.image-div{
-  display: flex;
-  width: 48px;
-  height: 48px;
-  justify-content:center;
-  align-items:center;
-  opacity: 1;
-}
-
-.add-div{
-  width: 21px;
-  height: 21px;
-  background: #3163F0 0% 0% no-repeat padding-box;
-  opacity: 1;
-}
