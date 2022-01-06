@@ -120,33 +120,6 @@ const CircleDiv = styled.div`
   opacity: 1;
 `;
 
-const ButtonDiv = styled.div`
-  width: 150px;
-  height: 50px;
-  background: #3163f0 0% 0% no-repeat padding-box;
-  border-radius: 4px;
-  opacity: 1;
-  @media (min-width: 0px) and (max-width: 767px) {
-    width: 322px;
-    height: 42px;
-    background: #3163f0 0% 0% no-repeat padding-box;
-  }
-`;
-
-const SpanText = styled.div`
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  padding: 12px 0px 0px 0px;
-  font: normal normal medium 18px/21px Inter;
-  letter-spacing: 0px;
-  color: #ffffff;
-  opacity: 1;
-  @media (min-width: 0px) and (max-width: 767px) {
-    padding: 8px 6px 0px 0px;
-  }
-`;
-
 const InsideDiv = styled.div`
   display: flex;
   flex-direction: row;
@@ -191,6 +164,44 @@ const PlusImage = styled.img`
   letter-spacing: 0px;
   color: #3163f0;
   opacity: 1;
+`;
+
+const ContinueButton = styled.div`
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  width: 150px;
+  height: 50px;
+  background: #3163f0 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  opacity: 1;
+  @media (min-width: 0px) and (max-width: 767px) {
+    justify-content: center;
+    width: 322px;
+    height: 42px;
+    margin-top: 12px;
+  }
+`;
+
+const ImgDiv = styled.img`
+  width: 15px;
+  height: 13px;
+  opacity: 1;
+  @media (min-width: 0px) and (max-width: 767px) {
+    margin: 0 8px 0px 8px;
+  }
+`;
+
+const ContinueText = styled.div`
+  text-align: left;
+  font: normal normal medium 18px/21px Inter;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+  @media (min-width: 0px) and (max-width: 767px) {
+    margin: 0 8px 0px 8px;
+  }
 `;
 
 export default function Token(props) {
@@ -270,10 +281,10 @@ export default function Token(props) {
           </CommonRow>
 
           <LastRow>
-            <ButtonDiv>
-              <SpanText>Continue</SpanText>
-              {/* <img src="/images/Button_Next_Arrow.svg"></img> */}
-            </ButtonDiv>
+            <ContinueButton>
+              <ContinueText>Continue</ContinueText>
+              <ImgDiv src="/images/Button_Next_Arrow.svg" />
+            </ContinueButton>
           </LastRow>
         </Column>
       </Parent>
