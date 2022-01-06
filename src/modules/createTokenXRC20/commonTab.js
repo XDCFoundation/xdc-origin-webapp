@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import BasicInfoPage from "./basicInformation";
+import TokenomicsPage from "./tokenomics";
 
 const MainContainer = styled.div`
   display: flex;
   justify-content: center;
   background: #ecf0f7 0% 0% no-repeat padding-box;
-  width: 100%;
-  height: 100%;
+  height: 1080px;
 `;
 
 const Parent = styled.div`
@@ -122,13 +122,29 @@ const TextTwo = styled.div`
 export default function CommonTab(props) {
   const tab = [
     {
-      id: "Step 1",
+      id: 1,
+      step: "Step 1",
       image: "/images/ContractDetails.svg",
       name: "Basic Information",
     },
-    { id: "Step 2", image: "/images/Tokenomics.svg", name: "Tokenomics" },
-    { id: "Step 3", image: "/images/Features.svg", name: "Add Features" },
-    { id: "Step 4", image: "/images/Deploy.svg", name: "Deploy Contract" },
+    {
+      id: 2,
+      step: "Step 2",
+      image: "/images/Tokenomics.svg",
+      name: "Tokenomics",
+    },
+    {
+      id: 3,
+      step: "Step 3",
+      image: "/images/Features.svg",
+      name: "Add Features",
+    },
+    {
+      id: 4,
+      step: "Step 4",
+      image: "/images/Deploy.svg",
+      name: "Deploy Contract",
+    },
   ];
 
   return (
@@ -147,7 +163,7 @@ export default function CommonTab(props) {
                       </ImageDiv>
 
                       <Description>
-                        <TextOne>{item.id}</TextOne>
+                        <TextOne>{item.step}</TextOne>
                         <TextTwo>{item.name}</TextTwo>
                       </Description>
                     </Div>
@@ -156,6 +172,7 @@ export default function CommonTab(props) {
               })}
             </RowOne>
             <BasicInfoPage />
+            {/* <TokenomicsPage /> */}
           </Column>
         </Parent>
       </MainContainer>
