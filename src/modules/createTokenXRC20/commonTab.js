@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Token from "./token";
+import BasicInfoPage from "./basicInformation";
 
 const MainContainer = styled.div`
   display: flex;
@@ -155,7 +155,7 @@ export default function CommonTab(props) {
                 );
               })}
             </RowOne>
-            <Token />
+            <BasicInfoPage />
           </Column>
         </Parent>
       </MainContainer>
