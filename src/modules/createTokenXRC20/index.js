@@ -4,6 +4,7 @@ import Token from "./token";
 import HeaderComponent from "../header/header";
 import DesktopSideMenu from "../dashboard/sidebar";
 import { Column, Row } from "simple-flexbox";
+import CommonTabs from "./commonTab";
 
 class CreateTokenXRC20 extends BaseComponent {
   constructor(props) {
@@ -17,7 +18,7 @@ class CreateTokenXRC20 extends BaseComponent {
     return (
       <>
         <HeaderComponent />
-        <Token />
+        <CommonTabs />
       </>
     );
   }

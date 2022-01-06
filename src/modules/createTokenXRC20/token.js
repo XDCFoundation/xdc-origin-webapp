@@ -1,14 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-const MainContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  background: #ecf0f7 0% 0% no-repeat padding-box;
-  width: 100%;
-  height: 100%;
-`;
-
 const Parent = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,34 +8,16 @@ const Parent = styled.div`
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 45rem;
   }
-  /* @media (min-width: 0px) and (max-width: 767px) {
+  @media (min-width: 0px) and (max-width: 767px) {
     width: 22.1875rem;
-  } */
-`;
-
-const Header = styled.div`
-  text-align: left;
-  font: normal normal 600 28px/34px Inter;
-  letter-spacing: 0px;
-  color: #1f1f1f;
-  opacity: 1;
-  padding: 20px 0px 0px 0px;
-  /* @media (min-width: 0px) and (max-width: 767px) {
-    font: normal normal 600 18px/21px Inter;
-  } */
+  }
 `;
 
 const Column = styled.div`
   background: #ffffff 0% 0% no-repeat padding-box;
-  border-radius: 6px;
+  border-radius: 0px;
   opacity: 1;
-  margin: 20px 0px 67px 0px;
-`;
-
-const RowOne = styled.div`
-  display: flex;
-  flex-direction: row;
-  /* padding: 10px 0px 10px 0px; */
+  margin: 0px 0px 67px 0px;
 `;
 
 const RowTwo = styled.div`
@@ -66,56 +40,9 @@ const LastRow = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 20px 57px 30px 0px;
-  /* @media (min-width: 0px) and (max-width: 767px) {
+  @media (min-width: 0px) and (max-width: 767px) {
     padding: 20px 18px 30px 0px;
-  } */
-`;
-
-const Div = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 224.5px;
-  border-bottom: 1px solid #f0f0f0;
-  @media (min-width: 767px) and (max-width: 1024px) {
-    width: 180.5px;
   }
-  /* @media (min-width: 0px) and (max-width: 767px) {
-    width: 88.75px;
-  } */
-`;
-
-const ImageDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 56px;
-  height: 56px;
-  opacity: 1;
-  border-left: 1px solid #f0f0f0;
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 38px;
-    padding: 0px 10px 0px 13px;
-  }
-`;
-
-const Img = styled.img`
-  display: flex;
-  width: 23px;
-  height: 24px;
-  justify-content: center;
-  align-items: center;
-  opacity: 1;
-`;
-
-const Description = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 13px 0px 0px 0px;
-  text-align: left;
-  font: normal normal 600 17px/20px Inter;
-  letter-spacing: 0px;
-  color: #0089ff;
-  opacity: 1;
 `;
 
 const SpanOne = styled.div`
@@ -124,9 +51,9 @@ const SpanOne = styled.div`
   letter-spacing: 0px;
   color: #1f1f1f;
   opacity: 1;
-  /* @media (min-width: 0px) and (max-width: 767px) {
+  @media (min-width: 0px) and (max-width: 767px) {
     font: normal normal 600 18px/21px Inter;
-  } */
+  }
 `;
 const SpanTwo = styled.div`
   text-align: left;
@@ -134,10 +61,10 @@ const SpanTwo = styled.div`
   letter-spacing: 0px;
   color: #4b4b4b;
   opacity: 1;
-  /* @media (min-width: 0px) and (max-width: 767px) {
+  @media (min-width: 0px) and (max-width: 767px) {
     font: normal normal normal 14px/17px Inter;
     padding: 10px 0px 0px 0px;
-  } */
+  }
 `;
 const TextDiv = styled.div`
   text-align: left;
@@ -169,9 +96,9 @@ const InputDiv = styled.input`
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
   }
-  /* @media (min-width: 0px) and (max-width: 767px) {
+  @media (min-width: 0px) and (max-width: 767px) {
     width: 322px;
-  } */
+  }
 `;
 const BlurTextDiv = styled.div`
   text-align: left;
@@ -199,11 +126,11 @@ const ButtonDiv = styled.div`
   background: #3163f0 0% 0% no-repeat padding-box;
   border-radius: 4px;
   opacity: 1;
-  /* @media (min-width: 0px) and (max-width: 767px) {
+  @media (min-width: 0px) and (max-width: 767px) {
     width: 322px;
     height: 42px;
     background: #3163f0 0% 0% no-repeat padding-box;
-  } */
+  }
 `;
 
 const SpanText = styled.div`
@@ -215,35 +142,11 @@ const SpanText = styled.div`
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
-  /* @media (min-width: 0px) and (max-width: 767px) {
-    padding: 8px 6px 0px 0px;
-  } */
-`;
-
-const TextOne = styled.div`
-  font: normal normal normal 12px/15px Inter;
-  letter-spacing: 0px;
-  color: #0089ff;
-  opacity: 1;
-  /* @media (min-width: 0px) and (max-width: 767px) {
-    display: none;
-  } */
-`;
-
-const TextTwo = styled.div`
-  font: normal normal 600 17px/20px Inter;
-  letter-spacing: 0px;
-  color: #0089ff;
-  opacity: 1;
-  @media (min-width: 768px) and (max-width: 1024px) {
-    white-space: nowrap;
-    font: normal normal 600 16px/20px Inter;
-    padding: 0px 10px 0px 0px;
-  }
   @media (min-width: 0px) and (max-width: 767px) {
-    display: none;
+    padding: 8px 6px 0px 0px;
   }
 `;
+
 const InsideDiv = styled.div`
   display: flex;
   flex-direction: row;
@@ -293,130 +196,87 @@ const PlusImage = styled.img`
 export default function Token(props) {
   return (
     <>
-      <MainContainer>
-        <Parent>
-          <Header>Create XRC20 Token</Header>
-          <Column>
-            <RowOne>
-              <Div>
-                <ImageDiv>
-                  <Img alt="" src="/images/ContractDetails.svg" />
-                </ImageDiv>
+      <Parent>
+        <Column>
+          <RowTwo>
+            <SpanOne>Basic Token Info</SpanOne>
+            <SpanTwo>
+              Tell us basic information about the token that you are building
+            </SpanTwo>
+          </RowTwo>
 
-                <Description>
-                  <TextOne>Step 1</TextOne>
-                  <TextTwo>Basic Information</TextTwo>
-                </Description>
-              </Div>
-              <Div>
-                <ImageDiv>
-                  <Img alt="" src="/images/Tokenomics.svg" />
-                </ImageDiv>
-                <Description>
-                  <TextOne>Step 2</TextOne>
-                  <TextTwo>Tokenomics</TextTwo>
-                </Description>
-              </Div>
-              <Div>
-                <ImageDiv>
-                  <Img alt="" src="/images/Features.svg" />
-                </ImageDiv>
-                <Description>
-                  <TextOne>Step 3</TextOne>
-                  <TextTwo>Add Feature</TextTwo>
-                </Description>
-              </Div>
-              <Div>
-                <ImageDiv>
-                  <Img alt="" src="/images/Deploy.svg" />
-                </ImageDiv>
-                <Description>
-                  <TextOne>Step 4</TextOne>
-                  <TextTwo>Deploy Contract</TextTwo>
-                </Description>
-              </Div>
-            </RowOne>
+          <CommonRow>
+            <TextDiv>Network</TextDiv>
+            <InsideDiv>
+              <InputDiv placeholder="XDC Mainnet" />
+              <PopButton onClick={() => alert("hello")}>
+                Change Network
+              </PopButton>
+            </InsideDiv>
 
-            <RowTwo>
-              <SpanOne>Basic Token Info</SpanOne>
-              <SpanTwo>
-                Tell us basic information about the token that you are building
-              </SpanTwo>
-            </RowTwo>
+            <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
+          </CommonRow>
 
-            <CommonRow>
-              <TextDiv>Network</TextDiv>
-              <InsideDiv>
-                <InputDiv placeholder="XDC Mainnet" />
-                <PopButton onClick={() => alert("hello")}>
-                  Change Network
-                </PopButton>
-              </InsideDiv>
+          <CommonRow>
+            <TextDiv>Token Name</TextDiv>
+            <InputDiv placeholder="e.g. XDC Network" />
+            <BlurTextDiv>Choose a name for your token</BlurTextDiv>
+          </CommonRow>
 
-              <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
-            </CommonRow>
+          <CommonRow>
+            <TextDiv>Symbol</TextDiv>
+            <InputDiv placeholder="e.g. XDC" />
+            <BlurTextDiv>Choose symbol for your token</BlurTextDiv>
+          </CommonRow>
 
-            <CommonRow>
-              <TextDiv>Token Name</TextDiv>
-              <InputDiv placeholder="e.g. XDC Network" />
-              <BlurTextDiv>Choose a name for your token</BlurTextDiv>
-            </CommonRow>
+          <CommonRow>
+            <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
+            <CircleRow>
+              <CircleDiv />
+              <PlusImage src="/images/PlusIcon.svg" />
+            </CircleRow>
+          </CommonRow>
 
-            <CommonRow>
-              <TextDiv>Symbol</TextDiv>
-              <InputDiv placeholder="e.g. XDC" />
-              <BlurTextDiv>Choose symbol for your token</BlurTextDiv>
-            </CommonRow>
+          <CommonRow>
+            <TextDiv>Decimal</TextDiv>
+            <InputDiv placeholder="8-18" />
+            <BlurTextDiv>
+              Insert the decimal precision of your token
+            </BlurTextDiv>
+          </CommonRow>
 
-            <CommonRow>
-              <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
-              <CircleRow>
-                <CircleDiv />
-                <PlusImage src="/images/PlusIcon.svg" />
-              </CircleRow>
-            </CommonRow>
+          <CommonRow>
+            <TextDiv>Description</TextDiv>
+            <InputDiv placeholder="A Dao Token" />
+            <BlurTextDiv>Add description for your token</BlurTextDiv>
+          </CommonRow>
 
-            <CommonRow>
-              <TextDiv>Decimal</TextDiv>
-              <InputDiv placeholder="8-18" />
-              <BlurTextDiv>
-                Insert the decimal precision of your token
-              </BlurTextDiv>
-            </CommonRow>
+          <CommonRow>
+            <TextDiv>Website</TextDiv>
+            <InputDiv placeholder="Website Address" />
+            <BlurTextDiv>Add Website url for your token</BlurTextDiv>
+          </CommonRow>
 
-            <CommonRow>
-              <TextDiv>Description</TextDiv>
-              <InputDiv placeholder="A Dao Token" />
-              <BlurTextDiv>Add description for your token</BlurTextDiv>
-            </CommonRow>
+          <CommonRow>
+            <TextDiv>Twitter(optional)</TextDiv>
+            <InputDiv placeholder="e.g. Twitter Url" />
+            <BlurTextDiv>Add Twitter page url for your token</BlurTextDiv>
+          </CommonRow>
 
-            <CommonRow>
-              <TextDiv>Website</TextDiv>
-              <InputDiv placeholder="Website Address" />
-              <BlurTextDiv>Add Website url for your token</BlurTextDiv>
-            </CommonRow>
+          <CommonRow>
+            <TextDiv>Telegram</TextDiv>
+            <InputDiv placeholder="e.g. Telegram Url" />
+            <BlurTextDiv>Add Telegram group url for your token</BlurTextDiv>
+          </CommonRow>
 
-            <CommonRow>
-              <TextDiv>Twitter(optional)</TextDiv>
-              <InputDiv placeholder="e.g. Twitter Url" />
-              <BlurTextDiv>Add Twitter page url for your token</BlurTextDiv>
-            </CommonRow>
-
-            <CommonRow>
-              <TextDiv>Telegram</TextDiv>
-              <InputDiv placeholder="e.g. Telegram Url" />
-              <BlurTextDiv>Add Telegram group url for your token</BlurTextDiv>
-            </CommonRow>
-
-            <LastRow>
-              <ButtonDiv>
-                <SpanText>Continue</SpanText>
-                {/* <img src="/images/Button_Next_Arrow.svg"></img> */}
-              </ButtonDiv>
-            </LastRow>
-          </Column>
-        </Parent>
-      </MainContainer>
+          <LastRow>
+            <ButtonDiv>
+              <SpanText>Continue</SpanText>
+              {/* <img src="/images/Button_Next_Arrow.svg"></img> */}
+            </ButtonDiv>
+          </LastRow>
+        </Column>
+      </Parent>
     </>
   );
 }
