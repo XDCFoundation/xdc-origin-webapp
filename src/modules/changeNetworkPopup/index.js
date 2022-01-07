@@ -1,8 +1,7 @@
 import React from "react";
 import BaseComponent from "../baseComponent";
-// import ChangeNetwork from './changeNetwork';
-import ChangeNetworkPopup from './changeNetwork';
-import ChangeNetworkScreen from './changeNetworkMobile'
+import ChangeNetworkPopup from './ChangeNetwork';
+import ChangeNetworkScreen from './changeNetworkMobile';
 
 
 class ChangeNetworkComponent extends BaseComponent {
