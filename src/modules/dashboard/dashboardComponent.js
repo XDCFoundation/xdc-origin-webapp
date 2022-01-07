@@ -4,6 +4,7 @@ import HeaderComponent from "../header/header";
 import DesktopSideMenu from "./sidebar";
 import About from "../aboutScreen/about";
 import { Column, Row } from "simple-flexbox";
+import Footer from "../Footer";
 
 const Container = styled.div`
   height: 100%;
@@ -27,13 +28,14 @@ const HomeContainer = styled.div`
 `;
 const dashboardComponent = (props) => {
   return (
-      <DashboardContainer>
-        <HeaderComponent />
-        <Row>
-          <DesktopSideMenu />
-          <About />
-        </Row>
-      </DashboardContainer>
+    <DashboardContainer>
+      <HeaderComponent />
+      <Row>
+        <DesktopSideMenu />
+        <About />
+      </Row>
+      {window.innerWidth <= 768 ? <Footer /> : ""}
+    </DashboardContainer>
   );
 };
 export default dashboardComponent;
