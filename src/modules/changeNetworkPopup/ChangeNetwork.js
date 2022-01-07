@@ -110,7 +110,7 @@ export default function FormDialog() {
   return (
     <div>
       <DesktopTab>
-        <Dialog className= "display-pop-up" open= {true} >
+        <Dialog className= "display-pop-up" open= {true} > {/* given value true is hardcoded. will update while integration */}
           <Header>
               <DialogTitle>Change Network</DialogTitle>
               <Cross onClick={handleClose} src= 'images/Cross.svg'></Cross>
