@@ -5,14 +5,7 @@ function Header(props) {
   return (
     <HeaderContainer>
       <SpaceBetween>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginLeft: "12px",
-          }}
-        >
+        <div className="Space-between">
           <GridLogo src="/images/ShowApps.svg" />
           <div>
             <UserMenu1 src="images/menu.svg" />{" "}
@@ -20,15 +13,10 @@ function Header(props) {
           <SmartMintLogo src="/images/About_Active.svg" />
           <Span>SmartMint</Span>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-          }}
-        >
+        <div className="buttons">
           <UserLogo src="/images/profile.svg" />
-          <UserMenu src="images/menu.svg" /> <Button>Connect Wallet</Button>
+          <UserMenu src="images/menu.svg" />
+          <Button>Connect Wallet</Button>
         </div>
       </SpaceBetween>
     </HeaderContainer>
@@ -62,7 +50,7 @@ const SpaceBetween = styled.div`
   justify-content: space-between;
 `;
 const Button = styled.button`
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
   background: transparent;
   margin-left: 5%;
   border-radius: 5px;
@@ -122,4 +110,8 @@ const Span = styled.span`
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
+  @media (min-width: 0px) and (max-width: 768px) {
+   margin-top:4px;
+   margin-left: 3px;
+  }
 `;
