@@ -11,6 +11,7 @@ import BaseComponent from "./modules/baseComponent";
 import CreatedToken from "./modules/createdToken";
 import About from "./modules/aboutScreen/about";
 import DeployContract from "./modules/deployContract";
+import CreateTokenXRC20 from "../src/modules/createTokenXRC20";
 
 class Routes extends BaseComponent {
   componentDidMount() {}
@@ -26,6 +27,7 @@ class Routes extends BaseComponent {
             <Route exact path={"/about"} component={About} />
             <Route exact path={"/created-token"} component={CreatedToken} />
             <Route exact path={"/deploy-contract"} component={DeployContract} />
+            <Route exact path={"/token-XRC20"} component={CreateTokenXRC20} />
             <Redirect exact from="*" to="/" />
           </Switch>
         </Router>
