@@ -1,6 +1,39 @@
 import React from "react";
 import styled from "styled-components";
 
+export default function Sidebar(props) {
+  return (
+    <SidebarContainer >
+      <Wrapper>
+        <Icon className="w-25" src="/images/About_Active.svg"/>
+        <Heading>About SmartMint</Heading>
+      </Wrapper>
+      <Wrapper>
+        <Icon src="/images/CreateContract_Inactive.svg"/>
+        <Heading>Create Contract</Heading>
+      </Wrapper>
+      <Wrapper>
+        <Icon src="/images/DeployContract_InActive.svg" />
+        <Heading className="deploy-margin"> Deploy contracts</Heading>
+      </Wrapper>
+      <Wrapper>
+        <Icon src="/images/ManageContract_InActive.svg" />
+        <Heading>Manage Contracts</Heading>
+      </Wrapper>
+      <Wrapper className="faq-margin">
+        <Icon src="/images/FAQ_InActive.svg" />
+        <Heading>FAQs</Heading>
+      </Wrapper>
+      <Wrapper>
+        <Icon src="/images/Logout-InActive.svg" />
+        <Heading>Logout</Heading>
+      </Wrapper>
+      <CenterDiv>
+        <img alt="" src="/images/Group 12.svg" />
+      </CenterDiv>
+    </SidebarContainer>
+  );
+}
 const SidebarContainer = styled.div`
   background: #102c78 0% 0% no-repeat padding-box;
   display: flex;
@@ -9,7 +42,6 @@ const SidebarContainer = styled.div`
   width: 250px;
   height: 1080px;
   padding-top: 40px;
-
   @media (min-width:0px) and (max-width:1024px) {
     display:none;
   }
@@ -47,36 +79,3 @@ const CenterDiv = styled.div`
   margin-top: 2rem;
   margin-bottom: 3rem;
 `;
-export default function Sidebar(props) {
-  return (
-    <SidebarContainer>
-      <Wrapper>
-        <Icon style={{ width: "25px" }} src="/images/About_Active.svg" />
-        <Heading>About SmartMint</Heading>
-      </Wrapper>
-      <Wrapper>
-        <Icon src="/images/CreateContract_Inactive.svg" />
-        <Heading>Create Contract</Heading>
-      </Wrapper>
-      <Wrapper>
-        <Icon src="/images/DeployContract_InActive.svg" />
-        <Heading style={{ marginLeft: "-5px" }}> Deploy contracts</Heading>
-      </Wrapper>
-      <Wrapper>
-        <Icon src="/images/ManageContract_InActive.svg" />
-        <Heading>Manage Contracts</Heading>
-      </Wrapper>
-      <Wrapper style={{ marginTop: "30rem" }}>
-        <Icon src="/images/FAQ_InActive.svg" />
-        <Heading>FAQs</Heading>
-      </Wrapper>
-      <Wrapper>
-        <Icon src="/images/Logout-InActive.svg" />
-        <Heading>Logout</Heading>
-      </Wrapper>
-      <CenterDiv>
-        <img alt="" src="/images/Group 12.svg" />
-      </CenterDiv>
-    </SidebarContainer>
-  );
-}

@@ -215,3 +215,38 @@ input:focus {
     box-shadow: 0px 3px 21px 0 rgba(0, 0, 0, 0.07);
 }
 
+/*         header css          */
+.Space-between{
+    display:flex;
+            flex-direction:row;
+            justify-content:space-between;
+            margin-left: 12px;
+}
+.buttons{
+    display:flex;
+    flex-direction: row;
+    justify-content:space-around;
+}
+
+/* sidebar css */
+.w-25{
+    width:25px !important;
+}
+.deploy-margin{
+    margin-left:-5px;
+}
+
+.faq-margin{
+    margin-top:30rem;
+}
+/* about css */
+.XRC20{
+    margin-left:0.375rem;
+    display:flex;
+}
+.XRC220{
+    margin-left:0.375rem; 
+}
+.stable-coin{
+    margin-left:0.375rem; 
+}
