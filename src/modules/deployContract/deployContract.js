@@ -26,7 +26,7 @@ function DeployContract() {
 
   const tableData = [
     {
-      tokenIcon: "image",
+      tokenIcon: "",
       tokenName: "MetaVerse",
       tokenSymbol: "META",
       network: "XDC Apothem Testnet",
@@ -34,7 +34,7 @@ function DeployContract() {
       status: "Draft",
     },
     {
-      tokenIcon: "image",
+      tokenIcon: "",
       tokenName: "Alex Coin",
       tokenSymbol: "ALEX",
       network: "XDC Mainnet",
@@ -62,7 +62,7 @@ function DeployContract() {
             <>
               <TableRow>
                 <div className="tokenIcon">
-                  <TableContent>{item.tokenIcon}</TableContent>
+                  <TableContentImg src={item.tokenIcon} />
                 </div>
                 <div className="tokenName">
                   <TableContent>{item.tokenName}</TableContent>
@@ -96,6 +96,7 @@ function DeployContract() {
           ))}
         </DataContainer>
       </TableContainer>
+
       <DeleteContract
         open={open}
         onClose={handleClose}
@@ -272,4 +273,9 @@ const TableContent = styled.span`
     text-align: left;
     font: normal normal normal 14px/17px Inter;
   }
+`;
+const TableContentImg = styled.img`
+  width: 38px;
+  height: 35px;
+  opacity: 1;
 `;

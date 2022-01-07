@@ -1,6 +1,6 @@
 import React from "react";
 import BaseComponent from "../baseComponent";
-import deleteContractPopup from "./deleteContract";
+import DeleteContractPopup from "./deleteContract";
 
 class DeleteContract extends BaseComponent {
   constructor(props) {
@@ -9,7 +9,7 @@ class DeleteContract extends BaseComponent {
   }
 
   render() {
-    return <deleteContractPopup />;
+    return <DeleteContractPopup />;
   }
 }
 
