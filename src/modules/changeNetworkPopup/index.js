@@ -1,7 +1,7 @@
 import React from "react";
 import BaseComponent from "../baseComponent";
 // import ChangeNetwork from './changeNetwork';
-import ChangeNetworkPopup from './ChangeNetwork';
+import ChangeNetworkPopup from './changeNetwork';
 import ChangeNetworkScreen from './changeNetworkMobile'
 
 

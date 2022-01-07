@@ -20,13 +20,16 @@ function Header(props) {
           <SmartMintLogo src="/images/About_Active.svg" />
           <Span>SmartMint</Span>
         </div>
-        <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
           <UserLogo src="/images/profile.svg" />
+          <UserMenu src="images/menu.svg" /> <Button>Connect Wallet</Button>
         </div>
-        <div>
-          <UserMenu src="images/menu.svg" />{" "}
-        </div>
-        <Button>Connect Wallet</Button>
       </SpaceBetween>
     </HeaderContainer>
   );
@@ -37,9 +40,9 @@ const HeaderContainer = styled.div`
   opacity: 1;
   padding: 5px;
   height: 57px;
-  @media (max-width: 375px) {
-    width: 375px;
-    height: 117px;
+  @media (min-width: 0px) and (max-width: 1080px) {
+    width: 100%;
+    height: 100%;
   }
 `;
 const SmartMintLogo = styled.img`
@@ -59,35 +62,27 @@ const SpaceBetween = styled.div`
   justify-content: space-between;
 `;
 const Button = styled.button`
-  ${"" /* diplay:flex; */}
   border: 1px solid #FFFFFF;
   background: transparent;
+  margin-left: 5%;
   border-radius: 5px;
   font-size: 14px;
   color: #ffffff;
   font: normal normal medium 15px/19px Inter;
-  ${"" /* padding: 5px 20px 5px 20px; */}
   top: 10px;
   left: 1764px;
   width: 142px;
   height: 36px;
-  @media (max-width: 375px) {
+  @media (min-width: 0px) and (max-width: 768px) {
     display: none;
   }
 `;
-// const UserContainer = styled.img`
-//   width: 190px;
-//   background: #3e579a;
-//   border-radius: 5px;
-//   display: flex;
-//   align-items: center;
-//   padding: 0px 10px;
-// `;
 const UserLogo = styled.img`
   display: none;
-  @media (min-width: 200px) and (max-width: 375px) {
+  @media (max-width: 767px) {
     border-radius: 50%;
-    margin-left: 109px;
+    margin-right: 6px;
+    ${"" /* margin-left: 109px; */}
     width: 22px;
     height: 22px;
     display: flex;
@@ -96,11 +91,11 @@ const UserLogo = styled.img`
 `;
 const UserMenu = styled.img`
   display: none;
-  @media (min-width: 250px) and (max-width: 375px) {
+  @media (max-width: 767px) {
     display: flex;
     margin-top: 6px;
-    margin-right: 5px;
-    left: 336px;
+    margin-right: 10px;
+    margin-left: 5%;
     width: 23px;
     height: 20px;
     opacity: 1;
@@ -108,7 +103,7 @@ const UserMenu = styled.img`
 `;
 const UserMenu1 = styled.img`
   display: none;
-  @media (min-width: 376px) and (max-width: 768px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     display: flex;
     margin-top: 7px;
     margin-right: 10px;
