@@ -59,7 +59,7 @@ export default function Sidebar(props) {
         <Heading>Create Contract</Heading>
       </Wrapper>
       <Wrapper>
-        <Icon src="/images/DeployContract_InActive.svg" />
+        <Icon src="/images/DeployContract_Active.svg" />
         <Heading style={{ marginLeft: "-5px" }}> Deploy contracts</Heading>
       </Wrapper>
       <Wrapper>

@@ -7,10 +7,11 @@ import { connect } from "react-redux";
 import { history } from "./managers/history";
 import Dashboard from "./modules/dashboard/dashboardComponent";
 import BaseComponent from "./modules/baseComponent";
-import CreatedToken from './modules/createdToken';
+import CreatedToken from "./modules/createdToken";
 import About from "./modules/aboutScreen/about";
 import ChangeNetwork from './modules/changeNetworkPopup/index'
-import CreateTokenXRC20 from '../src/modules/createTokenXRC20'
+import DeployContract from "./modules/deployContract";
+import CreateTokenXRC20 from "../src/modules/createTokenXRC20";
 
 class Routes extends BaseComponent {
   componentDidMount() {}
@@ -24,8 +25,9 @@ class Routes extends BaseComponent {
             {/*<Route exact path={"/sign-up"} component={SignUp} />*/}
             <Route exact path={"/"} component={Dashboard} />
             <Route exact path={"/about"} component={About} />
+            <Route exact path={"/created-token"} component={CreatedToken} />
+            <Route exact path={"/deploy-contract"} component={DeployContract} />
             <Route exact path={"/token-XRC20"} component={CreateTokenXRC20} />
-            <Route exact path={'/created-token'} component={CreatedToken}/>
             <Route exact path={'/change-network'} component={ChangeNetwork}/>
             <Redirect exact from="*" to="/" />
           </Switch>
