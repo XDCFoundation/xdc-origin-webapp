@@ -1,13 +1,14 @@
 import React from "react";
 import BaseComponent from "../baseComponent";
 // import ChangeNetwork from './changeNetwork';
-import FormDialog from './ChangeNetwork'
+import ChangeNetworkPopup from './ChangeNetwork';
+import ChangeNetworkScreen from './changeNetworkMobile'
 
 
 class ChangeNetworkComponent extends BaseComponent {
   render() {
     return (
-        <FormDialog state={this.state} />
+        <ChangeNetworkPopup state={this.state} />
     );
   }
 }
