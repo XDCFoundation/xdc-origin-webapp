@@ -2,12 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import BasicInfoPage from "./basicInformation";
 import TokenomicsPage from "./tokenomics";
+import AddFeaturesPage from './addFeature';
 
 const MainContainer = styled.div`
   display: flex;
   justify-content: center;
   background: #ecf0f7 0% 0% no-repeat padding-box;
-  height: 1080px;
+  height: 100%;
 `;
 
 const Parent = styled.div`
@@ -171,8 +172,9 @@ export default function CommonTab(props) {
                 );
               })}
             </RowOne>
-            <BasicInfoPage />
+            {/* <BasicInfoPage /> */}
             {/* <TokenomicsPage /> */}
+            <AddFeaturesPage/>
           </Column>
         </Parent>
       </MainContainer>
