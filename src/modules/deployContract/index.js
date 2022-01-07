@@ -1,6 +1,5 @@
 import React from "react";
 import BaseComponent from "../baseComponent";
-import styled from "styled-components";
 import DeployContractComponent from "./deployContract";
 import Sidebar from "../dashboard/sidebar";
 import Header from "../header/header";

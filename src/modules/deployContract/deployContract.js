@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./deployContract.css";
+import "../../assets/styles/deployContract.css";
 import styled from "styled-components";
 import { Delete, Edit } from "@material-ui/icons";
-import DeleteContract from "./deleteContract";
+import DeleteContract from "../deleteContract/deleteContract";
 import DeployPopup from "./deployPopup";
 
 function DeployContract() {
