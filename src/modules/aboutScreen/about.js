@@ -23,27 +23,15 @@ export default function About(props) {
             <Row>
               <Button>
                 Create XRC20
-                <img
-                  style={{ marginLeft: "0.375rem", display: "flex" }}
-                  alt=""
-                  src="/images/Help.svg"
-                />
+                <img className="XRC20" alt="" src="/images/Help.svg" />
               </Button>
               <Button>
                 Create XRC220
-                <img
-                  style={{ marginLeft: "0.375rem" }}
-                  alt=""
-                  src="/images/Help.svg"
-                />
+                <img className="XRC220" alt="" src="/images/Help.svg" />
               </Button>
               <Button>
                 Stable coin
-                <img
-                  style={{ marginLeft: "0.375rem" }}
-                  alt=""
-                  src="/images/Help.svg"
-                />
+                <img className="stable-coin" alt="" src="/images/Help.svg" />
               </Button>
             </Row>
           </LeftContainer>
@@ -97,8 +85,9 @@ export default function About(props) {
   );
 }
 const MainContainer = styled.div`
-  display: flex;
-  justify-content: center;
+  ${"" /* display: flex; */}
+  width: 100%;
+  ${"" /* justify-content: center; */}
   ${
     "" /* @media (min-width:375px) and (max-width:768px) {
     margin-bottom: 5px;
@@ -109,10 +98,10 @@ const MainContainer = styled.div`
 `;
 const MainBoxContainer = styled.div`
   background: #ecf0f7 0% 0% no-repeat padding-box;
-  ${"" /* width: 100%; */}
+
   display: flex;
   flex-direction: column;
-  align-item: center;
+  align-items: center;
   padding: 3.125rem;
   ${
     "" /* @media (min-width:375px) and (max-width:768px) {
@@ -201,11 +190,10 @@ const DetailBox = styled.div`
     margin: 0px 0px 2rem 0px !important;
     ${"" /* margin-left: 50px; */
   }
-    ${
-      "" /* font-size: 1rem;
+  ${
+    "" /* font-size: 1rem;
     padding: 0px; */
-    }
-  } */}
+  }
 `;
 const Button = styled.div`
   display: flex;
