@@ -22,15 +22,15 @@ export default function About(props) {
               <Button>
                 Create XRC20
                 <img
-                  style={{ marginLeft: "0.375rem", display: "flex" }}
-                  alt=""
+                  className="XRC20"                 
+                   alt=""
                   src="/images/Help.svg"
                 />
               </Button>
               <Button>
                 Create XRC220
                 <img
-                  style={{ marginLeft: "0.375rem" }}
+                  className="XRC220"
                   alt=""
                   src="/images/Help.svg"
                 />
@@ -38,7 +38,7 @@ export default function About(props) {
               <Button>
                 Stable coin
                 <img
-                  style={{ marginLeft: "0.375rem" }}
+             className="stable-coin"
                   alt=""
                   src="/images/Help.svg"
                 />
@@ -94,8 +94,9 @@ export default function About(props) {
   );
 }
 const MainContainer = styled.div`
-  display: flex;
-  justify-content: center;
+  ${'' /* display: flex; */}
+  width: 100%;
+  ${'' /* justify-content: center; */}
   ${'' /* @media (min-width:375px) and (max-width:768px) {
     margin-bottom: 5px;
     background: #ecf0f7 0% 0% no-repeat padding-box;
@@ -104,7 +105,7 @@ const MainContainer = styled.div`
 `;
 const MainBoxContainer = styled.div`
   background: #ecf0f7 0% 0% no-repeat padding-box;
-  ${'' /* width: 100%; */}
+  
   display: flex;
   flex-direction: column;
   align-item: center;
