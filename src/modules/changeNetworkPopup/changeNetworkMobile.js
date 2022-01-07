@@ -1,10 +1,5 @@
 import React, {Component} from 'react';
-import Button from '@material-ui/core/Button';
 import styled from 'styled-components'
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import 'react-dropdown/style.css';
-import { makeStyles } from "@material-ui/styles";
 
 
 const NetworkChangeContainer = styled.div`
@@ -108,34 +103,32 @@ const ChangeNetworkContainer = styled.div`
 export default class ChangeNetworkMobile extends Component {
     render() {
         return (
-            <div>
-                    <MobileScreen>
-                    <MobileHeader>
-                        <BackArrow src="images/Button_Back_Arrow.svg"></BackArrow>
-                        Change Network
-                    </MobileHeader>
-                    <ChangeNetworkContainer>
-                        <Content>
-                        <NetworkChangeContainer>
-                            <DropdownContainer>
-                            <img src='images/XDC-Icon-128X128.svg'></img>
-                            <NetworksDrop>
-                                <option value="XDC Apothem TestNet">XDC Apothem TestNet</option>
-                                <option value="XDC Mainnet">XDC Mainnet</option>
-                            </NetworksDrop>
-                            </DropdownContainer>
-                        </NetworkChangeContainer>
-                        <ContentText>
-                            To mint the tokens on new network, open XDCPay and simply change the network. Currently we support only <ContentTextNames>XDC Mainnet</ContentTextNames> and <ContentTextNames>XDC Apothem Testnet</ContentTextNames>.
-                        </ContentText>
-                        <Buttons>
-                            <Ok>OK</Ok>
-                        </Buttons>
-                        </Content>
-                    </ChangeNetworkContainer>
-                    </MobileScreen>
-            </div>
-        );
+                <MobileScreen>
+                <MobileHeader>
+                    <BackArrow src="images/Button_Back_Arrow.svg"></BackArrow>
+                    Change Network
+                </MobileHeader>
+                <ChangeNetworkContainer>
+                    <Content>
+                    <NetworkChangeContainer>
+                        <DropdownContainer>
+                        <img src='images/XDC-Icon-128X128.svg'></img>
+                        <NetworksDrop>
+                            <option value="XDC Apothem TestNet">XDC Apothem TestNet</option>
+                            <option value="XDC Mainnet">XDC Mainnet</option>
+                        </NetworksDrop>
+                        </DropdownContainer>
+                    </NetworkChangeContainer>
+                    <ContentText>
+                        To mint the tokens on new network, open XDCPay and simply change the network. Currently we support only <ContentTextNames>XDC Mainnet</ContentTextNames> and <ContentTextNames>XDC Apothem Testnet</ContentTextNames>.
+                    </ContentText>
+                    <Buttons>
+                        <Ok>OK</Ok>
+                    </Buttons>
+                    </Content>
+                </ChangeNetworkContainer>
+                </MobileScreen>
+            );
     }
 
 }
