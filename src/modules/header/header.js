@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
+import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 
 function Header(props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+  const connectWallet = () => {
+    setConnectWalletDialoag(!connectWalletDialoag);
   };
 
   return (
@@ -28,11 +33,16 @@ function Header(props) {
           <div className="buttons">
             <UserLogo src="/images/profile.svg" />
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
-            <Button>Connect Wallet</Button>
+            <Button onClick={() => connectWallet()}>Connect Wallet</Button>
           </div>
         </SpaceBetween>
       </HeaderContainer>
       {isOpen ? <Sidebar /> : ""}
+      <ConnectWallet
+        open={connectWalletDialoag}
+        onClose={connectWallet}
+        handleClose={connectWallet}
+      />
     </>
   );
 }
@@ -80,7 +90,7 @@ const Button = styled.button`
   left: 1764px;
   width: 142px;
   height: 36px;
-  @media (min-width: 0px) and (max-width: 768px) {
+  @media (max-width: 425px) {
     display: none;
   }
 `;
@@ -106,6 +116,7 @@ const UserMenu = styled.img`
     width: 23px;
     height: 20px;
     opacity: 1;
+    cursor: pointer;
   }
 `;
 const UserMenu1 = styled.img`

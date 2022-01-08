@@ -143,7 +143,6 @@ const SidebarContainer = styled.div`
   width: 250px;
   height: 1023px;
   padding-top: 40px;
-  position: fixed;
   @media (min-width: 425px) and (max-width: 768px) {
     height: 967px;
     margin-top: 56px;
