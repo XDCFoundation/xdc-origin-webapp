@@ -17,7 +17,7 @@ const dashboardComponent = (props) => {
     <DashboardContainer>
       <HeaderComponent />
       <Row>
-        <DesktopSideMenu />
+        {window.innerWidth >= 1024 ? <DesktopSideMenu /> : ""}
         <About />
       </Row>
       {window.innerWidth <= 768 ? <Footer /> : ""}

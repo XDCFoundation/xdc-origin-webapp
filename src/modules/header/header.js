@@ -1,25 +1,39 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
+import Sidebar from "../dashboard/sidebar";
+
 function Header(props) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <HeaderContainer>
-      <SpaceBetween>
-        <div className="Space-between">
-          <GridLogo src="/images/ShowApps.svg" />
-          <div>
-            <UserMenu1 src="images/menu.svg" />{" "}
+    <>
+      <HeaderContainer>
+        <SpaceBetween>
+          <div className="Space-between">
+            <GridLogo src="/images/ShowApps.svg" />
+            <div>
+              <UserMenu1
+                onClick={() => toggleSidebar()}
+                src="images/menu.svg"
+              />{" "}
+            </div>
+            <SmartMintLogo src="/images/About_Active.svg" />
+            <Span>SmartMint</Span>
           </div>
-          <SmartMintLogo src="/images/About_Active.svg" />
-          <Span>SmartMint</Span>
-        </div>
-        <div className="buttons">
-          <UserLogo src="/images/profile.svg" />
-          <UserMenu src="images/menu.svg" />
-          <Button>Connect Wallet</Button>
-        </div>
-      </SpaceBetween>
-    </HeaderContainer>
+          <div className="buttons">
+            <UserLogo src="/images/profile.svg" />
+            <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
+            <Button>Connect Wallet</Button>
+          </div>
+        </SpaceBetween>
+      </HeaderContainer>
+      {isOpen ? <Sidebar /> : ""}
+    </>
   );
 }
 export default Header;
@@ -28,9 +42,14 @@ const HeaderContainer = styled.div`
   opacity: 1;
   padding: 5px;
   height: 57px;
+  position: sticky;
+  top: 0;
+  z-index: 1300;
   @media (min-width: 0px) and (max-width: 1080px) {
     width: 100%;
-    height: 100%;
+    padding-bottom: 20px;
+    position: fixed;
+    top: 0;
   }
 `;
 const SmartMintLogo = styled.img`
@@ -79,7 +98,7 @@ const UserLogo = styled.img`
 `;
 const UserMenu = styled.img`
   display: none;
-  @media (max-width: 767px) {
+  @media (min-width: 320px) and (max-width: 425px) {
     display: flex;
     margin-top: 6px;
     margin-right: 10px;
@@ -91,13 +110,14 @@ const UserMenu = styled.img`
 `;
 const UserMenu1 = styled.img`
   display: none;
-  @media (min-width: 768px) and (max-width: 1024px) {
+  @media (min-width: 425px) and (max-width: 768px) {
     display: flex;
     margin-top: 7px;
     margin-right: 10px;
     margin-left: 6px;
     width: 26px;
     height: 22px;
+    cursor: pointer;
   }
 `;
 const Span = styled.span`
@@ -111,7 +131,7 @@ const Span = styled.span`
   color: #ffffff;
   opacity: 1;
   @media (min-width: 0px) and (max-width: 768px) {
-   margin-top:4px;
-   margin-left: 3px;
+    margin-top: 4px;
+    margin-left: 3px;
   }
 `;
