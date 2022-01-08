@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const FooterContainer = styled.div`
+  z-index: 1;
   width: 768px;
   height: 569px;
   min-height: 569px;
@@ -130,21 +131,10 @@ const CopyrightContainer = styled.div`
     margin: 35px 0 0 28.95px;
   }
 `;
-const CopyrightText = styled.span`
-  width: max-content;
-  height: 15px;
-  text-align: left;
-  font-size: 12px;
-  font-weight: normal;
-  letter-spacing: 0px;
-  color: #d9e3ff;
-  opacity: 1;
-  margin-right: 5px;
-`;
 const XDCIcon = styled.img`
-  width: 44px;
+  width: 116.47px;
   height: 17px;
-  background: transparent url("img/XDC-Logo.png") 0% 0% no-repeat padding-box;
+  background: transparent 0% 0% no-repeat padding-box;
   opacity: 1;
 `;
 
@@ -196,8 +186,7 @@ function footer() {
         </LinkContainerThird>
       </ContactRow>
       <CopyrightContainer>
-        <CopyrightText>Powered by</CopyrightText>
-        <XDCIcon src="" />
+        <XDCIcon src="/images/Group 12.svg" />
       </CopyrightContainer>
     </FooterContainer>
   );
