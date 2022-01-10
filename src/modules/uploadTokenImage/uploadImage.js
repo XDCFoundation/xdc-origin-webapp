@@ -5,7 +5,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import SeekBar from "react-seekbar-component";
 import "react-seekbar-component/dist/index.css";
 import { useDropzone } from "react-dropzone";
-import ReactImageZoom from 'react-image-zoom';
+import Draggable from "react-draggable";
+import fs from 'fs';
+
 
 const Header = styled.div`
   display: flex;
@@ -131,12 +133,12 @@ const UploadName = styled.span`
   opacity: 1;
 `;
 
-const TokenImage = styled.img`
+const TokenImage = styled.div`
   width: 264px;
   height: 264px;
   margin-bottom: 5%;
   background: #000000 0% 0% no-repeat padding-box;
-  opacity: 0.18;
+  overflow: hidden;
 `;
 
 const CropImage = styled.div`
@@ -147,24 +149,43 @@ const CropImage = styled.div`
   align-items: center;
 `;
 
-const Plus = styled.button`
+const Plus = styled.img`
   height: 10px;
   width: 10px;
 `;
+
+const ControlButtons = styled.button`
+  background-color: #ffffff;
+  border-width: 0px;
+  `
+
+
+const zoomStep = 0.1;
+const maxScale = 5;
+const minScale = 1;
+const defaultScale = minScale;
 
 export default function UploadTokenImage(props) {
   const [open, setOpen] = React.useState(false);
   const [upload, setUpload] = React.useState(false);
   const [value, setValue] = React.useState(0);
-  const [zoomIn, setZoomIn] = React.useState(20);
-  const [zoomOut, setZoomOut] = React.useState(0);
 
-  const handleClickZoomIn = () => {
-    setZoomIn(zoomIn + 20);
+  const [scale, setScale] = React.useState(defaultScale);
+
+  const zoomIn = () => {
+    setScale(scale + zoomStep);
+    if (scale >= maxScale) {
+      setScale(maxScale);
+    }
   };
-  const handleClickZoomOut = () => {
-    setZoomOut(zoomOut - 20);
+  const zoomOut = () => {
+    setScale(scale - zoomStep);
+    if (scale <= minScale) {
+      setScale(minScale);
+    }
   };
+  const isDraggable = scale > 1;
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -182,53 +203,72 @@ export default function UploadTokenImage(props) {
 
 
   const RenderUi = () => {
-    const props = {zoomIn, zoomOut, zoomWidth: 500, img: "images/XDC_Blue_Logo.svg"};
+
+    var arr = []
     const onDrop = useCallback((acceptedFiles) => {
       handleCloseUpload()
+      // let content = fs.readFileSync(basedir + `/uploads/${fileName}`)
+      arr.push(acceptedFiles[0])
+      console.log("ddddd",arr[0])
       // alert(acceptedFiles[0].name);
       console.log(
-        "Now you can do anything with this file as per your requirement",acceptedFiles[0]
+        "Now you can do anything with this file as per your requirement", acceptedFiles[0]
       );
-    },[])
+    }, [])
+
+    
+
 
     const { getInputProps, getRootProps } = useDropzone({ onDrop });
+    console.log("is image accessible ???", arr[0])
 
     if (!upload) {
       return (
         <Content>
           <UploadCircle {...getRootProps()}>
-            <input {...getInputProps()}/>
+            <input {...getInputProps()} />
             <UploadIcon src="images/Upload.svg"></UploadIcon>
             <UploadText>Drag and drop your token icon here</UploadText>
           </UploadCircle>
           <ContentText>or</ContentText>
           <UploadPhoto {...getRootProps()}>
-            <input {...getInputProps()}/>
+            <input {...getInputProps()} />
             <ButtonName>Upload a photo</ButtonName>
           </UploadPhoto>
         </Content>
       );
-    }else{
+    } else {
       return (
         <Content>
-          <ReactImageZoom {...props} />
-          
+          <TokenImage>
+            <Draggable disabled={!isDraggable} key={0}>
+              <div style={isDraggable ? { cursor: "move" } : null}>
+                <img
+                  style={{
+                    transform: `scale(${scale})`,
+                  }}
+                  draggable="false"
+                  src={arr[0]}
+                />
+              </div>
+            </Draggable>
+          </TokenImage>
           <CropImage>
-            <button onClick= {handleClickZoomOut} ><img src="images/Minus.svg"></img></button>
+            <ControlButtons onClick={zoomOut} ><img src="images/Minus.svg"></img></ControlButtons>
             <div>
               <SeekBar
-                getNumber={setValue}
+                getNumber={setScale}
                 width="300px"
                 backgroundColor="#EDEDED"
                 fillColor="#EDEDED"
                 fillSecondaryColor="#EDEDED"
                 headColor="#00000029"
                 headBorderWidth={3}
-                progress={20}
+                progress={0}
                 borderColor="#4B4B4B"
               />
             </div>
-            <Plus onClick={handleClickZoomIn} > <img src="images/Token_Image.svg"></img></Plus>
+            <ControlButtons onClick={zoomIn} > <Plus src="images/Token_Image.svg"></Plus></ControlButtons>
           </CropImage>
         </Content>
       );
