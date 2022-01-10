@@ -6,7 +6,7 @@ import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 
 function Header(props) {
-  const history = useHistory()
+  const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -26,12 +26,12 @@ function Header(props) {
               />{" "} */}
             </div>
             <SmartMintLogo src="/images/About_Active.svg" />
-            <Span onClick={() => history.push('/')}>SmartMint</Span>
+            <Span onClick={() => history.push("/")}>SmartMint</Span>
           </div>
           <div className="buttons">
             <UserLogo src="/images/profile.svg" />
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
-            <Button >Connect Wallet</Button>
+            <Button>Connect Wallet</Button>
           </div>
         </SpaceBetween>
       </HeaderContainer>
@@ -101,7 +101,7 @@ const UserLogo = styled.img`
 `;
 const UserMenu = styled.img`
   display: none;
-  @media (min-width: 320px) and (max-width: 768px) {
+  @media (min-width: 320px) and (max-width: 1024px) {
     display: flex;
     margin-top: 6px;
     margin-right: 10px;

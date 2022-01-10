@@ -16,6 +16,7 @@ class DeployContract extends BaseComponent {
       <div>
         <Header />
         <Row>
+          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
           <DeployContractComponent />
         </Row>
       </div>
