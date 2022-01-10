@@ -8,6 +8,7 @@ import DeployContractPage from "./deployContract";
 const MainContainer = styled.div`
   display: flex;
   justify-content: center;
+  flex-grow: 1;
   background: #ecf0f7 0% 0% no-repeat padding-box;
   /* height: 1080px; */
 `;
@@ -114,9 +115,9 @@ const ActiveTextOne = styled.div`
   letter-spacing: 0px;
   color: #0089ff;
   opacity: 1;
-  @media (min-width: 0px) and (max-width: 767px) {
+  /* @media (min-width: 0px) and (max-width: 767px) {
     display: none;
-  }
+  } */
 `;
 
 const TextTwo = styled.div`
@@ -145,41 +146,54 @@ const ActiveTextTwo = styled.div`
     padding: 0px 10px 0px 0px;
   }
   @media (min-width: 0px) and (max-width: 767px) {
-    /* white-space: nowrap; */
-    font: normal normal 600 16px/20px Inter;
+    white-space: nowrap;
+    font: normal normal 600 15px/20px Inter;
     padding: 0px 10px 0px 0px;
   }
 `;
 
 export default function CommonTab(props) {
-  const [opt, setOpt] = useState("1");
+  // const [opt, setOpt] = useState(1);
+  const [step, setStep] = useState(1);
+
+  const nextStep = () => {
+    setStep(step + 1);
+  };
+
+  const prevStep = () => {
+    setStep(step - 1);
+  };
   const tab = [
     {
       id: 1,
       step: "Step 1",
       image: "/images/ContractDetails.svg",
-      image2: "/images/Selected-Circle.svg",
+      activeImage: "/images/Contract-Details-Active.svg",
+      circleImage: "/images/Selected-Circle.svg",
       name: "Basic Information",
     },
     {
       id: 2,
       step: "Step 2",
       image: "/images/Tokenomics.svg",
-      image2: "/images/Selected-Circle.svg",
+      activeImage: "/images/Tokenomics-Active.svg",
+      circleImage: "/images/Selected-Circle.svg",
       name: "Tokenomics",
     },
     {
       id: 3,
       step: "Step 3",
       image: "/images/Features.svg",
-      image2: "/images/Selected-Circle.svg",
+      activeImage: "/images/Features-Active.svg",
+      circleImage: "/images/Selected-Circle.svg",
       name: "Add Features",
     },
     {
       id: 4,
       step: "Step 4",
       image: "/images/Deploy.svg",
-      image2: "/images/Selected-Circle.svg",
+      activeImage: "/images/Deploy-Active.svg",
+      circleImage: "/images/Selected-Circle.svg",
       name: "Deploy Contract",
     },
   ];
@@ -192,34 +206,22 @@ export default function CommonTab(props) {
           <Column>
             <RowOne>
               {tab.map((item) => {
-                const TextOneActive = opt == item.id ? ActiveTextOne : TextOne;
-                const TextTwoActive = opt == item.id ? ActiveTextTwo : TextTwo;
+                const TextOneActive = step == item.id ? ActiveTextOne : TextOne;
+                const TextTwoActive = step == item.id ? ActiveTextTwo : TextTwo;
+
                 return (
                   <>
                     <Div key={item.id}>
-                      <ImageDiv
-                        id={item.id}
-                        onClick={(e) => setOpt(e.currentTarget.id)}
-                      >
+                      <ImageDiv id={item.id}>
                         <Img
                           alt=""
-                          src={item.image}
+                          src={step == item.id ? item.activeImage : item.image}
                         />
                       </ImageDiv>
 
                       <Description>
-                        <TextOneActive
-                          id={item.id}
-                          onClick={(e) => setOpt(e.currentTarget.id)}
-                        >
-                          {item.step}
-                        </TextOneActive>
-                        <TextTwoActive
-                          id={item.id}
-                          onClick={(e) => setOpt(e.currentTarget.id)}
-                        >
-                          {item.name}
-                        </TextTwoActive>
+                        <TextOneActive id={item.id}>{item.step}</TextOneActive>
+                        <TextTwoActive id={item.id}>{item.name}</TextTwoActive>
                       </Description>
                     </Div>
                   </>
@@ -227,17 +229,21 @@ export default function CommonTab(props) {
               })}
             </RowOne>
             {(() => {
-              switch (opt) {
-                case "1":
-                  return <BasicInfoPage />;
-                case "2":
-                  return <TokenomicsPage />;
-                case "3":
-                  return <AddFeaturesPage />;
-                case "4":
+              switch (step) {
+                case 1:
+                  return <BasicInfoPage nextStep={nextStep} />;
+                case 2:
+                  return (
+                    <TokenomicsPage nextStep={nextStep} prevStep={prevStep} />
+                  );
+                case 3:
+                  return (
+                    <AddFeaturesPage nextStep={nextStep} prevStep={prevStep} />
+                  );
+                case 4:
                   return <DeployContractPage />;
                 default:
-                  return ;
+                  return //;
               }
             })()}
           </Column>
