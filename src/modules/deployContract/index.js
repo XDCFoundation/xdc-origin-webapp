@@ -16,7 +16,6 @@ class DeployContract extends BaseComponent {
       <div>
         <Header />
         <Row>
-          <Sidebar />
           <DeployContractComponent />
         </Row>
       </div>

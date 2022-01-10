@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
 
 export default function Sidebar(props) {
+  const history = useHistory();
   const [isActive, setIsActive] = useState("");
   const [createContract, setCreateContract] = useState(false);
   const [isSubNavActive, setIsSubNavActive] = useState("XRC20");
@@ -35,7 +37,7 @@ export default function Sidebar(props) {
         ) : (
           <Icon src="/images/About_Inactive.svg" />
         )}
-        <Heading className={isActive === "about" ? "activeText" : ""}>
+        <Heading onClick={() =>history.push('/')} className={isActive === "about" ? "activeText" : ""}>
           About SmartMint
         </Heading>
       </Wrapper>
@@ -48,7 +50,7 @@ export default function Sidebar(props) {
         ) : (
           <Icon src="/images/CreateContract_Inactive.svg" />
         )}
-        <Heading className={createContract ? "activeText" : ""}>
+        <Heading  className={createContract ? "activeText" : ""}>
           Create Contract
         </Heading>
       </Wrapper>
@@ -56,7 +58,7 @@ export default function Sidebar(props) {
         <SubHeadingContainer>
           <SubWrapper onClick={() => changeSubNavItemStyle("XRC20")}>
             <SubIcon src="" />
-            <SubText className={isSubNavActive === "XRC20" ? "xrc_active" : ""}>
+            <SubText onClick={() =>history.push('/token-XRC20')} className={isSubNavActive === "XRC20" ? "xrc_active" : ""}>
               XRC20 Token
             </SubText>
             {isSubNavActive === "XRC20" ? (
@@ -105,6 +107,7 @@ export default function Sidebar(props) {
           <Icon src="/images/DeployContract_InActive.svg" />
         )}
         <Heading
+        onClick={() =>history.push('/deploy-contract')}
           className={
             isActive === "deploy" ? "activeDeployText" : "deploy-margin"
           }

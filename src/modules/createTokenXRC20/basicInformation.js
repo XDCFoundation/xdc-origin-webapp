@@ -1,5 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
+import ChangeNetworkPopup from '../changeNetworkPopup/changeNetworkDesktop';
+import UploadFile from "../uploadTokenImage/uploadImage";
+
 
 const Parent = styled.div`
   display: flex;
@@ -173,6 +176,7 @@ const ContinueButton = styled.div`
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
   width: 150px;
   height: 50px;
   background: #3163f0 0% 0% no-repeat padding-box;
@@ -207,6 +211,15 @@ const ContinueText = styled.div`
 `;
 
 export default function Token(props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  };
+  const toggleUploadPopup = () => {
+    setIsUploadOpen(!isUploadOpen);
+  };
   return (
     <>
       <Parent>
@@ -222,9 +235,8 @@ export default function Token(props) {
             <TextDiv>Network</TextDiv>
             <InsideDiv>
               <InputDiv placeholder="XDC Mainnet" />
-              <PopButton onClick={() => alert("hello")}>
-                Change Network
-              </PopButton>
+              <PopButton onClick={togglePopup}>Change Network</PopButton>
+              {isOpen && <ChangeNetworkPopup handleClose={togglePopup} />}
             </InsideDiv>
 
             <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
@@ -246,7 +258,8 @@ export default function Token(props) {
             <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
             <CircleRow>
               <CircleDiv />
-              <PlusImage src="/images/PlusIcon.svg" />
+              <PlusImage onClick={toggleUploadPopup} src="/images/PlusIcon.svg" />
+              {isUploadOpen && <UploadFile handleUploadClose={toggleUploadPopup} />}
             </CircleRow>
           </CommonRow>
 
@@ -283,7 +296,7 @@ export default function Token(props) {
           </CommonRow>
 
           <LastRow>
-            <ContinueButton>
+            <ContinueButton onClick={() => props.nextStep()}>
               <ContinueText>Continue</ContinueText>
               <ImgDiv src="/images/Button_Next_Arrow.svg" />
             </ContinueButton>
