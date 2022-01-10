@@ -4,12 +4,14 @@ import styled from "styled-components";
 const Parent = styled.div`
   display: flex;
   flex-direction: column;
-  width: 56.125rem;
+  width: 898px;
+
   @media (min-width: 768px) and (max-width: 1024px) {
-    width: 45rem;
+    width: 720px;
   }
+
   @media (min-width: 0px) and (max-width: 767px) {
-    width: 22.1875rem;
+    width: 355px;
   }
 `;
 
