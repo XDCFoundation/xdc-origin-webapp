@@ -132,18 +132,26 @@ const Heading = styled.span`
   color: #1f1f1f;
   opacity: 1;
   @media screen and (max-width: 1660px) and (min-width: 1440px) {
-    margin-left: 20px;
+    margin-left: 70px;
   }
   @media screen and (max-width: 1440px) and (min-width: 1280px) {
+    margin-left: 100px;
+  }
+  @media screen and (max-width: 1280px) and (min-width: 1024px) {
     margin-left: 20px;
+    margin-top: 37px;
+  }
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    margin-left: 20px;
+    margin-top: 94px;
   }
   @media screen and (max-width: 768px) and (min-width: 425px) {
-    margin-top: 32px;
+    margin-top: 89px;
     margin-left: 24px;
     margin-bottom: 32px;
   }
   @media screen and (min-width: 375px) and (max-width: 425px) {
-    margin-top: 32px;
+    margin-top: 89px;
     margin-left: 10px;
     margin-bottom: 20px;
     width: 152px;
@@ -161,12 +169,12 @@ const TableContainer = styled.div`
   border-radius: 6px;
   opacity: 1;
   @media screen and (max-width: 1660px) and (min-width: 1440px) {
-    margin-left: 20px;
+    margin-left: 70px;
   }
   @media screen and (max-width: 1440px) and (min-width: 1280px) {
-    margin-left: 20px;
-    width: 1060px;
-    max-width: 1060px;
+    margin-left: 100px;
+    width: 1133px;
+    max-width: 1133px;
     overflow-x: scroll;
     ::-webkit-scrollbar {
       display: none;
@@ -177,11 +185,38 @@ const TableContainer = styled.div`
       opacity: 1; */
     }
   }
-
-  @media screen and (max-width: 768px) and (min-width: 425px) {
+  @media screen and (max-width: 1280px) and (min-width: 1024px) {
+    margin-left: 20px;
+    width: 1133px;
+    max-width: 1133px;
+    overflow-x: scroll;
+  }
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    margin-left: 20px;
+    width: 768px;
+    max-width: 768px;
+    overflow-x: scroll;
+  }
+  @media screen and (max-width: 768px) and (min-width: 556px) {
     margin-top: 0px;
     margin-left: 24px;
-    width: 720px;
+    width: 532px;
+    max-width: 532px;
+    height: auto;
+    overflow-x: scroll;
+    ::-webkit-scrollbar {
+      width: 55px;
+      height: 5px;
+      background: #c4c4c4 0% 0% no-repeat padding-box;
+      border-radius: 12px;
+      opacity: 1;
+    }
+  }
+  @media screen and (max-width: 556px) and (min-width: 425px) {
+    margin-top: 0px;
+    margin-left: 24px;
+    width: 400px;
+    max-width: 400px;
     height: auto;
     overflow-x: scroll;
     ::-webkit-scrollbar {
