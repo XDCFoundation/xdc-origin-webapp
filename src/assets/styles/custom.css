@@ -264,6 +264,9 @@ input:focus {
 .faq-margin {
   margin-top: 472px;
 }
+.faq-margin-create {
+  margin-top: 307px;
+}
 /* about css */
 .XRC20 {
   margin-left: 0.375rem;
@@ -285,6 +288,9 @@ input:focus {
   }
   .faq-margin {
     margin-top: 373px;
+  }
+  .faq-margin-create {
+    margin-top: 208px;
   }
 }
 
