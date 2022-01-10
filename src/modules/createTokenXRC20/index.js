@@ -19,6 +19,7 @@ class CreateTokenXRC20 extends BaseComponent {
       <>
         <HeaderComponent />
         <Row>
+          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
           <CommonTabs />
         </Row>
       </>
