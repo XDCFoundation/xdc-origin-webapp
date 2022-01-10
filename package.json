@@ -19,6 +19,7 @@
     "react-dom": "^16.9.0",
     "react-dropdown": "^1.9.2",
     "react-material-toast": "^16.1.7",
+    "react-player": "^2.9.0",
     "react-redux": "^7.0.3",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
