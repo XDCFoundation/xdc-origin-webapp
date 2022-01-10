@@ -12,6 +12,8 @@ import About from "./modules/aboutScreen/about";
 import ChangeNetwork from './modules/changeNetworkPopup/index'
 import DeployContract from "./modules/deployContract";
 import CreateTokenXRC20 from "../src/modules/createTokenXRC20";
+import UploadTokenImage from "./modules/uploadTokenImage";
+
 
 class Routes extends BaseComponent {
   componentDidMount() {}
@@ -29,6 +31,7 @@ class Routes extends BaseComponent {
             <Route exact path={"/deploy-contract"} component={DeployContract} />
             <Route exact path={"/token-XRC20"} component={CreateTokenXRC20} />
             <Route exact path={'/change-network'} component={ChangeNetwork}/>
+            <Route exact path={'/upload-token-image'} component={UploadTokenImage}/>
             <Redirect exact from="*" to="/" />
           </Switch>
         </Router>

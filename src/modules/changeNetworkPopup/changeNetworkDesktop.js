@@ -18,6 +18,7 @@ const Cross = styled.img`
   opacity: 1;
 `;
 
+
 const NetworkChangeContainer = styled.div`
   background: #f2f2f2 0% 0% no-repeat padding-box;
   width: 75%;
@@ -115,9 +116,7 @@ export default function FormDialog() {
   return (
     <div>
       <DesktopTab>
-        <Dialog className="display-pop-up" open={true}>
-          {" "}
-          {/* given value true is hardcoded. will update while integration */}
+        <Dialog className="display-pop-up" open={true}> {/* given value true is hardcoded. will update while integration */}
           <Header>
             <DialogTitle>Change Network</DialogTitle>
             <Cross onClick={handleClose} src="images/Cross.svg"></Cross>
