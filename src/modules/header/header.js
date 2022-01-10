@@ -1,18 +1,16 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
 import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 
 function Header(props) {
+  const history = useHistory()
   const [isOpen, setIsOpen] = useState(false);
-  const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
-  };
-  const connectWallet = () => {
-    setConnectWalletDialoag(!connectWalletDialoag);
   };
 
   return (
@@ -22,27 +20,22 @@ function Header(props) {
           <div className="Space-between">
             <GridLogo src="/images/ShowApps.svg" />
             <div>
-              <UserMenu1
+              {/* <UserMenu1
                 onClick={() => toggleSidebar()}
                 src="images/menu.svg"
-              />{" "}
+              />{" "} */}
             </div>
             <SmartMintLogo src="/images/About_Active.svg" />
-            <Span>SmartMint</Span>
+            <Span onClick={() => history.push('/')}>SmartMint</Span>
           </div>
           <div className="buttons">
             <UserLogo src="/images/profile.svg" />
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
-            <Button onClick={() => connectWallet()}>Connect Wallet</Button>
+            <Button >Connect Wallet</Button>
           </div>
         </SpaceBetween>
       </HeaderContainer>
       {isOpen ? <Sidebar /> : ""}
-      <ConnectWallet
-        open={connectWalletDialoag}
-        onClose={connectWallet}
-        handleClose={connectWallet}
-      />
     </>
   );
 }
@@ -108,7 +101,7 @@ const UserLogo = styled.img`
 `;
 const UserMenu = styled.img`
   display: none;
-  @media (min-width: 320px) and (max-width: 425px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     display: flex;
     margin-top: 6px;
     margin-right: 10px;
@@ -137,6 +130,7 @@ const Span = styled.span`
   width: 110px;
   margin-top: 7px;
   text-align: left;
+  cursor: pointer;
   font: normal normal medium 22px/26px Inter;
   letter-spacing: 0px;
   color: #ffffff;
