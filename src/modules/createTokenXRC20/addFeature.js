@@ -140,20 +140,6 @@ const ContentSpan = styled.div`
   opacity: 1;
 `;
 
-const Input = styled.div`
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 2px solid #ffffff;
-  margin-right: 12px;
-  opacity: 1;
-
-  @media (min-width: 0px) and (max-width: 767px) {
-    width: 90px;
-    height: 90px;
-  }
-`;
-
 const ButtonsRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -297,19 +283,46 @@ const Check = styled.img`
 `;
 
 export default function AddFeatures(props) {
-  const [open, setOpen] = useState(true);
+  const tab = [
+    {
+      id: 1,
+      name: "Pausable",
+      checkImage: "/images/Empty-Circle.svg",
+      activeCheckImage: "/images/Selected-Circle.svg",
+      image: "/images/Pausable.svg",
+      checked: false,
+      content:
+        "Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
+    },
+    {
+      id: 2,
+      name: "Burnable",
+      image: "/images/Burnable.svg",
+      checkImage: "/images/Empty-Circle.svg",
+      activeCheckImage: "/images/Selected-Circle.svg",
+      checked: true,
+      content:
+        "Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
+    },
+    {
+      id: 3,
+      name: "Mintable",
+      image: "/images/Mintable.svg",
+      activeCheckImage: "/images/Selected-Circle.svg",
+      checkImage: "/images/Empty-Circle.svg",
+      checked: true,
+      content:
+        "Building distribution / crowdsale logic directly into the token contract or by including a generic mint function that can be called by an external contract.",
+    },
+  ];
+  const [arr, setArr] = useState(tab);
 
-  const toggleImage = (e) => {
-    setOpen(!open);
+  const updateCheck = (id) => {
+    let newData = arr.map((item) =>
+      item.id !== id ? item : { ...item, checked: !item.checked }
+    );
+    setArr(newData);
   };
-
-  const imagesPath = {
-    checkImage: "/images/Empty-Circle.svg",
-    activeCheckImage: "/images/Selected-Circle.svg",
-  };
-
-  const getImageName = () => (open ? "checkImage" : "activeCheckImage");
-  const imageName = getImageName();
 
   return (
     <>
@@ -324,68 +337,31 @@ export default function AddFeatures(props) {
           </RowTwo>
 
           <CommonRow>
-            <RowDiv>
-              <ImageDiv>
-                <Img alt="" src={"/images/Pausable.svg"} />
-              </ImageDiv>
-              <DescriptionDiv>
-                <LabelDiv id="1">
-                  <HeadSpan>Pausable</HeadSpan>
-                  <ContentSpan>
-                    Keeps the token’s “totalSupply” value up to date, Useful in
-                    case someone wants to burn some tokens to reduce the supply
-                    for their project or burn unsold tokens.
-                  </ContentSpan>
-                </LabelDiv>
-                <Check
-                  id="1"
-                  src={imagesPath[imageName]}
-                  onClick={(e) => toggleImage(e.currentTarget.id)}
-                />
-              </DescriptionDiv>
-            </RowDiv>
-
-            <RowDiv>
-              <ImageDiv>
-                <Img alt="" src={"/images/Burnable.svg"} />
-              </ImageDiv>
-              <DescriptionDiv>
-                <LabelDiv id="2">
-                  <HeadSpan>Burnable</HeadSpan>
-                  <ContentSpan>
-                    Keeps the token’s “totalSupply” value up to date, Useful in
-                    case someone wants to burn some tokens to reduce the supply
-                    for their project or burn unsold tokens.
-                  </ContentSpan>
-                </LabelDiv>
-                <Check
-                  id="2"
-                  src={imagesPath[imageName]}
-                  onClick={(e) => toggleImage(e.currentTarget.id)}
-                />
-              </DescriptionDiv>
-            </RowDiv>
-
-            <RowDiv>
-              <ImageDiv>
-                <Img alt="" src={"/images/Mintable.svg"} />
-              </ImageDiv>
-              <DescriptionDiv>
-                <LabelDiv id="3">
-                  <HeadSpan>Mintable</HeadSpan>
-                  <ContentSpan>
-                    Building distribution / crowdsale logic directly into the
-                    token contract or by including a generic mint function that
-                    can be called by an external contract.
-                  </ContentSpan>
-                </LabelDiv>
-                <Check
-                  id="3"
-                  src={imagesPath[imageName]}
-                  onClick={(e) => toggleImage(e.currentTarget.id)}
-                />
-              </DescriptionDiv>
-            </RowDiv>
+            {arr.map((item) => {
+              return (
+                <>
+                  <RowDiv>
+                    <ImageDiv>
+                      <Img alt="" src={item.image} />
+                    </ImageDiv>
+                    <DescriptionDiv>
+                      <LabelDiv id={item.id}>
+                        <HeadSpan>{item.name}</HeadSpan>
+                        <ContentSpan>{item.content}</ContentSpan>
+                      </LabelDiv>
+                      <Check
+                        src={
+                          item.checked == true
+                            ? item.activeCheckImage
+                            : item.checkImage
+                        }
+                        onClick={() => updateCheck(item.id)}
+                      />
+                    </DescriptionDiv>
+                  </RowDiv>
+                </>
+              );
+            })}
 
             <ButtonsRow>
               <BackButton>
