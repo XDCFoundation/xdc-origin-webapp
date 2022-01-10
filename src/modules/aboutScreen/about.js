@@ -1,9 +1,11 @@
 import React from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { Row } from "simple-flexbox";
 import ReactPlayer from "react-player";
 
 export default function About(props) {
+  const history = useHistory()
   return (
     <MainContainer>
       <MainBoxContainer>
@@ -21,7 +23,7 @@ export default function About(props) {
               StableCoins and fixed income instruments with the need for code.
             </DataBox>
             <Row>
-              <Button>
+              <Button onClick={() =>history.push('/token-XRC20')}>
                 Create XRC20
                 <img className="XRC20" alt="" src="/images/Help.svg" />
               </Button>
@@ -200,6 +202,7 @@ const Button = styled.div`
   background-repeat: no-repeat;
   background-position: 0.5rem;
   margin-right: 10px;
+  cursor: pointer;
   padding: 0.875rem;
   item-align: center;
   background-size: 0.875rem;

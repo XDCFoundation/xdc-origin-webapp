@@ -102,7 +102,7 @@ const DesktopTab = styled.div`
   }
 `;
 
-export default function FormDialog() {
+export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -119,7 +119,7 @@ export default function FormDialog() {
         <Dialog className="display-pop-up" open={true}> {/* given value true is hardcoded. will update while integration */}
           <Header>
             <DialogTitle>Change Network</DialogTitle>
-            <Cross onClick={handleClose} src="images/Cross.svg"></Cross>
+            <Cross onClick={() => props.handleClose()} src="images/Cross.svg"></Cross>
           </Header>
           <Content>
             <NetworkChangeContainer>
@@ -140,7 +140,7 @@ export default function FormDialog() {
               <ContentTextNames>XDC Apothem Testnet</ContentTextNames>.
             </ContentText>
             <Buttons>
-              <Ok onClick={handleClose}>OK</Ok>
+              <Ok onClick={() => props.handleClose()}>OK</Ok>
             </Buttons>
           </Content>
         </Dialog>

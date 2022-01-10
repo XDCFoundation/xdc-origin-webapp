@@ -5,12 +5,14 @@ import BasicInfoPage from "./basicInformation";
 const Parent = styled.div`
   display: flex;
   flex-direction: column;
-  width: 56.125rem;
+  width: 898px;
+
   @media (min-width: 768px) and (max-width: 1024px) {
-    width: 45rem;
+    width: 720px;
   }
+
   @media (min-width: 0px) and (max-width: 767px) {
-    width: 22.1875rem;
+    width: 355px;
   }
 `;
 const Column = styled.div`
@@ -115,6 +117,7 @@ const BackButton = styled.div`
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
   width: 141px;
   height: 50px;
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -133,6 +136,7 @@ const ContinueButton = styled.div`
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
   width: 150px;
   height: 50px;
   background: #3163f0 0% 0% no-repeat padding-box;
@@ -193,11 +197,11 @@ export default function Tokenomics(props) {
             </BlurTextDiv>
           </CommonRow>
           <ButtonsRow>
-            <BackButton>
+            <BackButton onClick={() => props.prevStep()}>
               <ImgDiv src="/images/Button-Back-Arrow.svg" />
               <BackText>Back</BackText>
             </BackButton>
-            <ContinueButton>
+            <ContinueButton onClick={() => props.nextStep()}>
               <ContinueText>Continue</ContinueText>
               <ImgDiv src="/images/Button_Next_Arrow.svg" />
             </ContinueButton>
