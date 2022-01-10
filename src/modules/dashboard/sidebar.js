@@ -4,13 +4,19 @@ import "../../assets/styles/custom.css";
 
 export default function Sidebar(props) {
   const [isActive, setIsActive] = useState("");
+  const [createContract, setCreateContract] = useState(false);
   const [isSubNavActive, setIsSubNavActive] = useState("XRC20");
   const [subNavItems, setSubNavItems] = useState(false);
 
   const changeBackgound = (navItem) => {
-    setIsActive(navItem);
     if (navItem === "create") {
       setSubNavItems(!subNavItems);
+      setCreateContract(!createContract);
+      setIsActive("");
+    } else {
+      setIsActive(navItem);
+      setCreateContract(false);
+      setSubNavItems(false);
     }
   };
 
@@ -34,15 +40,15 @@ export default function Sidebar(props) {
         </Heading>
       </Wrapper>
       <Wrapper
-        className={isActive === "create" ? "activeNavItem" : ""}
+        className={createContract ? "activeNavItem" : ""}
         onClick={() => changeBackgound("create")}
       >
-        {isActive === "create" ? (
+        {createContract ? (
           <Icon src="/images/CreateContract_Active.svg" />
         ) : (
           <Icon src="/images/CreateContract_Inactive.svg" />
         )}
-        <Heading className={isActive === "create" ? "activeText" : ""}>
+        <Heading className={createContract ? "activeText" : ""}>
           Create Contract
         </Heading>
       </Wrapper>
@@ -120,7 +126,7 @@ export default function Sidebar(props) {
           Manage Contracts
         </Heading>
       </Wrapper>
-      <Wrapper className="faq-margin">
+      <Wrapper className={createContract ? "faq-margin-create" : "faq-margin"}>
         <FAQIcon src="/images/FAQ_InActive.svg" />
         <Heading>FAQs</Heading>
       </Wrapper>
@@ -150,7 +156,7 @@ const SidebarContainer = styled.div`
   }
   @media (min-width: 320px) and (max-width: 425px) {
     width: 100%;
-    height: 638px;
+    height: 967px;
     margin-top: 55px;
     padding-top: 20px;
     position: fixed;
