@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import SeekBar from "react-seekbar-component";
 import "react-seekbar-component/dist/index.css";
+import { useDropzone } from "react-dropzone";
+import ReactImageZoom from 'react-image-zoom';
 
 const Header = styled.div`
   display: flex;
@@ -145,7 +147,7 @@ const CropImage = styled.div`
   align-items: center;
 `;
 
-const Plus = styled.img`
+const Plus = styled.button`
   height: 10px;
   width: 10px;
 `;
@@ -154,7 +156,15 @@ export default function UploadTokenImage(props) {
   const [open, setOpen] = React.useState(false);
   const [upload, setUpload] = React.useState(false);
   const [value, setValue] = React.useState(0);
+  const [zoomIn, setZoomIn] = React.useState(20);
+  const [zoomOut, setZoomOut] = React.useState(0);
 
+  const handleClickZoomIn = () => {
+    setZoomIn(zoomIn + 20);
+  };
+  const handleClickZoomOut = () => {
+    setZoomOut(zoomOut - 20);
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -169,26 +179,42 @@ export default function UploadTokenImage(props) {
   const handleCloseUpload = () => {
     setUpload(true);
   };
+
+
   const RenderUi = () => {
+    const props = {zoomIn, zoomOut, zoomWidth: 500, img: "images/XDC_Blue_Logo.svg"};
+    const onDrop = useCallback((acceptedFiles) => {
+      handleCloseUpload()
+      // alert(acceptedFiles[0].name);
+      console.log(
+        "Now you can do anything with this file as per your requirement",acceptedFiles[0]
+      );
+    },[])
+
+    const { getInputProps, getRootProps } = useDropzone({ onDrop });
+
     if (!upload) {
       return (
         <Content>
-          <UploadCircle  onClick={handleCloseUpload}>
+          <UploadCircle {...getRootProps()}>
+            <input {...getInputProps()}/>
             <UploadIcon src="images/Upload.svg"></UploadIcon>
             <UploadText>Drag and drop your token icon here</UploadText>
           </UploadCircle>
           <ContentText>or</ContentText>
-          <UploadPhoto>
-            <ButtonName onClick={handleCloseUpload}>Upload a photo</ButtonName>
+          <UploadPhoto {...getRootProps()}>
+            <input {...getInputProps()}/>
+            <ButtonName>Upload a photo</ButtonName>
           </UploadPhoto>
         </Content>
       );
-    } else {
+    }else{
       return (
         <Content>
-          <TokenImage></TokenImage>
+          <ReactImageZoom {...props} />
+          
           <CropImage>
-            <img src="images/Minus.svg"></img>
+            <button onClick= {handleClickZoomOut} ><img src="images/Minus.svg"></img></button>
             <div>
               <SeekBar
                 getNumber={setValue}
@@ -202,7 +228,7 @@ export default function UploadTokenImage(props) {
                 borderColor="#4B4B4B"
               />
             </div>
-            <Plus src="images/Token_Image.svg"></Plus>
+            <Plus onClick={handleClickZoomIn} > <img src="images/Token_Image.svg"></img></Plus>
           </CropImage>
         </Content>
       );
@@ -211,7 +237,9 @@ export default function UploadTokenImage(props) {
 
   return (
     <div>
-      <Dialog className="display-pop-up" open={true}> {/** given value true is hardcoded.. will update while integrating */}
+      <Dialog className="display-pop-up" open={true}>
+        {" "}
+        {/** given value true is hardcoded.. will update while integrating */}
         <Header>
           <DialogTitle>Upload Token Image</DialogTitle>
           <Cross src="images/Cross.svg"></Cross>
