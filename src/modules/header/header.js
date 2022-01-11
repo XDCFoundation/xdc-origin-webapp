@@ -43,7 +43,7 @@ export default Header;
 const HeaderContainer = styled.div`
   background: #091f5c 0% 0% no-repeat padding-box;
   opacity: 1;
-  padding: 5px;
+  padding: 11px;
   height: 57px;
   position: sticky;
   top: 0;

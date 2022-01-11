@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import ReactPlayer from "react-player";
 export default function About(props) {
   return (
     <MainContainer>
@@ -20,11 +21,12 @@ export default function About(props) {
             </Para>
             <RightContainer>
               <VideoBox>
-                {/* <img
-                  style={{ width: "3.75rem", height: "3.75rem" }}
-                  alt=""
-                  src="/images/.svg"
-                /> */}
+                <ReactPlayer
+                  url="https://www.youtube.com/watch?v=K-tHZkV6zAs"
+                  controls
+                  width="100%"
+                  height="100%"
+                />
               </VideoBox>
             </RightContainer>
           </LeftContainer>
@@ -38,7 +40,7 @@ export default function About(props) {
             </ButtonDiv>
             <ButtonDiv>
               <Button className="create-btn">
-                Create XRC220
+                Create XRC223
                 <img className="XRC220" alt="" src="/images/Help.svg" />
               </Button>
               <Img className="" alt="" src="/images/Info.svg" />
