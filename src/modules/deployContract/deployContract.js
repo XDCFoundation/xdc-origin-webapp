@@ -117,7 +117,8 @@ const Container = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
-  height: 1080px;
+  height: auto;
+  min-height: 455px;
   background: #ecf0f7 0% 0% no-repeat padding-box;
   opacity: 1;
 `;
@@ -150,7 +151,7 @@ const Heading = styled.span`
     margin-left: 24px;
     margin-bottom: 32px;
   }
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 320px) and (max-width: 425px) {
     margin-top: 89px;
     margin-left: 10px;
     margin-bottom: 20px;
@@ -162,6 +163,7 @@ const Heading = styled.span`
 const TableContainer = styled.div`
   margin-top: 34px;
   margin-left: 185px;
+  margin-bottom: 46px;
   width: 1300px;
   max-width: 1300px;
   height: auto;
@@ -200,8 +202,8 @@ const TableContainer = styled.div`
   @media screen and (max-width: 768px) and (min-width: 556px) {
     margin-top: 0px;
     margin-left: 24px;
-    width: 532px;
-    max-width: 532px;
+    width: 720px;
+    max-width: 720px;
     height: auto;
     overflow-x: scroll;
     ::-webkit-scrollbar {
@@ -227,7 +229,7 @@ const TableContainer = styled.div`
       opacity: 1;
     }
   }
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 320px) and (max-width: 425px) {
     margin-top: 0px;
     margin-left: 10px;
     width: 355px;
