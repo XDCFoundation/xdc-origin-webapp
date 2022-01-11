@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import ChangeNetworkPopup from '../changeNetworkPopup/changeNetworkDesktop';
+import ChangeNetworkPopup from "../changeNetworkPopup/changeNetworkDesktop";
 import UploadFile from "../uploadTokenImage/uploadImage";
-
+import { useHistory } from "react-router";
 
 const Parent = styled.div`
   display: flex;
@@ -150,11 +150,30 @@ const PopButton = styled.button`
   letter-spacing: 0px;
   color: #3163f0;
   opacity: 1;
+  
   @media (min-width: 0px) and (max-width: 767px) {
-    right: 16px;
+    /* right: 16px; */
+    display: none;
   }
   @media (min-width: 768px) and (max-width: 1024px) {
     right: 27px;
+  }
+ 
+`;
+
+const MobPopupBtn = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font: normal normal medium 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #3163f0;
+  opacity: 1;
+  @media (min-width: 768px) {
+    display: none;
   }
 `;
 
@@ -211,6 +230,7 @@ const ContinueText = styled.div`
 `;
 
 export default function Token(props) {
+  const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
 
@@ -237,6 +257,9 @@ export default function Token(props) {
               <InputDiv placeholder="XDC Mainnet" />
               <PopButton onClick={togglePopup}>Change Network</PopButton>
               {isOpen && <ChangeNetworkPopup handleClose={togglePopup} />}
+              <MobPopupBtn onClick={() => history.push("/change-network")}>
+                Change Network
+              </MobPopupBtn>
             </InsideDiv>
 
             <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
@@ -258,8 +281,13 @@ export default function Token(props) {
             <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
             <CircleRow>
               <CircleDiv />
-              <PlusImage onClick={toggleUploadPopup} src="/images/PlusIcon.svg" />
-              {isUploadOpen && <UploadFile handleUploadClose={toggleUploadPopup} />}
+              <PlusImage
+                onClick={toggleUploadPopup}
+                src="/images/PlusIcon.svg"
+              />
+              {isUploadOpen && (
+                <UploadFile handleUploadClose={toggleUploadPopup} />
+              )}
             </CircleRow>
           </CommonRow>
 

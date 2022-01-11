@@ -60,7 +60,7 @@ export default function Sidebar(props) {
       {subNavItems ? (
         <SubHeadingContainer>
           <SubWrapper onClick={() => changeSubNavItemStyle("XRC20")}>
-            <SubIcon src="" />
+            <SubIcon src="/images/Token-Active.svg" />
             <SubText
               onClick={() => history.push("/token-XRC20")}
               className={isSubNavActive === "XRC20" ? "xrc_active" : ""}
@@ -74,7 +74,7 @@ export default function Sidebar(props) {
             )}
           </SubWrapper>
           <SubWrapper onClick={() => changeSubNavItemStyle("XRC223")}>
-            <SubIcon src="" />
+            <SubIcon src="/images/Token-Active.svg" />
             <SubText
               className={isSubNavActive === "XRC223" ? "xrc_active" : ""}
             >
@@ -87,7 +87,7 @@ export default function Sidebar(props) {
             )}
           </SubWrapper>
           <SubWrapper onClick={() => changeSubNavItemStyle("Stablecoin")}>
-            <SubIcon src="" />
+            <SubIcon src="/images/Token-Active.svg" />
             <SubText
               className={isSubNavActive === "Stablecoin" ? "xrc_active" : ""}
             >
@@ -246,7 +246,7 @@ const SubWrapper = styled.div`
 const SubIcon = styled.img`
   width: 20px;
   height: 20px;
-  background: #ffffff 0% 0% no-repeat padding-box;
+  /* background: #ffffff 0% 0% no-repeat padding-box; */
   opacity: 1;
   margin-right: 20px;
 `;
