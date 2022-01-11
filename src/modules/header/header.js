@@ -7,12 +7,16 @@ import Sidebar from "../dashboard/sidebar";
 
 function Header(props) {
   const history = useHistory()
+  const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
+  const connectWallet = () => {
+    setConnectWalletDialoag(!connectWalletDialoag);
+  };
   return (
     <>
       <HeaderContainer>
@@ -31,11 +35,16 @@ function Header(props) {
           <div className="buttons">
             <UserLogo src="/images/profile.svg" />
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
-            <Button >Connect Wallet</Button>
+            <Button onClick={() => connectWallet()}>Connect Wallet</Button>
           </div>
         </SpaceBetween>
       </HeaderContainer>
       {isOpen ? <Sidebar /> : ""}
+      <ConnectWallet
+        open={connectWalletDialoag}
+        onClose={connectWallet}
+        handleClose={connectWallet}
+      />
     </>
   );
 }

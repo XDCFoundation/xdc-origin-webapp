@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import "../../assets/styles/deployContract.css";
 import styled from "styled-components";
 import { Delete, Edit } from "@material-ui/icons";
@@ -6,6 +7,7 @@ import DeleteContract from "../deleteContract/deleteContract";
 import DeployPopup from "./deployPopup";
 
 function DeployContract() {
+  const history = useHistory()
   const [open, setOpen] = useState(false);
   const [openDeployPopup, setOpenDeployPopup] = useState(false);
 
@@ -26,7 +28,7 @@ function DeployContract() {
 
   const tableData = [
     {
-      tokenIcon: "",
+      tokenIcon: "/images/XDC_Blue_Logo.svg",
       tokenName: "MetaVerse",
       tokenSymbol: "META",
       network: "XDC Apothem Testnet",
@@ -34,7 +36,7 @@ function DeployContract() {
       status: "Draft",
     },
     {
-      tokenIcon: "",
+      tokenIcon: "/images/XDC_Blue_Logo.svg",
       tokenName: "Alex Coin",
       tokenSymbol: "ALEX",
       network: "XDC Mainnet",
@@ -86,7 +88,7 @@ function DeployContract() {
                   <div className="deleteIcon" onClick={handleClickOpen}>
                     <Delete />
                   </div>
-                  <div className="editIcon">
+                  <div onClick={() =>history.push('/token-XRC20')} className="editIcon">
                     <Edit />
                   </div>
                 </div>
