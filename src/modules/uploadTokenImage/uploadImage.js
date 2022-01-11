@@ -6,8 +6,8 @@ import SeekBar from "react-seekbar-component";
 import "react-seekbar-component/dist/index.css";
 import { useDropzone } from "react-dropzone";
 import Draggable from "react-draggable";
-import fs from 'fs';
-
+import AWSServices from "../../services/aws-service";
+const fs = require("fs");
 
 const Header = styled.div`
   display: flex;
@@ -157,8 +157,13 @@ const Plus = styled.img`
 const ControlButtons = styled.button`
   background-color: #ffffff;
   border-width: 0px;
-  `
-
+`;
+const DisplayImage = styled.img`
+  width: 100%;
+  height: 100%;
+  image-resolution: 32px;
+  align-items: center;
+`;
 
 const zoomStep = 0.1;
 const maxScale = 5;
@@ -171,6 +176,8 @@ export default function UploadTokenImage(props) {
   const [value, setValue] = React.useState(0);
 
   const [scale, setScale] = React.useState(defaultScale);
+  const [file, setFile] = React.useState({});
+  const [filePreview, setFilePreview] = React.useState({});
 
   const zoomIn = () => {
     setScale(scale + zoomStep);
@@ -184,7 +191,6 @@ export default function UploadTokenImage(props) {
       setScale(minScale);
     }
   };
-  const isDraggable = scale > 1;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -201,26 +207,27 @@ export default function UploadTokenImage(props) {
     setUpload(true);
   };
 
+  const uploadFileToAWS = async () => {
+    handleClose();
+    handleClickUpload();
+    await new AWSServices().uploadFileToS3(file.key, file.content);
+    console.log(
+      "Image uploaded. URL:",
+      `https://xdc-mycontract-s3-dev.s3.amazonaws.com/${file.key}`
+    );
+  };
 
+  const isDraggable = scale > 1;
   const RenderUi = () => {
-
-    var arr = []
-    const onDrop = useCallback((acceptedFiles) => {
-      handleCloseUpload()
-      // let content = fs.readFileSync(basedir + `/uploads/${fileName}`)
-      arr.push(acceptedFiles[0])
-      console.log("ddddd",arr[0])
-      // alert(acceptedFiles[0].name);
-      console.log(
-        "Now you can do anything with this file as per your requirement", acceptedFiles[0]
-      );
-    }, [])
-
-    
-
+    const onDrop = useCallback(async (acceptedFiles) => {
+      handleCloseUpload();
+      let content = acceptedFiles[0].path;
+      let key = `${"userId"}/${"token-image"}/${acceptedFiles[0].name}`;
+      setFilePreview(URL.createObjectURL(acceptedFiles[0]));
+      setFile({ key: key, content: content });
+    });
 
     const { getInputProps, getRootProps } = useDropzone({ onDrop });
-    console.log("is image accessible ???", arr[0])
 
     if (!upload) {
       return (
@@ -243,18 +250,20 @@ export default function UploadTokenImage(props) {
           <TokenImage>
             <Draggable disabled={!isDraggable} key={0}>
               <div style={isDraggable ? { cursor: "move" } : null}>
-                <img
+                <DisplayImage
                   style={{
                     transform: `scale(${scale})`,
                   }}
                   draggable="false"
-                  src={arr[0]}
-                />
+                  src={filePreview}
+                ></DisplayImage>
               </div>
             </Draggable>
           </TokenImage>
           <CropImage>
-            <ControlButtons onClick={zoomOut} ><img src="images/Minus.svg"></img></ControlButtons>
+            <ControlButtons onClick={zoomOut}>
+              <img src="images/Minus.svg"></img>
+            </ControlButtons>
             <div>
               <SeekBar
                 getNumber={setScale}
@@ -268,7 +277,10 @@ export default function UploadTokenImage(props) {
                 borderColor="#4B4B4B"
               />
             </div>
-            <ControlButtons onClick={zoomIn} > <Plus src="images/Token_Image.svg"></Plus></ControlButtons>
+            <ControlButtons onClick={zoomIn}>
+              {" "}
+              <Plus src="images/Token_Image.svg"></Plus>
+            </ControlButtons>
           </CropImage>
         </Content>
       );
@@ -277,7 +289,8 @@ export default function UploadTokenImage(props) {
 
   return (
     <div>
-      <Dialog className="display-pop-up" open={true}>
+      <button onClick={handleClickOpen}>Upload a image</button>
+      <Dialog className="display-pop-up" open={open}>
         {" "}
         {/** given value true is hardcoded.. will update while integrating */}
         <Header>
@@ -291,7 +304,7 @@ export default function UploadTokenImage(props) {
             <Cancel>
               <CancelName onClick={handleClose}>Cancel</CancelName>
             </Cancel>
-            <UploadButton>
+            <UploadButton onClick={uploadFileToAWS}>
               <UploadName>Upload</UploadName>
             </UploadButton>
           </Buttons>
