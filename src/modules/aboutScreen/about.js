@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import ReactPlayer from "react-player";
+import { useHistory } from "react-router";
 export default function About(props) {
+  const history = useHistory()
   return (
     <MainContainer>
       <MainBoxContainer>
@@ -32,7 +34,7 @@ export default function About(props) {
           </LeftContainer>
           <ButtonContainer>
             <ButtonDiv>
-              <Button>
+              <Button onClick={() => history.push('/token-XRC20')}>
                 Create XRC20
                 <img className="XRC20" alt="" src="/images/Help.svg" />
               </Button>

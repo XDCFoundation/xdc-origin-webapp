@@ -6,7 +6,7 @@ import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 
 function Header(props) {
-  const history = useHistory()
+  const history = useHistory();
   const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,7 +33,10 @@ function Header(props) {
             <Span onClick={() => history.push("/")}>SmartMint</Span>
           </div>
           <div className="buttons">
-            <UserLogo src="/images/profile.svg" />
+            {/* <UserLogo  src="/images/profile.svg" /> */}
+            <MobBtn onClick={() => history.push("/wallet-popup")}>
+              Connect Wallet
+            </MobBtn>
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
             <Button onClick={() => connectWallet()}>Connect Wallet</Button>
           </div>
@@ -93,6 +96,25 @@ const Button = styled.button`
   width: 142px;
   height: 36px;
   @media (max-width: 425px) {
+    display: none;
+  }
+`;
+const MobBtn = styled.button`
+background: transparent;
+    border: 1px solid #ffffff;
+    margin-left: 5%;
+    margin-top: 2px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #ffffff;
+    font: normal normal medium 15px/19px Inter;
+    top: 10px;
+    left: 1764px;
+    white-space: nowrap;
+    width: 130px;
+    height: 30px;
+  }
+  @media (min-width: 768px) {
     display: none;
   }
 `;

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "react-dropdown/style.css";
-
 const Header = styled.div`
   display: flex;
   flex-direction: row;
@@ -12,13 +11,10 @@ const Header = styled.div`
   border-style: solid;
   border-bottom-color: #f2f2f2;
 `;
-
 const Cross = styled.img`
   margin-right: 3%;
   opacity: 1;
 `;
-
-
 const NetworkChangeContainer = styled.div`
   background: #f2f2f2 0% 0% no-repeat padding-box;
   width: 75%;
@@ -26,7 +22,6 @@ const NetworkChangeContainer = styled.div`
   margin: 0 auto;
   margin-bottom: 8%;
 `;
-
 const NetworksDrop = styled.select`
   text-align: left;
   font: normal normal normal 9px/11px Inter;
@@ -37,7 +32,6 @@ const NetworksDrop = styled.select`
   white-space: pre-wrap;
   opacity: 1;
 `;
-
 const DropdownContainer = styled.div`
   background-color: #ffffff;
   border-radius: 15px;
@@ -46,25 +40,22 @@ const DropdownContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 70%;
   }
 `;
-
 const Content = styled.div`
   text-align: center;
   padding: 10%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
   }
 `;
-
 const Buttons = styled.div`
   margin: 0 auto;
 `;
-
 const Ok = styled.button`
   background: #3163f0 0% 0% no-repeat padding-box;
   border-radius: 4px;
@@ -74,7 +65,6 @@ const Ok = styled.button`
   min-width: 100px;
   min-height: 40px;
 `;
-
 const ContentText = styled.div`
   text-align: center;
   font: normal normal normal 16px/24px Inter;
@@ -85,7 +75,6 @@ const ContentText = styled.div`
     font: normal normal normal 14px/24px Inter;
   }
 `;
-
 const ContentTextNames = styled.span`
   text-align: center;
   font: normal normal 600 16px/24px Inter;
@@ -95,24 +84,19 @@ const ContentTextNames = styled.span`
     font: normal normal 600 14px/24px Inter;
   }
 `;
-
 const DesktopTab = styled.div`
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     display: none;
   }
 `;
-
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
   return (
     <div>
       <DesktopTab>
