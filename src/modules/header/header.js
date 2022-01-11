@@ -20,10 +20,10 @@ function Header(props) {
           <div className="Space-between">
             <GridLogo src="/images/ShowApps.svg" />
             <div>
-              {/* <UserMenu1
+              <UserMenu1
                 onClick={() => toggleSidebar()}
                 src="images/menu.svg"
-              />{" "} */}
+              />{" "}
             </div>
             <SmartMintLogo src="/images/About_Active.svg" />
             <Span onClick={() => history.push("/")}>SmartMint</Span>
@@ -101,7 +101,7 @@ const UserLogo = styled.img`
 `;
 const UserMenu = styled.img`
   display: none;
-  @media (min-width: 320px) and (max-width: 1024px) {
+  @media (min-width: 320px) and (max-width: 425px) {
     display: flex;
     margin-top: 6px;
     margin-right: 10px;
@@ -114,7 +114,7 @@ const UserMenu = styled.img`
 `;
 const UserMenu1 = styled.img`
   display: none;
-  @media (min-width: 425px) and (max-width: 768px) {
+  @media (min-width: 425px) and (max-width: 1024px) {
     display: flex;
     margin-top: 7px;
     margin-right: 10px;
