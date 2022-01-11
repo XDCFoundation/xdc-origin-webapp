@@ -1996,10 +1996,10 @@
     "postcss" "^7.0.17"
     "postcss-value-parser" "^4.0.0"
 
-"aws-sdk@^2.481.0":
-  "integrity" "sha512-mVwWo+Udiuc/yEZ/DgJQGqOEtfiQjgUdtshx/t6ISe3+jW3TF9hUACwADwx2Sr/fuJyyJ3QD5JYLt5Cw35wQpA=="
-  "resolved" "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1048.0.tgz"
-  "version" "2.1048.0"
+"aws-sdk@^2.1054.0":
+  "integrity" "sha512-y8OAffen0uoKSnCZp4Nb1dDsUqOOfr+m68cL1lRW8c7g1FjugH3u7CZmAnlA7PxenZUpnSeN3yBtHqIZhkMT4w=="
+  "resolved" "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1054.0.tgz"
+  "version" "2.1054.0"
   dependencies:
     "buffer" "4.9.2"
     "events" "1.1.1"
