@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
 
 export default function Sidebar(props) {
+  const history = useHistory();
   const [isActive, setIsActive] = useState("");
   const [createContract, setCreateContract] = useState(false);
   const [isSubNavActive, setIsSubNavActive] = useState("XRC20");
@@ -35,7 +37,10 @@ export default function Sidebar(props) {
         ) : (
           <Icon src="/images/About_Inactive.svg" />
         )}
-        <Heading className={isActive === "about" ? "activeText" : ""}>
+        <Heading
+          onClick={() => history.push("/")}
+          className={isActive === "about" ? "activeText" : ""}
+        >
           About SmartMint
         </Heading>
       </Wrapper>
@@ -55,8 +60,11 @@ export default function Sidebar(props) {
       {subNavItems ? (
         <SubHeadingContainer>
           <SubWrapper onClick={() => changeSubNavItemStyle("XRC20")}>
-            <SubIcon src="" />
-            <SubText className={isSubNavActive === "XRC20" ? "xrc_active" : ""}>
+            <SubIcon src="/images/Token-Active.svg" />
+            <SubText
+              onClick={() => history.push("/token-XRC20")}
+              className={isSubNavActive === "XRC20" ? "xrc_active" : ""}
+            >
               XRC20 Token
             </SubText>
             {isSubNavActive === "XRC20" ? (
@@ -66,7 +74,7 @@ export default function Sidebar(props) {
             )}
           </SubWrapper>
           <SubWrapper onClick={() => changeSubNavItemStyle("XRC223")}>
-            <SubIcon src="" />
+            <SubIcon src="/images/Token-Active.svg" />
             <SubText
               className={isSubNavActive === "XRC223" ? "xrc_active" : ""}
             >
@@ -79,7 +87,7 @@ export default function Sidebar(props) {
             )}
           </SubWrapper>
           <SubWrapper onClick={() => changeSubNavItemStyle("Stablecoin")}>
-            <SubIcon src="" />
+            <SubIcon src="/images/Token-Active.svg" />
             <SubText
               className={isSubNavActive === "Stablecoin" ? "xrc_active" : ""}
             >
@@ -105,6 +113,7 @@ export default function Sidebar(props) {
           <Icon src="/images/DeployContract_InActive.svg" />
         )}
         <Heading
+          onClick={() => history.push("/deploy-contract")}
           className={
             isActive === "deploy" ? "activeDeployText" : "deploy-margin"
           }
@@ -149,15 +158,17 @@ const SidebarContainer = styled.div`
   width: 250px;
   height: 1023px;
   padding-top: 40px;
+  position: sticky;
+  top: 57px;
   @media (min-width: 425px) and (max-width: 768px) {
     height: 967px;
-    margin-top: 56px;
+    /* margin-top: 56px; */
     position: fixed;
   }
   @media (min-width: 320px) and (max-width: 425px) {
     width: 100%;
     height: 967px;
-    margin-top: 55px;
+    /* margin-top: 55px; */
     padding-top: 20px;
     position: fixed;
   }
@@ -235,7 +246,7 @@ const SubWrapper = styled.div`
 const SubIcon = styled.img`
   width: 20px;
   height: 20px;
-  background: #ffffff 0% 0% no-repeat padding-box;
+  /* background: #ffffff 0% 0% no-repeat padding-box; */
   opacity: 1;
   margin-right: 20px;
 `;

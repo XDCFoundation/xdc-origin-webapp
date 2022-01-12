@@ -1,20 +1,22 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
 import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 
 function Header(props) {
-  const [isOpen, setIsOpen] = useState(false);
+  const history = useHistory();
   const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
   const connectWallet = () => {
     setConnectWalletDialoag(!connectWalletDialoag);
   };
-
   return (
     <>
       <HeaderContainer>
@@ -28,10 +30,13 @@ function Header(props) {
               />{" "}
             </div>
             <SmartMintLogo src="/images/About_Active.svg" />
-            <Span>SmartMint</Span>
+            <Span onClick={() => history.push("/")}>SmartMint</Span>
           </div>
           <div className="buttons">
-            <UserLogo src="/images/profile.svg" />
+            {/* <UserLogo  src="/images/profile.svg" /> */}
+            <MobBtn onClick={() => history.push("/wallet-popup")}>
+              Connect Wallet
+            </MobBtn>
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
             <Button onClick={() => connectWallet()}>Connect Wallet</Button>
           </div>
@@ -50,7 +55,7 @@ export default Header;
 const HeaderContainer = styled.div`
   background: #091f5c 0% 0% no-repeat padding-box;
   opacity: 1;
-  padding: 5px;
+  padding: 11px;
   height: 57px;
   position: sticky;
   top: 0;
@@ -94,6 +99,25 @@ const Button = styled.button`
     display: none;
   }
 `;
+const MobBtn = styled.button`
+background: transparent;
+    border: 1px solid #ffffff;
+    margin-left: 5%;
+    margin-top: 2px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #ffffff;
+    font: normal normal medium 15px/19px Inter;
+    top: 10px;
+    left: 1764px;
+    white-space: nowrap;
+    width: 130px;
+    height: 30px;
+  }
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
 const UserLogo = styled.img`
   display: none;
   @media (max-width: 767px) {
@@ -121,7 +145,7 @@ const UserMenu = styled.img`
 `;
 const UserMenu1 = styled.img`
   display: none;
-  @media (min-width: 425px) and (max-width: 768px) {
+  @media (min-width: 425px) and (max-width: 1024px) {
     display: flex;
     margin-top: 7px;
     margin-right: 10px;
@@ -137,6 +161,7 @@ const Span = styled.span`
   width: 110px;
   margin-top: 7px;
   text-align: left;
+  cursor: pointer;
   font: normal normal medium 22px/26px Inter;
   letter-spacing: 0px;
   color: #ffffff;

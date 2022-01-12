@@ -329,14 +329,14 @@ export default function UploadTokenImage(props) {
         {/** given value true is hardcoded.. will update while integrating */}
         <Header>
           <DialogTitle>Upload Token Image</DialogTitle>
-          <Cross src="images/Cross.svg"></Cross>
+          <Cross onClick={() => props.handleUploadClose()} src="images/Cross.svg"></Cross>
         </Header>
         <ContentContainer>
           {RenderUi()}
 
           <Buttons>
             <Cancel>
-              <CancelName onClick={handleClose}>Cancel</CancelName>
+              <CancelName onClick={() => props.handleUploadClose()}>Cancel</CancelName>
             </Cancel>
             <UploadButton onClick={showCroppedImage}>
               <UploadName>Upload</UploadName>
