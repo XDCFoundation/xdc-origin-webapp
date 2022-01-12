@@ -332,3 +332,8 @@ input:focus {
 .xrc_active {
   color: #ffffff !important;
 }
+
+.shown-error{
+  padding-top: 4px;
+  color: red
+}

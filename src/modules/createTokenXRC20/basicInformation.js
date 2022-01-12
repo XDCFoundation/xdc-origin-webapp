@@ -150,7 +150,7 @@ const PopButton = styled.button`
   letter-spacing: 0px;
   color: #3163f0;
   opacity: 1;
-  
+
   @media (min-width: 0px) and (max-width: 767px) {
     /* right: 16px; */
     display: none;
@@ -158,7 +158,6 @@ const PopButton = styled.button`
   @media (min-width: 768px) and (max-width: 1024px) {
     right: 27px;
   }
- 
 `;
 
 const MobPopupBtn = styled.button`
@@ -190,7 +189,7 @@ const PlusImage = styled.img`
   opacity: 1;
 `;
 
-const ContinueButton = styled.div`
+const ContinueButton = styled.button`
   display: flex;
   justify-content: space-around;
   flex-direction: row;
@@ -240,6 +239,10 @@ export default function Token(props) {
   const toggleUploadPopup = () => {
     setIsUploadOpen(!isUploadOpen);
   };
+
+  const saveAndContinue = (e) => {
+    props.nextStep(e);
+  };
   return (
     <>
       <Parent>
@@ -254,7 +257,13 @@ export default function Token(props) {
           <CommonRow>
             <TextDiv>Network</TextDiv>
             <InsideDiv>
-              <InputDiv placeholder="XDC Mainnet" />
+              <InputDiv
+                type="text"
+                name="network"
+                onChange={(e) => props.handleChange(e)}
+                value={props.tokenData.network}
+                placeholder="XDC Mainnet"
+              />
               <PopButton onClick={togglePopup}>Change Network</PopButton>
               {isOpen && <ChangeNetworkPopup handleClose={togglePopup} />}
               <MobPopupBtn onClick={() => history.push("/change-network")}>
@@ -263,18 +272,35 @@ export default function Token(props) {
             </InsideDiv>
 
             <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
+            <p className="shown-error">{props.formErrors.network}</p>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Token Name</TextDiv>
-            <InputDiv placeholder="e.g. XDC Network" />
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="tokenName"
+              value={props.tokenData.tokenName}
+              placeholder="e.g. XDC Network"
+            />
+
             <BlurTextDiv>Choose a name for your token</BlurTextDiv>
+            <p className="shown-error">{props.formErrors.tokenName}</p>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Symbol</TextDiv>
-            <InputDiv placeholder="e.g. XDC" />
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="tokenSymbol"
+              value={props.tokenData.tokenSymbol}
+              placeholder="e.g. XDC"
+            />
+
             <BlurTextDiv>Choose symbol for your token</BlurTextDiv>
+            <p className="shown-error">{props.formErrors.tokenSymbol}</p>
           </CommonRow>
 
           <CommonRow>
@@ -293,38 +319,54 @@ export default function Token(props) {
 
           <CommonRow>
             <TextDiv>Decimal</TextDiv>
-            <InputDiv placeholder="8-18" />
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="decimals"
+              value={props.tokenData.decimals}
+              placeholder="8-18"
+            />
+
             <BlurTextDiv>
               Insert the decimal precision of your token
             </BlurTextDiv>
+            <p className="shown-error">{props.formErrors.decimals}</p>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Description</TextDiv>
-            <InputDiv placeholder="A Dao Token" />
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="description"
+              value={props.tokenData.description}
+              placeholder="A Dao Token"
+            />
+
             <BlurTextDiv>Add description for your token</BlurTextDiv>
+            <p className="shown-error">{props.formErrors.description}</p>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Website</TextDiv>
-            <InputDiv placeholder="Website Address" />
+            <InputDiv type="text" placeholder="Website Address" />
             <BlurTextDiv>Add Website url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Twitter(optional)</TextDiv>
-            <InputDiv placeholder="e.g. Twitter Url" />
+            <InputDiv type="text" placeholder="e.g. Twitter Url" />
             <BlurTextDiv>Add Twitter page url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Telegram</TextDiv>
-            <InputDiv placeholder="e.g. Telegram Url" />
+            <InputDiv type="text" placeholder="e.g. Telegram Url" />
             <BlurTextDiv>Add Telegram group url for your token</BlurTextDiv>
           </CommonRow>
 
           <LastRow>
-            <ContinueButton onClick={() => props.nextStep()}>
+            <ContinueButton onClick={saveAndContinue}>
               <ContinueText>Continue</ContinueText>
               <ImgDiv src="/images/Button_Next_Arrow.svg" />
             </ContinueButton>

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Utils from "../../utility";
+import { SaveDraftService } from "../../services/index";
 
 const Parent = styled.div`
   display: flex;
@@ -212,11 +214,12 @@ const RightDiv = styled.div`
   }
 `;
 
-const DeployButton = styled.div`
+const DeployButton = styled.button`
   display: flex;
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
   width: 150px;
   height: 50px;
   background: #3163f0 0% 0% no-repeat padding-box;
@@ -243,11 +246,12 @@ const DeployText = styled.div`
   }
 `;
 
-const SaveDraftButton = styled.div`
+const SaveDraftButton = styled.button`
   display: flex;
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
   width: 150px;
   height: 50px;
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -292,7 +296,7 @@ export default function AddFeatures(props) {
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       image: "/images/Pausable.svg",
-      checked: false,
+      checked: props.tokenData.pausable,
       content:
         "Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
     },
@@ -302,7 +306,7 @@ export default function AddFeatures(props) {
       image: "/images/Burnable.svg",
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
-      checked: true,
+      checked: props.tokenData.burnable,
       content:
         "Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
     },
@@ -312,11 +316,12 @@ export default function AddFeatures(props) {
       image: "/images/Mintable.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       checkImage: "/images/Empty-Circle.svg",
-      checked: true,
+      checked: props.tokenData.mintable,
       content:
         "Building distribution / crowdsale logic directly into the token contract or by including a generic mint function that can be called by an external contract.",
     },
   ];
+
   const [arr, setArr] = useState(tab);
 
   const updateCheck = (id) => {
@@ -357,7 +362,7 @@ export default function AddFeatures(props) {
                             ? item.activeCheckImage
                             : item.checkImage
                         }
-                        onClick={() => updateCheck(item.id)}
+                        onClick={() => updateCheck(item.id, item.checked)}
                       />
                     </DescriptionDiv>
                   </RowDiv>
@@ -368,11 +373,11 @@ export default function AddFeatures(props) {
             <ButtonsRow>
               <BackButton onClick={() => props.prevStep()}>
                 <BackImgDiv src="/images/Button-Back-Arrow.svg" />
-                <BackText >Back</BackText>
+                <BackText>Back</BackText>
               </BackButton>
 
               <RightDiv>
-                <SaveDraftButton>
+                <SaveDraftButton onClick={() => props.saveAsDraft()}>
                   <SaveDraftText>Save Draft</SaveDraftText>
                   <BackImgDiv src="/images/ContractDetails.svg" />
                 </SaveDraftButton>
