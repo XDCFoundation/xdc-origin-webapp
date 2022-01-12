@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../header/header";
 import styled from "styled-components";
+import { useHistory } from "react-router";
 
 const Container = styled.div`
   position: fixed;
@@ -128,11 +129,12 @@ const BtnText = styled.span`
 `;
 
 function ConnectWalletMobile() {
+  const history = useHistory();
   return (
     <Container>
       <Header />
       <HeadingContainer>
-        <LeftArrow src="/images/Button_Back_Arrow.svg" alt="" />
+        <LeftArrow onClick={() => history.push('/')} src="/images/Button_Back_Arrow.svg" alt="" />
         <Heading>Connect Wallet</Heading>
       </HeadingContainer>
       <BoxContainer>

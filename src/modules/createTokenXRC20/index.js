@@ -2,9 +2,10 @@ import React from "react";
 import BaseComponent from "../baseComponent";
 import Token from "./basicInformation";
 import HeaderComponent from "../header/header";
-import DesktopSideMenu from "../dashboard/sidebar";
+import Sidebar from "../dashboard/sidebar";
 import { Column, Row } from "simple-flexbox";
 import CommonTabs from "./commonTab";
+import Footer from "../Footer";
 
 class CreateTokenXRC20 extends BaseComponent {
   constructor(props) {
@@ -18,7 +19,11 @@ class CreateTokenXRC20 extends BaseComponent {
     return (
       <>
         <HeaderComponent />
-        <CommonTabs />
+        <Row>
+          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
+          <CommonTabs />
+        </Row>
+        {window.innerWidth <= 768 ? <Footer /> : ""}
       </>
     );
   }

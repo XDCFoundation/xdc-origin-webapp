@@ -160,6 +160,7 @@ const BackButton = styled.div`
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
   width: 141px;
   height: 50px;
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -278,6 +279,7 @@ const SaveDraftText = styled.div`
 const Check = styled.img`
   width: 25px;
   height: 25px;
+  cursor: pointer;
   opacity: 1;
   margin: 12px 15px 0px 0px;
 `;
@@ -364,9 +366,9 @@ export default function AddFeatures(props) {
             })}
 
             <ButtonsRow>
-              <BackButton>
+              <BackButton onClick={() => props.prevStep()}>
                 <BackImgDiv src="/images/Button-Back-Arrow.svg" />
-                <BackText>Back</BackText>
+                <BackText >Back</BackText>
               </BackButton>
 
               <RightDiv>

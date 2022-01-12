@@ -4,6 +4,7 @@ import DeployContractComponent from "./deployContract";
 import Sidebar from "../dashboard/sidebar";
 import Header from "../header/header";
 import { Row } from "simple-flexbox";
+import Footer from "../Footer";
 
 class DeployContract extends BaseComponent {
   constructor(props) {
@@ -16,9 +17,10 @@ class DeployContract extends BaseComponent {
       <div>
         <Header />
         <Row>
-          <Sidebar />
+          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
           <DeployContractComponent />
         </Row>
+        {window.innerWidth <= 768 ? <Footer /> : ""}
       </div>
     );
   }
