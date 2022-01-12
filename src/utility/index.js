@@ -53,6 +53,7 @@ const utility = {
     getTimeDifference,
     getYearsList,
     getTimestampFromDate,
+    parseResponse,
     extractDate,
     secondsToTime,
     getDateFormat,
@@ -177,6 +178,14 @@ function generateGUID() {
     guid += screen.pixelDepth || '';
     return guid;
 }
+
+function parseResponse(promise) {
+    return promise
+      .then((data) => {
+        return [null, data];
+      })
+      .catch((err) => [err]);
+  }
 
 function basicAlert(message) {
     swal({

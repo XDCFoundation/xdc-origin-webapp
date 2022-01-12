@@ -179,6 +179,15 @@ const ContinueText = styled.div`
 `;
 
 export default function Tokenomics(props) {
+
+  const saveAndContinue = () => {
+    if(props.tokenData.tokenSupply >= 1){
+      props.nextStep()
+    }
+    else{
+      return;
+    }
+  }
   return (
     <>
       <Parent>
@@ -191,17 +200,18 @@ export default function Tokenomics(props) {
           </RowTwo>
           <CommonRow>
             <TextDiv>Initial Supply</TextDiv>
-            <InputDiv />
+            <InputDiv type="number" onChange={(e) => props.handleChange(e)} name="tokenSupply" value={props.tokenData.tokenSupply}/>
             <BlurTextDiv>
               Insert the initial numbers of tokens available
             </BlurTextDiv>
+           {props.tokenData.tokenSupply >= 1 ? "" : <p className="shown-error">Supply should be more than 0</p> } 
           </CommonRow>
           <ButtonsRow>
             <BackButton onClick={() => props.prevStep()}>
               <ImgDiv src="/images/Button-Back-Arrow.svg" />
               <BackText>Back</BackText>
             </BackButton>
-            <ContinueButton onClick={() => props.nextStep()}>
+            <ContinueButton onClick={saveAndContinue}>
               <ContinueText>Continue</ContinueText>
               <ImgDiv src="/images/Button_Next_Arrow.svg" />
             </ContinueButton>

@@ -19,5 +19,7 @@ export const httpConstants = {
     DEVICE_TYPE: {
         WEB: 'web'
     },
-    API_END_POINT: {}
+    API_END_POINT: {
+        SAVE_TOKEN: "save-xrc20token-as-draft",
+    }
 };

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import BasicInfoPage from "./basicInformation";
 import TokenomicsPage from "./tokenomics";
 import AddFeaturesPage from "./addFeature";
 import DeployContractPage from "./deployContract";
+import Utils from "../../utility";
+import { SaveDraftService } from "../../services/index";
 
 const MainContainer = styled.div`
   display: flex;
@@ -148,6 +150,30 @@ const ActiveTextTwo = styled.div`
 export default function CommonTab(props) {
   const [step, setStep] = useState(1);
 
+  const initialValues = {
+    network: "",
+    tokenOwner: "tokenOwner21",
+    tokenName: "",
+    tokenSymbol: "",
+    tokenImage: "tokenImage20",
+    decimals: "",
+    description: "",
+    tokenSupply: 0,
+    pausable: false,
+    mintable: true,
+    burnable: true,
+  };
+
+  const [tokenData, setTokenData] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState({});
+  const [saveAndContinue, setSaveAndContinue] = useState(false)
+
+  const handleChange = (e) => {
+    // const { name, value } = e.target;
+    setTokenData({...tokenData, [e.target.name]: e.target.value});
+    console.log("form---",tokenData);
+  };
+
   const tab = [
     {
       id: 1,
@@ -192,18 +218,28 @@ export default function CommonTab(props) {
   ];
 
   const [arr, setArr] = useState(tab);
-  const nextStep = () => {
-    let newData = arr.map((item) => {
-      return item.id !== step
-        ? item
-        : { ...item, image: item.circleImage, activeImage: item.circleImage };
-    });
 
-    setArr(newData);
-    setStep(step + 1);
+  const nextStep = (e) => {
+    setFormErrors(validate(tokenData)) 
+    setSaveAndContinue(true)
+
+    if(Object.keys(formErrors).length === 0 && saveAndContinue===true){
+      let newData = arr.map((item) => {
+        return item.id !== step
+          ? item
+          : { ...item, image: item.circleImage, activeImage: item.circleImage };
+      });
+  
+      setArr(newData);
+      setStep(step + 1);
+    }
+    else{
+     return;
+    }
+   
   };
 
-  const prevStep = () => {
+  const prevStep = (e) => {
     let newData = arr.map((item) => {
       return item.id !== step - 1
         ? item
@@ -212,6 +248,78 @@ export default function CommonTab(props) {
     setArr(newData);
     setStep(step - 1);
   };
+
+  useEffect(() => {
+    console.log('er--',formErrors)
+    if(Object.keys(formErrors).length === 0 && saveAndContinue){
+      console.log('val---',tokenData)
+    }
+  },[formErrors])
+
+  const validate = (values) => {
+    const errors = {}
+
+    if(!values.network){
+      errors.network = "Network is required"
+    }
+
+    if(!values.tokenName){
+      errors.tokenName = "TokenName is required"
+    }
+    else if(values.tokenName.length > 30){
+      errors.tokenName = "Token Name should not be more than 30 characters"
+    }
+
+    if(!values.tokenSymbol){
+      errors.tokenSymbol = "Symbol is required"
+    } else if(values.tokenSymbol.length > 15){
+      errors.tokenSymbol = "Symbol should not be more than 15 characters"
+    }
+
+    if(!values.decimals){
+      errors.decimals = "Decimal is required"
+    } else if(values.decimals.length < 1 && values.decimals.length > 18){
+      errors.decimals = "Decimal should not be more than 18 or less than 1 characters"
+    } else if(values.decimals.length === 0){
+      errors.decimals = "Decimal can't be 0"
+    }
+
+    if(!values.description){
+      errors.description = "Description is required"
+    } else if(values.description.length > 500){
+      errors.description = "Description should not be more than 500 characters"
+    }
+
+    // if(!values.tokenSupply){
+    //   errors.tokenSupply = "Supply is required"
+    // } else if(values.tokenSupply.length < 1){
+    //   errors.tokenSupply = "Supply can't be less than 1"
+    // }
+    return errors;
+  }
+
+  const saveAsDraft = async (e) => {
+    let reqObj = {
+      tokenOwner: tokenData.tokenOwner,
+      tokenName: tokenData.tokenName,
+      tokenSymbol: tokenData.tokenSymbol,
+      tokenImage: tokenData.tokenImage,
+      tokenInitialSupply: 200,
+      tokenDecimals: 8,
+      tokenDescription: tokenData.description,
+      network: tokenData.network,
+      isBurnable: tokenData.burnable,
+      isMintable: tokenData.mintable,
+      isPausable: tokenData.pausable,
+    };
+
+    const [err, res] = await SaveDraftService.saveTokenAsDraft(reqObj);
+    // setDraft(res);
+    if (res) {
+      Utils.apiSuccessToast("Saved Data as Draft");
+    }
+  };
+
   return (
     <>
       <MainContainer>
@@ -245,14 +353,34 @@ export default function CommonTab(props) {
             {(() => {
               switch (step) {
                 case 1:
-                  return <BasicInfoPage nextStep={nextStep} />;
+                  return (
+                    <BasicInfoPage
+                      nextStep={nextStep}
+                      tokenData={tokenData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  );
                 case 2:
                   return (
-                    <TokenomicsPage nextStep={nextStep} prevStep={prevStep} />
+                    <TokenomicsPage
+                      nextStep={nextStep}
+                      prevStep={prevStep}
+                      tokenData={tokenData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
                   );
                 case 3:
                   return (
-                    <AddFeaturesPage nextStep={nextStep} prevStep={prevStep} />
+                    <AddFeaturesPage
+                      nextStep={nextStep}
+                      prevStep={prevStep}
+                      tokenData={tokenData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                      saveAsDraft={saveAsDraft}
+                    />
                   );
                 case 4:
                   return <DeployContractPage />;
