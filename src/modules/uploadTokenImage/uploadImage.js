@@ -5,9 +5,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import SeekBar from "react-seekbar-component";
 import "react-seekbar-component/dist/index.css";
 import { useDropzone } from "react-dropzone";
-import Draggable from "react-draggable";
 import AWSServices from "../../services/aws-service";
-const fs = require("fs");
+import Cropper from "react-easy-crop";
+import GetCroppedImg from "./cropImage"
 
 const Header = styled.div`
   display: flex;
@@ -134,11 +134,15 @@ const UploadName = styled.span`
 `;
 
 const TokenImage = styled.div`
-  width: 264px;
-  height: 264px;
-  margin-bottom: 5%;
+  width: 264px !important;
+  height: 264px !important;
+  position: "relative" !important;
   background: #000000 0% 0% no-repeat padding-box;
-  overflow: hidden;
+  overflow: hidden !important;
+  top: 100px;
+  left: 200px;
+  right: 200px;
+  bottom: 80px;
 `;
 
 const CropImage = styled.div`
@@ -159,9 +163,8 @@ const ControlButtons = styled.button`
   border-width: 0px;
 `;
 const DisplayImage = styled.img`
-  width: 100%;
-  height: 100%;
-  image-resolution: 32px;
+  width: 264px;
+  height: 264px;
   align-items: center;
 `;
 
@@ -173,11 +176,18 @@ const defaultScale = minScale;
 export default function UploadTokenImage(props) {
   const [open, setOpen] = React.useState(false);
   const [upload, setUpload] = React.useState(false);
-  const [value, setValue] = React.useState(0);
 
   const [scale, setScale] = React.useState(defaultScale);
   const [file, setFile] = React.useState({});
   const [filePreview, setFilePreview] = React.useState({});
+  const [croppedAreaPixels, setCroppedAreaPixels] = React.useState(null);
+  const [croppedImage, setCroppedImage] = React.useState(null);
+  const [crop, setCrop] = React.useState({ x: 1, y: 1 });
+  const [zoom, setZoom] = React.useState(1);
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }, [])
 
   const zoomIn = () => {
     setScale(scale + zoomStep);
@@ -210,14 +220,35 @@ export default function UploadTokenImage(props) {
   const uploadFileToAWS = async () => {
     handleClose();
     handleClickUpload();
-    await new AWSServices().uploadFileToS3(file.key, file.content);
-    console.log(
-      "Image uploaded. URL:",
-      `https://xdc-mycontract-s3-dev.s3.amazonaws.com/${file.key}`
-    );
+    // await new AWSServices().uploadFileToS3(file.key, file.content);
+    // console.log(
+    //   "Image uploaded. URL:",
+    //   `https://xdc-mycontract-s3-dev.s3.amazonaws.com/${file.key}`
+    // );
   };
 
-  const isDraggable = scale > 1;
+  const showCroppedImage = useCallback(async () => {
+    try {
+      console.log(filePreview)
+      const croppedImage = await GetCroppedImg(
+        filePreview,
+        croppedAreaPixels
+      )
+      console.log('donee', { croppedImage })
+      setFile({content: croppedImage })
+      setCroppedImage(croppedImage)
+      uploadFileToAWS()
+    } catch (e) {
+      console.error(e)
+    }
+  })
+
+
+  // const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+  //   console.log(croppedArea, croppedAreaPixels);
+  // }, []);
+
+  // console.log("123456789",croppedAreaPixels)
   const RenderUi = () => {
     const onDrop = useCallback(async (acceptedFiles) => {
       handleCloseUpload();
@@ -248,17 +279,19 @@ export default function UploadTokenImage(props) {
       return (
         <Content>
           <TokenImage>
-            <Draggable disabled={!isDraggable} key={0}>
-              <div style={isDraggable ? { cursor: "move" } : null}>
-                <DisplayImage
-                  style={{
-                    transform: `scale(${scale})`,
-                  }}
-                  draggable="false"
-                  src={filePreview}
-                ></DisplayImage>
-              </div>
-            </Draggable>
+            <Cropper
+              image={filePreview}
+              crop={crop}
+              zoom={scale}
+              aspect={4 / 4}
+              onCropChange={setCrop}
+              onCropComplete={onCropComplete}
+              onZoomChange={setZoom}
+              showGrid={false}
+              cropSize={{ width: 220, height: 220 }}
+              cropShape="round"
+              disableAutomaticStylesInjection={true}
+            />
           </TokenImage>
           <CropImage>
             <ControlButtons onClick={zoomOut}>
@@ -267,13 +300,14 @@ export default function UploadTokenImage(props) {
             <div>
               <SeekBar
                 getNumber={setScale}
+                max={10}
                 width="300px"
                 backgroundColor="#EDEDED"
                 fillColor="#EDEDED"
                 fillSecondaryColor="#EDEDED"
                 headColor="#00000029"
                 headBorderWidth={3}
-                progress={0}
+                progress={zoom}
                 borderColor="#4B4B4B"
               />
             </div>
@@ -304,7 +338,7 @@ export default function UploadTokenImage(props) {
             <Cancel>
               <CancelName onClick={handleClose}>Cancel</CancelName>
             </Cancel>
-            <UploadButton onClick={uploadFileToAWS}>
+            <UploadButton onClick={showCroppedImage}>
               <UploadName>Upload</UploadName>
             </UploadButton>
           </Buttons>
