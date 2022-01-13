@@ -2,14 +2,14 @@ const AWS = require("aws-sdk");
 
 class AWSServices {
 
-    uploadFileToS3 = (key, body, contentType) => {
+    uploadFileToS3 = (key, body, s3Bucket, contentType) => {
         AWS.config.update({
-            accessKeyId: 'AKIASMMTV6PRCONJVAV7',
-            secretAccessKey: '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'
+            accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+            secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY
         });
 
         let params = {
-            Bucket: 'xdc-mycontract-s3-dev',
+            Bucket: s3Bucket,
             Key: key,
             Body: body,
             // ContentType: contentType,
