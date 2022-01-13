@@ -19,5 +19,7 @@ export const httpConstants = {
     DEVICE_TYPE: {
         WEB: 'web'
     },
-    API_END_POINT: {}
+    API_END_POINT: {
+        GET_DRAFT_FAILD_XRC20_TOKEN: "/get-draft-failed-xrc20token"
+    }
 };

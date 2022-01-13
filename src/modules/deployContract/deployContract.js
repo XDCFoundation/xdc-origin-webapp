@@ -5,7 +5,7 @@ import { Delete, Edit } from "@material-ui/icons";
 import DeleteContract from "../deleteContract/deleteContract";
 import DeployPopup from "./deployPopup";
 
-function DeployContract() {
+function DeployContract(props) {
   const [open, setOpen] = useState(false);
   const [openDeployPopup, setOpenDeployPopup] = useState(false);
 
@@ -23,26 +23,7 @@ function DeployContract() {
   const deployPopupClose = () => {
     setOpenDeployPopup(false);
   };
-
-  const tableData = [
-    {
-      tokenIcon: "",
-      tokenName: "MetaVerse",
-      tokenSymbol: "META",
-      network: "XDC Apothem Testnet",
-      supply: "10000000",
-      status: "Draft",
-    },
-    {
-      tokenIcon: "",
-      tokenName: "Alex Coin",
-      tokenSymbol: "ALEX",
-      network: "XDC Mainnet",
-      supply: "20000000",
-      status: "Failed",
-    },
-  ];
-
+  
   return (
     <Container>
       <Heading>Deploy Contracts</Heading>
@@ -58,11 +39,11 @@ function DeployContract() {
         <Line />
 
         <DataContainer>
-          {tableData.map((item) => (
+          { props.state.draftFailedXrc20TokenDetails && props.state.draftFailedXrc20TokenDetails.map((item,index) => (
             <>
-              <TableRow>
+              <TableRow key={index}>
                 <div className="tokenIcon">
-                  <TableContentImg src={item.tokenIcon} />
+                  <TableContentImg src={item.tokenImage} />
                 </div>
                 <div className="tokenName">
                   <TableContent>{item.tokenName}</TableContent>
@@ -74,7 +55,7 @@ function DeployContract() {
                   <TableContent>{item.network}</TableContent>
                 </div>
                 <div className="supply">
-                  <TableContent>{item.supply}</TableContent>
+                  <TableContent>{item.tokenInitialSupply}</TableContent>
                 </div>
                 <div className="status">
                   <TableContent>{item.status}</TableContent>
