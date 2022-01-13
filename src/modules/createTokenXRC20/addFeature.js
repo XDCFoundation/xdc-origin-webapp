@@ -289,6 +289,7 @@ const Check = styled.img`
 `;
 
 export default function AddFeatures(props) {
+  const [draft, setDraft] = useState([]);
   const tab = [
     {
       id: 1,
@@ -331,6 +332,41 @@ export default function AddFeatures(props) {
     setArr(newData);
   };
 
+  let parsingDecimal = Number(props.tokenData.decimals);
+  let parsingSupply = Number(props.tokenData.tokenSupply);
+
+  const saveAsDraft = async (e) => {
+    e.preventDefault();
+    let reqObj = {
+      tokenOwner: props.tokenData.tokenOwner,
+      tokenName: props.tokenData.tokenName,
+      tokenSymbol: props.tokenData.tokenSymbol,
+      tokenImage: props.tokenData.tokenImage,
+      tokenInitialSupply: parsingSupply,
+      tokenDecimals: parsingDecimal,
+      tokenDescription: props.tokenData.description,
+      network: props.tokenData.network,
+      isBurnable: props.tokenData.burnable,
+      isMintable: props.tokenData.mintable,
+      isPausable: props.tokenData.pausable,
+    };
+
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.saveTokenAsDraft(reqObj)
+    );
+    setDraft(err);
+    if (res) {
+      Utils.apiSuccessToast("Saved Data as Draft");
+    }
+  };
+
+  const deployToken = (e) => {
+    e.preventDefault();
+    saveAsDraft(e);
+    props.nextStep(e);
+    props.sendTransaction();
+  };
+
   return (
     <>
       <Parent>
@@ -362,7 +398,7 @@ export default function AddFeatures(props) {
                             ? item.activeCheckImage
                             : item.checkImage
                         }
-                        onClick={() => updateCheck(item.id, item.checked)}
+                        onClick={() => updateCheck(item.id)}
                       />
                     </DescriptionDiv>
                   </RowDiv>
@@ -377,12 +413,12 @@ export default function AddFeatures(props) {
               </BackButton>
 
               <RightDiv>
-                <SaveDraftButton onClick={() => props.saveAsDraft()}>
+                <SaveDraftButton onClick={saveAsDraft}>
                   <SaveDraftText>Save Draft</SaveDraftText>
                   <BackImgDiv src="/images/ContractDetails.svg" />
                 </SaveDraftButton>
                 <DeployButton>
-                  <DeployText>Deploy</DeployText>
+                  <DeployText onClick={deployToken}>Deploy</DeployText>
                   <BackImgDiv src="/images/DeployContract_Active.svg" />
                 </DeployButton>
               </RightDiv>
