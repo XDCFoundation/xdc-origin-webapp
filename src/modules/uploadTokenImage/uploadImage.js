@@ -7,7 +7,7 @@ import "react-seekbar-component/dist/index.css";
 import { useDropzone } from "react-dropzone";
 import AWSServices from "../../services/aws-service";
 import Cropper from "react-easy-crop";
-import GetCroppedImg from "./cropImage"
+import GetCroppedImg from "./cropImage";
 
 const Header = styled.div`
   display: flex;
@@ -134,11 +134,11 @@ const UploadName = styled.span`
 `;
 
 const TokenImage = styled.div`
-  width: 264px !important;
-  height: 264px !important;
-  position: "relative" !important;
+  width: 264px;
+  height: 264px;
+  position: "relative";
   background: #000000 0% 0% no-repeat padding-box;
-  overflow: hidden !important;
+  overflow: hidden;
   top: 100px;
   left: 200px;
   right: 200px;
@@ -185,9 +185,11 @@ export default function UploadTokenImage(props) {
   const [crop, setCrop] = React.useState({ x: 1, y: 1 });
   const [zoom, setZoom] = React.useState(1);
 
+  const s3Bucket = process.env.REACT_APP_S3_BUCKET_NAME
+
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels)
-  }, [])
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
 
   const zoomIn = () => {
     setScale(scale + zoomStep);
@@ -217,43 +219,39 @@ export default function UploadTokenImage(props) {
     setUpload(true);
   };
 
-  const uploadFileToAWS = async () => {
+  const uploadFileToAWS = async (croppedImage) => {
     handleClose();
     handleClickUpload();
-    // await new AWSServices().uploadFileToS3(file.key, file.content);
-    // console.log(
-    //   "Image uploaded. URL:",
-    //   `https://xdc-mycontract-s3-dev.s3.amazonaws.com/${file.key}`
-    // );
+    setScale(defaultScale);
+    const awsFile = await new AWSServices().uploadFileToS3(
+      file.key,
+      croppedImage,
+      s3Bucket
+    );
+    console.log(
+      "Image uploaded. URL: ",
+      "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" + awsFile.sourceFileName
+    );
   };
 
   const showCroppedImage = useCallback(async () => {
     try {
-      console.log(filePreview)
-      const croppedImage = await GetCroppedImg(
-        filePreview,
-        croppedAreaPixels
-      )
-      console.log('donee', { croppedImage })
-      setFile({content: croppedImage })
-      setCroppedImage(croppedImage)
-      uploadFileToAWS()
+      const croppedImage = await GetCroppedImg(filePreview, croppedAreaPixels);
+      setFile({ content: croppedImage });
+      setCroppedImage(croppedImage);
+      uploadFileToAWS(croppedImage);
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
-  })
+  });
 
-
-  // const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-  //   console.log(croppedArea, croppedAreaPixels);
-  // }, []);
-
-  // console.log("123456789",croppedAreaPixels)
   const RenderUi = () => {
     const onDrop = useCallback(async (acceptedFiles) => {
       handleCloseUpload();
       let content = acceptedFiles[0].path;
-      let key = `${"userId"}/${"token-image"}/${acceptedFiles[0].name}`;
+      let key = `${"userId"}/${"token-image"}/${
+        JSON.stringify(new Date().getTime()) + ".png"
+      }`;
       setFilePreview(URL.createObjectURL(acceptedFiles[0]));
       setFile({ key: key, content: content });
     });
@@ -290,6 +288,7 @@ export default function UploadTokenImage(props) {
               showGrid={false}
               cropSize={{ width: 220, height: 220 }}
               cropShape="round"
+              objectFit={"horizontal-cover" || "vertical-cover"}
               disableAutomaticStylesInjection={true}
             />
           </TokenImage>
@@ -312,7 +311,6 @@ export default function UploadTokenImage(props) {
               />
             </div>
             <ControlButtons onClick={zoomIn}>
-              {" "}
               <Plus src="images/Token_Image.svg"></Plus>
             </ControlButtons>
           </CropImage>
@@ -323,20 +321,22 @@ export default function UploadTokenImage(props) {
 
   return (
     <div>
-      <button onClick={handleClickOpen}>Upload a image</button>
-      <Dialog className="display-pop-up" open={open}>
-        {" "}
-        {/** given value true is hardcoded.. will update while integrating */}
+      <Dialog className="display-pop-up" open={true}>  {/**change true to state "open" while integrating */}
         <Header>
           <DialogTitle>Upload Token Image</DialogTitle>
-          <Cross onClick={() => props.handleUploadClose()} src="images/Cross.svg"></Cross>
+          <Cross
+            onClick={handleClose}
+            src="images/Cross.svg"
+          ></Cross>
         </Header>
         <ContentContainer>
           {RenderUi()}
 
           <Buttons>
             <Cancel>
-              <CancelName onClick={() => props.handleUploadClose()}>Cancel</CancelName>
+              <CancelName onClick={handleClose}>
+                Cancel
+              </CancelName>
             </Cancel>
             <UploadButton onClick={showCroppedImage}>
               <UploadName>Upload</UploadName>
