@@ -23,6 +23,10 @@ const Column = styled.div`
   opacity: 1;
   margin: 70px 0px 67px 0px;
 `;
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const CommonDiv = styled.div`
   position: relative;
   top: 0;
@@ -49,16 +53,27 @@ const XDCImg = styled.img`
   height: 89px;
   opacity: 1;
 `;
+const Text = styled.div`
+  text-align: left;
+  font: normal normal normal 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #1f1f1f;
+  opacity: 1;
+  margin: 27px 0px 0px 25px;
+`;
 
 export default function DeployContract(props) {
   return (
     <>
       <Parent>
         <Column>
-          <CommonDiv>
-            <Loader />
-            <XDCImg alt="" src="/images/XDC_Blue_Logo.svg" />
-          </CommonDiv>
+          <Div>
+            <CommonDiv>
+              <Loader />
+              <XDCImg alt="" src="/images/XDC_Blue_Logo.svg" />
+            </CommonDiv>
+            <Text>Deploying to XDC Apothem testnet...</Text>
+          </Div>
         </Column>
       </Parent>
     </>

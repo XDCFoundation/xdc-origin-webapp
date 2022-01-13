@@ -6,6 +6,7 @@ import AddFeaturesPage from "./addFeature";
 import DeployContractPage from "./deployContract";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
+import Web3 from 'web3';
 
 const MainContainer = styled.div`
   display: flex;
@@ -148,32 +149,6 @@ const ActiveTextTwo = styled.div`
 `;
 
 export default function CommonTab(props) {
-  const [step, setStep] = useState(1);
-
-  const initialValues = {
-    network: "",
-    tokenOwner: "tokenOwner21",
-    tokenName: "",
-    tokenSymbol: "",
-    tokenImage: "tokenImage20",
-    decimals: "",
-    description: "",
-    tokenSupply: 0,
-    pausable: false,
-    mintable: true,
-    burnable: true,
-  };
-
-  const [tokenData, setTokenData] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
-  const [saveAndContinue, setSaveAndContinue] = useState(false)
-
-  const handleChange = (e) => {
-    // const { name, value } = e.target;
-    setTokenData({...tokenData, [e.target.name]: e.target.value});
-    console.log("form---",tokenData);
-  };
-
   const tab = [
     {
       id: 1,
@@ -218,25 +193,125 @@ export default function CommonTab(props) {
   ];
 
   const [arr, setArr] = useState(tab);
+  const [step, setStep] = useState(1);
+  const [ownerAddress, setOwnerAddress] = useState("")
+
+  useEffect(() => {
+    getAddress();
+  }, [])
+
+  const getAddress = () => {
+    window.web3 = new Web3(window.ethereum);
+    if (!window.web3.currentProvider.chainId) {
+      //when metamask is disabled
+      const state = window.web3.givenProvider.publicConfigStore._state;
+      let address = state.selectedAddress
+      setOwnerAddress(address)
+      // sendTransaction();
+      // network ---> 50 for mainnet, 51 for apothem
+    }
+    else {
+      //metamask is also enabled with xdcpay
+      const state = window.web3.givenProvider.publicConfigStore._state;
+      let address = state.selectedAddress;
+      let network = state.network; //50 for mainnet, 51 for apothem
+      setOwnerAddress(address)
+      // sendTransaction();
+    }
+  }
+
+  const initialValues = {
+    network: "",
+    tokenOwner: "",
+    tokenName: "",
+    tokenSymbol: "",
+    tokenImage: "tokenImage20",
+    decimals: null,
+    description: "",
+    tokenSupply: null,
+    pausable: false,
+    mintable: true,
+    burnable: true,
+  };
+
+  const [tokenData, setTokenData] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState({});
+  const [saveAndContinue, setSaveAndContinue] = useState(false);
+
+  // capturing all fields value: 
+
+  const handleChange = (e) => {
+    setTokenData({ ...tokenData, tokenOwner: ownerAddress, [e.target.name]: e.target.value }); //destructuring
+    // console.log("form---", tokenData);
+  };
+
+  // condition checking for nextStep: 
+
+  useEffect(() => {
+    console.log("er--", formErrors);
+    if (Object.keys(formErrors).length === 0 && saveAndContinue) {
+      console.log("val---", tokenData);
+    }
+  }, [formErrors]);
+
+  //form error validations :
+
+  const validate = (values) => {
+    const errors = {};
+
+    if (!values.network) {
+      errors.network = "Network is required";
+    }
+
+    if (!values.tokenName) {
+      errors.tokenName = "TokenName is required";
+    } else if (values.tokenName.length > 30) {
+      errors.tokenName = "Token Name should not be more than 30 characters";
+    }
+
+    if (!values.tokenSymbol) {
+      errors.tokenSymbol = "Symbol is required";
+    } else if (values.tokenSymbol.length > 15) {
+      errors.tokenSymbol = "Symbol should not be more than 15 characters";
+    }
+
+    if (!values.decimals) {
+      errors.decimals = "Decimal is required";
+    } else if (Number(values.decimals) <= 1) {
+      errors.decimals = "Decimal should not be less than 1";
+    } else if (Number(values.decimals) >= 18) {
+      errors.decimals = "Decimal should not be more than 18";
+    } else if (Number(values.decimals) === 0) {
+      errors.decimals = "Decimal can't be 0";
+    }
+
+    if (!values.description) {
+      errors.description = "Description is required";
+    } else if (values.description.length > 500) {
+      errors.description = "Description should not be more than 500 characters";
+    }
+
+    return errors;
+  };
+
+  // Steps navigation functions : 
 
   const nextStep = (e) => {
-    setFormErrors(validate(tokenData)) 
-    setSaveAndContinue(true)
+    setFormErrors(validate(tokenData));
+    setSaveAndContinue(true);
 
-    if(Object.keys(formErrors).length === 0 && saveAndContinue===true){
+    if (Object.keys(formErrors).length === 0 && saveAndContinue === true) {
       let newData = arr.map((item) => {
         return item.id !== step
           ? item
           : { ...item, image: item.circleImage, activeImage: item.circleImage };
       });
-  
+
       setArr(newData);
       setStep(step + 1);
+    } else {
+      return;
     }
-    else{
-     return;
-    }
-   
   };
 
   const prevStep = (e) => {
@@ -249,76 +324,116 @@ export default function CommonTab(props) {
     setStep(step - 1);
   };
 
-  useEffect(() => {
-    console.log('er--',formErrors)
-    if(Object.keys(formErrors).length === 0 && saveAndContinue){
-      console.log('val---',tokenData)
-    }
-  },[formErrors])
 
-  const validate = (values) => {
-    const errors = {}
+ // function to open xdc pay extension: 
 
-    if(!values.network){
-      errors.network = "Network is required"
+  const sendTransaction = async () => {
+    let xdce_address = tokenData.tokenOwner;
+    // let web3333 = new Web3(new Web3.providers.HttpProvider('https://rpc.apothem.network'));
+    let newAbi = {
+      "abi": [
+        {
+          "constant": true,
+          "inputs": [
+            {
+              "name": "tweetId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getTweetByTweetId",
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "tweetId",
+              "type": "uint256"
+            },
+            {
+              "name": "tweet",
+              "type": "string"
+            }
+          ],
+          "name": "createTweet",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "getCount",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "tweets",
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
     }
 
-    if(!values.tokenName){
-      errors.tokenName = "TokenName is required"
-    }
-    else if(values.tokenName.length > 30){
-      errors.tokenName = "Token Name should not be more than 30 characters"
-    }
+    let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
+    console.log('co--', contractInstance)
 
-    if(!values.tokenSymbol){
-      errors.tokenSymbol = "Symbol is required"
-    } else if(values.tokenSymbol.length > 15){
-      errors.tokenSymbol = "Symbol should not be more than 15 characters"
-    }
+    const priceXdc = 1;
+    const gasPrice = await window.web3.eth.getGasPrice(); 
+    console.log('t---', window.web3.currentProvider.publicConfigStore._state.selectedAddress)
 
-    if(!values.decimals){
-      errors.decimals = "Decimal is required"
-    } else if(values.decimals.length < 1 && values.decimals.length > 18){
-      errors.decimals = "Decimal should not be more than 18 or less than 1 characters"
-    } else if(values.decimals.length === 0){
-      errors.decimals = "Decimal can't be 0"
-    }
+    let transaction = {
+      "from": window.web3.currentProvider.publicConfigStore._state.selectedAddress,
+      "gas": 40000000000,
+      "gasPrice": gasPrice,
+      "data": contractInstance.methods.createTweet(132435363634737 + "", 132435363634737 + " :@#: " + "text" + " :@#: " + "authorId" + " :@#: " + "createdAt").encodeABI()
+    };
+    // myContract.methods.createTweet(id + "", id + " :@#: " + text + " :@#: " + authorId + " :@#: " + createdAt); need to know the definition of this function from Deepak or anyhow.
+    // contractInstance.deploy({})
 
-    if(!values.description){
-      errors.description = "Description is required"
-    } else if(values.description.length > 500){
-      errors.description = "Description should not be more than 500 characters"
-    }
 
-    // if(!values.tokenSupply){
-    //   errors.tokenSupply = "Supply is required"
-    // } else if(values.tokenSupply.length < 1){
-    //   errors.tokenSupply = "Supply can't be less than 1"
-    // }
-    return errors;
+    await window.web3.eth.sendTransaction(transaction)
+      .on('transactionHash', function (hash) {
+        console.log("transactionHash ====", hash);
+      })
+      .on('receipt', function (receipt) {
+        console.log("receipt ====", receipt); //receive the contract address from this object
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        console.log("confirmation ====", confirmationNumber, receipt);
+      })
   }
 
-  const saveAsDraft = async (e) => {
-    let reqObj = {
-      tokenOwner: tokenData.tokenOwner,
-      tokenName: tokenData.tokenName,
-      tokenSymbol: tokenData.tokenSymbol,
-      tokenImage: tokenData.tokenImage,
-      tokenInitialSupply: 200,
-      tokenDecimals: 8,
-      tokenDescription: tokenData.description,
-      network: tokenData.network,
-      isBurnable: tokenData.burnable,
-      isMintable: tokenData.mintable,
-      isPausable: tokenData.pausable,
-    };
-
-    const [err, res] = await SaveDraftService.saveTokenAsDraft(reqObj);
-    // setDraft(res);
-    if (res) {
-      Utils.apiSuccessToast("Saved Data as Draft");
-    }
-  };
 
   return (
     <>
@@ -379,7 +494,7 @@ export default function CommonTab(props) {
                       tokenData={tokenData}
                       formErrors={formErrors}
                       handleChange={handleChange}
-                      saveAsDraft={saveAsDraft}
+                      sendTransaction={sendTransaction}
                     />
                   );
                 case 4:

@@ -319,11 +319,11 @@ export default function Token(props) {
 
           <CommonRow>
             <TextDiv>Decimal</TextDiv>
-            <InputDiv
-              type="text"
+             <InputDiv
+              type="number"
               onChange={(e) => props.handleChange(e)}
               name="decimals"
-              value={props.tokenData.decimals}
+              value={props.tokenData.decimals || ''}
               placeholder="8-18"
             />
 
