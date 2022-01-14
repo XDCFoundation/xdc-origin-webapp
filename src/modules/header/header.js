@@ -7,12 +7,16 @@ import Sidebar from "../dashboard/sidebar";
 
 function Header(props) {
   const history = useHistory();
+  const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
+  const connectWallet = () => {
+    setConnectWalletDialoag(!connectWalletDialoag);
+  };
   return (
     <>
       <HeaderContainer>
@@ -29,13 +33,21 @@ function Header(props) {
             <Span onClick={() => history.push("/")}>SmartMint</Span>
           </div>
           <div className="buttons">
-            <UserLogo src="/images/profile.svg" />
+            {/* <UserLogo  src="/images/profile.svg" /> */}
+            <MobBtn onClick={() => history.push("/wallet-popup")}>
+              Connect Wallet
+            </MobBtn>
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
-            <Button>Connect Wallet</Button>
+            <Button onClick={() => connectWallet()}>Connect Wallet</Button>
           </div>
         </SpaceBetween>
       </HeaderContainer>
       {isOpen ? <Sidebar /> : ""}
+      <ConnectWallet
+        open={connectWalletDialoag}
+        onClose={connectWallet}
+        handleClose={connectWallet}
+      />
     </>
   );
 }
@@ -43,7 +55,7 @@ export default Header;
 const HeaderContainer = styled.div`
   background: #091f5c 0% 0% no-repeat padding-box;
   opacity: 1;
-  padding: 5px;
+  padding: 11px;
   height: 57px;
   position: sticky;
   top: 0;
@@ -84,6 +96,25 @@ const Button = styled.button`
   width: 142px;
   height: 36px;
   @media (max-width: 425px) {
+    display: none;
+  }
+`;
+const MobBtn = styled.button`
+background: transparent;
+    border: 1px solid #ffffff;
+    margin-left: 5%;
+    margin-top: 2px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #ffffff;
+    font: normal normal medium 15px/19px Inter;
+    top: 10px;
+    left: 1764px;
+    white-space: nowrap;
+    width: 130px;
+    height: 30px;
+  }
+  @media (min-width: 768px) {
     display: none;
   }
 `;

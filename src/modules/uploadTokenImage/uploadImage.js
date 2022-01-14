@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import SeekBar from "react-seekbar-component";
 import "react-seekbar-component/dist/index.css";
+import { useDropzone } from "react-dropzone";
+import AWSServices from "../../services/aws-service";
+import Cropper from "react-easy-crop";
+import GetCroppedImg from "./cropImage";
 
 const Header = styled.div`
   display: flex;
@@ -129,12 +133,16 @@ const UploadName = styled.span`
   opacity: 1;
 `;
 
-const TokenImage = styled.img`
+const TokenImage = styled.div`
   width: 264px;
   height: 264px;
-  margin-bottom: 5%;
+  position: "relative";
   background: #000000 0% 0% no-repeat padding-box;
-  opacity: 0.18;
+  overflow: hidden;
+  top: 100px;
+  left: 200px;
+  right: 200px;
+  bottom: 80px;
 `;
 
 const CropImage = styled.div`
@@ -150,10 +158,51 @@ const Plus = styled.img`
   width: 10px;
 `;
 
+const ControlButtons = styled.button`
+  background-color: #ffffff;
+  border-width: 0px;
+`;
+const DisplayImage = styled.img`
+  width: 264px;
+  height: 264px;
+  align-items: center;
+`;
+
+const zoomStep = 0.1;
+const maxScale = 5;
+const minScale = 1;
+const defaultScale = minScale;
+
 export default function UploadTokenImage(props) {
   const [open, setOpen] = React.useState(false);
   const [upload, setUpload] = React.useState(false);
-  const [value, setValue] = React.useState(0);
+
+  const [scale, setScale] = React.useState(defaultScale);
+  const [file, setFile] = React.useState({});
+  const [filePreview, setFilePreview] = React.useState({});
+  const [croppedAreaPixels, setCroppedAreaPixels] = React.useState(null);
+  const [croppedImage, setCroppedImage] = React.useState(null);
+  const [crop, setCrop] = React.useState({ x: 1, y: 1 });
+  const [zoom, setZoom] = React.useState(1);
+
+  const s3Bucket = process.env.REACT_APP_S3_BUCKET_NAME
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const zoomIn = () => {
+    setScale(scale + zoomStep);
+    if (scale >= maxScale) {
+      setScale(maxScale);
+    }
+  };
+  const zoomOut = () => {
+    setScale(scale - zoomStep);
+    if (scale <= minScale) {
+      setScale(minScale);
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -169,40 +218,101 @@ export default function UploadTokenImage(props) {
   const handleCloseUpload = () => {
     setUpload(true);
   };
+
+  const uploadFileToAWS = async (croppedImage) => {
+    handleClose();
+    handleClickUpload();
+    setScale(defaultScale);
+    const awsFile = await new AWSServices().uploadFileToS3(
+      file.key,
+      croppedImage,
+      s3Bucket
+    );
+    console.log(
+      "Image uploaded. URL: ",
+      "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" + awsFile.sourceFileName
+    );
+  };
+
+  const showCroppedImage = useCallback(async () => {
+    try {
+      const croppedImage = await GetCroppedImg(filePreview, croppedAreaPixels);
+      setFile({ content: croppedImage });
+      setCroppedImage(croppedImage);
+      uploadFileToAWS(croppedImage);
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
   const RenderUi = () => {
+    const onDrop = useCallback(async (acceptedFiles) => {
+      handleCloseUpload();
+      let content = acceptedFiles[0].path;
+      let key = `${"userId"}/${"token-image"}/${
+        JSON.stringify(new Date().getTime()) + ".png"
+      }`;
+      setFilePreview(URL.createObjectURL(acceptedFiles[0]));
+      setFile({ key: key, content: content });
+    });
+
+    const { getInputProps, getRootProps } = useDropzone({ onDrop });
+
     if (!upload) {
       return (
         <Content>
-          <UploadCircle  onClick={handleCloseUpload}>
+          <UploadCircle {...getRootProps()}>
+            <input {...getInputProps()} />
             <UploadIcon src="images/Upload.svg"></UploadIcon>
             <UploadText>Drag and drop your token icon here</UploadText>
           </UploadCircle>
           <ContentText>or</ContentText>
-          <UploadPhoto>
-            <ButtonName onClick={handleCloseUpload}>Upload a photo</ButtonName>
+          <UploadPhoto {...getRootProps()}>
+            <input {...getInputProps()} />
+            <ButtonName>Upload a photo</ButtonName>
           </UploadPhoto>
         </Content>
       );
     } else {
       return (
         <Content>
-          <TokenImage></TokenImage>
+          <TokenImage>
+            <Cropper
+              image={filePreview}
+              crop={crop}
+              zoom={scale}
+              aspect={4 / 4}
+              onCropChange={setCrop}
+              onCropComplete={onCropComplete}
+              onZoomChange={setZoom}
+              showGrid={false}
+              cropSize={{ width: 220, height: 220 }}
+              cropShape="round"
+              objectFit={"horizontal-cover" || "vertical-cover"}
+              disableAutomaticStylesInjection={true}
+            />
+          </TokenImage>
           <CropImage>
-            <img src="images/Minus.svg"></img>
+            <ControlButtons onClick={zoomOut}>
+              <img src="images/Minus.svg"></img>
+            </ControlButtons>
             <div>
               <SeekBar
-                getNumber={setValue}
+                getNumber={setScale}
+                max={10}
                 width="300px"
                 backgroundColor="#EDEDED"
                 fillColor="#EDEDED"
                 fillSecondaryColor="#EDEDED"
                 headColor="#00000029"
                 headBorderWidth={3}
-                progress={20}
+                progress={zoom}
                 borderColor="#4B4B4B"
               />
             </div>
-            <Plus src="images/Token_Image.svg"></Plus>
+            <ControlButtons onClick={zoomIn}>
+              <Plus src="images/Token_Image.svg"></Plus>
+            </ControlButtons>
           </CropImage>
         </Content>
       );
@@ -211,19 +321,24 @@ export default function UploadTokenImage(props) {
 
   return (
     <div>
-      <Dialog className="display-pop-up" open={true}> {/** given value true is hardcoded.. will update while integrating */}
+      <Dialog className="display-pop-up" open={true}>  {/**change true to state "open" while integrating */}
         <Header>
           <DialogTitle>Upload Token Image</DialogTitle>
-          <Cross onClick={() => props.handleUploadClose()} src="images/Cross.svg"></Cross>
+          <Cross
+            onClick={handleClose}
+            src="images/Cross.svg"
+          ></Cross>
         </Header>
         <ContentContainer>
           {RenderUi()}
 
           <Buttons>
             <Cancel>
-              <CancelName onClick={() => props.handleUploadClose()}>Cancel</CancelName>
+              <CancelName onClick={handleClose}>
+                Cancel
+              </CancelName>
             </Cancel>
-            <UploadButton>
+            <UploadButton onClick={showCroppedImage}>
               <UploadName>Upload</UploadName>
             </UploadButton>
           </Buttons>
