@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
+import { addFeaturesContent } from "../../constants";
 
 const Parent = styled.div`
   display: flex;
@@ -289,7 +290,6 @@ const Check = styled.img`
 `;
 
 export default function AddFeatures(props) {
-  const [draft, setDraft] = useState([]);
   const tab = [
     {
       id: 1,
@@ -298,8 +298,8 @@ export default function AddFeatures(props) {
       activeCheckImage: "/images/Selected-Circle.svg",
       image: "/images/Pausable.svg",
       checked: props.tokenData.pausable,
-      content:
-        "Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
+      content: addFeaturesContent.PAUSABLE_CONTENT
+       
     },
     {
       id: 2,
@@ -308,8 +308,8 @@ export default function AddFeatures(props) {
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       checked: props.tokenData.burnable,
-      content:
-        "Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
+      content: addFeaturesContent.PAUSABLE_CONTENT,
+       
     },
     {
       id: 3,
@@ -318,8 +318,8 @@ export default function AddFeatures(props) {
       activeCheckImage: "/images/Selected-Circle.svg",
       checkImage: "/images/Empty-Circle.svg",
       checked: props.tokenData.mintable,
-      content:
-        "Building distribution / crowdsale logic directly into the token contract or by including a generic mint function that can be called by an external contract.",
+      content: addFeaturesContent.MINTABLE_CONTENT
+        
     },
   ];
 
@@ -332,40 +332,11 @@ export default function AddFeatures(props) {
     setArr(newData);
   };
 
-  let parsingDecimal = Number(props.tokenData.decimals);
-  let parsingSupply = Number(props.tokenData.tokenSupply);
-
-  const saveAsDraft = async (e) => {
-    e.preventDefault();
-    let reqObj = {
-      tokenOwner: props.tokenData.tokenOwner,
-      tokenName: props.tokenData.tokenName,
-      tokenSymbol: props.tokenData.tokenSymbol,
-      tokenImage: props.tokenData.tokenImage,
-      tokenInitialSupply: parsingSupply,
-      tokenDecimals: parsingDecimal,
-      tokenDescription: props.tokenData.description,
-      network: props.tokenData.network,
-      isBurnable: props.tokenData.burnable,
-      isMintable: props.tokenData.mintable,
-      isPausable: props.tokenData.pausable,
-    };
-
-    const [err, res] = await Utils.parseResponse(
-      SaveDraftService.saveTokenAsDraft(reqObj)
-    );
-    setDraft(err);
-    if (res) {
-      Utils.apiSuccessToast("Saved Data as Draft");
-    }
-  };
-
   const deployToken = (e) => {
     e.preventDefault();
-    saveAsDraft(e);
+    props.saveAsDraft(e);
     props.nextStep(e);
-    props.sendTransaction();
-  };
+  }
 
   return (
     <>
@@ -413,12 +384,12 @@ export default function AddFeatures(props) {
               </BackButton>
 
               <RightDiv>
-                <SaveDraftButton onClick={saveAsDraft}>
+                <SaveDraftButton onClick={(e)=>props.saveAsDraft(e)}>
                   <SaveDraftText>Save Draft</SaveDraftText>
                   <BackImgDiv src="/images/ContractDetails.svg" />
                 </SaveDraftButton>
-                <DeployButton>
-                  <DeployText onClick={deployToken}>Deploy</DeployText>
+                <DeployButton onClick={deployToken}>
+                  <DeployText>Deploy</DeployText>
                   <BackImgDiv src="/images/DeployContract_Active.svg" />
                 </DeployButton>
               </RightDiv>

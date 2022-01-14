@@ -260,7 +260,8 @@ export default function Token(props) {
               <InputDiv
                 type="text"
                 name="network"
-                onChange={(e) => props.handleChange(e)}
+                readOnly
+                // onChange={(e) => props.handleChange(e)}
                 value={props.tokenData.network}
                 placeholder="XDC Mainnet"
               />
