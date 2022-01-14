@@ -49,7 +49,6 @@ const Column = styled.div`
 const RowOne = styled.div`
   display: flex;
   flex-direction: row;
-  /* padding: 10px 0px 10px 0px; */
 `;
 
 const Div = styled.div`
@@ -60,9 +59,6 @@ const Div = styled.div`
   border-bottom: 1px solid #f0f0f0;
   @media (min-width: 767px) and (max-width: 1024px) {
     width: 180.5px;
-  }
-  @media (min-width: 0px) and (max-width: 767px) {
-    /* width: 88.75px; */
   }
 `;
 
@@ -115,9 +111,6 @@ const ActiveTextOne = styled.div`
   letter-spacing: 0px;
   color: #0089ff;
   opacity: 1;
-  /* @media (min-width: 0px) and (max-width: 767px) {
-    display: none;
-  } */
 `;
 
 const TextTwo = styled.div`
@@ -153,16 +146,8 @@ const ActiveTextTwo = styled.div`
 `;
 
 export default function CommonTab(props) {
-  // const [opt, setOpt] = useState(1);
   const [step, setStep] = useState(1);
 
-  const nextStep = () => {
-    setStep(step + 1);
-  };
-
-  const prevStep = () => {
-    setStep(step - 1);
-  };
   const tab = [
     {
       id: 1,
@@ -170,6 +155,8 @@ export default function CommonTab(props) {
       image: "/images/ContractDetails.svg",
       activeImage: "/images/Contract-Details-Active.svg",
       circleImage: "/images/Selected-Circle.svg",
+      image1: "/images/ContractDetails.svg",
+      activeImage1: "/images/Contract-Details-Active.svg",
       name: "Basic Information",
     },
     {
@@ -178,6 +165,8 @@ export default function CommonTab(props) {
       image: "/images/Tokenomics.svg",
       activeImage: "/images/Tokenomics-Active.svg",
       circleImage: "/images/Selected-Circle.svg",
+      image1: "/images/Tokenomics.svg",
+      activeImage1: "/images/Tokenomics-Active.svg",
       name: "Tokenomics",
     },
     {
@@ -186,6 +175,8 @@ export default function CommonTab(props) {
       image: "/images/Features.svg",
       activeImage: "/images/Features-Active.svg",
       circleImage: "/images/Selected-Circle.svg",
+      image1: "/images/Features.svg",
+      activeImage1: "/images/Features-Active.svg",
       name: "Add Features",
     },
     {
@@ -194,10 +185,33 @@ export default function CommonTab(props) {
       image: "/images/Deploy.svg",
       activeImage: "/images/Deploy-Active.svg",
       circleImage: "/images/Selected-Circle.svg",
+      image1: "/images/Deploy.svg",
+      activeImage1: "/images/Deploy-Active.svg",
       name: "Deploy Contract",
     },
   ];
 
+  const [arr, setArr] = useState(tab);
+  const nextStep = () => {
+    let newData = arr.map((item) => {
+      return item.id !== step
+        ? item
+        : { ...item, image: item.circleImage, activeImage: item.circleImage };
+    });
+
+    setArr(newData);
+    setStep(step + 1);
+  };
+
+  const prevStep = () => {
+    let newData = arr.map((item) => {
+      return item.id !== step - 1
+        ? item
+        : { ...item, image: item.image1, activeImage: item.activeImage1 };
+    });
+    setArr(newData);
+    setStep(step - 1);
+  };
   return (
     <>
       <MainContainer>
@@ -205,7 +219,7 @@ export default function CommonTab(props) {
           <Header>Create XRC20 Token</Header>
           <Column>
             <RowOne>
-              {tab.map((item) => {
+              {arr.map((item) => {
                 const TextOneActive = step == item.id ? ActiveTextOne : TextOne;
                 const TextTwoActive = step == item.id ? ActiveTextTwo : TextTwo;
 
@@ -243,7 +257,7 @@ export default function CommonTab(props) {
                 case 4:
                   return <DeployContractPage />;
                 default:
-                  return //;
+                  return;
               }
             })()}
           </Column>

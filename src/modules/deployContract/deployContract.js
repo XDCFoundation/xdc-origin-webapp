@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import "../../assets/styles/deployContract.css";
 import styled from "styled-components";
 import { Delete, Edit } from "@material-ui/icons";
 import DeleteContract from "../deleteContract/deleteContract";
 import DeployPopup from "./deployPopup";
 
+<<<<<<< HEAD
 function DeployContract(props) {
+=======
+function DeployContract() {
+  const history = useHistory()
+>>>>>>> 9eeab901ab917448af2f59c84bd2a651c2585661
   const [open, setOpen] = useState(false);
   const [openDeployPopup, setOpenDeployPopup] = useState(false);
 
@@ -72,7 +78,7 @@ function DeployContract(props) {
                   <div className="deleteIcon" onClick={handleClickOpen}>
                     <Delete />
                   </div>
-                  <div className="editIcon">
+                  <div onClick={() =>history.push('/token-XRC20')} className="editIcon">
                     <Edit />
                   </div>
                 </div>
