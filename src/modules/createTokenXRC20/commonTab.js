@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import BasicInfoPage from "./basicInformation";
 import TokenomicsPage from "./tokenomics";
 import AddFeaturesPage from "./addFeature";
 import DeployContractPage from "./deployContract";
+import { apiBodyMessages, apiSuccessConstants, validationsMessages } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import Web3 from 'web3';
@@ -149,6 +151,8 @@ const ActiveTextTwo = styled.div`
 `;
 
 export default function CommonTab(props) {
+  const history = useHistory();
+
   const tab = [
     {
       id: 1,
@@ -195,6 +199,7 @@ export default function CommonTab(props) {
   const [arr, setArr] = useState(tab);
   const [step, setStep] = useState(1);
   const [ownerAddress, setOwnerAddress] = useState("")
+  const [networkVersion, setNetworkVersion] = useState("")
 
   useEffect(() => {
     getAddress();
@@ -206,7 +211,9 @@ export default function CommonTab(props) {
       //when metamask is disabled
       const state = window.web3.givenProvider.publicConfigStore._state;
       let address = state.selectedAddress
+      let network = state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem TestNet"
       setOwnerAddress(address)
+      setNetworkVersion(network)
       // sendTransaction();
       // network ---> 50 for mainnet, 51 for apothem
     }
@@ -214,9 +221,11 @@ export default function CommonTab(props) {
       //metamask is also enabled with xdcpay
       const state = window.web3.givenProvider.publicConfigStore._state;
       let address = state.selectedAddress;
-      let network = state.network; //50 for mainnet, 51 for apothem
+      let network = state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem TestNet" 
       setOwnerAddress(address)
+      setNetworkVersion(network)
       // sendTransaction();
+      //50 for mainnet, 51 for apothem
     }
   }
 
@@ -241,18 +250,19 @@ export default function CommonTab(props) {
   // capturing all fields value: 
 
   const handleChange = (e) => {
-    setTokenData({ ...tokenData, tokenOwner: ownerAddress, [e.target.name]: e.target.value }); //destructuring
+    setTokenData({ ...tokenData, network: networkVersion, tokenOwner: ownerAddress, [e.target.name]: e.target.value }); //destructuring
     // console.log("form---", tokenData);
   };
 
   // condition checking for nextStep: 
 
   useEffect(() => {
-    console.log("er--", formErrors);
+    // console.log("er--", formErrors);
     if (Object.keys(formErrors).length === 0 && saveAndContinue) {
       console.log("val---", tokenData);
     }
   }, [formErrors]);
+
 
   //form error validations :
 
@@ -260,39 +270,40 @@ export default function CommonTab(props) {
     const errors = {};
 
     if (!values.network) {
-      errors.network = "Network is required";
+      errors.network = validationsMessages.VALIDATE_NETWORK;
     }
 
     if (!values.tokenName) {
-      errors.tokenName = "TokenName is required";
+      errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_FIELD;
     } else if (values.tokenName.length > 30) {
-      errors.tokenName = "Token Name should not be more than 30 characters";
+      errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_LIMIT;
     }
 
     if (!values.tokenSymbol) {
-      errors.tokenSymbol = "Symbol is required";
+      errors.tokenSymbol = validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD;
     } else if (values.tokenSymbol.length > 15) {
-      errors.tokenSymbol = "Symbol should not be more than 15 characters";
+      errors.tokenSymbol = validationsMessages.VALIDATE_TOKEN_SYMBOL_LIMIT;
     }
 
     if (!values.decimals) {
-      errors.decimals = "Decimal is required";
-    } else if (Number(values.decimals) <= 1) {
-      errors.decimals = "Decimal should not be less than 1";
-    } else if (Number(values.decimals) >= 18) {
-      errors.decimals = "Decimal should not be more than 18";
+      errors.decimals = validationsMessages.VALIDATE_DECIMAL_FIELD;
+    } else if (Number(values.decimals) < 1) {
+      errors.decimals = validationsMessages.VALIDATE_DECIMAL_MIN_RANGE;
+    } else if (Number(values.decimals) > 18) {
+      errors.decimals = validationsMessages.VALIDATE_DECIMAL_MAX_RANGE;
     } else if (Number(values.decimals) === 0) {
-      errors.decimals = "Decimal can't be 0";
+      errors.decimals = validationsMessages.VALIDATE_DECIMAL_VALUE;
     }
 
     if (!values.description) {
-      errors.description = "Description is required";
+      errors.description = validationsMessages.VALIDATE_DESCRIPTION_FIELD;
     } else if (values.description.length > 500) {
-      errors.description = "Description should not be more than 500 characters";
+      errors.description = validationsMessages.VALIDATE_DESCRIPTION_LIMIT;
     }
 
     return errors;
   };
+
 
   // Steps navigation functions : 
 
@@ -324,12 +335,44 @@ export default function CommonTab(props) {
     setStep(step - 1);
   };
 
+  // saveDraft api function : 
 
- // function to open xdc pay extension: 
+  let createdToken = tokenData.tokenName
+  let parsingDecimal = Number(tokenData.decimals);
+  let parsingSupply = Number(tokenData.tokenSupply);
 
-  const sendTransaction = async () => {
+  const saveAsDraft = async (e) => {
+    e.preventDefault();
+    let reqObj = {
+      tokenOwner: tokenData.tokenOwner,
+      tokenName: createdToken,
+      tokenSymbol: tokenData.tokenSymbol,
+      tokenImage: tokenData.tokenImage,
+      tokenInitialSupply: parsingSupply,
+      tokenDecimals: parsingDecimal,
+      tokenDescription: tokenData.description,
+      network: tokenData.network,
+      isBurnable: tokenData.burnable,
+      isMintable: tokenData.mintable,
+      isPausable: tokenData.pausable,
+    };
+
+    const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
+    // console.log('res---', res)
+    if (res !== 0) {
+      Utils.apiSuccessToast(apiSuccessConstants.DRAFTED_DATA_SUCCESS);
+      sendTransaction(res)
+    }
+  };
+
+
+  // function to open xdc pay extension: 
+
+  const sendTransaction = async (tokenDetails) => {
+    let draftedTokenId = tokenDetails?.id
+    let draftedTokenOwner = tokenDetails?.tokenOwner
+
     let xdce_address = tokenData.tokenOwner;
-    // let web3333 = new Web3(new Web3.providers.HttpProvider('https://rpc.apothem.network'));
     let newAbi = {
       "abi": [
         {
@@ -406,15 +449,14 @@ export default function CommonTab(props) {
     }
 
     let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
-    console.log('co--', contractInstance)
+    // console.log('co--', contractInstance)
 
     const priceXdc = 1;
-    const gasPrice = await window.web3.eth.getGasPrice(); 
-    console.log('t---', window.web3.currentProvider.publicConfigStore._state.selectedAddress)
+    const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
       "from": window.web3.currentProvider.publicConfigStore._state.selectedAddress,
-      "gas": 40000000000,
+      "gas": 415800000,
       "gasPrice": gasPrice,
       "data": contractInstance.methods.createTweet(132435363634737 + "", 132435363634737 + " :@#: " + "text" + " :@#: " + "authorId" + " :@#: " + "createdAt").encodeABI()
     };
@@ -424,16 +466,19 @@ export default function CommonTab(props) {
 
     await window.web3.eth.sendTransaction(transaction)
       .on('transactionHash', function (hash) {
-        console.log("transactionHash ====", hash);
+        // console.log("transactionHash ====", hash);
       })
       .on('receipt', function (receipt) {
         console.log("receipt ====", receipt); //receive the contract address from this object
+        if (receipt !== 0) {
+          history.push({ pathname: '/created-token', state: receipt, parsingDecimal, parsingSupply, gasPrice, createdToken })
+          // updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+        }
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        console.log("confirmation ====", confirmationNumber, receipt);
+        // console.log("confirmation ====", confirmationNumber, receipt);
       })
   }
-
 
   return (
     <>
@@ -470,19 +515,19 @@ export default function CommonTab(props) {
                 case 1:
                   return (
                     <BasicInfoPage
-                      nextStep={nextStep}
                       tokenData={tokenData}
                       formErrors={formErrors}
+                      nextStep={nextStep}
                       handleChange={handleChange}
                     />
                   );
                 case 2:
                   return (
                     <TokenomicsPage
-                      nextStep={nextStep}
-                      prevStep={prevStep}
                       tokenData={tokenData}
                       formErrors={formErrors}
+                      nextStep={nextStep}
+                      prevStep={prevStep}
                       handleChange={handleChange}
                     />
                   );
@@ -493,8 +538,9 @@ export default function CommonTab(props) {
                       prevStep={prevStep}
                       tokenData={tokenData}
                       formErrors={formErrors}
-                      handleChange={handleChange}
+                      saveAsDraft={saveAsDraft}
                       sendTransaction={sendTransaction}
+                      handleChange={handleChange}
                     />
                   );
                 case 4:
