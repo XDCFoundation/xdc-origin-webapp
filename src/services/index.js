@@ -4,3 +4,5 @@
 //export all services from index file -
 
 // export * from './user'
+
+export { default as contractManagementService } from "./contractManagementService";
