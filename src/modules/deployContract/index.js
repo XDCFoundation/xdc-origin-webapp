@@ -42,6 +42,26 @@ class DeployContract extends BaseComponent {
       });
     }
   }
+  deleteContract = async (tokenId) => {
+    let requestData = {
+      id: tokenId,
+    };
+  
+    let [error, deleteContractResponse] = await Utility.parseResponse(
+      contractManagementService.deleteContract(requestData)
+    );
+
+    if (error || !deleteContractResponse) {
+      console.log("deleteContract error -> ", error)
+      Utility.apiFailureToast("Failed To Delete Token!");
+      return;
+    }
+  
+    if (deleteContractResponse) {
+      Utility.apiSuccessToast("Token Deleted Successfully!");
+      this.getDraftFailedXrc20Token()
+    }
+  }
 
   render() {
     return (
@@ -49,7 +69,7 @@ class DeployContract extends BaseComponent {
         <Header />
         <Row>
           {window.innerWidth >= 1024 ? <Sidebar /> : ""}
-          <DeployContractComponent state={this.state}/>
+          <DeployContractComponent state={this.state} deleteContract={this.deleteContract}/>
         </Row>
         {window.innerWidth <= 768 ? <Footer /> : ""}
       </div>
