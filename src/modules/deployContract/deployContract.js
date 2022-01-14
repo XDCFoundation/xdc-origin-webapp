@@ -23,7 +23,12 @@ function DeployContract(props) {
   const deployPopupClose = () => {
     setOpenDeployPopup(false);
   };
-  
+  const capitalize = (str) => {
+    let lowerStr = str.toLowerCase();
+    let newtr = lowerStr.charAt(0).toUpperCase() + lowerStr.slice(1);
+    return newtr;
+  }
+
   return (
     <Container>
       <Heading>Deploy Contracts</Heading>
@@ -58,7 +63,7 @@ function DeployContract(props) {
                   <TableContent>{item.tokenInitialSupply}</TableContent>
                 </div>
                 <div className="status">
-                  <TableContent>{item.status}</TableContent>
+                  <TableContent>{capitalize(item.status)}</TableContent>
                 </div>
                 <div className="icons">
                   <div className="deployIcon" onClick={handleDeployPopup}>
