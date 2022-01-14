@@ -20,7 +20,8 @@ class DeployContract extends BaseComponent {
     this.getDraftFailedXrc20Token();
   }
 
-  getDraftFailedXrc20Token = async() => {
+  getDraftFailedXrc20Token = async () => {
+    // Need to fetch tokenOwner from Redux
     let requestData = {
       tokenOwner: "0xc95b2c9d6a84a8c17c6b8722d0a8cc9afb024dfd",
     };
@@ -31,7 +32,7 @@ class DeployContract extends BaseComponent {
 
     if (error || !contractServiceResponse) {
       console.log("getDraftFailedXrc20Token error -> ", error)
-      Utility.apiSuccessToast("Failed To Fetch Token Details!");
+      Utility.apiFailureToast("Failed To Fetch Token Details!");
       return;
     }
   
