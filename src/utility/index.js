@@ -8,7 +8,7 @@ import aws from "aws-sdk";
 
 const toast = ToastService.new({
     place: 'topRight',
-    duration: 1,
+    duration: 2,
     maxCount: 2
 });
 let moment = require('moment');
