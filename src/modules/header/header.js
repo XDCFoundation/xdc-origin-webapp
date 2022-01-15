@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
@@ -34,11 +35,25 @@ function Header(props) {
           </div>
           <div className="buttons">
             {/* <UserLogo  src="/images/profile.svg" /> */}
-            <MobBtn onClick={() => history.push("/wallet-popup")}>
+            <MobBtn onClick={() => history.push("/connect-wallet-mobile")}>
               Connect Wallet
             </MobBtn>
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
-            <Button onClick={() => connectWallet()}>Connect Wallet</Button>
+            {props.userDetails.accountDetails.address ? (
+              <AddressContainer>
+                <Balance>14520 XDC</Balance>
+                <Address>
+                  {props.userDetails.accountDetails.address.slice(0, 6) +
+                    "..." +
+                    props.userDetails.accountDetails.address.substr(
+                      props.userDetails.accountDetails.address.length - 5
+                    )}
+                </Address>
+                <AccountIcon src="/images/XDC_Icon_White.svg" />
+              </AddressContainer>
+            ) : (
+              <Button onClick={() => connectWallet()}>Connect Wallet</Button>
+            )}
           </div>
         </SpaceBetween>
       </HeaderContainer>
@@ -51,7 +66,13 @@ function Header(props) {
     </>
   );
 }
-export default Header;
+
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+export default connect(mapStateToProps)(Header);
+
 const HeaderContainer = styled.div`
   background: #091f5c 0% 0% no-repeat padding-box;
   opacity: 1;
@@ -100,20 +121,20 @@ const Button = styled.button`
   }
 `;
 const MobBtn = styled.button`
-background: transparent;
-    border: 1px solid #ffffff;
-    margin-left: 5%;
-    margin-top: 2px;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #ffffff;
-    font: normal normal medium 15px/19px Inter;
-    top: 10px;
-    left: 1764px;
-    white-space: nowrap;
-    width: 130px;
-    height: 30px;
-  }
+  background: transparent;
+  border: 1px solid #ffffff;
+  margin-left: 5%;
+  margin-top: 2px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #ffffff;
+  font: normal normal medium 15px/19px Inter;
+  top: 10px;
+  left: 1764px;
+  white-space: nowrap;
+  width: 130px;
+  height: 30px;
+
   @media (min-width: 768px) {
     display: none;
   }
@@ -170,4 +191,42 @@ const Span = styled.span`
     margin-top: 4px;
     margin-left: 3px;
   }
+`;
+const AddressContainer = styled.div`
+  width: 262px;
+  height: 36px;
+  background: #324988 0% 0% no-repeat padding-box;
+  border-radius: 6px;
+  opacity: 1;
+  margin: auto 14px auto 0;
+  padding: 10px 10px 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+`;
+const Balance = styled.span`
+  height: 36px;
+  text-align: center;
+  font: normal normal medium 15px/19px Inter;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  background-color: #3e579a;
+  padding: 10px;
+`;
+const Address = styled.span`
+  width: 103px;
+  height: 19px;
+  text-align: left;
+  font: normal normal medium 15px/19px Inter;
+  color: #ffffff;
+  opacity: 1;
+`;
+const AccountIcon = styled.img`
+  width: 28px;
+  height: 28px;
+  opacity: 1;
 `;
