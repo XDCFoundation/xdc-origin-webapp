@@ -9,3 +9,8 @@ export const handleAccountDetails = (data) => ({
   type: eventConstants.LOGIN_SUCCESS,
   payload: data,
 });
+
+export const handleLogout = () => ({
+  type: eventConstants.LOGOUT_SUCCESS,
+  payload: null,
+});
