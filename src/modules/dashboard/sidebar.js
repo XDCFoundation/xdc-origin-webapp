@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
+import {handleLogout} from "../../action"
 
 function Sidebar(props) {
   const history = useHistory();
@@ -28,6 +29,11 @@ function Sidebar(props) {
     setIsSubNavActive(navItem);
     if (navItem === "XRC20") history.push("/token-XRC20");
   };
+
+  const logout = () => {
+    props.logout();
+    history.push("/");
+  }
 
   return (
     <SidebarContainer>
@@ -185,7 +191,7 @@ function Sidebar(props) {
           <Heading>FAQs</Heading>
         </Wrapper>
       )}
-      <Wrapper>
+      <Wrapper onClick={() => logout()}>
         <LogoutIcon src="/images/Logout-InActive.svg" />
         <Heading>Logout</Heading>
       </Wrapper>
@@ -200,7 +206,13 @@ const mapStateToProps = (state) => ({
   userAccountDetails: state.user,
 });
 
-export default connect(mapStateToProps)(Sidebar);
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => {
+    dispatch(handleLogout());
+  },
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Sidebar);
 
 const SidebarContainer = styled.div`
   z-index: 999;

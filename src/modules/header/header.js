@@ -39,14 +39,14 @@ function Header(props) {
               Connect Wallet
             </MobBtn>
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
-            {props.userDetails.accountDetails.address ? (
+            {props.userDetails?.accountDetails?.address ? (
               <AddressContainer>
                 <Balance>14520 XDC</Balance>
                 <Address>
-                  {props.userDetails.accountDetails.address.slice(0, 6) +
+                  {props.userDetails?.accountDetails?.address.slice(0, 6) +
                     "..." +
-                    props.userDetails.accountDetails.address.substr(
-                      props.userDetails.accountDetails.address.length - 5
+                    props.userDetails?.accountDetails?.address.substr(
+                      props.userDetails?.accountDetails?.address.length - 5
                     )}
                 </Address>
                 <AccountIcon src="/images/XDC_Icon_White.svg" />

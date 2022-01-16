@@ -1,4 +1,7 @@
-import { eventConstants } from "../constants";
+import { eventConstants, cookiesConstants } from "../constants";
+import { sessionManager } from "../managers/sessionManager"
+
+const accountDetails = sessionManager.getDataFromCookies(cookiesConstants.USER);
 
 let initialState = {
   isLoggedIn: false,
@@ -9,10 +12,11 @@ let initialState = {
   isForgotPasswordSuccess: false,
   isWalletOpen: false,
   accountDetails: {
-    address: null,
-    network: null,
+    address: accountDetails.address,
+    network: accountDetails.network,
   },
 };
+
 export default function user(state = initialState, action) {
   switch (action.type) {
     case eventConstants.CONNECT_WALLET:
@@ -22,9 +26,18 @@ export default function user(state = initialState, action) {
       };
 
     case eventConstants.LOGIN_SUCCESS:
+      sessionManager.setDataInCookies(action.payload ? action.payload : state.accountDetails, cookiesConstants.USER);
       return {
         ...state,
         accountDetails: action.payload,
+        isLoggedIn: true,
+      };
+    case eventConstants.LOGOUT_SUCCESS:
+      sessionManager.setDataInCookies(false, cookiesConstants.USER);
+      return {
+        ...state,
+        accountDetails: null,
+        isLoggedIn: false,
       };
     default:
       return state;

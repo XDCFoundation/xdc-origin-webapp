@@ -204,8 +204,21 @@ function connectWalletPopup(props) {
         let address = state.selectedAddress;
         let network =
           state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+        let account = false;
 
-        if (address || network) {
+        window.web3.eth.getAccounts((err, accounts) => {
+          if (err !== null) console.error("An error occurred: " + err);
+          else if (accounts.length === 0) {
+            account = false;
+          } else {
+            account = true;
+          }
+        });
+
+        if (!account) {
+          alert("Please Login To XDC PAY");
+        }
+        else if (address || network) {
           let accountDetails = {
             address: address,
             network: network,

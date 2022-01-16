@@ -26,4 +26,11 @@ export const httpConstants = {
 export const eventConstants = {
   CONNECT_WALLET: "CONNECT_WALLET",
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
+  LOGOUT_SUCCESS: "LOGOUT_SUCCESS"
+};
+
+export const cookiesConstants = {
+  ACCESS_TOKEN: "accessToken",
+  EXPIRES_AT: "expiresAt",
+  USER: "user",
 };
