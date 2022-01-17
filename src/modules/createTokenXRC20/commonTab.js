@@ -211,7 +211,7 @@ export default function CommonTab(props) {
       //when metamask is disabled
       const state = window.web3.givenProvider.publicConfigStore._state;
       let address = state.selectedAddress
-      let network = state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem TestNet"
+      let network = state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet"
       setOwnerAddress(address)
       setNetworkVersion(network)
       // sendTransaction();
@@ -221,7 +221,7 @@ export default function CommonTab(props) {
       //metamask is also enabled with xdcpay
       const state = window.web3.givenProvider.publicConfigStore._state;
       let address = state.selectedAddress;
-      let network = state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem TestNet" 
+      let network = state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet"
       setOwnerAddress(address)
       setNetworkVersion(network)
       // sendTransaction();
@@ -230,7 +230,7 @@ export default function CommonTab(props) {
   }
 
   const initialValues = {
-    network: "",
+    network: networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet",
     tokenOwner: "",
     tokenName: "",
     tokenSymbol: "",
@@ -250,7 +250,7 @@ export default function CommonTab(props) {
   // capturing all fields value: 
 
   const handleChange = (e) => {
-    setTokenData({ ...tokenData, network: networkVersion, tokenOwner: ownerAddress, [e.target.name]: e.target.value }); //destructuring
+    setTokenData({ ...tokenData, tokenOwner: ownerAddress, [e.target.name]: e.target.value }); //destructuring
     // console.log("form---", tokenData);
   };
 
@@ -365,7 +365,6 @@ export default function CommonTab(props) {
     }
   };
 
-
   // function to open xdc pay extension: 
 
   const sendTransaction = async (tokenDetails) => {
@@ -472,13 +471,28 @@ export default function CommonTab(props) {
         console.log("receipt ====", receipt); //receive the contract address from this object
         if (receipt !== 0) {
           history.push({ pathname: '/created-token', state: receipt, parsingDecimal, parsingSupply, gasPrice, createdToken })
-          // updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+          updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
         }
       })
       .on('confirmation', function (confirmationNumber, receipt) {
         // console.log("confirmation ====", confirmationNumber, receipt);
       })
   }
+
+  const updateTokenDetails = async (resultedTokenId, resultedTokenOwner, resultAddress) => {
+    let reqObj = {
+      tokenId: resultedTokenId,
+      tokenOwner: resultedTokenOwner,
+      smartContractAddress: resultAddress,
+      status: apiBodyMessages.STATUS_DEPLOYED
+    };
+    const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
+    // console.log('up---', res)
+    if (res !== 0) {
+      Utils.apiSuccessToast(apiSuccessConstants.UPDATE_DATA_SUCCESS);
+    }
+  }
+
 
   return (
     <>

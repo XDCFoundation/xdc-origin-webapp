@@ -245,13 +245,16 @@ const LineSeparation = styled.hr`
 `;
 
 const CreateToken = (props) => {
-  console.log("props---", props.location);
+  // console.log("props---", props.location);
+
   let gasPrice = Number(props.location.gasPrice)
   let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, props.location.parsingDecimal)
   let gweiValue = gasPrice / Math.pow(10, 9)
-//   console.log('gp--',typeof gasPrice,gasPrice)
-//   console.log('gp--',typeof gasFee,gasFee)
-//   console.log('gp--',typeof gweiValue,gweiValue)
+  let newContractAddress = props.location.state.contractAddress.replace(/0x/, 'xdc')
+  //   console.log('b---',newContractAddress)
+  //   console.log('gp--',typeof gasPrice,gasPrice)
+  //   console.log('gp--',typeof gasFee,gasFee)
+  //   console.log('gp--',typeof gweiValue,gweiValue)
   return (
     <>
       <BgContainer>
@@ -278,7 +281,7 @@ const CreateToken = (props) => {
                 Contract Address:
               </SuccessTokenKey>
               <SuccessTokenValues>
-                {props.location.state.contractAddress || ""}
+                {newContractAddress || ""}
                 <CopyIcon src="images/Copy.svg"></CopyIcon>
               </SuccessTokenValues>
             </SuccessRows>
@@ -296,7 +299,7 @@ const CreateToken = (props) => {
                 <KeyInfo src="images/Info.svg"></KeyInfo>
                 Gas Fee:
               </SuccessTokenKey>
-              <ValueDiv>{gasFee + '('+gweiValue+ ' '+'Gwei)'} </ValueDiv>
+              <ValueDiv>{gasFee + '(' + gweiValue + ' ' + 'Gwei)'} </ValueDiv>
             </SuccessRows>
           </SuccessTokenDetails>
           <Buttons>
