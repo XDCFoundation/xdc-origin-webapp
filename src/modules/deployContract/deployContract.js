@@ -76,7 +76,7 @@ function DeployContract(props) {
                   <div className="deleteIcon" onClick={() => handleClickOpen(item.id)}>
                     <Delete />
                   </div>
-                  <div onClick={() =>history.push('/token-XRC20')} className="editIcon">
+                  <div onClick={() =>history.push(`/token-XRC20/${item.id}`)} className="editIcon">
                     <Edit />
                   </div>
                 </div>

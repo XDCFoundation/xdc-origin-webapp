@@ -10,7 +10,7 @@ function About(props) {
   const history = useHistory();
   const [connectWallet, setConnectWallet] = useState(true);
 
-  const handleXDCPayWallet = () => {
+  const handleXDCPayWallet = async () => {
     window.web3 = new Web3(window.ethereum);
 
     if (window.web3.currentProvider) {
@@ -22,7 +22,7 @@ function About(props) {
           state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
         let account = false;
         
-          window.web3.eth.getAccounts((err, accounts) => {
+        await window.web3.eth.getAccounts((err, accounts) => {
             if (err !== null) console.error("An error occurred: "+err);
             else if (accounts.length === 0) {
               account = false;

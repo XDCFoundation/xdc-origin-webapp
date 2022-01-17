@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ChangeNetworkPopup from "../changeNetworkPopup/changeNetworkDesktop";
 import UploadFile from "../uploadTokenImage/uploadImage";
 import { useHistory } from "react-router";
+import { useParams } from "react-router-dom";
 
 const Parent = styled.div`
   display: flex;
@@ -233,6 +234,7 @@ export default function Token(props) {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const { id } = useParams()
 
   const togglePopup = () => {
     setIsOpen(!isOpen);

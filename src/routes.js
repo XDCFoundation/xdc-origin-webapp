@@ -31,6 +31,7 @@ class Routes extends BaseComponent {
             <Route exact path={"/created-token"} component={CreatedToken} />
             <Route exact path={"/deploy-contract"} component={DeployContract} />
             <Route exact path={"/token-XRC20"} component={CreateTokenXRC20} />
+            <Route exact path={"/token-XRC20/:id"} component={CreateTokenXRC20} />
             {/* <Route exact path={'/change-network'} component={ChangeNetwork}/> */}
             <Route exact path={"/change-network"} component={ChangeNetwork} />
             <Route
