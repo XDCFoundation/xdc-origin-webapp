@@ -17,6 +17,10 @@ import WalletPopup from "../src/modules/connectWallet/connectWalletMobile";
 import WalletPopupDesktop from "./modules/connectWallet";
 
 class Routes extends BaseComponent {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
   componentDidMount() {}
   render() {
     return (
@@ -26,6 +30,11 @@ class Routes extends BaseComponent {
             {/* <Route exact from="/" to="/dashboard/about" /> */}
             {/*<Route exact path={"/"} component={Login} />*/}
             {/*<Route exact path={"/sign-up"} component={SignUp} />*/}
+            {
+              !this.props?.user?.accountDetails?.address
+                ? <Route exact path={"/"} component={Dashboard} />
+                : ""
+            }
             <Route exact path={"/"} component={Dashboard} />
             <Route exact path={"/about"} component={About} />
             <Route exact path={"/created-token"} component={CreatedToken} />
