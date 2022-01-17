@@ -41,9 +41,9 @@ function Header(props) {
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
             {props.userDetails?.accountDetails?.address ? (
               <AddressContainer>
-                <Balance>14520 XDC</Balance>
+                <Balance>{props.userDetails?.accountDetails?.balance} XDC</Balance>
                 <Address>
-                  {props.userDetails?.accountDetails?.address.slice(0, 6) +
+                  {props.userDetails?.accountDetails?.address.slice(0, 5).replace(/0x/, 'Xdc') +
                     "..." +
                     props.userDetails?.accountDetails?.address.substr(
                       props.userDetails?.accountDetails?.address.length - 5

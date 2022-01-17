@@ -245,10 +245,10 @@ export default function CommonTab(props) {
             {(() => {
               switch (step) {
                 case 1:
-                  return <BasicInfoPage nextStep={nextStep} />;
+                  return <BasicInfoPage nextStep={nextStep} state={props.state}/>;
                 case 2:
                   return (
-                    <TokenomicsPage nextStep={nextStep} prevStep={prevStep} />
+                    <TokenomicsPage nextStep={nextStep} prevStep={prevStep} state={props.state}/>
                   );
                 case 3:
                   return (

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import ChangeNetworkPopup from "../changeNetworkPopup/changeNetworkDesktop";
 import UploadFile from "../uploadTokenImage/uploadImage";
 import { useHistory } from "react-router";
-import { useParams } from "react-router-dom";
 
 const Parent = styled.div`
   display: flex;
@@ -234,7 +233,6 @@ export default function Token(props) {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const { id } = useParams()
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -256,7 +254,7 @@ export default function Token(props) {
           <CommonRow>
             <TextDiv>Network</TextDiv>
             <InsideDiv>
-              <InputDiv placeholder="XDC Mainnet" />
+              <InputDiv placeholder="XDC Mainnet" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.network : ""}/>
               <PopButton onClick={togglePopup}>Change Network</PopButton>
               {isOpen && <ChangeNetworkPopup handleClose={togglePopup} />}
               <MobPopupBtn onClick={() => history.push("/change-network")}>
@@ -269,13 +267,13 @@ export default function Token(props) {
 
           <CommonRow>
             <TextDiv>Token Name</TextDiv>
-            <InputDiv placeholder="e.g. XDC Network" />
+            <InputDiv placeholder="e.g. XDC Network" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenName : ""}/>
             <BlurTextDiv>Choose a name for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Symbol</TextDiv>
-            <InputDiv placeholder="e.g. XDC" />
+            <InputDiv placeholder="e.g. XDC" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenSymbol : ""}/>
             <BlurTextDiv>Choose symbol for your token</BlurTextDiv>
           </CommonRow>
 
@@ -285,7 +283,7 @@ export default function Token(props) {
               <CircleDiv />
               <PlusImage
                 onClick={toggleUploadPopup}
-                src="/images/PlusIcon.svg"
+                src={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenImage : "/images/PlusIcon.svg"}
               />
               {isUploadOpen && (
                 <UploadFile handleUploadClose={toggleUploadPopup} />
@@ -295,7 +293,7 @@ export default function Token(props) {
 
           <CommonRow>
             <TextDiv>Decimal</TextDiv>
-            <InputDiv placeholder="8-18" />
+            <InputDiv placeholder="8-18" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenDecimals : ""}/>
             <BlurTextDiv>
               Insert the decimal precision of your token
             </BlurTextDiv>
@@ -303,25 +301,25 @@ export default function Token(props) {
 
           <CommonRow>
             <TextDiv>Description</TextDiv>
-            <InputDiv placeholder="A Dao Token" />
+            <InputDiv placeholder="A Dao Token" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenDescription : ""}/>
             <BlurTextDiv>Add description for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Website</TextDiv>
-            <InputDiv placeholder="Website Address" />
+            <InputDiv placeholder="Website Address" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.website : ""}/>
             <BlurTextDiv>Add Website url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Twitter(optional)</TextDiv>
-            <InputDiv placeholder="e.g. Twitter Url" />
+            <InputDiv placeholder="e.g. Twitter Url" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.twitter : ""}/>
             <BlurTextDiv>Add Twitter page url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Telegram</TextDiv>
-            <InputDiv placeholder="e.g. Telegram Url" />
+            <InputDiv placeholder="e.g. Telegram Url" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.telegram : ""}/>
             <BlurTextDiv>Add Telegram group url for your token</BlurTextDiv>
           </CommonRow>
 
