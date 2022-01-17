@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
+import {handleLogout} from "../../action"
 
-export default function Sidebar(props) {
+function Sidebar(props) {
   const history = useHistory();
-  const [isActive, setIsActive] = useState("");
+  const [isActive, setIsActive] = useState("about");
   const [createContract, setCreateContract] = useState(false);
-  const [isSubNavActive, setIsSubNavActive] = useState("XRC20");
+  const [isSubNavActive, setIsSubNavActive] = useState("");
   const [subNavItems, setSubNavItems] = useState(false);
+  const [userDetails, setuserDetails] = useState(props.userAccountDetails);
 
   const changeBackgound = (navItem) => {
     if (navItem === "create") {
@@ -24,7 +27,13 @@ export default function Sidebar(props) {
 
   const changeSubNavItemStyle = (navItem) => {
     setIsSubNavActive(navItem);
+    if (navItem === "XRC20") history.push("/token-XRC20");
   };
+
+  const logout = () => {
+    props.logout();
+    history.push("/");
+  }
 
   return (
     <SidebarContainer>
@@ -44,114 +53,145 @@ export default function Sidebar(props) {
           About SmartMint
         </Heading>
       </Wrapper>
-      <Wrapper
-        className={createContract ? "activeNavItem" : ""}
-        onClick={() => changeBackgound("create")}
-      >
-        {createContract ? (
-          <Icon src="/images/CreateContract_Active.svg" />
-        ) : (
-          <Icon src="/images/CreateContract_Inactive.svg" />
-        )}
-        <Heading className={createContract ? "activeText" : ""}>
-          Create Contract
-        </Heading>
-      </Wrapper>
-      {subNavItems ? (
-        <SubHeadingContainer>
-          <SubWrapper onClick={() => changeSubNavItemStyle("XRC20")}>
-            {isSubNavActive === "XRC20" ? (
-              <SubIcon src="/images/Token-Active.svg" />
+      {userDetails?.accountDetails?.address ? (
+        <>
+          <Wrapper
+            className={createContract ? "activeNavItem" : ""}
+            onClick={() => changeBackgound("create")}
+          >
+            {createContract ? (
+              <Icon src="/images/CreateContract_Active.svg" />
             ) : (
-              <SubIcon src="/images/Token-Inactive.svg" />
+              <Icon src="/images/CreateContract_Inactive.svg" />
             )}
-            <SubText
-              onClick={() => history.push("/token-XRC20")}
-              className={isSubNavActive === "XRC20" ? "xrc_active" : ""}
+            <Heading className={createContract ? "activeText" : ""}>
+              Create Contract
+            </Heading>
+          </Wrapper>
+          {subNavItems ? (
+            <SubHeadingContainer>
+              <SubWrapper onClick={() => changeSubNavItemStyle("XRC20")}>
+                {isSubNavActive === "XRC20" ? (
+                  <SubIcon src="/images/Token-Active.svg" />
+                ) : (
+                  <SubIcon src="/images/Token-Inactive.svg" />
+                )}
+                <SubText
+                  className={isSubNavActive === "XRC20" ? "xrc_active" : ""}
+                >
+                  XRC20 Token
+                </SubText>
+                {isSubNavActive === "XRC20" ? (
+                  <RightArrow src="/images/Next.svg" />
+                ) : (
+                  ""
+                )}
+              </SubWrapper>
+              <SubWrapper onClick={() => changeSubNavItemStyle("XRC223")}>
+                {isSubNavActive === "XRC223" ? (
+                  <SubIcon src="/images/Token-Active.svg" />
+                ) : (
+                  <SubIcon src="/images/Token-Inactive.svg" />
+                )}
+                <SubText
+                  className={isSubNavActive === "XRC223" ? "xrc_active" : ""}
+                >
+                  XRC223 Token
+                </SubText>
+                {isSubNavActive === "XRC223" ? (
+                  <RightArrow src="/images/Next.svg" />
+                ) : (
+                  ""
+                )}
+              </SubWrapper>
+              <SubWrapper onClick={() => changeSubNavItemStyle("Stablecoin")}>
+                {isSubNavActive === "Stablecoin" ? (
+                  <SubIcon src="/images/Token-Active.svg" />
+                ) : (
+                  <SubIcon src="/images/Token-Inactive.svg" />
+                )}
+                <SubText
+                  className={
+                    isSubNavActive === "Stablecoin" ? "xrc_active" : ""
+                  }
+                >
+                  Stablecoin
+                </SubText>
+                {isSubNavActive === "Stablecoin" ? (
+                  <RightArrow src="/images/Next.svg" />
+                ) : (
+                  ""
+                )}
+              </SubWrapper>
+            </SubHeadingContainer>
+          ) : (
+            ""
+          )}
+          <Wrapper
+            className={isActive === "deploy" ? "activeNavItem" : ""}
+            onClick={() => changeBackgound("deploy")}
+          >
+            {isActive === "deploy" ? (
+              <Icon src="/images/DeployContract_Active.svg" />
+            ) : (
+              <Icon src="/images/DeployContract_InActive.svg" />
+            )}
+            <Heading
+              onClick={() => history.push("/deploy-contract")}
+              className={
+                isActive === "deploy" ? "activeDeployText" : "deploy-margin"
+              }
             >
-              XRC20 Token
-            </SubText>
-            {isSubNavActive === "XRC20" ? (
-              <RightArrow src="/images/Next.svg" />
+              {" "}
+              Deploy contracts
+            </Heading>
+          </Wrapper>
+          <Wrapper
+            className={isActive === "manage" ? "activeNavItem" : ""}
+            onClick={() => changeBackgound("manage")}
+          >
+            {isActive === "manage" ? (
+              <Icon src="/images/ManageContract_Active.svg" />
             ) : (
-              ""
+              <Icon src="/images/ManageContract_InActive.svg" />
             )}
-          </SubWrapper>
-          <SubWrapper onClick={() => changeSubNavItemStyle("XRC223")}>
-            {isSubNavActive === "XRC223" ? (
-              <SubIcon src="/images/Token-Active.svg" />
-            ) : (
-              <SubIcon src="/images/Token-Inactive.svg" />
-            )}
-            <SubText
-              className={isSubNavActive === "XRC223" ? "xrc_active" : ""}
-            >
-              XRC223 Token
-            </SubText>
-            {isSubNavActive === "XRC223" ? (
-              <RightArrow src="/images/Next.svg" />
-            ) : (
-              ""
-            )}
-          </SubWrapper>
-          <SubWrapper onClick={() => changeSubNavItemStyle("Stablecoin")}>
-            {isSubNavActive === "Stablecoin" ? (
-              <SubIcon src="/images/Token-Active.svg" />
-            ) : (
-              <SubIcon src="/images/Token-Inactive.svg" />
-            )}
-            <SubText
-              className={isSubNavActive === "Stablecoin" ? "xrc_active" : ""}
-            >
-              Stablecoin
-            </SubText>
-            {isSubNavActive === "Stablecoin" ? (
-              <RightArrow src="/images/Next.svg" />
-            ) : (
-              ""
-            )}
-          </SubWrapper>
-        </SubHeadingContainer>
+            <Heading className={isActive === "manage" ? "activeText" : ""}>
+              Manage Contracts
+            </Heading>
+          </Wrapper>
+        </>
       ) : (
         ""
       )}
-      <Wrapper
-        className={isActive === "deploy" ? "activeNavItem" : ""}
-        onClick={() => changeBackgound("deploy")}
-      >
-        {isActive === "deploy" ? (
-          <Icon src="/images/DeployContract_Active.svg" />
-        ) : (
-          <Icon src="/images/DeployContract_InActive.svg" />
-        )}
-        <Heading
-          onClick={() => history.push("/deploy-contract")}
+
+      {window.innerWidth <= 768 ? (
+        <Wrapper
           className={
-            isActive === "deploy" ? "activeDeployText" : "deploy-margin"
+            createContract
+              ? "faq-margin-create"
+              : userDetails?.accountDetails?.address
+              ? "faq-margin"
+              : "faq-margin-tab"
           }
         >
-          {" "}
-          Deploy contracts
-        </Heading>
-      </Wrapper>
-      <Wrapper
-        className={isActive === "manage" ? "activeNavItem" : ""}
-        onClick={() => changeBackgound("manage")}
-      >
-        {isActive === "manage" ? (
-          <Icon src="/images/ManageContract_Active.svg" />
-        ) : (
-          <Icon src="/images/ManageContract_InActive.svg" />
-        )}
-        <Heading className={isActive === "manage" ? "activeText" : ""}>
-          Manage Contracts
-        </Heading>
-      </Wrapper>
-      <Wrapper className={createContract ? "faq-margin-create" : "faq-margin"}>
-        <FAQIcon src="/images/FAQ_InActive.svg" />
-        <Heading>FAQs</Heading>
-      </Wrapper>
-      <Wrapper>
+          <FAQIcon src="/images/FAQ_InActive.svg" />
+          <Heading>FAQs</Heading>
+        </Wrapper>
+      ) : (
+        <Wrapper
+          className={
+            createContract
+              ? "faq-margin-create"
+              : userDetails?.accountDetails?.address
+              ? "faq-margin"
+              : "faq-margin-extra"
+          }
+        >
+          <FAQIcon src="/images/FAQ_InActive.svg" />
+          <Heading>FAQs</Heading>
+        </Wrapper>
+      )}
+      <Wrapper onClick={() => logout()}>
         <LogoutIcon src="/images/Logout-InActive.svg" />
         <Heading>Logout</Heading>
       </Wrapper>
@@ -161,6 +201,19 @@ export default function Sidebar(props) {
     </SidebarContainer>
   );
 }
+
+const mapStateToProps = (state) => ({
+  userAccountDetails: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => {
+    dispatch(handleLogout());
+  },
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Sidebar);
+
 const SidebarContainer = styled.div`
   z-index: 999;
   background: #102c78 0% 0% no-repeat padding-box;
