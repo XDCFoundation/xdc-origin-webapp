@@ -2,7 +2,6 @@
  * Created by Ayush Kulshrestha on 18/09/2019.
  */
 
-
 export const httpConstants = {
     METHOD_TYPE: {
         POST: 'POST',
@@ -21,7 +20,9 @@ export const httpConstants = {
     },
     API_END_POINT: {
         SAVE_TOKEN: "save-xrc20token-as-draft",
-        UPDATE_TOKEN: "update-xrc20token"
+        UPDATE_TOKEN: "update-xrc20token",
+        GET_DRAFT_FAILD_XRC20_TOKEN: "/get-draft-failed-xrc20token",
+        GET_XRC20TOKEN_BY_ID : "/get-xrc20Token-by-id"
     },
 };
 export const apiBodyMessages = {
@@ -48,3 +49,15 @@ export const addFeaturesContent = {
     PAUSABLE_CONTENT:"Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
     MINTABLE_CONTENT:"Building distribution / crowdsale logic directly into the token contract or by including a generic mint function that can be called by an external contract.",
 }
+
+export const eventConstants = {
+  CONNECT_WALLET: "CONNECT_WALLET",
+  LOGIN_SUCCESS: "LOGIN_SUCCESS",
+  LOGOUT_SUCCESS: "LOGOUT_SUCCESS"
+};
+
+export const cookiesConstants = {
+  ACCESS_TOKEN: "accessToken",
+  EXPIRES_AT: "expiresAt",
+  USER: "user",
+};

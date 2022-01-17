@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ChangeNetworkPopup from "../changeNetworkPopup/changeNetworkDesktop";
 import UploadFile from "../uploadTokenImage/uploadImage";
 import { useHistory } from "react-router";
+import { useParams } from "react-router-dom";
 
 const Parent = styled.div`
   display: flex;
@@ -228,7 +229,7 @@ const MainCircle = styled.div`
   top: 0;
   left: 0;
 `;
-const MainInput = styled.input`
+const MainInput = styled.div`
   cursor: pointer;
   position: absolute;
   opacity: 0;
@@ -243,36 +244,34 @@ const MainImage = styled.img`
   top: 0px; */
 `;
 
+const ImgCapture = styled.input`
+  opacity: 1;
+`;
+
 export default function Token(props) {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [picture, setPicture] = useState(null);
   const [imgData, setImgData] = useState(null);
+  const { id } = useParams();
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
-  const toggleUploadPopup = () => {
+  const toggleUploadPopup = (imageData) => {
+    console.log("mai----", imageData);
     setIsUploadOpen(!isUploadOpen);
+    setImgData(imageData);
   };
 
   const saveAndContinue = (e) => {
     props.nextStep(e);
   };
 
-  const onChangePicture = (e) => {
-    if (e.target.files[0]) {
-      console.log("picture: ", e.target.files);
-      setPicture(e.target.files[0]);
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        setImgData(reader.result);
-      });
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
-  console.log("image---", imgData);
+
+  // console.log("image---", imgData);
+  // console.log("image1---", props.tokenData.tokenImage);
   return (
     <>
       <Parent>
@@ -336,18 +335,24 @@ export default function Token(props) {
 
           <CommonRow>
             <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
+            {/* <ImgCapture
+              type="file"
+              name="tokenImage"
+              value=""
+              onChange={(e)=>props.onChangePicture(e)}
+            />
+            <img src={props.tokenData.tokenImage}/> */}
             {imgData ? (
               <CircleRow>
                 <MainImage src={imgData} />
+                <button onClick={toggleUploadPopup}>Replace</button>
+                {isUploadOpen && (
+                  <UploadFile handleUploadClose={toggleUploadPopup} />
+                )}
               </CircleRow>
             ) : (
               <CircleRow>
                 <MainCircle />
-                <MainInput
-                  id="tokenImage"
-                  type="file"
-                  onChange={onChangePicture}
-                />
                 <PlusImage
                   onClick={toggleUploadPopup}
                   src="/images/PlusIcon.svg"

@@ -9,6 +9,7 @@ import { apiBodyMessages, apiSuccessConstants, validationsMessages } from "../..
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import Web3 from 'web3';
+import { connect } from 'react-redux';
 
 const MainContainer = styled.div`
   display: flex;
@@ -150,7 +151,7 @@ const ActiveTextTwo = styled.div`
   }
 `;
 
-export default function CommonTab(props) {
+function CommonTab(props) {
   const history = useHistory();
 
   const tab = [
@@ -198,43 +199,16 @@ export default function CommonTab(props) {
 
   const [arr, setArr] = useState(tab);
   const [step, setStep] = useState(1);
-  const [ownerAddress, setOwnerAddress] = useState("")
-  const [networkVersion, setNetworkVersion] = useState("")
 
-  useEffect(() => {
-    getAddress();
-  }, [])
-
-  const getAddress = () => {
-    window.web3 = new Web3(window.ethereum);
-    if (!window.web3.currentProvider.chainId) {
-      //when metamask is disabled
-      const state = window.web3.givenProvider.publicConfigStore._state;
-      let address = state.selectedAddress
-      let network = state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet"
-      setOwnerAddress(address)
-      setNetworkVersion(network)
-      // sendTransaction();
-      // network ---> 50 for mainnet, 51 for apothem
-    }
-    else {
-      //metamask is also enabled with xdcpay
-      const state = window.web3.givenProvider.publicConfigStore._state;
-      let address = state.selectedAddress;
-      let network = state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet"
-      setOwnerAddress(address)
-      setNetworkVersion(network)
-      // sendTransaction();
-      //50 for mainnet, 51 for apothem
-    }
-  }
+  let networkVersion = props.userDetails?.accountDetails?.network || ""
+  let userAddress = props.userDetails?.accountDetails?.address || ""
 
   const initialValues = {
-    network: networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet",
-    tokenOwner: "",
+    network: networkVersion,
+    tokenOwner: userAddress,
     tokenName: "",
     tokenSymbol: "",
-    tokenImage: "tokenImage20",
+    tokenImage: "",
     decimals: null,
     description: "",
     tokenSupply: null,
@@ -246,14 +220,28 @@ export default function CommonTab(props) {
   const [tokenData, setTokenData] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [saveAndContinue, setSaveAndContinue] = useState(false);
-
+  const [imgData, setImgData] = useState(null);
+  const [picture, setPicture] = useState(null);
   // capturing all fields value: 
 
   const handleChange = (e) => {
-    setTokenData({ ...tokenData, tokenOwner: ownerAddress, [e.target.name]: e.target.value }); //destructuring
+    setTokenData({ ...tokenData, tokenOwner: userAddress, [e.target.name]: e.target.value }); //destructuring
     // console.log("form---", tokenData);
   };
 
+  const onChangePicture = (e) => {
+    if (e.target.files[0]) {
+      console.log("picture: ", e.target.files);
+      setPicture(e.target.files[0]);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImgData(reader.result);
+      });
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    setTokenData({ ...tokenData, tokenImage: imgData });
+  };
+  
   // condition checking for nextStep: 
 
   useEffect(() => {
@@ -493,7 +481,6 @@ export default function CommonTab(props) {
     }
   }
 
-
   return (
     <>
       <MainContainer>
@@ -533,6 +520,7 @@ export default function CommonTab(props) {
                       formErrors={formErrors}
                       nextStep={nextStep}
                       handleChange={handleChange}
+                      onChangePicture={onChangePicture}
                     />
                   );
                 case 2:
@@ -569,3 +557,9 @@ export default function CommonTab(props) {
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+export default connect(mapStateToProps)(CommonTab);
