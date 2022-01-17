@@ -113,17 +113,6 @@ const BlurTextDiv = styled.div`
   opacity: 1;
   padding: 7px 0px 7px 0px;
 `;
-const CircleDiv = styled.div`
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 128px;
-  height: 128px;
-  background: #f0f2fc 0% 0% no-repeat padding-box;
-  border: 1px dashed #8ca6f0;
-  border-radius: 124px;
-  opacity: 1;
-`;
 
 const InsideDiv = styled.div`
   display: flex;
@@ -227,11 +216,39 @@ const ContinueText = styled.div`
     margin: 0 8px 0px 8px;
   }
 `;
+const MainCircle = styled.div`
+  width: 128px;
+  overflow: hidden;
+  height: 128px;
+  background: #f0f2fc 0% 0% no-repeat padding-box;
+  border: 1px dashed #8ca6f0;
+  border-radius: 124px;
+  opacity: 1;
+  position: relative;
+  top: 0;
+  left: 0;
+`;
+const MainInput = styled.input`
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  top: 47px;
+  left: 12px;
+`;
+const MainImage = styled.img`
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  /* position: absolute;
+  top: 0px; */
+`;
 
 export default function Token(props) {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [picture, setPicture] = useState(null);
+  const [imgData, setImgData] = useState(null);
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -243,6 +260,19 @@ export default function Token(props) {
   const saveAndContinue = (e) => {
     props.nextStep(e);
   };
+
+  const onChangePicture = (e) => {
+    if (e.target.files[0]) {
+      console.log("picture: ", e.target.files);
+      setPicture(e.target.files[0]);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImgData(reader.result);
+      });
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+  console.log("image---", imgData);
   return (
     <>
       <Parent>
@@ -306,25 +336,36 @@ export default function Token(props) {
 
           <CommonRow>
             <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
-            <CircleRow>
-              <CircleDiv />
-              <PlusImage
-                onClick={toggleUploadPopup}
-                src="/images/PlusIcon.svg"
-              />
-              {isUploadOpen && (
-                <UploadFile handleUploadClose={toggleUploadPopup} />
-              )}
-            </CircleRow>
+            {imgData ? (
+              <CircleRow>
+                <MainImage src={imgData} />
+              </CircleRow>
+            ) : (
+              <CircleRow>
+                <MainCircle />
+                <MainInput
+                  id="tokenImage"
+                  type="file"
+                  onChange={onChangePicture}
+                />
+                <PlusImage
+                  onClick={toggleUploadPopup}
+                  src="/images/PlusIcon.svg"
+                />
+                {isUploadOpen && (
+                  <UploadFile handleUploadClose={toggleUploadPopup} />
+                )}
+              </CircleRow>
+            )}
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Decimal</TextDiv>
-             <InputDiv
+            <InputDiv
               type="number"
               onChange={(e) => props.handleChange(e)}
               name="decimals"
-              value={props.tokenData.decimals || ''}
+              value={props.tokenData.decimals || ""}
               placeholder="8-18"
             />
 

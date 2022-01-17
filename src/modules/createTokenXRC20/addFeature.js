@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
-import { addFeaturesContent } from "../../constants";
+import { addFeaturesContent,apiSuccessConstants} from "../../constants";
 
 const Parent = styled.div`
   display: flex;
@@ -332,6 +332,35 @@ export default function AddFeatures(props) {
     setArr(newData);
   };
 
+    // saveDraft api function : 
+
+    let createdToken = props.tokenData.tokenName
+    let parsingDecimal = Number(props.tokenData.decimals);
+    let parsingSupply = Number(props.tokenData.tokenSupply);
+  
+    const saveAsDraft = async (e) => {
+      e.preventDefault();
+      let reqObj = {
+        tokenOwner: props.tokenData.tokenOwner,
+        tokenName: createdToken,
+        tokenSymbol: props.tokenData.tokenSymbol,
+        tokenImage: props.tokenData.tokenImage,
+        tokenInitialSupply: parsingSupply,
+        tokenDecimals: parsingDecimal,
+        tokenDescription: props.tokenData.description,
+        network: props.tokenData.network,
+        isBurnable: props.tokenData.burnable,
+        isMintable: props.tokenData.mintable,
+        isPausable: props.tokenData.pausable,
+      };
+  
+      const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
+      // console.log('res---', res)
+      if (res !== 0) {
+        Utils.apiSuccessToast(apiSuccessConstants.DRAFTED_DATA_SUCCESS);
+      }
+    };
+
   const deployToken = (e) => {
     e.preventDefault();
     props.saveAsDraft(e);
@@ -351,10 +380,10 @@ export default function AddFeatures(props) {
           </RowTwo>
 
           <CommonRow>
-            {arr.map((item) => {
+            {arr.map((item, index) => {
               return (
                 <>
-                  <RowDiv>
+                  <RowDiv key={index}>
                     <ImageDiv>
                       <Img alt="" src={item.image} />
                     </ImageDiv>
@@ -384,7 +413,7 @@ export default function AddFeatures(props) {
               </BackButton>
 
               <RightDiv>
-                <SaveDraftButton onClick={(e)=>props.saveAsDraft(e)}>
+                <SaveDraftButton onClick={saveAsDraft}>
                   <SaveDraftText>Save Draft</SaveDraftText>
                   <BackImgDiv src="/images/ContractDetails.svg" />
                 </SaveDraftButton>
