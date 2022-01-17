@@ -12,8 +12,8 @@ let initialState = {
   isForgotPasswordSuccess: false,
   isWalletOpen: false,
   accountDetails: {
-    address: accountDetails.address,
-    network: accountDetails.network,
+    address: accountDetails ? accountDetails.address : null,
+    network: accountDetails ? accountDetails.network : null,
   },
 };
 
