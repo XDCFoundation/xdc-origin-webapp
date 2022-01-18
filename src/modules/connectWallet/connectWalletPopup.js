@@ -194,6 +194,11 @@ function connectWalletPopup(props) {
     props.handleClose();
   };
 
+  function truncateToDecimals(num, dec = 2) {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
+
   const handleXDCPayWallet = async() => {
     window.web3 = new Web3(window.ethereum);
 
@@ -205,7 +210,7 @@ function connectWalletPopup(props) {
         let network =
           state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
         let account = false;
-
+        
         await window.web3.eth.getAccounts((err, accounts) => {
           if (err !== null) console.error("An error occurred: " + err);
           else if (accounts.length === 0) {
@@ -219,12 +224,21 @@ function connectWalletPopup(props) {
           alert("Please Login To XDC PAY");
         }
         else if (address || network) {
+        let balance = null;
+          
+        await window.web3.eth.getBalance(address)
+          .then(res => {
+            balance = res / Math.pow(10, 18);
+            balance = truncateToDecimals(balance);
+          });
+          
           let accountDetails = {
             address: address,
             network: network,
+            balance: balance
           };
           props.login(accountDetails);
-          history.push("/token-XRC20");
+          handleDialogClose()
         }
       } else {
         //metamask is also enabled with xdcpay
