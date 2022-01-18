@@ -43,7 +43,7 @@ function Header(props) {
               <AddressContainer>
                 <Balance>{props.userDetails?.accountDetails?.balance} XDC</Balance>
                 <Address>
-                  {props.userDetails?.accountDetails?.address.slice(0, 5).replace(/0x/, 'Xdc') +
+                  {props.userDetails?.accountDetails?.address.slice(0, 5).replace(/0x/, 'xdc') +
                     "..." +
                     props.userDetails?.accountDetails?.address.substr(
                       props.userDetails?.accountDetails?.address.length - 5
@@ -193,7 +193,8 @@ const Span = styled.span`
   }
 `;
 const AddressContainer = styled.div`
-  width: 262px;
+  width: max-content;
+  min-width: 262px;
   height: 36px;
   background: #324988 0% 0% no-repeat padding-box;
   border-radius: 6px;
@@ -206,6 +207,7 @@ const AddressContainer = styled.div`
   overflow: hidden;
 `;
 const Balance = styled.span`
+  width: max-content;
   height: 36px;
   text-align: center;
   font: normal normal medium 15px/19px Inter;
@@ -218,12 +220,13 @@ const Balance = styled.span`
   padding: 10px;
 `;
 const Address = styled.span`
-  width: 103px;
-  height: 19px;
+  width: max-content;
+  min-width: 103px;
   text-align: left;
   font: normal normal medium 15px/19px Inter;
   color: #ffffff;
   opacity: 1;
+  padding: 10px;
 `;
 const AccountIcon = styled.img`
   width: 28px;

@@ -11,10 +11,12 @@ function DeployContract(props) {
   const [open, setOpen] = useState(false);
   const [openDeployPopup, setOpenDeployPopup] = useState(false);
   const [tokenId, setTokenId] = useState("");
+  const [tokenName, setTokenName] = useState("");
 
-  const handleClickOpen = (id) => {
+  const handleClickOpen = (id,tokenName) => {
     setOpen(true);
     setTokenId(id);
+    setTokenName(tokenName);
   };
 
   const handleClose = () => {
@@ -73,7 +75,7 @@ function DeployContract(props) {
                   <div className="deployIcon" onClick={handleDeployPopup}>
                     <img src="/images/deploy_contract.png" alt="" />
                   </div>
-                  <div className="deleteIcon" onClick={() => handleClickOpen(item.id)}>
+                  <div className="deleteIcon" onClick={() => handleClickOpen(item.id,item.tokenName)}>
                     <Delete />
                   </div>
                   <div onClick={() =>history.push(`/token-XRC20/${item.id}`)} className="editIcon">
@@ -93,6 +95,7 @@ function DeployContract(props) {
         handleClose={handleClose}
         deleteContract={props.deleteContract}
         tokenId={tokenId}
+        tokenName={tokenName}
       />
       <DeployPopup
         open={openDeployPopup}

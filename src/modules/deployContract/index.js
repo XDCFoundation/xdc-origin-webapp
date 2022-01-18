@@ -58,7 +58,6 @@ class DeployContract extends BaseComponent {
     }
   
     if (deleteContractResponse) {
-      Utility.apiSuccessToast("Token Deleted Successfully!");
       this.getDraftFailedXrc20Token()
     }
   }
