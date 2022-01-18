@@ -114,17 +114,6 @@ const BlurTextDiv = styled.div`
   opacity: 1;
   padding: 7px 0px 7px 0px;
 `;
-const CircleDiv = styled.div`
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 128px;
-  height: 128px;
-  background: #f0f2fc 0% 0% no-repeat padding-box;
-  border: 1px dashed #8ca6f0;
-  border-radius: 124px;
-  opacity: 1;
-`;
 
 const InsideDiv = styled.div`
   display: flex;
@@ -151,7 +140,7 @@ const PopButton = styled.button`
   letter-spacing: 0px;
   color: #3163f0;
   opacity: 1;
-  
+
   @media (min-width: 0px) and (max-width: 767px) {
     /* right: 16px; */
     display: none;
@@ -159,7 +148,6 @@ const PopButton = styled.button`
   @media (min-width: 768px) and (max-width: 1024px) {
     right: 27px;
   }
- 
 `;
 
 const MobPopupBtn = styled.button`
@@ -191,7 +179,7 @@ const PlusImage = styled.img`
   opacity: 1;
 `;
 
-const ContinueButton = styled.div`
+const ContinueButton = styled.button`
   display: flex;
   justify-content: space-around;
   flex-direction: row;
@@ -229,19 +217,61 @@ const ContinueText = styled.div`
     margin: 0 8px 0px 8px;
   }
 `;
+const MainCircle = styled.div`
+  width: 128px;
+  overflow: hidden;
+  height: 128px;
+  background: #f0f2fc 0% 0% no-repeat padding-box;
+  border: 1px dashed #8ca6f0;
+  border-radius: 124px;
+  opacity: 1;
+  position: relative;
+  top: 0;
+  left: 0;
+`;
+const MainInput = styled.div`
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  top: 47px;
+  left: 12px;
+`;
+const MainImage = styled.img`
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  /* position: absolute;
+  top: 0px; */
+`;
+
+const ImgCapture = styled.input`
+  opacity: 1;
+`;
 
 export default function Token(props) {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const { id } = useParams()
+  const [picture, setPicture] = useState(null);
+  const [imgData, setImgData] = useState(null);
+  const { id } = useParams();
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
-  const toggleUploadPopup = () => {
+
+  const toggleUploadPopup = (imageData) => {
+    console.log("mai----", imageData);
     setIsUploadOpen(!isUploadOpen);
+    setImgData(imageData);
   };
+
+  const saveAndContinue = (e) => {
+    props.nextStep(e);
+  };
+
+  // console.log("image---", imgData);
+  // console.log("image1---", props.tokenData.tokenImage);
   return (
     <>
       <Parent>
@@ -256,7 +286,14 @@ export default function Token(props) {
           <CommonRow>
             <TextDiv>Network</TextDiv>
             <InsideDiv>
-              <InputDiv placeholder="XDC Mainnet" />
+              <InputDiv
+                type="text"
+                name="network"
+                readOnly
+                // onChange={(e) => props.handleChange(e)}
+                value={props.tokenData.network}
+                placeholder="XDC Mainnet"
+              />
               <PopButton onClick={togglePopup}>Change Network</PopButton>
               {isOpen && <ChangeNetworkPopup handleClose={togglePopup} />}
               <MobPopupBtn onClick={() => history.push("/change-network")}>
@@ -265,68 +302,118 @@ export default function Token(props) {
             </InsideDiv>
 
             <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
+            <p className="shown-error">{props.formErrors.network}</p>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Token Name</TextDiv>
-            <InputDiv placeholder="e.g. XDC Network" />
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="tokenName"
+              value={props.tokenData.tokenName}
+              placeholder="e.g. XDC Network"
+            />
+
             <BlurTextDiv>Choose a name for your token</BlurTextDiv>
+            <p className="shown-error">{props.formErrors.tokenName}</p>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Symbol</TextDiv>
-            <InputDiv placeholder="e.g. XDC" />
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="tokenSymbol"
+              value={props.tokenData.tokenSymbol}
+              placeholder="e.g. XDC"
+            />
+
             <BlurTextDiv>Choose symbol for your token</BlurTextDiv>
+            <p className="shown-error">{props.formErrors.tokenSymbol}</p>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
-            <CircleRow>
-              <CircleDiv />
-              <PlusImage
-                onClick={toggleUploadPopup}
-                src="/images/PlusIcon.svg"
-              />
-              {isUploadOpen && (
-                <UploadFile handleUploadClose={toggleUploadPopup} />
-              )}
-            </CircleRow>
+            {/* <ImgCapture
+              type="file"
+              name="tokenImage"
+              value=""
+              onChange={(e)=>props.onChangePicture(e)}
+            />
+            <img src={props.tokenData.tokenImage}/> */}
+            {imgData ? (
+              <CircleRow>
+                <MainImage src={imgData} />
+                <button onClick={toggleUploadPopup}>Replace</button>
+                {isUploadOpen && (
+                  <UploadFile handleUploadClose={toggleUploadPopup} />
+                )}
+              </CircleRow>
+            ) : (
+              <CircleRow>
+                <MainCircle />
+                <PlusImage
+                  onClick={toggleUploadPopup}
+                  src="/images/PlusIcon.svg"
+                />
+                {isUploadOpen && (
+                  <UploadFile handleUploadClose={toggleUploadPopup} />
+                )}
+              </CircleRow>
+            )}
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Decimal</TextDiv>
-            <InputDiv placeholder="8-18" />
+            <InputDiv
+              type="number"
+              onChange={(e) => props.handleChange(e)}
+              name="decimals"
+              value={props.tokenData.decimals || ""}
+              placeholder="8-18"
+            />
+
             <BlurTextDiv>
               Insert the decimal precision of your token
             </BlurTextDiv>
+            <p className="shown-error">{props.formErrors.decimals}</p>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Description</TextDiv>
-            <InputDiv placeholder="A Dao Token" />
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="description"
+              value={props.tokenData.description}
+              placeholder="A Dao Token"
+            />
+
             <BlurTextDiv>Add description for your token</BlurTextDiv>
+            <p className="shown-error">{props.formErrors.description}</p>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Website</TextDiv>
-            <InputDiv placeholder="Website Address" />
+            <InputDiv type="text" placeholder="Website Address" />
             <BlurTextDiv>Add Website url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Twitter(optional)</TextDiv>
-            <InputDiv placeholder="e.g. Twitter Url" />
+            <InputDiv type="text" placeholder="e.g. Twitter Url" />
             <BlurTextDiv>Add Twitter page url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Telegram</TextDiv>
-            <InputDiv placeholder="e.g. Telegram Url" />
+            <InputDiv type="text" placeholder="e.g. Telegram Url" />
             <BlurTextDiv>Add Telegram group url for your token</BlurTextDiv>
           </CommonRow>
 
           <LastRow>
-            <ContinueButton onClick={() => props.nextStep()}>
+            <ContinueButton onClick={saveAndContinue}>
               <ContinueText>Continue</ContinueText>
               <ImgDiv src="/images/Button_Next_Arrow.svg" />
             </ContinueButton>
