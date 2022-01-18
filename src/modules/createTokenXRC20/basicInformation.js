@@ -259,6 +259,7 @@ export default function Token(props) {
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
+
   const toggleUploadPopup = (imageData) => {
     console.log("mai----", imageData);
     setIsUploadOpen(!isUploadOpen);
@@ -268,7 +269,6 @@ export default function Token(props) {
   const saveAndContinue = (e) => {
     props.nextStep(e);
   };
-
 
   // console.log("image---", imgData);
   // console.log("image1---", props.tokenData.tokenImage);

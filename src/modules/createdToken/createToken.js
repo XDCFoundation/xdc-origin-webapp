@@ -248,7 +248,7 @@ const CreateToken = (props) => {
   // console.log("props---", props.location);
 
   let gasPrice = Number(props.location.gasPrice)
-  let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, props.location.parsingDecimal)
+  let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, 18)
   let gweiValue = gasPrice / Math.pow(10, 9)
   let newContractAddress = props.location.state.contractAddress.replace(/0x/, 'xdc')
   //   console.log('b---',newContractAddress)
