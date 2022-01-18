@@ -232,7 +232,6 @@ export default function UploadTokenImage(props) {
     );
     let obtainUrl = "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" + awsFile.sourceFileName
     props.handleUploadClose(obtainUrl)
-    history.push({pathname: '/token-XRC20', state: obtainUrl})
   };
 
   const showCroppedImage = useCallback(async () => {
