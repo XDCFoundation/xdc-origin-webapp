@@ -1,13 +1,15 @@
 import React from "react";
 import BaseComponent from "../baseComponent";
-import CreateToken from './createToken';
-
+import CreateToken from "./createToken";
 
 class CreateTokenComponent extends BaseComponent {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   render() {
-    return (
-        <CreateToken state={this.state} />
-    );
+    return <CreateToken location={this.props.location} state={this.state} />;
   }
 }
 

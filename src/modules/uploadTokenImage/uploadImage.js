@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -174,6 +175,7 @@ const minScale = 1;
 const defaultScale = minScale;
 
 export default function UploadTokenImage(props) {
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const [upload, setUpload] = React.useState(false);
 
@@ -181,7 +183,7 @@ export default function UploadTokenImage(props) {
   const [file, setFile] = React.useState({});
   const [filePreview, setFilePreview] = React.useState({});
   const [croppedAreaPixels, setCroppedAreaPixels] = React.useState(null);
-  const [croppedImage, setCroppedImage] = React.useState(null);
+  const [croppedImage, setCroppedImage] = React.useState("");
   const [crop, setCrop] = React.useState({ x: 1, y: 1 });
   const [zoom, setZoom] = React.useState(1);
 
@@ -228,10 +230,9 @@ export default function UploadTokenImage(props) {
       croppedImage,
       s3Bucket
     );
-    console.log(
-      "Image uploaded. URL: ",
-      "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" + awsFile.sourceFileName
-    );
+    let obtainUrl = "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" + awsFile.sourceFileName
+    props.handleUploadClose(obtainUrl)
+    history.push({pathname: '/token-XRC20', state: obtainUrl})
   };
 
   const showCroppedImage = useCallback(async () => {
@@ -240,6 +241,7 @@ export default function UploadTokenImage(props) {
       setFile({ content: croppedImage });
       setCroppedImage(croppedImage);
       uploadFileToAWS(croppedImage);
+
     } catch (e) {
       console.error(e);
     }
@@ -325,7 +327,7 @@ export default function UploadTokenImage(props) {
         <Header>
           <DialogTitle>Upload Token Image</DialogTitle>
           <Cross
-            onClick={handleClose}
+            onClick={()=>props.handleUploadClose()}
             src="images/Cross.svg"
           ></Cross>
         </Header>
@@ -333,8 +335,8 @@ export default function UploadTokenImage(props) {
           {RenderUi()}
 
           <Buttons>
-            <Cancel>
-              <CancelName onClick={handleClose}>
+            <Cancel onClick={()=>props.handleUploadClose()}>
+              <CancelName >
                 Cancel
               </CancelName>
             </Cancel>

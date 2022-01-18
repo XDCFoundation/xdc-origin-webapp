@@ -336,6 +336,10 @@ input:focus {
   color: #ffffff !important;
 }
 
+.shown-error{
+  padding-top: 4px;
+  color: red
+}
 .reactEasyCrop_Container {
   position: relative;
   width: 264px;
