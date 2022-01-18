@@ -146,6 +146,7 @@ function Sidebar(props) {
             </Heading>
           </Wrapper>
           <Wrapper
+            id="manage-contract-hide"
             className={isActive === "manage" ? "activeNavItem" : ""}
             onClick={() => changeBackgound("manage")}
           >
