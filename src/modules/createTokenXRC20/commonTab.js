@@ -151,7 +151,7 @@ const ActiveTextTwo = styled.div`
   }
 `;
 
- function CommonTab(props) {
+function CommonTab(props) {
   const history = useHistory();
 
   const tab = [
@@ -200,6 +200,16 @@ const ActiveTextTwo = styled.div`
   const [arr, setArr] = useState(tab);
   const [step, setStep] = useState(1);
 
+  const [imgData, setImgData] = useState("");
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+
+
+  const toggleUploadPopup = (imageData) => {
+    console.log("mi----", imageData);
+    setIsUploadOpen(!isUploadOpen);
+    setImgData(imageData);
+  };
+  console.log('im---', imgData)
   //redux data:
 
   let networkVersion = props.userDetails?.accountDetails?.network || ""
@@ -210,10 +220,10 @@ const ActiveTextTwo = styled.div`
     tokenOwner: userAddress,
     tokenName: "",
     tokenSymbol: "",
-    tokenImage: "tokenImage20",
-    decimals: null,
+    tokenImage: imgData,
+    decimals: undefined,
     description: "",
-    tokenSupply: null,
+    tokenSupply: undefined,
     pausable: false,
     mintable: true,
     burnable: true,
@@ -226,16 +236,16 @@ const ActiveTextTwo = styled.div`
   // capturing all fields value: 
 
   const handleChange = (e) => {
-    setTokenData({ ...tokenData, [e.target.name]: e.target.value }); //destructuring
-    // console.log("form---", tokenData);
+    setTokenData({ ...tokenData, tokenImage: imgData, [e.target.name]: e.target.value }); //destructuring
   };
+  console.log("form---", tokenData);
 
   // condition checking for nextStep: 
 
   useEffect(() => {
     // console.log("er--", formErrors);
     if (Object.keys(formErrors).length === 0 && saveAndContinue) {
-      // console.log("val---", tokenData);
+      // console.log("to--", tokenData);
     }
   }, [formErrors]);
 
@@ -261,6 +271,10 @@ const ActiveTextTwo = styled.div`
       errors.tokenSymbol = validationsMessages.VALIDATE_TOKEN_SYMBOL_LIMIT;
     }
 
+    if (!values.tokenImage) {
+      errors.tokenImage = validationsMessages.VALIDATE_IMAGE_FIELD;
+    }
+
     if (!values.decimals) {
       errors.decimals = validationsMessages.VALIDATE_DECIMAL_FIELD;
     } else if (Number(values.decimals) < 1) {
@@ -282,11 +296,14 @@ const ActiveTextTwo = styled.div`
 
 
   // Steps navigation functions : 
-
-  const nextStep = (e) => {
+  const sample = () => {
     setFormErrors(validate(tokenData));
     setSaveAndContinue(true);
 
+  }
+
+  const nextStep = (e) => {
+    sample()
     if (Object.keys(formErrors).length === 0 && saveAndContinue === true) {
       let newData = arr.map((item) => {
         return item.id !== step
@@ -296,8 +313,9 @@ const ActiveTextTwo = styled.div`
 
       setArr(newData);
       setStep(step + 1);
-    } else {
-      return;
+    }
+     else {
+       return;
     }
   };
 
@@ -510,6 +528,9 @@ const ActiveTextTwo = styled.div`
                       formErrors={formErrors}
                       nextStep={nextStep}
                       handleChange={handleChange}
+                      isUploadOpen={isUploadOpen}
+                      imgData={imgData}
+                      toggleUploadPopup={toggleUploadPopup}
                     />
                   );
                 case 2:

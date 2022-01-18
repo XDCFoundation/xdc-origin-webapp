@@ -12,9 +12,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
+  /* width: 100vw; */
   background: #ecf0f7 0% 0% no-repeat padding-box;
   opacity: 1;
+  margin-top: -20rem;
+  margin-left: -20px;
   @media (min-width: 768px) {
     display: none;
   }
@@ -155,10 +157,8 @@ export default function UploadTokenImage(props) {
       croppedImage,
       s3Bucket
     );
-    console.log(
-      "Image uploaded. URL: ",
-      "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" + awsFile.sourceFileName
-    );
+    let obtainUrl = "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" + awsFile.sourceFileName
+    props.handleUploadClose(obtainUrl)
   };
 
   const saveCroppedImage = useCallback(async () => {
@@ -195,7 +195,7 @@ export default function UploadTokenImage(props) {
       return (
         <Container>
           <Header>
-            <img src="images/Button_Back_Arrow.svg"></img>
+            <img onClick={()=>props.handleUploadClose()} src="images/Button_Back_Arrow.svg"></img>
             <HeadingName>Upload Token Image</HeadingName>
           </Header>
           <Content>
