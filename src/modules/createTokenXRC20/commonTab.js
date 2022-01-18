@@ -510,6 +510,7 @@ const ActiveTextTwo = styled.div`
                       formErrors={formErrors}
                       nextStep={nextStep}
                       handleChange={handleChange}
+                      state={props.state}
                     />
                   );
                 case 2:
@@ -520,6 +521,7 @@ const ActiveTextTwo = styled.div`
                       nextStep={nextStep}
                       prevStep={prevStep}
                       handleChange={handleChange}
+                      state={props.state}
                     />
                   );
                 case 3:

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import ChangeNetworkPopup from "../changeNetworkPopup/changeNetworkDesktop";
 import UploadFile from "../uploadTokenImage/uploadImage";
 import { useHistory } from "react-router";
-import { useParams } from "react-router-dom";
 
 const Parent = styled.div`
   display: flex;
@@ -254,7 +253,6 @@ export default function Token(props) {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [picture, setPicture] = useState(null);
   const [imgData, setImgData] = useState(null);
-  const { id } = useParams();
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -291,7 +289,7 @@ export default function Token(props) {
                 name="network"
                 readOnly
                 // onChange={(e) => props.handleChange(e)}
-                value={props.tokenData.network}
+                value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.network : props.tokenData.network}
                 placeholder="XDC Mainnet"
               />
               <PopButton onClick={togglePopup}>Change Network</PopButton>
@@ -311,7 +309,7 @@ export default function Token(props) {
               type="text"
               onChange={(e) => props.handleChange(e)}
               name="tokenName"
-              value={props.tokenData.tokenName}
+              value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenName : props.tokenData.tokenName}
               placeholder="e.g. XDC Network"
             />
 
@@ -325,7 +323,7 @@ export default function Token(props) {
               type="text"
               onChange={(e) => props.handleChange(e)}
               name="tokenSymbol"
-              value={props.tokenData.tokenSymbol}
+              value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenSymbol : props.tokenData.tokenSymbol}
               placeholder="e.g. XDC"
             />
 
@@ -344,7 +342,7 @@ export default function Token(props) {
             <img src={props.tokenData.tokenImage}/> */}
             {imgData ? (
               <CircleRow>
-                <MainImage src={imgData} />
+                <MainImage src={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenImage : imgData} />
                 <button onClick={toggleUploadPopup}>Replace</button>
                 {isUploadOpen && (
                   <UploadFile handleUploadClose={toggleUploadPopup} />
@@ -354,8 +352,8 @@ export default function Token(props) {
               <CircleRow>
                 <MainCircle />
                 <PlusImage
-                  onClick={toggleUploadPopup}
-                  src="/images/PlusIcon.svg"
+                    onClick={toggleUploadPopup}
+                    src={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenImage : "/images/PlusIcon.svg"}
                 />
                 {isUploadOpen && (
                   <UploadFile handleUploadClose={toggleUploadPopup} />
@@ -370,7 +368,7 @@ export default function Token(props) {
               type="number"
               onChange={(e) => props.handleChange(e)}
               name="decimals"
-              value={props.tokenData.decimals || ""}
+              value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenDecimals : props.tokenData.decimals}
               placeholder="8-18"
             />
 
@@ -386,7 +384,7 @@ export default function Token(props) {
               type="text"
               onChange={(e) => props.handleChange(e)}
               name="description"
-              value={props.tokenData.description}
+              value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenDescription : props.tokenData.description}
               placeholder="A Dao Token"
             />
 
@@ -396,19 +394,19 @@ export default function Token(props) {
 
           <CommonRow>
             <TextDiv>Website</TextDiv>
-            <InputDiv type="text" placeholder="Website Address" />
+            <InputDiv type="text" placeholder="Website Address" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.website : ""}/>
             <BlurTextDiv>Add Website url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Twitter(optional)</TextDiv>
-            <InputDiv type="text" placeholder="e.g. Twitter Url" />
+            <InputDiv type="text" placeholder="e.g. Twitter Url" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.twitter : ""}/>
             <BlurTextDiv>Add Twitter page url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Telegram</TextDiv>
-            <InputDiv type="text" placeholder="e.g. Telegram Url" />
+            <InputDiv type="text" placeholder="e.g. Telegram Url" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.telegram : ""}/>
             <BlurTextDiv>Add Telegram group url for your token</BlurTextDiv>
           </CommonRow>
 

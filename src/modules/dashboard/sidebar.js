@@ -11,7 +11,6 @@ function Sidebar(props) {
   const [createContract, setCreateContract] = useState(false);
   const [isSubNavActive, setIsSubNavActive] = useState("");
   const [subNavItems, setSubNavItems] = useState(false);
-  const [userDetails, setuserDetails] = useState(props.userAccountDetails);
 
   const changeBackgound = (navItem) => {
     if (navItem === "create") {
@@ -53,7 +52,7 @@ function Sidebar(props) {
           About SmartMint
         </Heading>
       </Wrapper>
-      {userDetails?.accountDetails?.address ? (
+      {props.userAccountDetails?.accountDetails?.address ? (
         <>
           <Wrapper
             className={createContract ? "activeNavItem" : ""}
@@ -147,6 +146,7 @@ function Sidebar(props) {
             </Heading>
           </Wrapper>
           <Wrapper
+            id="manage-contract-hide"
             className={isActive === "manage" ? "activeNavItem" : ""}
             onClick={() => changeBackgound("manage")}
           >
@@ -169,7 +169,7 @@ function Sidebar(props) {
           className={
             createContract
               ? "faq-margin-create"
-              : userDetails?.accountDetails?.address
+              : props.userAccountDetails?.accountDetails?.address
               ? "faq-margin"
               : "faq-margin-tab"
           }
@@ -182,7 +182,7 @@ function Sidebar(props) {
           className={
             createContract
               ? "faq-margin-create"
-              : userDetails?.accountDetails?.address
+              : props.userAccountDetails?.accountDetails?.address
               ? "faq-margin"
               : "faq-margin-extra"
           }

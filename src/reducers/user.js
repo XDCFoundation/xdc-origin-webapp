@@ -14,6 +14,7 @@ let initialState = {
   accountDetails: {
     address: accountDetails ? accountDetails.address : null,
     network: accountDetails ? accountDetails.network : null,
+    balance: accountDetails ? accountDetails.balance : null,
   },
 };
 
