@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import BasicInfoPage from "./basicInformation";
 import TokenomicsPage from "./tokenomics";
 import AddFeaturesPage from "./addFeature";
 import DeployContractPage from "./deployContract";
+import { apiBodyMessages, apiSuccessConstants, validationsMessages } from "../../constants";
+import Utils from "../../utility";
+import { SaveDraftService } from "../../services/index";
+import Web3 from 'web3';
+import { connect } from 'react-redux';
 
 const MainContainer = styled.div`
   display: flex;
@@ -145,8 +151,8 @@ const ActiveTextTwo = styled.div`
   }
 `;
 
-export default function CommonTab(props) {
-  const [step, setStep] = useState(1);
+ function CommonTab(props) {
+  const history = useHistory();
 
   const tab = [
     {
@@ -192,18 +198,110 @@ export default function CommonTab(props) {
   ];
 
   const [arr, setArr] = useState(tab);
-  const nextStep = () => {
-    let newData = arr.map((item) => {
-      return item.id !== step
-        ? item
-        : { ...item, image: item.circleImage, activeImage: item.circleImage };
-    });
+  const [step, setStep] = useState(1);
 
-    setArr(newData);
-    setStep(step + 1);
+  //redux data:
+
+  let networkVersion = props.userDetails?.accountDetails?.network || ""
+  let userAddress = props.userDetails?.accountDetails?.address || ""
+
+  const initialValues = {
+    network: networkVersion,
+    tokenOwner: userAddress,
+    tokenName: "",
+    tokenSymbol: "",
+    tokenImage: "tokenImage20",
+    decimals: null,
+    description: "",
+    tokenSupply: null,
+    pausable: false,
+    mintable: true,
+    burnable: true,
   };
 
-  const prevStep = () => {
+  const [tokenData, setTokenData] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState({});
+  const [saveAndContinue, setSaveAndContinue] = useState(false);
+
+  // capturing all fields value: 
+
+  const handleChange = (e) => {
+    setTokenData({ ...tokenData, [e.target.name]: e.target.value }); //destructuring
+    // console.log("form---", tokenData);
+  };
+
+  // condition checking for nextStep: 
+
+  useEffect(() => {
+    // console.log("er--", formErrors);
+    if (Object.keys(formErrors).length === 0 && saveAndContinue) {
+      // console.log("val---", tokenData);
+    }
+  }, [formErrors]);
+
+
+  //form error validations :
+
+  const validate = (values) => {
+    const errors = {};
+
+    if (!values.network) {
+      errors.network = validationsMessages.VALIDATE_NETWORK;
+    }
+
+    if (!values.tokenName) {
+      errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_FIELD;
+    } else if (values.tokenName.length > 30) {
+      errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_LIMIT;
+    }
+
+    if (!values.tokenSymbol) {
+      errors.tokenSymbol = validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD;
+    } else if (values.tokenSymbol.length > 15) {
+      errors.tokenSymbol = validationsMessages.VALIDATE_TOKEN_SYMBOL_LIMIT;
+    }
+
+    if (!values.decimals) {
+      errors.decimals = validationsMessages.VALIDATE_DECIMAL_FIELD;
+    } else if (Number(values.decimals) < 1) {
+      errors.decimals = validationsMessages.VALIDATE_DECIMAL_MIN_RANGE;
+    } else if (Number(values.decimals) > 18) {
+      errors.decimals = validationsMessages.VALIDATE_DECIMAL_MAX_RANGE;
+    } else if (Number(values.decimals) === 0) {
+      errors.decimals = validationsMessages.VALIDATE_DECIMAL_VALUE;
+    }
+
+    if (!values.description) {
+      errors.description = validationsMessages.VALIDATE_DESCRIPTION_FIELD;
+    } else if (values.description.length > 500) {
+      errors.description = validationsMessages.VALIDATE_DESCRIPTION_LIMIT;
+    }
+
+    return errors;
+  };
+
+
+  // Steps navigation functions : 
+
+  const nextStep = (e) => {
+    setFormErrors(validate(tokenData));
+    setSaveAndContinue(true);
+
+    if (Object.keys(formErrors).length === 0 && saveAndContinue === true) {
+      let newData = arr.map((item) => {
+        return item.id !== step
+          ? item
+          : { ...item, image: item.circleImage, activeImage: item.circleImage };
+      });
+
+      setArr(newData);
+      setStep(step + 1);
+    } else {
+      return;
+    }
+  };
+
+  const prevStep = (e) => {
     let newData = arr.map((item) => {
       return item.id !== step - 1
         ? item
@@ -212,6 +310,167 @@ export default function CommonTab(props) {
     setArr(newData);
     setStep(step - 1);
   };
+
+  // saveDraft api function : 
+
+  let createdToken = tokenData.tokenName
+  let parsingDecimal = Number(tokenData.decimals);
+  let parsingSupply = Number(tokenData.tokenSupply);
+
+  const saveAsDraft = async (e) => {
+    e.preventDefault();
+    let reqObj = {
+      tokenOwner: tokenData.tokenOwner,
+      tokenName: createdToken,
+      tokenSymbol: tokenData.tokenSymbol,
+      tokenImage: tokenData.tokenImage,
+      tokenInitialSupply: parsingSupply,
+      tokenDecimals: parsingDecimal,
+      tokenDescription: tokenData.description,
+      network: tokenData.network,
+      isBurnable: tokenData.burnable,
+      isMintable: tokenData.mintable,
+      isPausable: tokenData.pausable,
+    };
+
+    const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
+    // console.log('res---', res)
+    if (res !== 0) {
+      // Utils.apiSuccessToast(apiSuccessConstants.DRAFTED_DATA_SUCCESS);
+      sendTransaction(res)
+    }
+  };
+
+
+  // function to open xdc pay extension: 
+
+  const sendTransaction = async (tokenDetails) => {
+    window.web3 = new Web3(window.ethereum)
+    let draftedTokenId = tokenDetails?.id
+    let draftedTokenOwner = tokenDetails?.tokenOwner
+
+    let xdce_address = tokenData.tokenOwner;
+
+    let newAbi = {
+      "abi": [
+        {
+          "constant": true,
+          "inputs": [
+            {
+              "name": "tweetId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getTweetByTweetId",
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "tweetId",
+              "type": "uint256"
+            },
+            {
+              "name": "tweet",
+              "type": "string"
+            }
+          ],
+          "name": "createTweet",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "getCount",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "tweets",
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+    }
+
+    let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
+
+    const priceXdc = 1;
+    const gasPrice = await window.web3.eth.getGasPrice();
+
+    let transaction = {
+      "from": userAddress,
+      "gas": 415800000,
+      "gasPrice": gasPrice,
+      "data": contractInstance.methods.createTweet(132435363634737 + "", 132435363634737 + " :@#: " + "text" + " :@#: " + "authorId" + " :@#: " + "createdAt").encodeABI()
+    };
+    // myContract.methods.createTweet(id + "", id + " :@#: " + text + " :@#: " + authorId + " :@#: " + createdAt); need to know the definition of this function from Deepak or anyhow.
+    // contractInstance.deploy({})
+
+
+    await window.web3.eth.sendTransaction(transaction)
+      .on('transactionHash', function (hash) {
+        // console.log("transactionHash ====", hash);
+      })
+      .on('receipt', function (receipt) {
+        console.log("receipt ====", receipt); //receive the contract address from this object
+        if (receipt !== 0) {
+          history.push({ pathname: '/created-token', state: receipt, parsingDecimal, parsingSupply, gasPrice, createdToken })
+          updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+        }
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        // console.log("confirmation ====", confirmationNumber, receipt);
+      })
+  }
+
+  const updateTokenDetails = async (resultedTokenId, resultedTokenOwner, resultAddress) => {
+    let reqObj = {
+      tokenId: resultedTokenId,
+      tokenOwner: resultedTokenOwner,
+      smartContractAddress: resultAddress,
+      status: apiBodyMessages.STATUS_DEPLOYED
+    };
+    const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
+    // console.log('up---', res)
+    // if (res !== 0) {
+    //   Utils.apiSuccessToast(apiSuccessConstants.UPDATE_DATA_SUCCESS);
+    // }
+  }
+
   return (
     <>
       <MainContainer>
@@ -245,14 +504,37 @@ export default function CommonTab(props) {
             {(() => {
               switch (step) {
                 case 1:
-                  return <BasicInfoPage nextStep={nextStep} state={props.state}/>;
+                  return (
+                    <BasicInfoPage
+                      tokenData={tokenData}
+                      formErrors={formErrors}
+                      nextStep={nextStep}
+                      handleChange={handleChange}
+                      state={props.state}
+                    />
+                  );
                 case 2:
                   return (
-                    <TokenomicsPage nextStep={nextStep} prevStep={prevStep} state={props.state}/>
+                    <TokenomicsPage
+                      tokenData={tokenData}
+                      formErrors={formErrors}
+                      nextStep={nextStep}
+                      prevStep={prevStep}
+                      handleChange={handleChange}
+                      state={props.state}
+                    />
                   );
                 case 3:
                   return (
-                    <AddFeaturesPage nextStep={nextStep} prevStep={prevStep} />
+                    <AddFeaturesPage
+                      nextStep={nextStep}
+                      prevStep={prevStep}
+                      tokenData={tokenData}
+                      formErrors={formErrors}
+                      saveAsDraft={saveAsDraft}
+                      sendTransaction={sendTransaction}
+                      handleChange={handleChange}
+                    />
                   );
                 case 4:
                   return <DeployContractPage />;
@@ -266,3 +548,8 @@ export default function CommonTab(props) {
     </>
   );
 }
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+export default connect(mapStateToProps)(CommonTab);

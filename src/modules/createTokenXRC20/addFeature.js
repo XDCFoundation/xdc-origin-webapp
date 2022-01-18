@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Utils from "../../utility";
+import { SaveDraftService } from "../../services/index";
+import { addFeaturesContent,apiSuccessConstants} from "../../constants";
 
 const Parent = styled.div`
   display: flex;
@@ -212,11 +215,12 @@ const RightDiv = styled.div`
   }
 `;
 
-const DeployButton = styled.div`
+const DeployButton = styled.button`
   display: flex;
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
   width: 150px;
   height: 50px;
   background: #3163f0 0% 0% no-repeat padding-box;
@@ -243,11 +247,12 @@ const DeployText = styled.div`
   }
 `;
 
-const SaveDraftButton = styled.div`
+const SaveDraftButton = styled.button`
   display: flex;
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
   width: 150px;
   height: 50px;
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -292,9 +297,9 @@ export default function AddFeatures(props) {
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       image: "/images/Pausable.svg",
-      checked: false,
-      content:
-        "Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
+      checked: props.tokenData.pausable,
+      content: addFeaturesContent.PAUSABLE_CONTENT
+       
     },
     {
       id: 2,
@@ -302,9 +307,9 @@ export default function AddFeatures(props) {
       image: "/images/Burnable.svg",
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
-      checked: true,
-      content:
-        "Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
+      checked: props.tokenData.burnable,
+      content: addFeaturesContent.PAUSABLE_CONTENT,
+       
     },
     {
       id: 3,
@@ -312,11 +317,12 @@ export default function AddFeatures(props) {
       image: "/images/Mintable.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       checkImage: "/images/Empty-Circle.svg",
-      checked: true,
-      content:
-        "Building distribution / crowdsale logic directly into the token contract or by including a generic mint function that can be called by an external contract.",
+      checked: props.tokenData.mintable,
+      content: addFeaturesContent.MINTABLE_CONTENT
+        
     },
   ];
+
   const [arr, setArr] = useState(tab);
 
   const updateCheck = (id) => {
@@ -325,6 +331,41 @@ export default function AddFeatures(props) {
     );
     setArr(newData);
   };
+
+    // saveDraft api function : 
+
+    let createdToken = props.tokenData.tokenName
+    let parsingDecimal = Number(props.tokenData.decimals);
+    let parsingSupply = Number(props.tokenData.tokenSupply);
+  
+    const saveAsDraft = async (e) => {
+      e.preventDefault();
+      let reqObj = {
+        tokenOwner: props.tokenData.tokenOwner,
+        tokenName: createdToken,
+        tokenSymbol: props.tokenData.tokenSymbol,
+        tokenImage: props.tokenData.tokenImage,
+        tokenInitialSupply: parsingSupply,
+        tokenDecimals: parsingDecimal,
+        tokenDescription: props.tokenData.description,
+        network: props.tokenData.network,
+        isBurnable: props.tokenData.burnable,
+        isMintable: props.tokenData.mintable,
+        isPausable: props.tokenData.pausable,
+      };
+  
+      const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
+      // console.log('res---', res)
+      if (res !== 0) {
+        Utils.apiSuccessToast(apiSuccessConstants.DRAFTED_DATA_SUCCESS);
+      }
+    };
+
+  const deployToken = (e) => {
+    e.preventDefault();
+    props.saveAsDraft(e);
+    props.nextStep(e);
+  }
 
   return (
     <>
@@ -339,10 +380,10 @@ export default function AddFeatures(props) {
           </RowTwo>
 
           <CommonRow>
-            {arr.map((item) => {
+            {arr.map((item, index) => {
               return (
                 <>
-                  <RowDiv>
+                  <RowDiv key={index}>
                     <ImageDiv>
                       <Img alt="" src={item.image} />
                     </ImageDiv>
@@ -368,15 +409,15 @@ export default function AddFeatures(props) {
             <ButtonsRow>
               <BackButton onClick={() => props.prevStep()}>
                 <BackImgDiv src="/images/Button-Back-Arrow.svg" />
-                <BackText >Back</BackText>
+                <BackText>Back</BackText>
               </BackButton>
 
               <RightDiv>
-                <SaveDraftButton>
+                <SaveDraftButton onClick={saveAsDraft}>
                   <SaveDraftText>Save Draft</SaveDraftText>
                   <BackImgDiv src="/images/ContractDetails.svg" />
                 </SaveDraftButton>
-                <DeployButton>
+                <DeployButton onClick={deployToken}>
                   <DeployText>Deploy</DeployText>
                   <BackImgDiv src="/images/DeployContract_Active.svg" />
                 </DeployButton>
