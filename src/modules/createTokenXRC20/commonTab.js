@@ -151,7 +151,7 @@ const ActiveTextTwo = styled.div`
   }
 `;
 
-function CommonTab(props) {
+ function CommonTab(props) {
   const history = useHistory();
 
   const tab = [
@@ -200,6 +200,8 @@ function CommonTab(props) {
   const [arr, setArr] = useState(tab);
   const [step, setStep] = useState(1);
 
+  //redux data:
+
   let networkVersion = props.userDetails?.accountDetails?.network || ""
   let userAddress = props.userDetails?.accountDetails?.address || ""
 
@@ -208,7 +210,7 @@ function CommonTab(props) {
     tokenOwner: userAddress,
     tokenName: "",
     tokenSymbol: "",
-    tokenImage: "",
+    tokenImage: "tokenImage20",
     decimals: null,
     description: "",
     tokenSupply: null,
@@ -220,34 +222,20 @@ function CommonTab(props) {
   const [tokenData, setTokenData] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [saveAndContinue, setSaveAndContinue] = useState(false);
-  const [imgData, setImgData] = useState(null);
-  const [picture, setPicture] = useState(null);
+
   // capturing all fields value: 
 
   const handleChange = (e) => {
-    setTokenData({ ...tokenData, tokenOwner: userAddress, [e.target.name]: e.target.value }); //destructuring
+    setTokenData({ ...tokenData, [e.target.name]: e.target.value }); //destructuring
     // console.log("form---", tokenData);
   };
 
-  const onChangePicture = (e) => {
-    if (e.target.files[0]) {
-      console.log("picture: ", e.target.files);
-      setPicture(e.target.files[0]);
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        setImgData(reader.result);
-      });
-      reader.readAsDataURL(e.target.files[0]);
-    }
-    setTokenData({ ...tokenData, tokenImage: imgData });
-  };
-  
   // condition checking for nextStep: 
 
   useEffect(() => {
     // console.log("er--", formErrors);
     if (Object.keys(formErrors).length === 0 && saveAndContinue) {
-      console.log("val---", tokenData);
+      // console.log("val---", tokenData);
     }
   }, [formErrors]);
 
@@ -348,18 +336,21 @@ function CommonTab(props) {
     const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
     // console.log('res---', res)
     if (res !== 0) {
-      Utils.apiSuccessToast(apiSuccessConstants.DRAFTED_DATA_SUCCESS);
+      // Utils.apiSuccessToast(apiSuccessConstants.DRAFTED_DATA_SUCCESS);
       sendTransaction(res)
     }
   };
 
+
   // function to open xdc pay extension: 
 
   const sendTransaction = async (tokenDetails) => {
+    window.web3 = new Web3(window.ethereum)
     let draftedTokenId = tokenDetails?.id
     let draftedTokenOwner = tokenDetails?.tokenOwner
 
     let xdce_address = tokenData.tokenOwner;
+
     let newAbi = {
       "abi": [
         {
@@ -436,13 +427,12 @@ function CommonTab(props) {
     }
 
     let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
-    // console.log('co--', contractInstance)
 
     const priceXdc = 1;
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
-      "from": window.web3.currentProvider.publicConfigStore._state.selectedAddress,
+      "from": userAddress,
       "gas": 415800000,
       "gasPrice": gasPrice,
       "data": contractInstance.methods.createTweet(132435363634737 + "", 132435363634737 + " :@#: " + "text" + " :@#: " + "authorId" + " :@#: " + "createdAt").encodeABI()
@@ -476,9 +466,9 @@ function CommonTab(props) {
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
     // console.log('up---', res)
-    if (res !== 0) {
-      Utils.apiSuccessToast(apiSuccessConstants.UPDATE_DATA_SUCCESS);
-    }
+    // if (res !== 0) {
+    //   Utils.apiSuccessToast(apiSuccessConstants.UPDATE_DATA_SUCCESS);
+    // }
   }
 
   return (
@@ -520,7 +510,6 @@ function CommonTab(props) {
                       formErrors={formErrors}
                       nextStep={nextStep}
                       handleChange={handleChange}
-                      onChangePicture={onChangePicture}
                     />
                   );
                 case 2:
@@ -557,7 +546,6 @@ function CommonTab(props) {
     </>
   );
 }
-
 const mapStateToProps = (state) => ({
   userDetails: state.user,
 });
