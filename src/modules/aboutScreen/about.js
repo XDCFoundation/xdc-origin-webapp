@@ -1,28 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ReactPlayer from "react-player";
-// import Tooltip from "@material-ui/core/Tooltip",
-import Typography from "@material-ui/core/Typography"
-import { withStyles } from '@material-ui/core';
-import {OverlayTrigger,Tooltip} from 'react-bootstrap';
+import { useHistory } from "react-router";
+import Web3 from "web3";
+import { handleAccountDetails, handleWallet } from "../../action";
+import { connect } from "react-redux";
 
+function About(props) {
+  const history = useHistory();
+  const [connectWallet, setConnectWallet] = useState(true);
 
-// const Tool = withStyles({
-//   arrow: {
-//     "&:before": {
-//       backgroundColor: "white",
-//     },
-//   },
-//   tooltip :{
-//     color: "#2a2a2a",
-//     // height:"225px",
-//     // width: "3.75rem",
-//     backgroundColor:" #FFFFFF",
-//     boxShadow: "0px 3px 12px #0000001A", 
-//     letterSpacing: "0px",
-//   }
-// })(Tooltip);
-export default function About(props) {
+  function truncateToDecimals(num, dec = 2) {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
+
+  const handleXDCPayWallet = async () => {
+    window.web3 = new Web3(window.ethereum);
+
+    if (window.web3.currentProvider) {
+      if (!window.web3.currentProvider.chainId) {
+        //when metamask is disabled
+        const state = window.web3.givenProvider.publicConfigStore._state;
+        let address = state.selectedAddress;
+        let network =
+          state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+        let account = false;
+        
+        await window.web3.eth.getAccounts((err, accounts) => {
+            if (err !== null) console.error("An error occurred: "+err);
+            else if (accounts.length === 0) {
+              account = false;
+            } else {
+              account = true;
+            }
+          });
+        
+        if (!account) {
+          alert("Please Login To XDC PAY");
+        } 
+        else if (address || network) {
+          let balance = null;
+          
+        await window.web3.eth.getBalance(address)
+          .then(res => {
+            balance = res / Math.pow(10, 18);
+            balance = truncateToDecimals(balance);
+          });
+          let accountDetails = {
+            address: address,
+            network: network,
+            balance: balance
+          };
+          props.login(accountDetails);
+          history.push("/token-XRC20");
+        }
+      } else {
+        //metamask is also enabled with xdcpay
+        const state = window.web3.givenProvider.publicConfigStore._state;
+        let address = state.selectedAddress;
+        let network =
+          state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+      }
+    } else {
+      if (window.innerWidth < 768) {
+        history.push("/connect-wallet-mobile");
+      } else {
+        props.user(connectWallet);
+      }
+    }
+  };
+
   return (
     <MainContainer>
       <MainBoxContainer>
@@ -53,8 +101,8 @@ export default function About(props) {
           </LeftContainer>
           <ButtonContainer>
             <ButtonDiv>
-              <Button>
-              Create XRC20
+              <Button onClick={() => handleXDCPayWallet()}>
+                Create XRC20
                 <img className="XRC20" alt="" src="/images/Help.svg" />
              </Button>
               <Img className=""   alt=""  src="/images/Info.svg" />
@@ -115,6 +163,20 @@ export default function About(props) {
     </MainContainer>
   );
 }
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+  user: (connectWallet) => {
+    dispatch(handleWallet(connectWallet));
+  },
+  login: (accountDetails) => {
+    dispatch(handleAccountDetails(accountDetails));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(About);
+
 const MainContainer = styled.div`
   width: 100%;
 
@@ -168,6 +230,7 @@ const LeftContainer = styled.div`
     align-items: center;
     justify-content: center;
     padding: 0px;
+  }
 `;
 const Para = styled.div`
   margin-right: 98px;
@@ -191,23 +254,23 @@ const Img = styled.img`
 const ButtonContainer = styled.div`
   padding: 0 2.5rem;
   margin-top: -40px;
-    padding-bottom: 50px;
+  padding-bottom: 50px;
   display: flex;
   @media (min-width: 768px) and (max-width: 1024px) {
     padding: 0px !important;
     justify-content: space-evenly;
     ${"" /* justify-content: center; */}
     margin-bottom: 40px;
-    
   }
   @media (min-width: 0px) and (max-width: 767px) {
     padding: 0px !important;
     justify-content: center;
     margin-bottom: 40px;
-    margin-top:0px;
-  display:block;
-  height: 40px;
-  flex-basis: max-content;
+    margin-top: 0px;
+    display: block;
+    height: 40px;
+    flex-basis: max-content;
+  }
 `;
 const Span = styled.span`
   color: #0089ff;
@@ -229,20 +292,21 @@ const DataBox = styled.div`
   width: 100%;
   font-size: 1rem;
   @media (min-width: 768px) and (max-width: 1024px) {
-      text-align:center;
-      font-size:18px;
-      }
+    text-align: center;
+    font-size: 18px;
+  }
 
-  @media (min-width:0px) and (max-width:767px) {
+  @media (min-width: 0px) and (max-width: 767px) {
     ${"" /* display:flex; */}
     height: 145px;
     ${"" /* font-size:16px; */}
-text-align: center;
-font: normal normal normal 16px/25px Inter;
-letter-spacing: 0px;
-color: #4B4B4B;
-opacity: 1;
-padding-top:19px;
+    text-align: center;
+    font: normal normal normal 16px/25px Inter;
+    letter-spacing: 0px;
+    color: #4b4b4b;
+    opacity: 1;
+    padding-top: 19px;
+  }
 `;
 const DetailBox = styled.div`
   font-size: 16px;
@@ -296,16 +360,17 @@ const Button = styled.div`
   font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
+  cursor: pointer;
   @media (min-width: 768px) and (max-width: 1024px) {
     margin-right: 6px;
     ${"" /* margin-left: 33px; */}
-    }
+  }
 
   @media (min-width: 0px) and (max-width: 767px) {
     display: flex;
     padding: 5px;
     width: 264px;
-height: 40px;
+    height: 40px;
     border-radius: 4px;
     ${"" /* margin-bottom: 1.4rem; */}
     ${
@@ -314,7 +379,7 @@ height: 40px;
     }
     align-items: center;
     justify-content: center;
-
+  }
 `;
 const VideoBox = styled.div`
   width: 540px;
@@ -335,11 +400,12 @@ const VideoBox = styled.div`
   @media (min-width: 0px) and (max-width: 767px) {
     height: 188px !important;
     width: 271px;
-background: #FFFFFF 0% 0% no-repeat padding-box;
-border: 1px solid #D8D8D8;
-border-radius: 6px;
-margin-top: 26px;
-margin-bottom: 2rem;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    margin-top: 26px;
+    margin-bottom: 2rem;
+  }
 `;
 const HeadingContainer = styled.div`
   font-size: 25px;
@@ -347,14 +413,15 @@ const HeadingContainer = styled.div`
   color: #1f1f1f;
   padding: 3.75rem;
   @media (min-width: 0px) and (max-width: 767px) {
-  ${"" /* height: 42px; */}
-  display:flex;
-text-align: center;
-font: normal normal 600 18px/21px Inter;
-letter-spacing: 0px;
-color: #1F1F1F;
-flex-direction: column;
-padding: 2rem 1.4rem 0 1.4rem; 
+    ${"" /* height: 42px; */}
+    display:flex;
+    text-align: center;
+    font: normal normal 600 18px/21px Inter;
+    letter-spacing: 0px;
+    color: #1f1f1f;
+    flex-direction: column;
+    padding: 2rem 1.4rem 0 1.4rem;
+  }
 `;
 const GreyContainer = styled.div`
   background-color: none;

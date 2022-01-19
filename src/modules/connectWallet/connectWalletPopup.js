@@ -1,7 +1,12 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Dialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { handleAccountDetails, handleWallet } from "../../action";
+import Web3 from "web3";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles({
   dialog: {
@@ -174,14 +179,85 @@ const BtnText = styled.span`
   opacity: 1;
 `;
 
-function connectWalletPopup({ open, handleClose }) {
+function connectWalletPopup(props) {
+  const history = useHistory();
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const classes = useStyles();
+
+  const [connectWallet, setConnectWallet] = useState(false);
+  const [isClose, setClose] = useState(false);
+
+  const handleDialogClose = () => {
+    props.disablePopup(connectWallet);
+    setClose(true);
+    props.handleClose();
+  };
+
+  function truncateToDecimals(num, dec = 2) {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
+
+  const handleXDCPayWallet = async() => {
+    window.web3 = new Web3(window.ethereum);
+
+    if (window.web3.currentProvider) {
+      if (!window.web3.currentProvider.chainId) {
+        //when metamask is disabled
+        const state = window.web3.givenProvider.publicConfigStore._state;
+        let address = state.selectedAddress;
+        let network =
+          state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+        let account = false;
+        
+        await window.web3.eth.getAccounts((err, accounts) => {
+          if (err !== null) console.error("An error occurred: " + err);
+          else if (accounts.length === 0) {
+            account = false;
+          } else {
+            account = true;
+          }
+        });
+
+        if (!account) {
+          alert("Please Login To XDC PAY");
+        }
+        else if (address || network) {
+        let balance = null;
+          
+        await window.web3.eth.getBalance(address)
+          .then(res => {
+            balance = res / Math.pow(10, 18);
+            balance = truncateToDecimals(balance);
+          });
+          
+          let accountDetails = {
+            address: address,
+            network: network,
+            balance: balance
+          };
+          props.login(accountDetails);
+          handleDialogClose()
+        }
+      } else {
+        //metamask is also enabled with xdcpay
+        const state = window.web3.givenProvider.publicConfigStore._state;
+        let address = state.selectedAddress;
+        let network =
+          state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+      }
+    } else {
+      // For mobile and tab - redirect to App Store
+      alert("Redirect To Download XDC PAY App !");
+    }
+  };
+
   return (
     <Dialog
-      onClose={handleClose}
+      onClose={isClose || props.handleClose}
       aria-labelledby="simple-dialog-title"
-      open={open}
+      open={props.open || props.user.isWalletOpen}
       classes={{
         paper: classes.dialog,
       }}
@@ -189,7 +265,11 @@ function connectWalletPopup({ open, handleClose }) {
       <Container>
         <DialogHeader>
           <DialogTitle>Connect Wallet</DialogTitle>
-          <CrossIcon onClick={handleClose} src="/images/Cross.svg" alt="" />
+          <CrossIcon
+            onClick={() => handleDialogClose()}
+            src="/images/Cross.svg"
+            alt=""
+          />
         </DialogHeader>
         <Line />
         <BoxContainer>
@@ -239,7 +319,9 @@ function connectWalletPopup({ open, handleClose }) {
         <ButtonContainer>
           <Button>
             <BtnImg src="/images/XDC_Icon_White.svg" />
-            <BtnText>Connect Wallet</BtnText>
+            <BtnText onClick={() => handleXDCPayWallet()}>
+              Connect Wallet
+            </BtnText>
           </Button>
         </ButtonContainer>
       </Container>
@@ -247,4 +329,17 @@ function connectWalletPopup({ open, handleClose }) {
   );
 }
 
-export default connectWalletPopup;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  disablePopup: (connectWallet) => {
+    dispatch(handleWallet(connectWallet));
+  },
+  login: (accountDetails) => {
+    dispatch(handleAccountDetails(accountDetails));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(connectWalletPopup);

@@ -15,14 +15,20 @@ const useStyles = makeStyles({
   },
 });
 
-function deleteContract({ open, handleClose }) {
+function deleteContract(props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const classes = useStyles();
+
+  const handleDeleteClick = (tokenId) => {
+    props.deleteContract(tokenId);
+    props.handleClose()
+  }
+
   return (
     <Dialog
-      onClose={handleClose}
+      onClose={props.handleClose}
       aria-labelledby="simple-dialog-title"
-      open={open}
+      open={props.open}
       classes={{
         paper: classes.dialog,
       }}
@@ -30,13 +36,13 @@ function deleteContract({ open, handleClose }) {
       <DialogContainer>
         <DialogHeader>
           <DeleteText>Delete</DeleteText>
-          <CrossIcon onClick={handleClose} src="/images/Cross.svg" alt="" />
+          <CrossIcon onClick={props.handleClose} src="/images/Cross.svg" alt="" />
         </DialogHeader>
         <Line />
-        <DialogText>Do you want to delete MetaVerse Contract?</DialogText>
+        <DialogText>Do you want to delete {props.tokenName} Contract?</DialogText>
         <ButtonContainer>
-          <CancelButton>Cancel</CancelButton>
-          <DeleteButton>Delete</DeleteButton>
+          <CancelButton onClick={props.handleClose}>Cancel</CancelButton>
+          <DeleteButton onClick={() => handleDeleteClick(props.tokenId)}>Delete</DeleteButton>
         </ButtonContainer>
       </DialogContainer>
     </Dialog>
