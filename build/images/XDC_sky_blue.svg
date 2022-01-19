@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+  <g id="Install" transform="translate(-1018 -290)">
+    <rect id="Rectangle_611" data-name="Rectangle 611" width="50" height="50" transform="translate(1018 290)" fill="none"/>
+    <g id="XDC-Icon-128X128" transform="translate(1022 294)">
+      <path id="Combined_Shape" data-name="Combined Shape" d="M21.5,43A21.669,21.669,0,0,1,7.03,37.483,21.41,21.41,0,0,1,0,23.914L4.858,21.5,0,19.086A21.409,21.409,0,0,1,7.03,5.516a21.736,21.736,0,0,1,28.94,0A21.411,21.411,0,0,1,43,19.087L38.142,21.5,43,23.914a21.41,21.41,0,0,1-7.029,13.57A21.667,21.667,0,0,1,21.5,43Z" transform="translate(0 0)" fill="#0089ff"/>
+      <path id="X" d="M3.345,16.461l3.572-6.037,3.561,6.037h3.356l-5.119-8.3L13.72,0H10.4L6.917,5.947,3.436,0H.114L5.131,8.163,0,16.461Z" transform="translate(14.547 13.308)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

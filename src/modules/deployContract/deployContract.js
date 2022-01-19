@@ -1,16 +1,22 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import "../../assets/styles/deployContract.css";
 import styled from "styled-components";
 import { Delete, Edit } from "@material-ui/icons";
-import DeleteContract from "../deleteContract/deleteContract";
+import DeleteContract from "./deleteContractPopup";
 import DeployPopup from "./deployPopup";
 
-function DeployContract() {
+function DeployContract(props) {
+  const history = useHistory()
   const [open, setOpen] = useState(false);
   const [openDeployPopup, setOpenDeployPopup] = useState(false);
+  const [tokenId, setTokenId] = useState("");
+  const [tokenName, setTokenName] = useState("");
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id,tokenName) => {
     setOpen(true);
+    setTokenId(id);
+    setTokenName(tokenName);
   };
 
   const handleClose = () => {
@@ -23,25 +29,11 @@ function DeployContract() {
   const deployPopupClose = () => {
     setOpenDeployPopup(false);
   };
-
-  const tableData = [
-    {
-      tokenIcon: "",
-      tokenName: "MetaVerse",
-      tokenSymbol: "META",
-      network: "XDC Apothem Testnet",
-      supply: "10000000",
-      status: "Draft",
-    },
-    {
-      tokenIcon: "",
-      tokenName: "Alex Coin",
-      tokenSymbol: "ALEX",
-      network: "XDC Mainnet",
-      supply: "20000000",
-      status: "Failed",
-    },
-  ];
+  const capitalize = (str) => {
+    let lowerStr = str.toLowerCase();
+    let newtr = lowerStr.charAt(0).toUpperCase() + lowerStr.slice(1);
+    return newtr;
+  }
 
   return (
     <Container>
@@ -58,11 +50,11 @@ function DeployContract() {
         <Line />
 
         <DataContainer>
-          {tableData.map((item) => (
+          { props.state.draftFailedXrc20TokenDetails && props.state.draftFailedXrc20TokenDetails.map((item,index) => (
             <>
-              <TableRow>
+              <TableRow key={index}>
                 <div className="tokenIcon">
-                  <TableContentImg src={item.tokenIcon} />
+                  <TableContentImg src={item.tokenImage} />
                 </div>
                 <div className="tokenName">
                   <TableContent>{item.tokenName}</TableContent>
@@ -74,19 +66,19 @@ function DeployContract() {
                   <TableContent>{item.network}</TableContent>
                 </div>
                 <div className="supply">
-                  <TableContent>{item.supply}</TableContent>
+                  <TableContent>{item.tokenInitialSupply}</TableContent>
                 </div>
                 <div className="status">
-                  <TableContent>{item.status}</TableContent>
+                  <TableContent>{capitalize(item.status)}</TableContent>
                 </div>
                 <div className="icons">
                   <div className="deployIcon" onClick={handleDeployPopup}>
                     <img src="/images/deploy_contract.png" alt="" />
                   </div>
-                  <div className="deleteIcon" onClick={handleClickOpen}>
+                  <div className="deleteIcon" onClick={() => handleClickOpen(item.id,item.tokenName)}>
                     <Delete />
                   </div>
-                  <div className="editIcon">
+                  <div onClick={() =>history.push(`/token-XRC20/${item.id}`)} className="editIcon">
                     <Edit />
                   </div>
                 </div>
@@ -101,6 +93,9 @@ function DeployContract() {
         open={open}
         onClose={handleClose}
         handleClose={handleClose}
+        deleteContract={props.deleteContract}
+        tokenId={tokenId}
+        tokenName={tokenName}
       />
       <DeployPopup
         open={openDeployPopup}

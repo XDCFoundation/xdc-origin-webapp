@@ -9,14 +9,20 @@ import Dashboard from "./modules/dashboard/dashboardComponent";
 import BaseComponent from "./modules/baseComponent";
 import CreatedToken from "./modules/createdToken";
 import About from "./modules/aboutScreen/about";
-import ChangeNetwork from './modules/changeNetworkPopup/index'
+import ChangeNetwork from "./modules/changeNetworkPopup/changeNetworkMobile";
 import DeployContract from "./modules/deployContract";
 import CreateTokenXRC20 from "../src/modules/createTokenXRC20";
 import UploadTokenImage from "./modules/uploadTokenImage";
 import Faq from "./modules/FAQ";
 
+import WalletPopup from "../src/modules/connectWallet/connectWalletMobile";
+import WalletPopupDesktop from "./modules/connectWallet";
 
 class Routes extends BaseComponent {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
   componentDidMount() {}
   render() {
     return (
@@ -28,13 +34,34 @@ class Routes extends BaseComponent {
             {/*<Route exact path={"/sign-up"} component={SignUp} />*/}
             <Route exact path={"/faq"} component={Faq} />
 
+            {
+              !this.props?.user?.accountDetails?.address
+                ? <Route exact path={"/"} component={Dashboard} />
+                : ""
+            }
             <Route exact path={"/"} component={Dashboard} />
             <Route exact path={"/about"} component={About} />
             <Route exact path={"/created-token"} component={CreatedToken} />
             <Route exact path={"/deploy-contract"} component={DeployContract} />
             <Route exact path={"/token-XRC20"} component={CreateTokenXRC20} />
-            <Route exact path={'/change-network'} component={ChangeNetwork}/>
-            <Route exact path={'/upload-token-image'} component={UploadTokenImage}/>
+            <Route exact path={"/token-XRC20/:id"} component={CreateTokenXRC20} />
+            {/* <Route exact path={'/change-network'} component={ChangeNetwork}/> */}
+            <Route exact path={"/change-network"} component={ChangeNetwork} />
+            <Route
+              exact
+              path={"/upload-token-image"}
+              component={UploadTokenImage}
+            />
+            <Route
+              exact
+              path={"/connect-wallet-mobile"}
+              component={WalletPopup}
+            />
+            <Route
+              exact
+              path={"/connect-wallet-desktop"}
+              component={WalletPopupDesktop}
+            />
             <Redirect exact from="*" to="/" />
           </Switch>
         </Router>
