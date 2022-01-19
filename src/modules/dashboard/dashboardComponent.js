@@ -18,6 +18,8 @@ const dashboardComponent = (props) => {
       <HeaderComponent />
       <Row>
         {window.innerWidth >= 1024 ? <DesktopSideMenu /> : ""}
+
+  
         <About />
       </Row>
       {window.innerWidth <= 768 ? <Footer /> : ""}

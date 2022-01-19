@@ -13,6 +13,8 @@ import ChangeNetwork from "./modules/changeNetworkPopup/changeNetworkMobile";
 import DeployContract from "./modules/deployContract";
 import CreateTokenXRC20 from "../src/modules/createTokenXRC20";
 import UploadTokenImage from "./modules/uploadTokenImage";
+import Faq from "./modules/FAQ";
+
 import WalletPopup from "../src/modules/connectWallet/connectWalletMobile";
 import WalletPopupDesktop from "./modules/connectWallet";
 
@@ -30,6 +32,8 @@ class Routes extends BaseComponent {
             {/* <Route exact from="/" to="/dashboard/about" /> */}
             {/*<Route exact path={"/"} component={Login} />*/}
             {/*<Route exact path={"/sign-up"} component={SignUp} />*/}
+            <Route exact path={"/faq"} component={Faq} />
+
             {
               !this.props?.user?.accountDetails?.address
                 ? <Route exact path={"/"} component={Dashboard} />
