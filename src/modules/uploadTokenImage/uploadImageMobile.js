@@ -4,7 +4,7 @@ import SeekBar from "react-seekbar-component";
 import "react-seekbar-component/dist/index.css";
 import Cropper from "react-easy-crop";
 import GetCroppedImg from "./cropImage";
-import AWSServices from "../../services/index";
+import AWSServices from "../../services/aws-service";
 import { useDropzone } from "react-dropzone";
 
 const Container = styled.div`

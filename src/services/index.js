@@ -5,6 +5,5 @@
 
 // export * from './user'
 export { default as SaveDraftService } from "./saveDraft";
-export {default as AWSServices} from "./aws-service";
 
 export { default as contractManagementService } from "./contractManagementService";
