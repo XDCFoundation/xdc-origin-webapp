@@ -73,7 +73,7 @@ const InputDiv = styled.input`
   background: #f0f2fc 0% 0% no-repeat padding-box;
   border-radius: 4px;
   opacity: 1;
-  padding: 7px 0px 7px 0px;
+  padding: 7px 0px 7px 16px;
   position: relative;
   top: 0;
   left: 0;
