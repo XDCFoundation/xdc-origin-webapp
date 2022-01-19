@@ -10,6 +10,11 @@ function About(props) {
   const history = useHistory();
   const [connectWallet, setConnectWallet] = useState(true);
 
+  function truncateToDecimals(num, dec = 2) {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
+
   const handleXDCPayWallet = async () => {
     window.web3 = new Web3(window.ethereum);
 
@@ -35,9 +40,17 @@ function About(props) {
           alert("Please Login To XDC PAY");
         } 
         else if (address || network) {
+          let balance = null;
+          
+        await window.web3.eth.getBalance(address)
+          .then(res => {
+            balance = res / Math.pow(10, 18);
+            balance = truncateToDecimals(balance);
+          });
           let accountDetails = {
             address: address,
             network: network,
+            balance: balance
           };
           props.login(accountDetails);
           history.push("/token-XRC20");
