@@ -203,11 +203,13 @@ function CommonTab(props) {
   const [imgData, setImgData] = useState("");
   const [isUploadOpen, setIsUploadOpen] = useState(false);
 
-
   const toggleUploadPopup = (imageData) => {
     setIsUploadOpen(!isUploadOpen);
     setImgData(imageData);
   };
+
+  console.log('r---', props.state.xrc20TokenDetails)
+
   //redux data:
 
   let networkVersion = props.userDetails?.accountDetails?.network || ""
@@ -219,9 +221,9 @@ function CommonTab(props) {
     tokenName: "",
     tokenSymbol: "",
     tokenImage: imgData,
-    decimals: undefined,
-    description: "",
-    tokenSupply: undefined,
+    tokenDecimals: undefined,
+    tokenDescription: "",
+    tokenInitialSupply: undefined,
     pausable: false,
     mintable: true,
     burnable: true,
@@ -233,13 +235,33 @@ function CommonTab(props) {
 
   // capturing all fields value: 
 
+  useEffect(() => {
+    setTokenData(props.state?.xrc20TokenDetails)
+  }, [props])
+
+  let newImage = imgData.length >= 1 ? imgData : tokenData.tokenImage
+
   const handleChange = (e) => {
-    setTokenData({ ...tokenData, tokenImage: imgData, [e.target.name]: e.target.value }); //destructuring
+    console.log('fired')
+    setTokenData({
+      ...tokenData,
+      network: networkVersion,
+      pausable: false,
+      tokenOwner: userAddress,
+      tokenImage: newImage,
+      burnable: true,
+      mintable: true,
+      [e.target.name]: e.target.value
+    });
+    //destructuring
   };
+
+  // console.log('to---', tokenData)
 
   // condition checking for nextStep: 
 
   useEffect(() => {
+    console.log('er--', formErrors)
     if (Object.keys(formErrors).length === 0 && saveAndContinue) {
     }
   }, [formErrors]);
@@ -270,20 +292,20 @@ function CommonTab(props) {
       errors.tokenImage = validationsMessages.VALIDATE_IMAGE_FIELD;
     }
 
-    if (!values.decimals) {
-      errors.decimals = validationsMessages.VALIDATE_DECIMAL_FIELD;
-    } else if (Number(values.decimals) < 1) {
-      errors.decimals = validationsMessages.VALIDATE_DECIMAL_MIN_RANGE;
-    } else if (Number(values.decimals) > 18) {
-      errors.decimals = validationsMessages.VALIDATE_DECIMAL_MAX_RANGE;
-    } else if (Number(values.decimals) === 0) {
-      errors.decimals = validationsMessages.VALIDATE_DECIMAL_VALUE;
+    if (!values.tokenDecimals) {
+      errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_FIELD;
+    } else if (Number(values.tokenDecimals) < 1) {
+      errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_MIN_RANGE;
+    } else if (Number(values.tokenDecimals) > 18) {
+      errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_MAX_RANGE;
+    } else if (Number(values.tokenDecimals) === 0) {
+      errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_VALUE;
     }
 
-    if (!values.description) {
-      errors.description = validationsMessages.VALIDATE_DESCRIPTION_FIELD;
-    } else if (values.description.length > 500) {
-      errors.description = validationsMessages.VALIDATE_DESCRIPTION_LIMIT;
+    if (!values.tokenDescription) {
+      errors.tokenDescription = validationsMessages.VALIDATE_DESCRIPTION_FIELD;
+    } else if (values.tokenDescription.length > 500) {
+      errors.tokenDescription = validationsMessages.VALIDATE_DESCRIPTION_LIMIT;
     }
 
     return errors;
@@ -291,14 +313,13 @@ function CommonTab(props) {
 
 
   // Steps navigation functions : 
-  const sample = () => {
+  const checkError = () => {
     setFormErrors(validate(tokenData));
     setSaveAndContinue(true);
-
   }
 
   const nextStep = (e) => {
-    sample()
+    checkError();
     if (Object.keys(formErrors).length === 0 && saveAndContinue === true) {
       let newData = arr.map((item) => {
         return item.id !== step
@@ -309,8 +330,8 @@ function CommonTab(props) {
       setArr(newData);
       setStep(step + 1);
     }
-     else {
-       return;
+    else {
+      return;
     }
   };
 
@@ -327,8 +348,8 @@ function CommonTab(props) {
   // saveDraft api function : 
 
   let createdToken = tokenData.tokenName
-  let parsingDecimal = Number(tokenData.decimals);
-  let parsingSupply = Number(tokenData.tokenSupply);
+  let parsingDecimal = Number(tokenData.tokenDecimals);
+  let parsingSupply = Number(tokenData.tokenInitialSupply);
 
   const saveAsDraft = async (e) => {
     e.preventDefault();
@@ -339,17 +360,14 @@ function CommonTab(props) {
       tokenImage: tokenData.tokenImage,
       tokenInitialSupply: parsingSupply,
       tokenDecimals: parsingDecimal,
-      tokenDescription: tokenData.description,
+      tokenDescription: tokenData.tokenDescription,
       network: tokenData.network,
       isBurnable: tokenData.burnable,
       isMintable: tokenData.mintable,
       isPausable: tokenData.pausable,
     };
-
     const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
-    // console.log('res---', res)
     if (res !== 0) {
-      // Utils.apiSuccessToast(apiSuccessConstants.DRAFTED_DATA_SUCCESS);
       sendTransaction(res)
     }
   };
@@ -361,6 +379,7 @@ function CommonTab(props) {
     window.web3 = new Web3(window.ethereum)
     let draftedTokenId = tokenDetails?.id
     let draftedTokenOwner = tokenDetails?.tokenOwner
+    let byteCode = tokenDetails?.byteCode
 
     let xdce_address = tokenData.tokenOwner;
 
@@ -446,20 +465,17 @@ function CommonTab(props) {
 
     let transaction = {
       "from": userAddress,
-      "gas": 415800000,
+      "gas": 7920000,
       "gasPrice": gasPrice,
-      "data": contractInstance.methods.createTweet(132435363634737 + "", 132435363634737 + " :@#: " + "text" + " :@#: " + "authorId" + " :@#: " + "createdAt").encodeABI()
+      "data": byteCode
     };
-    // myContract.methods.createTweet(id + "", id + " :@#: " + text + " :@#: " + authorId + " :@#: " + createdAt); need to know the definition of this function from Deepak or anyhow.
-    // contractInstance.deploy({})
-
 
     await window.web3.eth.sendTransaction(transaction)
       .on('transactionHash', function (hash) {
         // console.log("transactionHash ====", hash);
       })
       .on('receipt', function (receipt) {
-        console.log("receipt ====", receipt); //receive the contract address from this object
+        // console.log("receipt ====", receipt);  //receive the contract address from this object
         if (receipt !== 0) {
           history.push({ pathname: '/created-token', state: receipt, parsingDecimal, parsingSupply, gasPrice, createdToken })
           updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
@@ -478,7 +494,7 @@ function CommonTab(props) {
       status: apiBodyMessages.STATUS_DEPLOYED
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
-    // console.log('up---', res)
+
     // if (res !== 0) {
     //   Utils.apiSuccessToast(apiSuccessConstants.UPDATE_DATA_SUCCESS);
     // }

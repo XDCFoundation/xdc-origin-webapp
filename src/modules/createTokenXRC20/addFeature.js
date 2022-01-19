@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import { addFeaturesContent,apiSuccessConstants} from "../../constants";
+import { useHistory } from "react-router";
 
 const Parent = styled.div`
   display: flex;
@@ -290,6 +291,7 @@ const Check = styled.img`
 `;
 
 export default function AddFeatures(props) {
+  const history = useHistory()
   const tab = [
     {
       id: 1,
@@ -335,8 +337,8 @@ export default function AddFeatures(props) {
     // saveDraft api function : 
 
     let createdToken = props.tokenData.tokenName
-    let parsingDecimal = Number(props.tokenData.decimals);
-    let parsingSupply = Number(props.tokenData.tokenSupply);
+    let parsingDecimal = Number(props.tokenData.tokenDecimals);
+    let parsingSupply = Number(props.tokenData.tokenInitialSupply);
   
     const saveAsDraft = async (e) => {
       e.preventDefault();
@@ -347,17 +349,15 @@ export default function AddFeatures(props) {
         tokenImage: props.tokenData.tokenImage,
         tokenInitialSupply: parsingSupply,
         tokenDecimals: parsingDecimal,
-        tokenDescription: props.tokenData.description,
+        tokenDescription: props.tokenData.tokenDescription,
         network: props.tokenData.network,
         isBurnable: props.tokenData.burnable,
         isMintable: props.tokenData.mintable,
         isPausable: props.tokenData.pausable,
       };
-  
       const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
-      // console.log('res---', res)
       if (res !== 0) {
-        Utils.apiSuccessToast(apiSuccessConstants.DRAFTED_DATA_SUCCESS);
+        history.push({pathname: '/deploy-contract', state: res})
       }
     };
 

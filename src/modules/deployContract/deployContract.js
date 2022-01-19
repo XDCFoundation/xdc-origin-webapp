@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { Delete, Edit } from "@material-ui/icons";
 import DeleteContract from "./deleteContractPopup";
 import DeployPopup from "./deployPopup";
+import Web3 from 'web3';
+import { connect } from 'react-redux';
 
 function DeployContract(props) {
   const history = useHistory()
@@ -13,7 +15,7 @@ function DeployContract(props) {
   const [tokenId, setTokenId] = useState("");
   const [tokenName, setTokenName] = useState("");
 
-  const handleClickOpen = (id,tokenName) => {
+  const handleClickOpen = (id, tokenName) => {
     setOpen(true);
     setTokenId(id);
     setTokenName(tokenName);
@@ -23,7 +25,10 @@ function DeployContract(props) {
     setOpen(false);
   };
   const handleDeployPopup = () => {
+    // saveDraft data coming from addFeatures
+    let tokenDetails = props.saveDraftData
     setOpenDeployPopup(true);
+    sendTransaction(tokenDetails)
   };
 
   const deployPopupClose = () => {
@@ -34,6 +39,127 @@ function DeployContract(props) {
     let newtr = lowerStr.charAt(0).toUpperCase() + lowerStr.slice(1);
     return newtr;
   }
+
+  // deploy Token Function :
+
+  let networkVersion = props.userDetails?.accountDetails?.network || ""
+  let userAddress = props.userDetails?.accountDetails?.address || ""
+
+  const sendTransaction = async (tokenDetails) => {
+    window.web3 = new Web3(window.ethereum)
+
+    let draftedTokenId = tokenDetails?.id
+    let draftedTokenOwner = tokenDetails?.tokenOwner
+    let byteCode = tokenDetails?.byteCode
+    let createdToken = tokenDetails?.tokenName
+    let parsingDecimal = tokenDetails?.tokenDecimals
+    let parsingSupply = tokenDetails?.tokenInitialSupply
+
+    let xdce_address = tokenDetails.tokenOwner;
+
+    let newAbi = {
+      "abi": [
+        {
+          "constant": true,
+          "inputs": [
+            {
+              "name": "tweetId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getTweetByTweetId",
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "tweetId",
+              "type": "uint256"
+            },
+            {
+              "name": "tweet",
+              "type": "string"
+            }
+          ],
+          "name": "createTweet",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "getCount",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "tweets",
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+    }
+
+    let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
+
+    const priceXdc = 1;
+    const gasPrice = await window.web3.eth.getGasPrice();
+
+    let transaction = {
+      "from": userAddress,
+      "gas": 7920000,
+      "gasPrice": gasPrice,
+      "data": byteCode
+    };
+
+    await window.web3.eth.sendTransaction(transaction)
+      .on('transactionHash', function (hash) {
+        // console.log("transactionHash ====", hash);
+      })
+      .on('receipt', function (receipt) {
+        // console.log("receipt ====", receipt);
+        if (receipt !== 0) {
+          history.push({ pathname: '/created-token', state: receipt, gasPrice, createdToken, parsingDecimal, parsingSupply })
+          // updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+        }
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        // console.log("confirmation ====", confirmationNumber, receipt);
+      })
+  }
+
 
   return (
     <Container>
@@ -50,11 +176,11 @@ function DeployContract(props) {
         <Line />
 
         <DataContainer>
-          { props.state.draftFailedXrc20TokenDetails && props.state.draftFailedXrc20TokenDetails.map((item,index) => (
+          {props.state.draftFailedXrc20TokenDetails && props.state.draftFailedXrc20TokenDetails.map((item, index) => (
             <>
               <TableRow key={index}>
                 <div className="tokenIcon">
-                  <TableContentImg src={item.tokenImage} />
+                  <TableContentImg alt="" src={item.tokenImage ? item.tokenImage : "/images/XDC_sky_blue.svg"} />
                 </div>
                 <div className="tokenName">
                   <TableContent>{item.tokenName}</TableContent>
@@ -75,10 +201,10 @@ function DeployContract(props) {
                   <div className="deployIcon" onClick={handleDeployPopup}>
                     <img src="/images/deploy_contract.png" alt="" />
                   </div>
-                  <div className="deleteIcon" onClick={() => handleClickOpen(item.id,item.tokenName)}>
+                  <div className="deleteIcon" onClick={() => handleClickOpen(item.id, item.tokenName)}>
                     <Delete />
                   </div>
-                  <div onClick={() =>history.push(`/token-XRC20/${item.id}`)} className="editIcon">
+                  <div onClick={() => history.push(`/token-XRC20/${item.id}`)} className="editIcon">
                     <Edit />
                   </div>
                 </div>
@@ -106,7 +232,12 @@ function DeployContract(props) {
   );
 }
 
-export default DeployContract;
+// export default DeployContract;
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+export default connect(mapStateToProps)(DeployContract);
 
 const Container = styled.div`
   width: 100vw;
@@ -310,4 +441,5 @@ const TableContentImg = styled.img`
   width: 38px;
   height: 35px;
   opacity: 1;
+  border-radius: 50%;
 `;

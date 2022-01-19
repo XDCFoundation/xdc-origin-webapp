@@ -195,7 +195,7 @@ export default function UploadTokenImage(props) {
       return (
         <Container>
           <Header>
-            <img onClick={()=>props.handleUploadClose()} src="images/Button_Back_Arrow.svg"></img>
+            <img onClick={(e) => props.handleUploadClose(e)} src="images/Button_Back_Arrow.svg"></img>
             <HeadingName>Upload Token Image</HeadingName>
           </Header>
           <Content>

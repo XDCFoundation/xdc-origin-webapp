@@ -259,7 +259,7 @@ const LineSeparation = styled.hr`
 `;
 
 const CreateToken = (props) => {
-  // console.log("props---", props.location);
+  console.log("props---", props.location);
 
   let gasPrice = Number(props.location.gasPrice);
   let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, 18);
