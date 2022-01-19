@@ -240,7 +240,6 @@ export default function UploadTokenImage(props) {
       setFile({ content: croppedImage });
       setCroppedImage(croppedImage);
       uploadFileToAWS(croppedImage);
-
     } catch (e) {
       console.error(e);
     }
@@ -264,7 +263,7 @@ export default function UploadTokenImage(props) {
         <Content>
           <UploadCircle {...getRootProps()}>
             <input {...getInputProps()} />
-            <UploadIcon src="images/Upload.svg"></UploadIcon>
+            <UploadIcon src="/images/Upload.svg"></UploadIcon>
             <UploadText>Drag and drop your token icon here</UploadText>
           </UploadCircle>
           <ContentText>or</ContentText>
@@ -295,7 +294,7 @@ export default function UploadTokenImage(props) {
           </TokenImage>
           <CropImage>
             <ControlButtons onClick={zoomOut}>
-              <img src="images/Minus.svg"></img>
+              <img src="/images/Minus.svg"></img>
             </ControlButtons>
             <div>
               <SeekBar
@@ -312,7 +311,7 @@ export default function UploadTokenImage(props) {
               />
             </div>
             <ControlButtons onClick={zoomIn}>
-              <Plus src="images/Token_Image.svg"></Plus>
+              <Plus src="/images/Token_Image.svg"></Plus>
             </ControlButtons>
           </CropImage>
         </Content>
@@ -326,15 +325,15 @@ export default function UploadTokenImage(props) {
         <Header>
           <DialogTitle>Upload Token Image</DialogTitle>
           <Cross
-            onClick={()=>props.handleUploadClose()}
-            src="images/Cross.svg"
+            onClick={(e) => props.handleUploadClose(e)}
+            src="/images/Cross.svg"
           ></Cross>
         </Header>
         <ContentContainer>
           {RenderUi()}
 
           <Buttons>
-            <Cancel onClick={()=>props.handleUploadClose()}>
+            <Cancel onClick={(e) => props.handleUploadClose(e)}>
               <CancelName >
                 Cancel
               </CancelName>

@@ -179,12 +179,9 @@ const ContinueText = styled.div`
 `;
 
 export default function Tokenomics(props) {
-  const saveAndContinue = () => {
-    if (props.tokenData.tokenSupply >= 1) {
-      props.nextStep();
-    } else {
-      return;
-    }
+  const saveAndContinue = (e) => {
+    props.handleChange(e)
+    props.nextStep(e);
   };
   return (
     <>
@@ -202,13 +199,13 @@ export default function Tokenomics(props) {
             <InputDiv
               type="number"
               onChange={(e) => props.handleChange(e)}
-              name="tokenSupply"
-              value={props.tokenData.tokenSupply}
+              name="tokenInitialSupply"
+              value={props.tokenData.tokenInitialSupply}
             />
             <BlurTextDiv>
               Insert the initial numbers of tokens available
             </BlurTextDiv>
-            {props.tokenData.tokenSupply >= 1 ? (
+            {props.tokenData.tokenInitialSupply >= 1 ? (
               ""
             ) : (
               <p className="shown-error">Supply should be more than 0</p>

@@ -13,6 +13,7 @@ class CreateTokenComponent extends BaseComponent {
   }
 
   render() {
+    console.log('this----',this.props.location)
     return(
       <>
        <HeaderComponent />

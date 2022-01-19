@@ -68,7 +68,7 @@ class DeployContract extends BaseComponent {
         <Header />
         <Row>
           {window.innerWidth >= 1024 ? <Sidebar /> : ""}
-          <DeployContractComponent state={this.state} deleteContract={this.deleteContract}/>
+          <DeployContractComponent saveDraftData={this.props.location.state} state={this.state} deleteContract={this.deleteContract}/>
         </Row>
         {window.innerWidth <= 768 ? <Footer /> : ""}
       </div>
