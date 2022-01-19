@@ -7,6 +7,7 @@ import { Row } from "simple-flexbox";
 import Footer from "../Footer";
 import  Utility  from "../../utility";
 import {contractManagementService} from "../../services"
+import { connect } from "react-redux";
 
 class DeployContract extends BaseComponent {
   constructor(props) {
@@ -21,9 +22,9 @@ class DeployContract extends BaseComponent {
   }
 
   getDraftFailedXrc20Token = async () => {
-    // Need to fetch tokenOwner from Redux
     let requestData = {
-      tokenOwner: "0xc95b2c9d6a84a8c17c6b8722d0a8cc9afb024dfd",
+      // tokenOwner: "0xc95b2c9d6a84a8c17c6b8722d0a8cc9afb024dfd",
+      tokenOwner: this.props?.user?.accountDetails?.address,
     };
   
     let [error, contractServiceResponse] = await Utility.parseResponse(
@@ -76,4 +77,8 @@ class DeployContract extends BaseComponent {
   }
 }
 
-export default DeployContract;
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+
+export default connect(mapStateToProps)(DeployContract);
