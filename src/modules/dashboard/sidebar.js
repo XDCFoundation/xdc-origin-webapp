@@ -29,6 +29,10 @@ function Sidebar(props) {
     if (navItem === "XRC20") history.push("/token-XRC20");
   };
 
+  const handleBtn = () => {
+    history.push("/FAQ");
+    window.location.reload();
+  }
   const logout = () => {
     props.logout();
     history.push("/");
@@ -166,6 +170,7 @@ function Sidebar(props) {
 
       {window.innerWidth <= 768 ? (
         <Wrapper
+        onClick={handleBtn}
           className={
             createContract
               ? "faq-margin-create"
@@ -179,6 +184,7 @@ function Sidebar(props) {
         </Wrapper>
       ) : (
         <Wrapper
+        onClick={handleBtn}
           className={
             createContract
               ? "faq-margin-create"
