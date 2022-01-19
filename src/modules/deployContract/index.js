@@ -23,14 +23,13 @@ class DeployContract extends BaseComponent {
 
   getDraftFailedXrc20Token = async () => {
     let requestData = {
-      // tokenOwner: "0xc95b2c9d6a84a8c17c6b8722d0a8cc9afb024dfd",
       tokenOwner: this.props?.user?.accountDetails?.address,
     };
   
     let [error, contractServiceResponse] = await Utility.parseResponse(
       contractManagementService.getDraftFailedXrc20Token(requestData)
     );
-
+    
     if (error || !contractServiceResponse) {
       console.log("getDraftFailedXrc20Token error -> ", error)
       Utility.apiFailureToast("Failed To Fetch Token Details!");
