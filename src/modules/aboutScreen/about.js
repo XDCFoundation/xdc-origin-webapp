@@ -1,6 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 import ReactPlayer from "react-player";
+// import Tooltip from "@material-ui/core/Tooltip",
+import Typography from "@material-ui/core/Typography"
+import { withStyles } from '@material-ui/core';
+import {OverlayTrigger,Tooltip} from 'react-bootstrap';
+
+
+// const Tool = withStyles({
+//   arrow: {
+//     "&:before": {
+//       backgroundColor: "white",
+//     },
+//   },
+//   tooltip :{
+//     color: "#2a2a2a",
+//     // height:"225px",
+//     // width: "3.75rem",
+//     backgroundColor:" #FFFFFF",
+//     boxShadow: "0px 3px 12px #0000001A", 
+//     letterSpacing: "0px",
+//   }
+// })(Tooltip);
 export default function About(props) {
   return (
     <MainContainer>
@@ -33,10 +54,10 @@ export default function About(props) {
           <ButtonContainer>
             <ButtonDiv>
               <Button>
-                Create XRC20
+              Create XRC20
                 <img className="XRC20" alt="" src="/images/Help.svg" />
-              </Button>
-              <Img className="" alt="" src="/images/Info.svg" />
+             </Button>
+              <Img className=""   alt=""  src="/images/Info.svg" />
             </ButtonDiv>
             <ButtonDiv>
               <Button className="create-btn">
