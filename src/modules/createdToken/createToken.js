@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Row, Column } from "simple-flexbox";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
-  height: 100%;
+  height: 1080px;
   width: 100%;
   background-size: cover;
   padding-top: 4%;
@@ -27,6 +28,7 @@ const ParentContainer = styled.div`
     margin: 0 auto;
     text-align: center;
     padding: 25px;
+    margin-top: 77px;
   }
 `;
 
@@ -62,6 +64,7 @@ const SuccessTokenText = styled.div`
 const SuccessTokenDetails = styled.div`
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #f4f4f4;
+  padding: 14px;
   font-weight: 600;
   border-radius: 8px;
   opacity: 1;
@@ -85,6 +88,7 @@ const SuccessTokenDetails = styled.div`
 const SuccessRows = styled.div`
   width: 100%;
   display: flex;
+  /* padding: 4px 0px 10px 17px; */
 `;
 
 const SuccessTokenKey = styled.span`
@@ -129,15 +133,15 @@ const ValueDiv = styled.div`
 const SuccessTokenValues = styled.div`
   text-align: left;
   font: normal normal normal 16px/20px Inter;
-  letter-spacing: 0px;
+  letter-spacing: 0.5px;
   font-family: "sans-serif";
   color: #3163f0;
   opacity: 1;
   margin-top: 3.5px;
   margin-left: 15px;
-  text-overflow: ellipsis;
+  /* text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: hidden; */
   @media (max-width: 768px) {
     text-align: left;
     font: normal normal normal 14px/17px Inter;
@@ -145,15 +149,23 @@ const SuccessTokenValues = styled.div`
     font-family: "sans-serif";
     color: #3163f0;
     opacity: 1;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    word-break: break-all;
   }
 `;
 
 const CopyIcon = styled.img`
   margin-left: 8px;
-  margin-bottom: 3px;
+  color: black;
+  cursor: pointer;
+  &:hover {
+    color: #ffffff;
+  }
+  &:after {
+    color: pink;
+  }
+  @media (max-width: 767px) {
+    margin-bottom: 30px ;
+  }
 `;
 
 const Buttons = styled.div`
@@ -173,6 +185,8 @@ const ButtonAddToXDCPay = styled.button`
   border-radius: 4px;
   opacity: 1;
   margin-right: 25px;
+  width: 211px;
+  height: 50px;
   color: black;
   @media (max-width: 768px) {
     order: 2;
@@ -247,14 +261,28 @@ const LineSeparation = styled.hr`
 const CreateToken = (props) => {
   // console.log("props---", props.location);
 
-  let gasPrice = Number(props.location.gasPrice)
-  let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, 18)
-  let gweiValue = gasPrice / Math.pow(10, 9)
-  let newContractAddress = props.location.state.contractAddress.replace(/0x/, 'xdc')
+  let gasPrice = Number(props.location.gasPrice);
+  let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, 18);
+  let gweiValue = gasPrice / Math.pow(10, 9);
+  let transactionAddress =
+    props.location?.state?.transactionHash?.slice(0, 28) +
+    "..." +
+    props.location?.state?.transactionHash?.substr(
+      props.location?.state?.transactionHash.length - 4
+    );
+  let contractAddress = props.location.state.contractAddress.replace(
+    /0x/,
+    "xdc"
+  );
+  let newContractAddress =
+    contractAddress?.slice(0, 26) +
+    "..." +
+    contractAddress?.substr(contractAddress.length - 4);
   //   console.log('b---',newContractAddress)
   //   console.log('gp--',typeof gasPrice,gasPrice)
   //   console.log('gp--',typeof gasFee,gasFee)
   //   console.log('gp--',typeof gweiValue,gweiValue)
+  console.log("b---", props.location?.state?.transactionHash.length);
   return (
     <>
       <BgContainer>
@@ -262,7 +290,9 @@ const CreateToken = (props) => {
           <SuccessTokenIcon>
             <img src="images/Success.svg"></img>
           </SuccessTokenIcon>
-          <SuccessTokenText>Successfully Created {props.location.createdToken || ""} Token</SuccessTokenText>
+          <SuccessTokenText>
+            Successfully Created {props.location.createdToken || ""} Token
+          </SuccessTokenText>
           <SuccessTokenDetails>
             <SuccessRows>
               <SuccessTokenKey>
@@ -270,9 +300,17 @@ const CreateToken = (props) => {
                 Transaction Hash:
               </SuccessTokenKey>
               <SuccessTokenValues>
-                {props.location.state.transactionHash || ""}
-                <CopyIcon src="images/Copy.svg"></CopyIcon>
+                {transactionAddress || ""}
               </SuccessTokenValues>
+              <CopyToClipboard
+                text={
+                  props.location.state.transactionHash.length > 0
+                    ? props.location.state.transactionHash
+                    : ""
+                }
+              >
+                <CopyIcon src="/images/Copy.svg"></CopyIcon>
+              </CopyToClipboard>
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
@@ -282,8 +320,16 @@ const CreateToken = (props) => {
               </SuccessTokenKey>
               <SuccessTokenValues>
                 {newContractAddress || ""}
-                <CopyIcon src="images/Copy.svg"></CopyIcon>
               </SuccessTokenValues>
+              <CopyToClipboard
+                text={
+                  contractAddress.length > 0
+                    ? contractAddress
+                    : ""
+                }
+              >
+                <CopyIcon src="/images/Copy.svg"></CopyIcon>
+              </CopyToClipboard>
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
@@ -299,7 +345,9 @@ const CreateToken = (props) => {
                 <KeyInfo src="images/Info.svg"></KeyInfo>
                 Gas Fee:
               </SuccessTokenKey>
-              <ValueDiv>{gasFee + '(' + gweiValue + ' ' + 'Gwei)'} </ValueDiv>
+              <ValueDiv>
+                {gasFee + " " + "XDC" + "" + "(" + gweiValue + " " + "Gwei)"}
+              </ValueDiv>
             </SuccessRows>
           </SuccessTokenDetails>
           <Buttons>
@@ -309,12 +357,12 @@ const CreateToken = (props) => {
                 <ButtonIcon src="images/XDC-Icon-128X128.svg"></ButtonIcon>
               </ButtonContent>
             </ButtonAddToXDCPay>
-            <ButtonManageToken>
+            {/* <ButtonManageToken>
               <ButtonContent>
                 Manage Token
                 <ButtonIcon src="images/Button_Next_Arrow.svg"></ButtonIcon>
               </ButtonContent>
-            </ButtonManageToken>
+            </ButtonManageToken> */}
           </Buttons>
         </ParentContainer>
       </BgContainer>

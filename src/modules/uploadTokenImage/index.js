@@ -11,7 +11,7 @@ class UploadTokenImage extends BaseComponent {
   render() {
     return (
       <>
-        <UploadTokenImageDesktop />
+        <UploadTokenImageMobile />
       </>
     );
   }
