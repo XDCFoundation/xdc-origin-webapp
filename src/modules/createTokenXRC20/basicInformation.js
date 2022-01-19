@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ChangeNetworkPopup from "../changeNetworkPopup/changeNetworkDesktop";
 import UploadFile from "../uploadTokenImage/uploadImage";
+import UploadTokenImage from "../uploadTokenImage/uploadImageMobile";
 import { useHistory } from "react-router";
+import { useParams } from "react-router-dom";
 
 const Parent = styled.div`
   display: flex;
@@ -41,6 +43,28 @@ const CommonRow = styled.div`
     padding: 30px 0px 0px 18px;
   }
 `;
+
+const DesktopCommonRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0px 0px 57px;
+  @media (min-width: 0px) and (max-width: 767px) {
+    display: none;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    padding: 30px 0px 0px 18px;
+  }
+`;
+
+const MobCommonRow = styled.div`
+  display: none;
+  @media (min-width: 0px) and (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 0px 0px 18px;
+  }
+`;
+
 const LastRow = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -86,7 +110,7 @@ const InputDiv = styled.input`
   background: #f0f2fc 0% 0% no-repeat padding-box;
   border-radius: 4px;
   opacity: 1;
-  padding: 7px 0px 7px 0px;
+  padding: 7px 0px 7px 16px;
   position: relative;
   top: 0;
   left: 0;
@@ -228,13 +252,26 @@ const MainCircle = styled.div`
   top: 0;
   left: 0;
 `;
-const MainInput = styled.div`
-  cursor: pointer;
-  position: absolute;
-  opacity: 0;
-  top: 47px;
-  left: 12px;
+
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
+
+const ReplaceButton = styled.button`
+  padding: 5px 0px 0px 30px;
+  text-align: left;
+  font: normal normal medium 14px/17px Inter;
+  letter-spacing: 0px;
+  color: #3163f0;
+  background: transparent;
+  opacity: 1;
+  border: none;
+  /* @media (min-width: 0px) and (max-width: 767px) {
+   display: none;
+  } */
+`;
+
 const MainImage = styled.img`
   width: 128px;
   height: 128px;
@@ -243,35 +280,29 @@ const MainImage = styled.img`
   top: 0px; */
 `;
 
-const ImgCapture = styled.input`
+const UrlInput = styled.img`
   opacity: 1;
 `;
+
 
 export default function Token(props) {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [picture, setPicture] = useState(null);
-  const [imgData, setImgData] = useState(null);
+  const { id } = useParams();
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
 
-  const toggleUploadPopup = (imageData) => {
-    console.log("mai----", imageData);
-    setIsUploadOpen(!isUploadOpen);
-    setImgData(imageData);
-  };
-
   const saveAndContinue = (e) => {
+    props.handleChange(e)
     props.nextStep(e);
   };
 
-  // console.log("image---", imgData);
-  // console.log("image1---", props.tokenData.tokenImage);
   return (
     <>
+
       <Parent>
         <Column>
           <RowTwo>
@@ -288,8 +319,7 @@ export default function Token(props) {
                 type="text"
                 name="network"
                 readOnly
-                // onChange={(e) => props.handleChange(e)}
-                value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.network : props.tokenData.network}
+                value={props.tokenData.network}
                 placeholder="XDC Mainnet"
               />
               <PopButton onClick={togglePopup}>Change Network</PopButton>
@@ -309,10 +339,9 @@ export default function Token(props) {
               type="text"
               onChange={(e) => props.handleChange(e)}
               name="tokenName"
-              value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenName : props.tokenData.tokenName}
+              value={props.tokenData.tokenName}
               placeholder="e.g. XDC Network"
             />
-
             <BlurTextDiv>Choose a name for your token</BlurTextDiv>
             <p className="shown-error">{props.formErrors.tokenName}</p>
           </CommonRow>
@@ -323,7 +352,7 @@ export default function Token(props) {
               type="text"
               onChange={(e) => props.handleChange(e)}
               name="tokenSymbol"
-              value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenSymbol : props.tokenData.tokenSymbol}
+              value={props.tokenData.tokenSymbol}
               placeholder="e.g. XDC"
             />
 
@@ -331,36 +360,71 @@ export default function Token(props) {
             <p className="shown-error">{props.formErrors.tokenSymbol}</p>
           </CommonRow>
 
-          <CommonRow>
+          <DesktopCommonRow>
             <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
-            {/* <ImgCapture
-              type="file"
-              name="tokenImage"
-              value=""
-              onChange={(e)=>props.onChangePicture(e)}
-            />
-            <img src={props.tokenData.tokenImage}/> */}
-            {imgData ? (
-              <CircleRow>
-                <MainImage src={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenImage : imgData} />
-                <button onClick={toggleUploadPopup}>Replace</button>
-                {isUploadOpen && (
-                  <UploadFile handleUploadClose={toggleUploadPopup} />
-                )}
+
+            {props.imgData ? (
+              <CircleRow >
+                <Div>
+                  <MainImage src={props.imgData} />
+                  <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
+                  <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
+                    Replace
+                  </ReplaceButton>
+                  {props.isUploadOpen && (
+                    <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                  )}
+                </Div>
               </CircleRow>
             ) : (
               <CircleRow>
                 <MainCircle />
+                <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
                 <PlusImage
-                    onClick={toggleUploadPopup}
-                    src={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenImage : "/images/PlusIcon.svg"}
+                  onClick={(e) => props.toggleUploadPopup(e)}
+                  src="/images/PlusIcon.svg"
                 />
-                {isUploadOpen && (
-                  <UploadFile handleUploadClose={toggleUploadPopup} />
+                {props.isUploadOpen && (
+                  <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
                 )}
               </CircleRow>
             )}
-          </CommonRow>
+
+          </DesktopCommonRow>
+
+          <MobCommonRow>
+            <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
+
+            {props.imgData ? (
+              <CircleRow >
+                {props.isUploadOpen && (
+                  <UploadTokenImage handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                )}
+                <Div>
+                  <MainImage src={props.imgData} />
+                  <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
+                  <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
+                    Replace
+                  </ReplaceButton>
+                  {props.isUploadOpen && (
+                    <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                  )}
+                </Div>
+              </CircleRow>
+            ) : (
+              <CircleRow>
+                <MainCircle />
+                <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
+                <PlusImage
+                  onClick={(e) => props.toggleUploadPopup(e)}
+                  src="/images/PlusIcon.svg"
+                />
+                {props.isUploadOpen && (
+                  <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                )}
+              </CircleRow>
+            )}
+          </MobCommonRow>
 
           <CommonRow>
             <TextDiv>Decimal</TextDiv>
@@ -368,7 +432,7 @@ export default function Token(props) {
               type="number"
               onChange={(e) => props.handleChange(e)}
               name="decimals"
-              value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenDecimals : props.tokenData.decimals}
+              value={props.tokenData.decimals || ""}
               placeholder="8-18"
             />
 
@@ -384,7 +448,7 @@ export default function Token(props) {
               type="text"
               onChange={(e) => props.handleChange(e)}
               name="description"
-              value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenDescription : props.tokenData.description}
+              value={props.tokenData.description}
               placeholder="A Dao Token"
             />
 
@@ -394,19 +458,19 @@ export default function Token(props) {
 
           <CommonRow>
             <TextDiv>Website</TextDiv>
-            <InputDiv type="text" placeholder="Website Address" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.website : ""}/>
+            <InputDiv type="text" placeholder="Website Address" />
             <BlurTextDiv>Add Website url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Twitter(optional)</TextDiv>
-            <InputDiv type="text" placeholder="e.g. Twitter Url" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.twitter : ""}/>
+            <InputDiv type="text" placeholder="e.g. Twitter Url" />
             <BlurTextDiv>Add Twitter page url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
             <TextDiv>Telegram</TextDiv>
-            <InputDiv type="text" placeholder="e.g. Telegram Url" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.telegram : ""}/>
+            <InputDiv type="text" placeholder="e.g. Telegram Url" />
             <BlurTextDiv>Add Telegram group url for your token</BlurTextDiv>
           </CommonRow>
 
