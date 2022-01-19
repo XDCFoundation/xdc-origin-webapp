@@ -39,6 +39,7 @@ export const validationsMessages = {
     VALIDATE_DECIMAL_MAX_RANGE:'Decimal should not be more than 18',
     VALIDATE_DECIMAL_MIN_RANGE:'Decimal should not be less than 1',
     VALIDATE_DECIMAL_FIELD:'Decimal is required !',
+    VALIDATE_IMAGE_FIELD: 'Token image/icon is required !',
     VALIDATE_TOKEN_SYMBOL_LIMIT:'Symbol should not be more than 15 characters',
     VALIDATE_TOKEN_SYMBOL_FIELD:'Symbol is required !',
     VALIDATE_TOKEN_NAME_LIMIT:'Token Name should not be more than 30 characters',
