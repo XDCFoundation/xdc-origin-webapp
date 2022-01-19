@@ -205,11 +205,9 @@ function CommonTab(props) {
 
 
   const toggleUploadPopup = (imageData) => {
-    console.log("mi----", imageData);
     setIsUploadOpen(!isUploadOpen);
     setImgData(imageData);
   };
-  console.log('im---', imgData)
   //redux data:
 
   let networkVersion = props.userDetails?.accountDetails?.network || ""
@@ -238,14 +236,11 @@ function CommonTab(props) {
   const handleChange = (e) => {
     setTokenData({ ...tokenData, tokenImage: imgData, [e.target.name]: e.target.value }); //destructuring
   };
-  console.log("form---", tokenData);
 
   // condition checking for nextStep: 
 
   useEffect(() => {
-    // console.log("er--", formErrors);
     if (Object.keys(formErrors).length === 0 && saveAndContinue) {
-      // console.log("to--", tokenData);
     }
   }, [formErrors]);
 
