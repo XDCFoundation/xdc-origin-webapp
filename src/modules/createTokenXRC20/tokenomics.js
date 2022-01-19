@@ -198,6 +198,7 @@ export default function Tokenomics(props) {
           </RowTwo>
           <CommonRow>
             <TextDiv>Initial Supply</TextDiv>
+            
             <InputDiv
               type="number"
               onChange={(e) => props.handleChange(e)}
