@@ -26,6 +26,11 @@ export default function Sidebar(props) {
     setIsSubNavActive(navItem);
   };
 
+  const handleBtn = () => {
+    history.push("/FAQ");
+    window.location.reload();
+  }
+
   return (
     <SidebarContainer>
       <Wrapper
@@ -135,7 +140,7 @@ export default function Sidebar(props) {
           Manage Contracts
         </Heading>
       </Wrapper>
-      <Wrapper className={createContract ? "faq-margin-create" : "faq-margin"}>
+      <Wrapper onClick={handleBtn} className={createContract ? "faq-margin-create" : "faq-margin"}>
         <FAQIcon src="/images/FAQ_InActive.svg" />
         <Heading>FAQs</Heading>
       </Wrapper>
