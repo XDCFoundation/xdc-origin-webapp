@@ -531,6 +531,7 @@ function CommonTab(props) {
                       isUploadOpen={isUploadOpen}
                       imgData={imgData}
                       toggleUploadPopup={toggleUploadPopup}
+                      state={props.state}
                     />
                   );
                 case 2:
@@ -541,6 +542,7 @@ function CommonTab(props) {
                       nextStep={nextStep}
                       prevStep={prevStep}
                       handleChange={handleChange}
+                      state={props.state}
                     />
                   );
                 case 3:

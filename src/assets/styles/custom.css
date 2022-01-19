@@ -401,3 +401,7 @@ input:focus {
   border-left: 0;
   border-right: 0;
 }
+
+#manage-contract-hide{
+  visibility: hidden;
+}

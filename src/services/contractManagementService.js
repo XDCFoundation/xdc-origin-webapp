@@ -4,7 +4,8 @@ import {httpConstants} from "../constants"
 
 export default {
   getDraftFailedXrc20Token,
-  deleteContract
+  deleteContract,
+  getXrc20TokenById
   };
 
 
@@ -54,6 +55,34 @@ async function deleteContract(requestData) {
 
     return httpService(
       httpConstants.METHOD_TYPE.DELETE,
+      getHeaders(),
+      requestData,
+      url
+    )
+      .then((response) => {
+        if (
+          !response.success ||
+          response.responseCode !== 200 ||
+          !response.responseData ||
+          response.responseData.length === 0
+        )
+          return Promise.reject(response);
+        return Promise.resolve(response.responseData);
+      })
+      .catch(function (err) {
+        return Promise.reject(err);
+      });
+}
+
+async function getXrc20TokenById(requestData) {
+    // let url =
+    //   process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
+    //     httpConstants.API_END_POINT.GET_XRC20TOKEN_BY_ID;
+    
+  let url = "http://xdc-mycontract-dev-2107657444.us-east-1.elb.amazonaws.com:3001/get-xrc20Token-by-id";
+
+    return httpService(
+      httpConstants.METHOD_TYPE.POST,
       getHeaders(),
       requestData,
       url

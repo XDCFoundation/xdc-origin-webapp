@@ -200,7 +200,7 @@ export default function Tokenomics(props) {
           </RowTwo>
           <CommonRow>
             <TextDiv>Initial Supply</TextDiv>
-            <InputDiv type="number" onChange={(e) => props.handleChange(e)} name="tokenSupply" value={props.tokenData.tokenSupply}/>
+            <InputDiv type="number" onChange={(e) => props.handleChange(e)} name="tokenSupply" value={props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails?.tokenInitialSupply : props.tokenData.tokenSupply}/>
             <BlurTextDiv>
               Insert the initial numbers of tokens available
             </BlurTextDiv>
