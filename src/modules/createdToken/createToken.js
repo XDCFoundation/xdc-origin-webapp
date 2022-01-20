@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Row, Column } from "simple-flexbox";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import {Tooltip, Fade} from "@material-ui/core"
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -259,7 +260,6 @@ const LineSeparation = styled.hr`
 `;
 
 const CreateToken = (props) => {
-  // console.log("props---", props.location);
 
   let gasPrice = Number(props.location.gasPrice);
   let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, 18);
@@ -278,11 +278,26 @@ const CreateToken = (props) => {
     contractAddress?.slice(0, 26) +
     "..." +
     contractAddress?.substr(contractAddress.length - 4);
-  //   console.log('b---',newContractAddress)
-  //   console.log('gp--',typeof gasPrice,gasPrice)
-  //   console.log('gp--',typeof gasFee,gasFee)
-  //   console.log('gp--',typeof gweiValue,gweiValue)
-  console.log("b---", props.location?.state?.transactionHash.length);
+
+  const [open, setOpen] = useState(false);
+  const [openAddress, setOpenAddress] = useState(false);
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
+
+    setTimeout(() => {
+      setOpen(false);
+    }, 2000);
+  }
+
+  const handleTooltipOpenAddress = () => {
+    setOpenAddress(true);
+
+    setTimeout(() => {
+      setOpenAddress(false);
+    }, 2000);
+  }
+
   return (
     <>
       <BgContainer>
@@ -302,15 +317,30 @@ const CreateToken = (props) => {
               <SuccessTokenValues>
                 {transactionAddress || ""}
               </SuccessTokenValues>
-              <CopyToClipboard
-                text={
-                  props.location.state.transactionHash.length > 0
-                    ? props.location.state.transactionHash
-                    : ""
-                }
+              <Tooltip
+                title="Copied"
+                placement="top"
+                arrow
+                PopperProps={{
+                  disablePortal: true,
+                }}
+                open={open}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
               >
-                <CopyIcon src="/images/Copy.svg"></CopyIcon>
-              </CopyToClipboard>
+                <CopyToClipboard
+                  text={
+                    props.location.state.transactionHash.length > 0
+                      ? props.location.state.transactionHash
+                      : ""
+                  }
+                >
+                  <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpen}></CopyIcon>
+                </CopyToClipboard>
+              </Tooltip>
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
@@ -321,15 +351,30 @@ const CreateToken = (props) => {
               <SuccessTokenValues>
                 {newContractAddress || ""}
               </SuccessTokenValues>
-              <CopyToClipboard
-                text={
-                  contractAddress.length > 0
-                    ? contractAddress
-                    : ""
-                }
+              <Tooltip
+                title="Copied"
+                placement="top"
+                arrow
+                PopperProps={{
+                  disablePortal: true,
+                }}
+                open={openAddress}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
               >
-                <CopyIcon src="/images/Copy.svg"></CopyIcon>
-              </CopyToClipboard>
+                <CopyToClipboard
+                  text={
+                    contractAddress.length > 0
+                      ? contractAddress
+                      : ""
+                  }
+                >
+                  <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpenAddress}></CopyIcon>
+                </CopyToClipboard>
+              </Tooltip>
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
