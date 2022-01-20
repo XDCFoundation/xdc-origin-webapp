@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Row, Column } from "simple-flexbox";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import {Tooltip, Fade} from "@material-ui/core"
+import { Tooltip, Fade,createTheme } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -259,7 +261,34 @@ const LineSeparation = styled.hr`
   width: 100%;
 `;
 
+
+const theme = createTheme({
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: "12px",
+        color: "#4B4B4B",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0px 3px 12px #0000001A",
+        border: "1px solid #e6e8ed"
+      }
+    }
+  }
+});
+
+const defaultTheme = createTheme();
+
+const useStyles = makeStyles(theme => ({
+  arrow: {
+    "&:before": {
+      border: "1px solid #e6e8ed"
+    },
+    color: theme.palette.common.white
+  },
+}))
+
 const CreateToken = (props) => {
+  const classes = useStyles();
 
   let gasPrice = Number(props.location.gasPrice);
   let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, 18);
@@ -299,6 +328,7 @@ const CreateToken = (props) => {
   }
 
   return (
+    <MuiThemeProvider theme={defaultTheme}>
     <>
       <BgContainer>
         <ParentContainer>
@@ -311,7 +341,16 @@ const CreateToken = (props) => {
           <SuccessTokenDetails>
             <SuccessRows>
               <SuccessTokenKey>
-                <KeyInfo src="images/Info.svg"></KeyInfo>
+                <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                      title="Unique transaction identifier, also known as the Transaction ID"
+                      placement="top-start"
+                      arrow
+                      classes={{ arrow: classes.arrow }}
+                  >
+                    <KeyInfo src="images/Info.svg"></KeyInfo>
+                  </Tooltip>
+              </MuiThemeProvider>
                 Transaction Hash:
               </SuccessTokenKey>
               <SuccessTokenValues>
@@ -344,8 +383,17 @@ const CreateToken = (props) => {
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
-              <SuccessTokenKey>
-                <KeyInfo src="images/Info.svg"></KeyInfo>
+                <SuccessTokenKey>
+                <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                      title="The unique address of the contract"
+                      placement="top-start"
+                      arrow
+                      classes={{ arrow: classes.arrow }}
+                  >
+                    <KeyInfo src="images/Info.svg"></KeyInfo>
+                  </Tooltip>
+              </MuiThemeProvider>
                 Contract Address:
               </SuccessTokenKey>
               <SuccessTokenValues>
@@ -379,7 +427,16 @@ const CreateToken = (props) => {
             <LineSeparation></LineSeparation>
             <SuccessRows>
               <SuccessTokenKey>
-                <KeyInfo src="images/Info.svg"></KeyInfo>
+              <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                      title="Number of minted tokens"
+                      placement="top-start"
+                      arrow
+                      classes={{ arrow: classes.arrow }}
+                  >
+                    <KeyInfo src="images/Info.svg"></KeyInfo>
+                  </Tooltip>
+              </MuiThemeProvider>
                 Tokens Minted:
               </SuccessTokenKey>
               <ValueDiv>{props.location.parsingSupply || ""}</ValueDiv>
@@ -387,7 +444,16 @@ const CreateToken = (props) => {
             <LineSeparation></LineSeparation>
             <SuccessRows>
               <SuccessTokenKey>
-                <KeyInfo src="images/Info.svg"></KeyInfo>
+              <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                      title="The value being transacted in XDC and fiat value"
+                      placement="top-start"
+                      arrow
+                      classes={{ arrow: classes.arrow }}
+                  >
+                    <KeyInfo src="images/Info.svg"></KeyInfo>
+                  </Tooltip>
+              </MuiThemeProvider>
                 Gas Fee:
               </SuccessTokenKey>
               <ValueDiv>
@@ -411,7 +477,8 @@ const CreateToken = (props) => {
           </Buttons>
         </ParentContainer>
       </BgContainer>
-    </>
+      </>
+    </MuiThemeProvider>
   );
 };
 
