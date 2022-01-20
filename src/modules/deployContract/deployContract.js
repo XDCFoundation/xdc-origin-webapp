@@ -7,6 +7,9 @@ import DeleteContract from "./deleteContractPopup";
 import DeployPopup from "./deployPopup";
 import Web3 from 'web3';
 import { connect } from 'react-redux';
+import { apiBodyMessages, apiSuccessConstants, validationsMessages } from "../../constants";
+import Utils from "../../utility";
+import { SaveDraftService } from "../../services/index";
 
 function DeployContract(props) {
   const history = useHistory()
@@ -55,84 +58,8 @@ function DeployContract(props) {
     let parsingDecimal = tokenDetails?.tokenDecimals
     let parsingSupply = tokenDetails?.tokenInitialSupply
 
-    let xdce_address = tokenDetails.tokenOwner;
-
-    let newAbi = {
-      "abi": [
-        {
-          "constant": true,
-          "inputs": [
-            {
-              "name": "tweetId",
-              "type": "uint256"
-            }
-          ],
-          "name": "getTweetByTweetId",
-          "outputs": [
-            {
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "payable": false,
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "constant": false,
-          "inputs": [
-            {
-              "name": "tweetId",
-              "type": "uint256"
-            },
-            {
-              "name": "tweet",
-              "type": "string"
-            }
-          ],
-          "name": "createTweet",
-          "outputs": [],
-          "payable": false,
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "constant": true,
-          "inputs": [],
-          "name": "getCount",
-          "outputs": [
-            {
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "payable": false,
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "constant": true,
-          "inputs": [
-            {
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "tweets",
-          "outputs": [
-            {
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "payable": false,
-          "stateMutability": "view",
-          "type": "function"
-        }
-      ]
-    }
-
-    let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
+    // let xdce_address = tokenDetails.tokenOwner;
+    // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
 
     const priceXdc = 1;
     const gasPrice = await window.web3.eth.getGasPrice();
@@ -152,7 +79,7 @@ function DeployContract(props) {
         // console.log("receipt ====", receipt);
         if (receipt !== 0) {
           history.push({ pathname: '/created-token', state: receipt, gasPrice, createdToken, parsingDecimal, parsingSupply })
-          // updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+          updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
         }
       })
       .on('confirmation', function (confirmationNumber, receipt) {
@@ -160,6 +87,16 @@ function DeployContract(props) {
       })
   }
 
+  const updateTokenDetails = async (resultedTokenId, resultedTokenOwner, resultAddress) => {
+
+    let reqObj = {
+      tokenId: resultedTokenId,
+      tokenOwner: resultedTokenOwner,
+      smartContractAddress: resultAddress,
+      status: apiBodyMessages.STATUS_DEPLOYED
+    };
+    const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
+  }
 
   return (
     <Container>

@@ -25,6 +25,9 @@ const useStyles = makeStyles({
       top: 63,
       left: 11,
     },
+    "@media screen and (min-width: 820px) and (max-width: 1024px)": {
+      left: 40,
+    },
   },
 });
 
