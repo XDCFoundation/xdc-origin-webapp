@@ -17,6 +17,9 @@ const MainContainer = styled.div`
   flex-grow: 1;
   background: #ecf0f7 0% 0% no-repeat padding-box;
   /* height: 1080px; */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    margin-top: 63px;
+  }
 `;
 
 const Parent = styled.div`
@@ -208,8 +211,6 @@ function CommonTab(props) {
     setImgData(imageData);
   };
 
-  console.log('r---', props.state.xrc20TokenDetails)
-
   //redux data:
 
   let networkVersion = props.userDetails?.accountDetails?.network || ""
@@ -242,7 +243,6 @@ function CommonTab(props) {
   let newImage = imgData.length >= 1 ? imgData : tokenData.tokenImage
 
   const handleChange = (e) => {
-    console.log('fired')
     setTokenData({
       ...tokenData,
       network: networkVersion,
@@ -261,7 +261,7 @@ function CommonTab(props) {
   // condition checking for nextStep: 
 
   useEffect(() => {
-    console.log('er--', formErrors)
+    // console.log('er--', formErrors)
     if (Object.keys(formErrors).length === 0 && saveAndContinue) {
     }
   }, [formErrors]);
@@ -272,9 +272,9 @@ function CommonTab(props) {
   const validate = (values) => {
     const errors = {};
 
-    if (!values.network) {
-      errors.network = validationsMessages.VALIDATE_NETWORK;
-    }
+    // if (!values.network) {
+    //   errors.network = validationsMessages.VALIDATE_NETWORK;
+    // }
 
     if (!values.tokenName) {
       errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_FIELD;
@@ -347,6 +347,8 @@ function CommonTab(props) {
 
   // saveDraft api function : 
 
+ 
+
   let createdToken = tokenData.tokenName
   let parsingDecimal = Number(tokenData.tokenDecimals);
   let parsingSupply = Number(tokenData.tokenInitialSupply);
@@ -367,6 +369,32 @@ function CommonTab(props) {
       isPausable: tokenData.pausable,
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
+    // console.log('tr---',res)
+    if (res !== 0) {
+      sendTransaction(res)
+    }
+  };
+
+  const saveAsDraftbyEdit = async (e) => {
+    e.preventDefault();
+    let reqObj = {
+      id: tokenData.id,
+      tokenOwner: tokenData.tokenOwner,
+      tokenName: createdToken,
+      tokenSymbol: tokenData.tokenSymbol,
+      tokenImage: tokenData.tokenImage,
+      tokenInitialSupply: parsingSupply,
+      tokenDecimals: parsingDecimal,
+      tokenDescription: tokenData.tokenDescription,
+      network: tokenData.network,
+      isBurnable: tokenData.burnable,
+      isMintable: tokenData.mintable,
+      isPausable: tokenData.pausable,
+    };
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.saveTokenAsDraft(reqObj)
+    );
+    console.log('tr1---',res)
     if (res !== 0) {
       sendTransaction(res)
     }
@@ -377,88 +405,13 @@ function CommonTab(props) {
 
   const sendTransaction = async (tokenDetails) => {
     window.web3 = new Web3(window.ethereum)
+
     let draftedTokenId = tokenDetails?.id
     let draftedTokenOwner = tokenDetails?.tokenOwner
     let byteCode = tokenDetails?.byteCode
 
-    let xdce_address = tokenData.tokenOwner;
-
-    let newAbi = {
-      "abi": [
-        {
-          "constant": true,
-          "inputs": [
-            {
-              "name": "tweetId",
-              "type": "uint256"
-            }
-          ],
-          "name": "getTweetByTweetId",
-          "outputs": [
-            {
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "payable": false,
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "constant": false,
-          "inputs": [
-            {
-              "name": "tweetId",
-              "type": "uint256"
-            },
-            {
-              "name": "tweet",
-              "type": "string"
-            }
-          ],
-          "name": "createTweet",
-          "outputs": [],
-          "payable": false,
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "constant": true,
-          "inputs": [],
-          "name": "getCount",
-          "outputs": [
-            {
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "payable": false,
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "constant": true,
-          "inputs": [
-            {
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "tweets",
-          "outputs": [
-            {
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "payable": false,
-          "stateMutability": "view",
-          "type": "function"
-        }
-      ]
-    }
-
-    let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
+    // let xdce_address = tokenData.tokenOwner;
+    // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
 
     const priceXdc = 1;
     const gasPrice = await window.web3.eth.getGasPrice();
@@ -469,7 +422,7 @@ function CommonTab(props) {
       "gasPrice": gasPrice,
       "data": byteCode
     };
-
+    
     await window.web3.eth.sendTransaction(transaction)
       .on('transactionHash', function (hash) {
         // console.log("transactionHash ====", hash);
@@ -487,6 +440,7 @@ function CommonTab(props) {
   }
 
   const updateTokenDetails = async (resultedTokenId, resultedTokenOwner, resultAddress) => {
+    // console.log('id---',resultedTokenId)
     let reqObj = {
       tokenId: resultedTokenId,
       tokenOwner: resultedTokenOwner,
@@ -494,10 +448,6 @@ function CommonTab(props) {
       status: apiBodyMessages.STATUS_DEPLOYED
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
-
-    // if (res !== 0) {
-    //   Utils.apiSuccessToast(apiSuccessConstants.UPDATE_DATA_SUCCESS);
-    // }
   }
 
   return (
@@ -564,6 +514,7 @@ function CommonTab(props) {
                       tokenData={tokenData}
                       formErrors={formErrors}
                       saveAsDraft={saveAsDraft}
+                      saveAsDraftbyEdit={saveAsDraftbyEdit}
                       sendTransaction={sendTransaction}
                       handleChange={handleChange}
                     />

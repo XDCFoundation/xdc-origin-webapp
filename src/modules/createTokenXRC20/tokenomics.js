@@ -84,6 +84,9 @@ const InputDiv = styled.input`
     color: #a8acc1;
     opacity: 1;
   }
+  :focus{
+    outline: 2px solid #8CA6F0;
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
   }
@@ -179,10 +182,12 @@ const ContinueText = styled.div`
 `;
 
 export default function Tokenomics(props) {
+  
   const saveAndContinue = (e) => {
     props.handleChange(e)
     props.nextStep(e);
   };
+
   return (
     <>
       <Parent>

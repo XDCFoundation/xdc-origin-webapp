@@ -38,7 +38,7 @@ const RowTwo = styled.div`
 const CommonRow = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px 0px 0px 57px;
+  padding: 6px 0px 0px 57px;
   @media (min-width: 0px) and (max-width: 1024px) {
     padding: 30px 0px 0px 18px;
   }
@@ -122,6 +122,9 @@ const InputDiv = styled.input`
     color: #a8acc1;
     opacity: 1;
   }
+  :focus{
+    outline: 2px solid #8CA6F0;
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
   }
@@ -150,6 +153,7 @@ const CircleRow = styled.div`
   position: relative;
   top: 0;
   left: 0;
+  padding-bottom: 35px;
 `;
 
 const PopButton = styled.button`
@@ -195,6 +199,7 @@ const PlusImage = styled.img`
   left: 54px;
   width: 21px;
   height: 21px;
+  cursor: pointer;
   text-align: left;
   font: normal normal normal 44px/54px Inter;
   letter-spacing: 0px;
@@ -360,108 +365,107 @@ export default function Token(props) {
           </CommonRow>
 
           <DesktopCommonRow>
-            <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
+            <TextDiv>Token Image (PNG, 256*256 px)</TextDiv>
+
             {/* condition work, when user comes to create token and have uploaded the image*/}
+            {props.imgData && props.imgData.length !== undefined ?
+              (
+                <CircleRow >
+                  <Div >
+                    <MainImage src={props.imgData} />
+                    <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
+                    <ReplaceButton onClick={(e) => {props.toggleUploadPopup(e); props.handleChange(e);} }>
+                      Replace
+                    </ReplaceButton>
+                    {props.isUploadOpen && (
+                      <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                    )}
+                  </Div>
+                </CircleRow>
+              ) : (
+                <CircleRow>
 
-            {props.imgData ? (
-              <CircleRow >
-                <Div >
-                  <MainImage src={props.tokenData.tokenImage ? props.tokenData.tokenImage : props.imgData} />
-                  <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                  <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
-                    Replace
-                  </ReplaceButton>
-                  {props.isUploadOpen && (
-                    <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                  )}
-                </Div>
-              </CircleRow>
-            ) : (
-              <CircleRow>
+                  {/* checking condition, whether user has came to edit token or creation of token,
+                    1st cond. will work for edit and 2nd for first time creation by default*/}
+                  {props.tokenData.tokenImage ?
+                    (
+                      <Div>
+                        <MainImage src={props.tokenData.tokenImage} />
+                        <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
+                        <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
+                          Replace
+                        </ReplaceButton>
+                        {props.isUploadOpen && (
+                          <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                        )}
+                      </Div>
+                    ) :
+                    (
+                      <MainCircle >
+                        <PlusImage
+                          onClick={(e) => props.toggleUploadPopup(e)}
+                          src="/images/PlusIcon.svg"
+                        />
+                        <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
+                        {props.isUploadOpen && (
+                          <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                        )}
+                      </MainCircle>
+                    )}
 
-                {/* by default checking condition, whether user has came to edit token or creation of token 1st cond. 
-                will work for edit and 2nd for creation*/}
-
-                {props.tokenData.tokenImage ?
-                  (
-                    <Div>
-                      <MainImage src={props.tokenData.tokenImage ? props.tokenData.tokenImage : props.imgData} />
-                      <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                      <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
-                        Replace
-                      </ReplaceButton>
-                      {props.isUploadOpen && (
-                        <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                      )}
-                    </Div>
-                  ) :
-                  (
-                    <MainCircle >
-                      <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                      <PlusImage
-                        onClick={(e) => props.toggleUploadPopup(e)}
-                        src="/images/PlusIcon.svg"
-                      />
-                      {props.isUploadOpen && (
-                        <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                      )}
-                    </MainCircle>
-                  )}
-
-              </CircleRow>
-            )}
-
+                </CircleRow>
+              )}
           </DesktopCommonRow>
 
-          <MobCommonRow>
-            <TextDiv>Token Image (PNG 256*256 px)</TextDiv>
+          {/* --------- */}
 
-            {props.imgData ? (
+          <MobCommonRow>
+            <TextDiv>Token Image (PNG, 256*256 px)</TextDiv>
+
+            {props.imgData && props.imgData.length !== undefined ? (
               <CircleRow >
                 {props.isUploadOpen && (
                   <UploadTokenImage handleUploadClose={(e) => props.toggleUploadPopup(e)} />
                 )}
                 <Div>
-                  <MainImage src={props.tokenData.tokenImage} />
+                  <MainImage src={props.imgData} />
                   <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                  <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
+                  <ReplaceButton onClick={(e) => {props.toggleUploadPopup(e); props.handleChange(e);}}>
                     Replace
                   </ReplaceButton>
-                  {props.isUploadOpen && (
-                    <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                  )}
                 </Div>
               </CircleRow>
             ) : (
               <CircleRow>
 
-                {/* by default checking condition, whether user has came to edit token or creation of token 1st cond. 
-              will work for edit and 2nd for creation*/}
-
+                {/* checking condition, whether user has came to edit token or creation of token,
+                    1st cond. will work for edit and 2nd for first time creation by default*/}
                 {props.tokenData.tokenImage ?
                   (
                     <Div>
-                      <MainImage src={props.tokenData.tokenImage ? props.tokenData.tokenImage : props.imgData} />
+                      {props.isUploadOpen && (
+                        <UploadTokenImage handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                      )}
+                      <MainImage src={props.tokenData.tokenImage} />
                       <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
                       <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
                         Replace
                       </ReplaceButton>
-                      {props.isUploadOpen && (
-                        <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                      )}
                     </Div>
                   ) :
                   (
-                    <MainCircle >
-                      <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                      <PlusImage
-                        onClick={(e) => props.toggleUploadPopup(e)}
-                        src="/images/PlusIcon.svg"
-                      />
+                    <div>
                       {props.isUploadOpen && (
-                        <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                        <UploadTokenImage handleUploadClose={(e) => props.toggleUploadPopup(e)} />
                       )}
-                    </MainCircle>
+                      <MainCircle >
+                        <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
+                        <PlusImage
+                          onClick={(e) => props.toggleUploadPopup(e)}
+                          src="/images/PlusIcon.svg"
+                        />
+                      </MainCircle>
+                    </div>
                   )}
 
               </CircleRow>
@@ -469,7 +473,7 @@ export default function Token(props) {
           </MobCommonRow>
 
           <CommonRow>
-            <TextDiv>Decimal</TextDiv>
+            <TextDiv>Decimals</TextDiv>
             <InputDiv
               type="number"
               onChange={(e) => props.handleChange(e)}
