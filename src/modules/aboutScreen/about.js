@@ -15,61 +15,14 @@ function About(props) {
     return Math.trunc(num * calcDec) / calcDec;
   }
 
-  const handleXDCPayWallet = async () => {
-    window.web3 = new Web3(window.ethereum);
-
-    if (window.web3.currentProvider) {
-      if (!window.web3.currentProvider.chainId) {
-        //when metamask is disabled
-        const state = window.web3.givenProvider.publicConfigStore._state;
-        let address = state.selectedAddress;
-        let network =
-          state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
-        let account = false;
-        
-        await window.web3.eth.getAccounts((err, accounts) => {
-            if (err !== null) console.error("An error occurred: "+err);
-            else if (accounts.length === 0) {
-              account = false;
-            } else {
-              account = true;
-            }
-          });
-        
-        if (!account) {
-          alert("Please Login To XDC PAY");
-        } 
-        else if (address || network) {
-          let balance = null;
-          
-        await window.web3.eth.getBalance(address)
-          .then(res => {
-            balance = res / Math.pow(10, 18);
-            balance = truncateToDecimals(balance);
-          });
-          let accountDetails = {
-            address: address,
-            network: network,
-            balance: balance
-          };
-          props.login(accountDetails);
-          history.push("/token-XRC20");
-        }
-      } else {
-        //metamask is also enabled with xdcpay
-        const state = window.web3.givenProvider.publicConfigStore._state;
-        let address = state.selectedAddress;
-        let network =
-          state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
-      }
+  const handleXDCPayWallet = async () => { 
+    if (!props?.currentUser?.isLoggedIn && props?.currentUser?.accountDetails === null) {
+      props.user(connectWallet);
     } else {
-      if (window.innerWidth < 768) {
-        history.push("/connect-wallet-mobile");
-      } else {
-        props.user(connectWallet);
-      }
+      history.push("/token-XRC20");
     }
-  };
+  }
+  
 
   return (
     <MainContainer>
@@ -164,7 +117,9 @@ function About(props) {
   );
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  currentUser: state.user,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   user: (connectWallet) => {
