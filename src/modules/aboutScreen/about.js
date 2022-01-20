@@ -10,10 +10,6 @@ function About(props) {
   const history = useHistory();
   const [connectWallet, setConnectWallet] = useState(true);
 
-  function truncateToDecimals(num, dec = 2) {
-    const calcDec = Math.pow(10, dec);
-    return Math.trunc(num * calcDec) / calcDec;
-  }
 
   const handleXDCPayWallet = async () => { 
     if (!props?.currentUser?.isLoggedIn && props?.currentUser?.accountDetails === null) {
