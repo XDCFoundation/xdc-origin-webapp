@@ -5,6 +5,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip, Fade,createTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -142,6 +143,7 @@ const SuccessTokenValues = styled.div`
   opacity: 1;
   margin-top: 3.5px;
   margin-left: 15px;
+  cursor: pointer;
   /* text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden; */
@@ -327,6 +329,22 @@ const CreateToken = (props) => {
     }, 2000);
   }
 
+  const handleTransactionHash = () => {
+    if (props?.user?.accountDetails?.network === "XDC Mainnet") {
+      window.open(`https://explorer.xinfin.network/txs/${props.location?.state?.transactionHash}`, '_blank');
+    } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
+      window.open(`https://explorer.apothem.network/txs/${props.location?.state?.transactionHash}`, '_blank');
+    }
+  }
+
+  const handleContractAddress = () => {
+    if (props?.user?.accountDetails?.network === "XDC Mainnet") {
+      window.open(`https://explorer.xinfin.network/address/${contractAddress}`, '_blank');
+    } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
+      window.open(`https://explorer.apothem.network/address/${contractAddress}`, '_blank');
+    }
+  }
+
   return (
     <MuiThemeProvider theme={defaultTheme}>
     <>
@@ -353,7 +371,7 @@ const CreateToken = (props) => {
               </MuiThemeProvider>
                 Transaction Hash:
               </SuccessTokenKey>
-              <SuccessTokenValues>
+              <SuccessTokenValues onClick={() => handleTransactionHash()}>
                 {transactionAddress || ""}
               </SuccessTokenValues>
               <Tooltip
@@ -396,7 +414,7 @@ const CreateToken = (props) => {
               </MuiThemeProvider>
                 Contract Address:
               </SuccessTokenKey>
-              <SuccessTokenValues>
+              <SuccessTokenValues onClick={() => handleContractAddress()}>
                 {newContractAddress || ""}
               </SuccessTokenValues>
               <Tooltip
@@ -482,4 +500,8 @@ const CreateToken = (props) => {
   );
 };
 
-export default CreateToken;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(CreateToken);
