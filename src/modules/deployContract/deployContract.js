@@ -12,6 +12,7 @@ function DeployContract(props) {
   const [openDeployPopup, setOpenDeployPopup] = useState(false);
   const [tokenId, setTokenId] = useState("");
   const [tokenName, setTokenName] = useState("");
+  const [deployTokenName, setDeployTokenName] = useState("");
 
   const handleClickOpen = (id,tokenName) => {
     setOpen(true);
@@ -22,8 +23,9 @@ function DeployContract(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleDeployPopup = () => {
+  const handleDeployPopup = (deployTokenName) => {
     setOpenDeployPopup(true);
+    setDeployTokenName(deployTokenName)
   };
 
   const deployPopupClose = () => {
@@ -72,7 +74,7 @@ function DeployContract(props) {
                   <TableContent>{capitalize(item.status)}</TableContent>
                 </div>
                 <div className="icons">
-                  <div className="deployIcon" onClick={handleDeployPopup}>
+                  <div className="deployIcon" onClick={() => handleDeployPopup(item.tokenName)}>
                     <img src="/images/deploy_contract.png" alt="" />
                   </div>
                   <div className="deleteIcon" onClick={() => handleClickOpen(item.id,item.tokenName)}>
@@ -101,6 +103,7 @@ function DeployContract(props) {
         open={openDeployPopup}
         onClose={deployPopupClose}
         deployPopupClose={deployPopupClose}
+        deployTokenName={deployTokenName}
       />
     </Container>
   );
