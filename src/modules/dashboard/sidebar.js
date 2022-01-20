@@ -197,10 +197,17 @@ function Sidebar(props) {
           <Heading>FAQs</Heading>
         </Wrapper>
       )}
+      {
+      props.userAccountDetails?.accountDetails?.address ? (
       <Wrapper onClick={() => logout()}>
-        <LogoutIcon src="/images/Logout-InActive.svg" />
+          <LogoutIcon src="/images/Logout-InActive.svg" />
         <Heading>Logout</Heading>
       </Wrapper>
+      ) : (
+        ""
+      )
+      }
+      
       <CenterDiv>
         <img alt="" src="/images/Group 12.svg" />
       </CenterDiv>

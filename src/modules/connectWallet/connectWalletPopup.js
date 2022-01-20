@@ -180,18 +180,13 @@ const BtnText = styled.span`
 `;
 
 function connectWalletPopup(props) {
-  const history = useHistory();
-
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const classes = useStyles();
 
   const [connectWallet, setConnectWallet] = useState(false);
-  const [isClose, setClose] = useState(false);
 
   const handleDialogClose = () => {
     props.disablePopup(connectWallet);
-    setClose(true);
-    props.handleClose();
   };
 
   function truncateToDecimals(num, dec = 2) {
@@ -199,7 +194,7 @@ function connectWalletPopup(props) {
     return Math.trunc(num * calcDec) / calcDec;
   }
 
-  const handleXDCPayWallet = async() => {
+  const handleXDCPayWallet = async () => {
     window.web3 = new Web3(window.ethereum);
 
     if (window.web3.currentProvider) {
@@ -210,7 +205,7 @@ function connectWalletPopup(props) {
         let network =
           state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
         let account = false;
-        
+
         await window.web3.eth.getAccounts((err, accounts) => {
           if (err !== null) console.error("An error occurred: " + err);
           else if (accounts.length === 0) {
@@ -222,23 +217,21 @@ function connectWalletPopup(props) {
 
         if (!account) {
           alert("Please Login To XDC PAY");
-        }
-        else if (address || network) {
-        let balance = null;
-          
-        await window.web3.eth.getBalance(address)
-          .then(res => {
+        } else if (address || network) {
+          let balance = null;
+
+          await window.web3.eth.getBalance(address).then((res) => {
             balance = res / Math.pow(10, 18);
             balance = truncateToDecimals(balance);
           });
-          
+
           let accountDetails = {
             address: address,
             network: network,
-            balance: balance
+            balance: balance,
           };
           props.login(accountDetails);
-          handleDialogClose()
+          handleDialogClose();
         }
       } else {
         //metamask is also enabled with xdcpay
@@ -255,9 +248,8 @@ function connectWalletPopup(props) {
 
   return (
     <Dialog
-      onClose={isClose || props.handleClose}
       aria-labelledby="simple-dialog-title"
-      open={props.open || props.user.isWalletOpen}
+      open={props.user.isWalletOpen}
       classes={{
         paper: classes.dialog,
       }}

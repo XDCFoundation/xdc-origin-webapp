@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
+import { handleWallet } from "../../action";
 import "../../assets/styles/custom.css";
 import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
@@ -10,6 +11,7 @@ function Header(props) {
   const history = useHistory();
   const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isconnectWallet, setIsConnectWallet] = useState(true);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -17,6 +19,7 @@ function Header(props) {
 
   const connectWallet = () => {
     setConnectWalletDialoag(!connectWalletDialoag);
+    props.user(isconnectWallet);
   };
   return (
     <>
@@ -71,7 +74,13 @@ const mapStateToProps = (state) => ({
   userDetails: state.user,
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => ({
+  user: (isconnectWallet) => {
+    dispatch(handleWallet(isconnectWallet));
+  },
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Header);
 
 const HeaderContainer = styled.div`
   background: #091f5c 0% 0% no-repeat padding-box;
