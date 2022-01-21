@@ -217,7 +217,7 @@ export default function UploadTokenImage(props) {
             </TokenImage>
             <CropImage>
               <ControlButtons onClick={zoomOut}>
-                <img src="images/Minus.svg"></img>
+                <img src="images/Minus-Icon.svg"></img>
               </ControlButtons>
               <div>
                 <SeekBar

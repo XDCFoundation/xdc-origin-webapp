@@ -181,6 +181,16 @@ const BackButton = styled.div`
 `;
 const BackImgDiv = styled.img`
   width: 15px;
+  height: 13px;
+  opacity: 1;
+
+  @media (min-width: 0px) and (max-width: 767px) {
+    margin: 0 8px 0px 8px;
+  }
+`;
+
+const DeployImgDiv = styled.img`
+  width: 15px;
   height: 15px;
   opacity: 1;
 
@@ -188,6 +198,17 @@ const BackImgDiv = styled.img`
     margin: 0 8px 0px 8px;
   }
 `;
+
+const DraftImgDiv = styled.img`
+  width: 18px;
+  height: 17px;
+  opacity: 1;
+
+  @media (min-width: 0px) and (max-width: 767px) {
+    margin: 0 8px 0px 8px;
+  }
+`;
+
 const BackText = styled.div`
   text-align: right;
   font: normal normal medium 18px/21px Inter;
@@ -227,7 +248,7 @@ const DeployButton = styled.button`
   background: #3163f0 0% 0% no-repeat padding-box;
   border-radius: 4px;
   opacity: 1;
-
+  border: none;
   @media (min-width: 0px) and (max-width: 767px) {
     justify-content: center;
     width: 322px;
@@ -298,7 +319,7 @@ export default function AddFeatures(props) {
       name: "Pausable",
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
-      image: "/images/Pausable.svg",
+      image: "/images/Pause_Contract.png",
       checked: props.tokenData.pausable,
       content: addFeaturesContent.PAUSABLE_CONTENT,
     },
@@ -383,8 +404,9 @@ export default function AddFeatures(props) {
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
-    if (res !== 0) {
-      history.push({ pathname: "/deploy-contract", state: res });
+    // console.log('edit---',res[0])
+    if (res[0] !== 0) {
+      history.push({ pathname: "/deploy-contract", state: res[0] });
     }
   };
 
@@ -395,16 +417,6 @@ export default function AddFeatures(props) {
     } else {
       saveAsDraft(e);
     }
-  };
-
-  const deployToken = (e) => {
-    e.preventDefault();
-    if (hasTokenId === true) {
-      props.saveAsDraftbyEdit(e);
-    } else {
-      props.saveAsDraft(e);
-    }
-    props.nextStep(e);
   };
 
   return (
@@ -455,11 +467,11 @@ export default function AddFeatures(props) {
               <RightDiv>
                 <SaveDraftButton onClick={checkSaveOrEditDraft}>
                   <SaveDraftText>Save Draft</SaveDraftText>
-                  <BackImgDiv src="/images/ContractDetails.svg" />
+                  <DraftImgDiv src="/images/Save-Draft-Image.svg" />
                 </SaveDraftButton>
-                <DeployButton onClick={deployToken}>
+                <DeployButton onClick={() => props.nextStep()}>
                   <DeployText>Deploy</DeployText>
-                  <BackImgDiv src="/images/DeployContract_Active.svg" />
+                  <DeployImgDiv src="/images/DeployContract_Active.svg" />
                 </DeployButton>
               </RightDiv>
             </ButtonsRow>

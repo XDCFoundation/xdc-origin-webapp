@@ -16,7 +16,7 @@ const Header = styled.div`
   justify-content: space-between;
   border-style: solid;
   border-width: 0px 0px 1px 0px;
-  border-color: #a2a2a2;
+  border-color: #D8D8D8;
 `;
 
 const Cross = styled.img`
@@ -28,7 +28,7 @@ const UploadCircle = styled.button`
   width: 224px;
   height: 224px;
   background: #ffffff 0% 0% no-repeat padding-box;
-  border: 1px dashed #a2a2a2;
+  border: 1px dashed #A2A2A2;
   border-radius: 124px;
   opacity: 1;
   text-align: center;
@@ -169,7 +169,7 @@ const DisplayImage = styled.img`
   align-items: center;
 `;
 
-const zoomStep = 0.1;
+const zoomStep = 0.05;
 const maxScale = 5;
 const minScale = 1;
 const defaultScale = minScale;
@@ -294,7 +294,7 @@ export default function UploadTokenImage(props) {
           </TokenImage>
           <CropImage>
             <ControlButtons onClick={zoomOut}>
-              <img src="/images/Minus.svg"></img>
+              <img src="/images/Minus-Icon.svg"></img>
             </ControlButtons>
             <div>
               <SeekBar
