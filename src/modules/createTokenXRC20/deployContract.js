@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 const Parent = styled.div`
@@ -63,6 +63,18 @@ const Text = styled.div`
 `;
 
 export default function DeployContract(props) {
+  useEffect(() => {
+    deployToken();
+  }, []);
+
+  const deployToken = () => {
+    if (props.hasTokenId === true) {
+      props.saveAsDraftbyEdit();
+    } else {
+      props.saveAsDraft();
+    }
+  };
+
   return (
     <>
       <Parent>

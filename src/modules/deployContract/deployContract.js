@@ -85,6 +85,11 @@ function DeployContract(props) {
       .on('confirmation', function (confirmationNumber, receipt) {
         // console.log("confirmation ====", confirmationNumber, receipt);
       })
+      .on('error', function(error){
+        if(error){
+          setOpenDeployPopup(false)
+        }
+    });
   }
 
   const updateTokenDetails = async (resultedTokenId, resultedTokenOwner, resultAddress) => {

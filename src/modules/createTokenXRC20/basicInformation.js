@@ -218,6 +218,7 @@ const ContinueButton = styled.button`
   background: #3163f0 0% 0% no-repeat padding-box;
   border-radius: 4px;
   opacity: 1;
+  border: none;
   @media (min-width: 0px) and (max-width: 767px) {
     justify-content: center;
     width: 322px;
@@ -293,7 +294,6 @@ const UrlInput = styled.img`
 export default function Token(props) {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
   const { id } = useParams();
 
   const togglePopup = () => {

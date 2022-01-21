@@ -134,7 +134,7 @@ const BackButton = styled.div`
     margin-bottom: 12px;
   }
 `;
-const ContinueButton = styled.div`
+const ContinueButton = styled.button`
   display: flex;
   justify-content: space-around;
   flex-direction: row;
@@ -145,6 +145,7 @@ const ContinueButton = styled.div`
   background: #3163f0 0% 0% no-repeat padding-box;
   border-radius: 4px;
   opacity: 1;
+  border: none;
   @media (min-width: 0px) and (max-width: 767px) {
     justify-content: center;
     width: 322px;
@@ -185,7 +186,9 @@ export default function Tokenomics(props) {
   
   const saveAndContinue = (e) => {
     props.handleChange(e)
-    props.nextStep(e);
+    if(props.tokenData.tokenInitialSupply > 0 && props.tokenData.tokenInitialSupply !== undefined){
+      props.nextStep(e);
+    }
   };
 
   return (
@@ -210,10 +213,10 @@ export default function Tokenomics(props) {
             <BlurTextDiv>
               Insert the initial numbers of tokens available
             </BlurTextDiv>
-            {props.tokenData.tokenInitialSupply >= 1 ? (
-              ""
-            ) : (
+            {props.tokenData.tokenInitialSupply <= 0 ? (
               <p className="shown-error">Supply should be more than 0</p>
+            ) : (
+              ""
             )}
           </CommonRow>
           <ButtonsRow>

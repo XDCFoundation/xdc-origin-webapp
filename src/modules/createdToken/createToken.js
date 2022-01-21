@@ -278,11 +278,7 @@ const CreateToken = (props) => {
     contractAddress?.slice(0, 26) +
     "..." +
     contractAddress?.substr(contractAddress.length - 4);
-  //   console.log('b---',newContractAddress)
-  //   console.log('gp--',typeof gasPrice,gasPrice)
-  //   console.log('gp--',typeof gasFee,gasFee)
-  //   console.log('gp--',typeof gweiValue,gweiValue)
-  console.log("b---", props.location?.state?.transactionHash.length);
+
   return (
     <>
       <BgContainer>

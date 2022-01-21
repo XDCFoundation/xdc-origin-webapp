@@ -240,7 +240,7 @@ function CommonTab(props) {
     setTokenData(props.state?.xrc20TokenDetails)
   }, [props])
 
-  let newImage = imgData.length >= 1 ? imgData : tokenData.tokenImage
+  let newImage = imgData.length >=1 ? imgData : tokenData.tokenImage
 
   const handleChange = (e) => {
     setTokenData({
@@ -252,11 +252,10 @@ function CommonTab(props) {
       burnable: true,
       mintable: true,
       [e.target.name]: e.target.value
-    });
-    //destructuring
+    }); //destructuring
   };
 
-  // console.log('to---', tokenData)
+  console.log('to---', tokenData)
 
   // condition checking for nextStep: 
 
@@ -311,7 +310,6 @@ function CommonTab(props) {
     return errors;
   };
 
-
   // Steps navigation functions : 
   const checkError = () => {
     setFormErrors(validate(tokenData));
@@ -345,16 +343,17 @@ function CommonTab(props) {
     setStep(step - 1);
   };
 
-  // saveDraft api function : 
+  // condition to check if tokenData object has id key or not, will return true or false
+  let hasTokenId = "id" in tokenData;
 
- 
+  // saveDraft api function : 
 
   let createdToken = tokenData.tokenName
   let parsingDecimal = Number(tokenData.tokenDecimals);
   let parsingSupply = Number(tokenData.tokenInitialSupply);
 
   const saveAsDraft = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     let reqObj = {
       tokenOwner: tokenData.tokenOwner,
       tokenName: createdToken,
@@ -376,7 +375,7 @@ function CommonTab(props) {
   };
 
   const saveAsDraftbyEdit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     let reqObj = {
       id: tokenData.id,
       tokenOwner: tokenData.tokenOwner,
@@ -394,9 +393,8 @@ function CommonTab(props) {
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
-    console.log('tr1---',res)
-    if (res !== 0) {
-      sendTransaction(res)
+    if (res[0] !== 0) {
+      sendTransaction(res[0])
     }
   };
 
@@ -405,7 +403,7 @@ function CommonTab(props) {
 
   const sendTransaction = async (tokenDetails) => {
     window.web3 = new Web3(window.ethereum)
-
+    let checkNetwork = tokenDetails?.network
     let draftedTokenId = tokenDetails?.id
     let draftedTokenOwner = tokenDetails?.tokenOwner
     let byteCode = tokenDetails?.byteCode
@@ -422,25 +420,55 @@ function CommonTab(props) {
       "gasPrice": gasPrice,
       "data": byteCode
     };
-    
-    await window.web3.eth.sendTransaction(transaction)
-      .on('transactionHash', function (hash) {
-        // console.log("transactionHash ====", hash);
-      })
-      .on('receipt', function (receipt) {
-        // console.log("receipt ====", receipt);  //receive the contract address from this object
-        if (receipt !== 0) {
-          history.push({ pathname: '/created-token', state: receipt, parsingDecimal, parsingSupply, gasPrice, createdToken })
-          updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+
+    if (checkNetwork === "XDC Mainnet") {
+      await window.web3.eth.sendTransaction(transaction)
+        .on('transactionHash', function (hash) {
+          console.log("transactionHash ====", hash);
+          if (hash !== 0) {
+            // recieve mainnet contractAddress from this function
+            contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken) 
+          }
+        })
+        .on('receipt', function (receipt) {
+          // console.log("receipt ====", receipt);  
         }
-      })
-      .on('confirmation', function (confirmationNumber, receipt) {
-        // console.log("confirmation ====", confirmationNumber, receipt);
-      })
+        )
+        .on('confirmation', function (confirmationNumber, receipt) {
+          // console.log("confirmation ====", confirmationNumber, receipt);
+        })
+        .on('error', function (error) {
+          if (error) {
+            prevStep();
+          }
+        });
+    }
+    else {
+      await window.web3.eth.sendTransaction(transaction)
+        .on('transactionHash', function (hash) {
+          // console.log("transactionHash ====", hash);
+        })
+        .on('receipt', function (receipt) { //receive the contract address from this object
+          // console.log("receipt ====", receipt);  
+          if (receipt !== 0) {
+            history.push({ pathname: '/created-token', state: receipt, parsingDecimal, parsingSupply, gasPrice, createdToken })
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+          }
+        }
+        )
+        .on('confirmation', function (confirmationNumber, receipt) {
+          // console.log("confirmation ====", confirmationNumber, receipt);
+        })
+        .on('error', function (error) {
+          if (error) {
+            prevStep();
+          }
+        });
+    }
   }
 
   const updateTokenDetails = async (resultedTokenId, resultedTokenOwner, resultAddress) => {
-    // console.log('id---',resultedTokenId)
+
     let reqObj = {
       tokenId: resultedTokenId,
       tokenOwner: resultedTokenOwner,
@@ -448,6 +476,18 @@ function CommonTab(props) {
       status: apiBodyMessages.STATUS_DEPLOYED
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
+  }
+
+  const contractDetailsFromTxnHash = async (txnHash, parsingDecimal, parsingSupply, gasPrice, createdToken) => {
+    let reqObj = {
+      hash: txnHash
+    };
+    const [err, res] = await Utils.parseResponse(SaveDraftService.getTxnHashDetails(reqObj));
+    let obtainContractAddress = res?.contractAddress || ""
+    let obtainTxnHash = res?.hash || ""
+    if (res != 0) {
+      history.push({ pathname: '/created-token', state: obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, createdToken, obtainContractAddress })
+    }
   }
 
   return (
@@ -520,7 +560,14 @@ function CommonTab(props) {
                     />
                   );
                 case 4:
-                  return <DeployContractPage />;
+                  return (
+                    <DeployContractPage
+                      hasTokenId={hasTokenId}
+                      prevStep={prevStep}
+                      saveAsDraft={saveAsDraft}
+                      saveAsDraftbyEdit={saveAsDraftbyEdit}
+                    />
+                  );
                 default:
                   return;
               }
