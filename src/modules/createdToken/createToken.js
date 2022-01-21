@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Row, Column } from "simple-flexbox";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { Tooltip, Fade,createTheme } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -10,6 +14,9 @@ const BgContainer = styled.div`
   background-size: cover;
   padding-top: 4%;
   padding-bottom: 4%;
+  @media(min-width: 768px) and (max-width: 1024px){
+    padding-top: 12%;
+  }
 `;
 
 const ParentContainer = styled.div`
@@ -139,6 +146,7 @@ const SuccessTokenValues = styled.div`
   opacity: 1;
   margin-top: 3.5px;
   margin-left: 15px;
+  cursor: pointer;
   /* text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden; */
@@ -258,8 +266,34 @@ const LineSeparation = styled.hr`
   width: 100%;
 `;
 
+
+const theme = createTheme({
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: "12px",
+        color: "#4B4B4B",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0px 3px 12px #0000001A",
+        border: "1px solid #e6e8ed"
+      }
+    }
+  }
+});
+
+const defaultTheme = createTheme();
+
+const useStyles = makeStyles(theme => ({
+  arrow: {
+    "&:before": {
+      border: "1px solid #e6e8ed"
+    },
+    color: theme.palette.common.white
+  },
+}))
+
 const CreateToken = (props) => {
-  console.log("props---", props.location);
+  const classes = useStyles();
 
   let gasPrice = Number(props.location.gasPrice);
   let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, 18);
@@ -279,7 +313,37 @@ const CreateToken = (props) => {
     "..." +
     contractAddress?.substr(contractAddress.length - 4);
 
+  const [open, setOpen] = useState(false);
+  const [openAddress, setOpenAddress] = useState(false);
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
+    setOpenAddress(false);
+  }
+
+  const handleTooltipOpenAddress = () => {
+    setOpenAddress(true);
+    setOpen(false);
+  }
+
+  const handleTransactionHash = () => {
+    if (props?.user?.accountDetails?.network === "XDC Mainnet") {
+      window.open(`https://explorer.xinfin.network/txs/${props.location?.state?.transactionHash}`, '_blank');
+    } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
+      window.open(`https://explorer.apothem.network/txs/${props.location?.state?.transactionHash}`, '_blank');
+    }
+  }
+
+  const handleContractAddress = () => {
+    if (props?.user?.accountDetails?.network === "XDC Mainnet") {
+      window.open(`https://explorer.xinfin.network/address/${contractAddress}`, '_blank');
+    } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
+      window.open(`https://explorer.apothem.network/address/${contractAddress}`, '_blank');
+    }
+  }
+
   return (
+    <MuiThemeProvider theme={defaultTheme}>
     <>
       <BgContainer>
         <ParentContainer>
@@ -292,45 +356,88 @@ const CreateToken = (props) => {
           <SuccessTokenDetails>
             <SuccessRows>
               <SuccessTokenKey>
-                <KeyInfo src="images/Info.svg"></KeyInfo>
+                <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                      title="Unique transaction identifier, also known as the Transaction ID"
+                      placement="top-start"
+                      arrow
+                      classes={{ arrow: classes.arrow }}
+                  >
+                    <KeyInfo src="images/Info.svg"></KeyInfo>
+                  </Tooltip>
+              </MuiThemeProvider>
                 Transaction Hash:
               </SuccessTokenKey>
-              <SuccessTokenValues>
+              <SuccessTokenValues onClick={() => handleTransactionHash()}>
                 {transactionAddress || ""}
               </SuccessTokenValues>
-              <CopyToClipboard
-                text={
-                  props.location.state.transactionHash.length > 0
-                    ? props.location.state.transactionHash
-                    : ""
-                }
+              <Tooltip
+                title={open ? "Copied" : "Copy To Clipboard"}
+                placement="top"
+                arrow
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
               >
-                <CopyIcon src="/images/Copy.svg"></CopyIcon>
-              </CopyToClipboard>
+                <CopyToClipboard
+                  text={
+                    props.location.state.transactionHash.length > 0
+                      ? props.location.state.transactionHash
+                      : ""
+                  }
+                >
+                  <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpen}></CopyIcon>
+                </CopyToClipboard>
+              </Tooltip>
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
-              <SuccessTokenKey>
-                <KeyInfo src="images/Info.svg"></KeyInfo>
+                <SuccessTokenKey>
+                <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                      title="The unique address of the contract"
+                      placement="top-start"
+                      arrow
+                      classes={{ arrow: classes.arrow }}
+                  >
+                    <KeyInfo src="images/Info.svg"></KeyInfo>
+                  </Tooltip>
+              </MuiThemeProvider>
                 Contract Address:
               </SuccessTokenKey>
-              <SuccessTokenValues>
+              <SuccessTokenValues onClick={() => handleContractAddress()}>
                 {newContractAddress || ""}
               </SuccessTokenValues>
-              <CopyToClipboard
-                text={
-                  contractAddress.length > 0
-                    ? contractAddress
-                    : ""
-                }
+              <Tooltip
+                title={openAddress ? "Copied" : "Copy To Clipboard"}
+                placement="top"
+                arrow
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
               >
-                <CopyIcon src="/images/Copy.svg"></CopyIcon>
-              </CopyToClipboard>
+                <CopyToClipboard
+                  text={
+                    contractAddress.length > 0
+                      ? contractAddress
+                      : ""
+                  }
+                >
+                  <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpenAddress}></CopyIcon>
+                </CopyToClipboard>
+              </Tooltip>
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
               <SuccessTokenKey>
-                <KeyInfo src="images/Info.svg"></KeyInfo>
+              <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                      title="Number of minted tokens"
+                      placement="top-start"
+                      arrow
+                      classes={{ arrow: classes.arrow }}
+                  >
+                    <KeyInfo src="images/Info.svg"></KeyInfo>
+                  </Tooltip>
+              </MuiThemeProvider>
                 Tokens Minted:
               </SuccessTokenKey>
               <ValueDiv>{props.location.parsingSupply || ""}</ValueDiv>
@@ -338,7 +445,16 @@ const CreateToken = (props) => {
             <LineSeparation></LineSeparation>
             <SuccessRows>
               <SuccessTokenKey>
-                <KeyInfo src="images/Info.svg"></KeyInfo>
+              <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                      title="The value being transacted in XDC and fiat value"
+                      placement="top-start"
+                      arrow
+                      classes={{ arrow: classes.arrow }}
+                  >
+                    <KeyInfo src="images/Info.svg"></KeyInfo>
+                  </Tooltip>
+              </MuiThemeProvider>
                 Gas Fee:
               </SuccessTokenKey>
               <ValueDiv>
@@ -362,8 +478,13 @@ const CreateToken = (props) => {
           </Buttons>
         </ParentContainer>
       </BgContainer>
-    </>
+      </>
+    </MuiThemeProvider>
   );
 };
 
-export default CreateToken;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(CreateToken);

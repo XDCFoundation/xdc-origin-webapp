@@ -255,7 +255,7 @@ function CommonTab(props) {
     }); //destructuring
   };
 
-  console.log('to---', tokenData)
+  // console.log('to---', tokenData)
 
   // condition checking for nextStep: 
 
@@ -424,7 +424,7 @@ function CommonTab(props) {
     if (checkNetwork === "XDC Mainnet") {
       await window.web3.eth.sendTransaction(transaction)
         .on('transactionHash', function (hash) {
-          console.log("transactionHash ====", hash);
+          // console.log("transactionHash ====", hash);
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken) 
