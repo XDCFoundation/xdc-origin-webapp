@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ReactPlayer from "react-player";
 import { useHistory } from "react-router";
 import Web3 from "web3";
-import { handleAccountDetails, handleWallet } from "../../action";
+import { handleAccountDetails, handleNavItem, handleSubNavItem, handleSubNavToken, handleWallet } from "../../action";
 import { connect } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Tooltip, Typography, ClickAwayListener } from "@material-ui/core";
@@ -84,6 +84,9 @@ function About(props) {
       props.user(connectWallet);
     } else {
       history.push("/token-XRC20");
+      props.setActiveNavItem("create");
+      props.setSubNavItem(true);
+      props.setSubNavToken("XRC20");
     }
   };
 
@@ -270,6 +273,15 @@ const mapDispatchToProps = (dispatch) => ({
   },
   login: (accountDetails) => {
     dispatch(handleAccountDetails(accountDetails));
+  },
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive))
+  },
+  setSubNavItem: (subNavItems) => {
+    dispatch(handleSubNavItem(subNavItems))
+  },
+  setSubNavToken: (isSubNavActive) => {
+    dispatch(handleSubNavToken(isSubNavActive))
   },
 });
 
