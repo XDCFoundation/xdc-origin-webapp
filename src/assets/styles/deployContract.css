@@ -53,6 +53,35 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 1660px) and (min-width: 1440px) {
+  .tokenIcon {
+    min-width: 169px;
+  }
+  .tokenName {
+    min-width: 170px;
+  }
+  .tokenSymbol {
+    min-width: 186px;
+  }
+  .network {
+    min-width: 261px;
+  }
+  .supply {
+    min-width: 171px;
+  }
+  .status {
+    min-width: 112px;
+  }
+  .icons {
+    width: 145px;
+    min-width: 145px;
+  }
+  .deployIcon,
+  .deleteIcon,
+  .editIcon {
+    margin-right: 12px;
+  }
+}
 @media screen and (max-width: 1440px) and (min-width: 1024px) {
   .tokenIcon {
     min-width: 169px;

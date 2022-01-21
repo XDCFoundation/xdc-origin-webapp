@@ -32,7 +32,6 @@ class DeployContract extends BaseComponent {
     
     if (error || !contractServiceResponse) {
       console.log("getDraftFailedXrc20Token error -> ", error)
-      Utility.apiFailureToast("Failed To Fetch Token Details!");
       return;
     }
   

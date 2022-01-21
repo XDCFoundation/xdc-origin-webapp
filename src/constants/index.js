@@ -55,11 +55,17 @@ export const addFeaturesContent = {
 export const eventConstants = {
   CONNECT_WALLET: "CONNECT_WALLET",
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
-  LOGOUT_SUCCESS: "LOGOUT_SUCCESS"
+  LOGOUT_SUCCESS: "LOGOUT_SUCCESS",
+  SET_NAV_ITEM: "SET_NAV_ITEM",
+  SET_SUBNAV_ITEM: "SET_SUBNAV_ITEM",
+  SET_SUBNAV_TOKEN: "SET_SUBNAV_TOKEN",
 };
 
 export const cookiesConstants = {
   ACCESS_TOKEN: "accessToken",
   EXPIRES_AT: "expiresAt",
   USER: "user",
+  SIDE_NAV: "sideNav",
+  SUBNAV_ITEM: "subNavItem",
+  SUBNAV_TOKEN: "subNavToken",
 };
