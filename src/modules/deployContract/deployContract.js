@@ -12,6 +12,7 @@ function DeployContract(props) {
   const [openDeployPopup, setOpenDeployPopup] = useState(false);
   const [tokenId, setTokenId] = useState("");
   const [tokenName, setTokenName] = useState("");
+  const [deployTokenName, setDeployTokenName] = useState("");
 
   const handleClickOpen = (id,tokenName) => {
     setOpen(true);
@@ -22,8 +23,9 @@ function DeployContract(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleDeployPopup = () => {
+  const handleDeployPopup = (deployTokenName) => {
     setOpenDeployPopup(true);
+    setDeployTokenName(deployTokenName)
   };
 
   const deployPopupClose = () => {
@@ -72,7 +74,7 @@ function DeployContract(props) {
                   <TableContent>{capitalize(item.status)}</TableContent>
                 </div>
                 <div className="icons">
-                  <div className="deployIcon" onClick={handleDeployPopup}>
+                  <div className="deployIcon" onClick={() => handleDeployPopup(item.tokenName)}>
                     <img src="/images/deploy_contract.png" alt="" />
                   </div>
                   <div className="deleteIcon" onClick={() => handleClickOpen(item.id,item.tokenName)}>
@@ -101,6 +103,7 @@ function DeployContract(props) {
         open={openDeployPopup}
         onClose={deployPopupClose}
         deployPopupClose={deployPopupClose}
+        deployTokenName={deployTokenName}
       />
     </Container>
   );
@@ -165,13 +168,19 @@ const TableContainer = styled.div`
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 6px;
   opacity: 1;
-  @media screen and (max-width: 1660px) and (min-width: 1440px) {
+  @media screen and (max-width: 1760px) and (min-width: 1440px) {
     margin-left: 70px;
+    width: 1145px;
+    max-width: 1145px;
+    overflow-x: scroll;
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
   @media screen and (max-width: 1440px) and (min-width: 1280px) {
     margin-left: 100px;
-    width: 1133px;
-    max-width: 1133px;
+    width: 965px;
+    max-width: 965px;
     overflow-x: scroll;
     ::-webkit-scrollbar {
       display: none;
@@ -184,14 +193,14 @@ const TableContainer = styled.div`
   }
   @media screen and (max-width: 1280px) and (min-width: 1024px) {
     margin-left: 20px;
-    width: 1133px;
-    max-width: 1133px;
+    width: 968px;
+    max-width: 968px;
     overflow-x: scroll;
   }
   @media screen and (max-width: 1024px) and (min-width: 768px) {
     margin-left: 20px;
-    width: 768px;
-    max-width: 768px;
+    width: 730px;
+    max-width: 730px;
     overflow-x: scroll;
   }
   @media screen and (max-width: 768px) and (min-width: 556px) {
@@ -273,7 +282,7 @@ const TitleNetwork = styled.p`
   }
 `;
 const Line = styled.hr`
-  margin: 0.5rem auto 0 auto;
+  margin: 0.5rem auto 0 14px;
   width: 1270px;
 `;
 const DataLine = styled.hr`

@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-function deployPopup({ open, deployPopupClose }) {
+function deployPopup({ open, deployPopupClose,deployTokenName }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const classes = useStyles();
   return (
@@ -43,7 +43,7 @@ function deployPopup({ open, deployPopupClose }) {
     >
       <DialogContainer>
         <HeaderContainer>
-          <DialogHeader>MetaVerse Token</DialogHeader>
+          <DialogHeader>{deployTokenName} Token</DialogHeader>
         </HeaderContainer>
         <LoaderContainer>
           <div className="loader" />
@@ -69,13 +69,17 @@ const DialogContainer = styled.div`
   }
 `;
 const HeaderContainer = styled.div`
-  width: 166px;
-  height: 24px;
-  margin: 20px 0 0 178px;
+    width: 522px;
+    height: 24px;
+    margin: 20px 0 0 0;
+    display: flex;
+    justify-content: center;
   @media screen and (max-width: 425px) and (min-width: 320px) {
-    width: 150px;
+    width: 355px;
     height: 21px;
-    margin: 26px 0 0 103px;
+    margin: 26px 0 0 0;
+    display: flex;
+    justify-content: center;
   }
 `;
 const DialogHeader = styled.span`
