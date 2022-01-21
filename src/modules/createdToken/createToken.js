@@ -315,18 +315,12 @@ const CreateToken = (props) => {
 
   const handleTooltipOpen = () => {
     setOpen(true);
-
-    setTimeout(() => {
-      setOpen(false);
-    }, 2000);
+    setOpenAddress(false);
   }
 
   const handleTooltipOpenAddress = () => {
     setOpenAddress(true);
-
-    setTimeout(() => {
-      setOpenAddress(false);
-    }, 2000);
+    setOpen(false);
   }
 
   const handleTransactionHash = () => {
@@ -375,16 +369,9 @@ const CreateToken = (props) => {
                 {transactionAddress || ""}
               </SuccessTokenValues>
               <Tooltip
-                title="Copied"
+                title={open ? "Copied" : "Copy To Clipboard"}
                 placement="top"
                 arrow
-                PopperProps={{
-                  disablePortal: true,
-                }}
-                open={open}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
                 TransitionComponent={Fade}
                 TransitionProps={{ timeout: 600 }}
               >
@@ -418,16 +405,9 @@ const CreateToken = (props) => {
                 {newContractAddress || ""}
               </SuccessTokenValues>
               <Tooltip
-                title="Copied"
+                title={openAddress ? "Copied" : "Copy To Clipboard"}
                 placement="top"
                 arrow
-                PopperProps={{
-                  disablePortal: true,
-                }}
-                open={openAddress}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
                 TransitionComponent={Fade}
                 TransitionProps={{ timeout: 600 }}
               >
