@@ -32,7 +32,6 @@ class DeployContract extends BaseComponent {
     
     if (error || !contractServiceResponse) {
       console.log("getDraftFailedXrc20Token error -> ", error)
-      Utility.apiFailureToast("Failed To Fetch Token Details!");
       return;
     }
   
@@ -68,7 +67,7 @@ class DeployContract extends BaseComponent {
         <Header />
         <Row>
           {window.innerWidth >= 1024 ? <Sidebar /> : ""}
-          <DeployContractComponent state={this.state} deleteContract={this.deleteContract}/>
+          <DeployContractComponent saveDraftData={this.props.location.state} state={this.state} deleteContract={this.deleteContract}/>
         </Row>
         {window.innerWidth <= 768 ? <Footer /> : ""}
       </div>

@@ -16,7 +16,7 @@ const Header = styled.div`
   justify-content: space-between;
   border-style: solid;
   border-width: 0px 0px 1px 0px;
-  border-color: #a2a2a2;
+  border-color: #D8D8D8;
 `;
 
 const Cross = styled.img`
@@ -28,7 +28,7 @@ const UploadCircle = styled.button`
   width: 224px;
   height: 224px;
   background: #ffffff 0% 0% no-repeat padding-box;
-  border: 1px dashed #a2a2a2;
+  border: 1px dashed #A2A2A2;
   border-radius: 124px;
   opacity: 1;
   text-align: center;
@@ -169,7 +169,7 @@ const DisplayImage = styled.img`
   align-items: center;
 `;
 
-const zoomStep = 0.1;
+const zoomStep = 0.05;
 const maxScale = 5;
 const minScale = 1;
 const defaultScale = minScale;
@@ -240,7 +240,6 @@ export default function UploadTokenImage(props) {
       setFile({ content: croppedImage });
       setCroppedImage(croppedImage);
       uploadFileToAWS(croppedImage);
-
     } catch (e) {
       console.error(e);
     }
@@ -264,7 +263,7 @@ export default function UploadTokenImage(props) {
         <Content>
           <UploadCircle {...getRootProps()}>
             <input {...getInputProps()} />
-            <UploadIcon src="images/Upload.svg"></UploadIcon>
+            <UploadIcon src="/images/Upload.svg"></UploadIcon>
             <UploadText>Drag and drop your token icon here</UploadText>
           </UploadCircle>
           <ContentText>or</ContentText>
@@ -295,7 +294,7 @@ export default function UploadTokenImage(props) {
           </TokenImage>
           <CropImage>
             <ControlButtons onClick={zoomOut}>
-              <img src="images/Minus.svg"></img>
+              <img src="/images/Minus-Icon.svg"></img>
             </ControlButtons>
             <div>
               <SeekBar
@@ -312,7 +311,7 @@ export default function UploadTokenImage(props) {
               />
             </div>
             <ControlButtons onClick={zoomIn}>
-              <Plus src="images/Token_Image.svg"></Plus>
+              <Plus src="/images/Token_Image.svg"></Plus>
             </ControlButtons>
           </CropImage>
         </Content>
@@ -326,15 +325,15 @@ export default function UploadTokenImage(props) {
         <Header>
           <DialogTitle>Upload Token Image</DialogTitle>
           <Cross
-            onClick={()=>props.handleUploadClose()}
-            src="images/Cross.svg"
+            onClick={(e) => props.handleUploadClose(e)}
+            src="/images/Cross.svg"
           ></Cross>
         </Header>
         <ContentContainer>
           {RenderUi()}
 
           <Buttons>
-            <Cancel onClick={()=>props.handleUploadClose()}>
+            <Cancel onClick={(e) => props.handleUploadClose(e)}>
               <CancelName >
                 Cancel
               </CancelName>

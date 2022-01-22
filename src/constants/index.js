@@ -22,7 +22,8 @@ export const httpConstants = {
         SAVE_TOKEN: "save-xrc20token-as-draft",
         UPDATE_TOKEN: "update-xrc20token",
         GET_DRAFT_FAILD_XRC20_TOKEN: "/get-draft-failed-xrc20token",
-        GET_XRC20TOKEN_BY_ID : "/get-xrc20Token-by-id"
+        GET_XRC20TOKEN_BY_ID : "/get-xrc20Token-by-id",
+        GET_TRANSACTION_DETAILS: "getTransactionDetails"
     },
 };
 export const apiBodyMessages = {
@@ -54,11 +55,17 @@ export const addFeaturesContent = {
 export const eventConstants = {
   CONNECT_WALLET: "CONNECT_WALLET",
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
-  LOGOUT_SUCCESS: "LOGOUT_SUCCESS"
+  LOGOUT_SUCCESS: "LOGOUT_SUCCESS",
+  SET_NAV_ITEM: "SET_NAV_ITEM",
+  SET_SUBNAV_ITEM: "SET_SUBNAV_ITEM",
+  SET_SUBNAV_TOKEN: "SET_SUBNAV_TOKEN",
 };
 
 export const cookiesConstants = {
   ACCESS_TOKEN: "accessToken",
   EXPIRES_AT: "expiresAt",
   USER: "user",
+  SIDE_NAV: "sideNav",
+  SUBNAV_ITEM: "subNavItem",
+  SUBNAV_TOKEN: "subNavToken",
 };

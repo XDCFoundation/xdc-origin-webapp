@@ -195,7 +195,7 @@ export default function UploadTokenImage(props) {
       return (
         <Container>
           <Header>
-            <img onClick={()=>props.handleUploadClose()} src="images/Button_Back_Arrow.svg"></img>
+            <img onClick={(e) => props.handleUploadClose(e)} src="images/Button_Back_Arrow.svg"></img>
             <HeadingName>Upload Token Image</HeadingName>
           </Header>
           <Content>
@@ -217,7 +217,7 @@ export default function UploadTokenImage(props) {
             </TokenImage>
             <CropImage>
               <ControlButtons onClick={zoomOut}>
-                <img src="images/Minus.svg"></img>
+                <img src="images/Minus-Icon.svg"></img>
               </ControlButtons>
               <div>
                 <SeekBar

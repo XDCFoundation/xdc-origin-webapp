@@ -3,35 +3,42 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
-import {handleLogout} from "../../action"
+import {handleLogout, handleNavItem, handleSubNavItem, handleSubNavToken} from "../../action"
 
 function Sidebar(props) {
   const history = useHistory();
-  const [isActive, setIsActive] = useState("about");
+  const [isActive, setIsActive] = useState("");
   const [createContract, setCreateContract] = useState(false);
-  const [isSubNavActive, setIsSubNavActive] = useState("");
   const [subNavItems, setSubNavItems] = useState(false);
 
   const changeBackgound = (navItem) => {
     if (navItem === "create") {
-      setSubNavItems(!subNavItems);
+      props.setSubNavItem(!subNavItems);
       setCreateContract(!createContract);
-      setIsActive("");
+
+      props.setActiveNavItem(navItem);
+      props.setActiveNavItem(navItem);
     } else {
-      setIsActive(navItem);
-      setCreateContract(false);
-      setSubNavItems(false);
+     
+      props.setActiveNavItem(navItem);
+      props.setSubNavItem(false);
+      props.setSubNavToken("");
+
+      if (navItem === "about")
+        history.push("/")
+      
+      if(navItem === "deploy")
+        history.push("/deploy-contract")
     }
   };
 
   const changeSubNavItemStyle = (navItem) => {
-    setIsSubNavActive(navItem);
+    props.setSubNavToken(navItem);
     if (navItem === "XRC20") history.push("/token-XRC20");
   };
 
   const handleBtn = () => {
     history.push("/FAQ");
-    window.location.reload();
   }
   const logout = () => {
     props.logout();
@@ -41,17 +48,16 @@ function Sidebar(props) {
   return (
     <SidebarContainer>
       <Wrapper
-        className={isActive === "about" ? "activeNavItem" : ""}
+        className={props.userAccountDetails?.activeNavItem === "about" ? "activeNavItem" : ""}
         onClick={() => changeBackgound("about")}
       >
-        {isActive === "about" ? (
+        {props.userAccountDetails?.activeNavItem === "about" ? (
           <Icon src="/images/Origin-Active.svg" />
         ) : (
-          <Icon src="/images/About_Inactive.svg" />
+          <Icon src="/images/Origin-Active.svg" />
         )}
         <Heading
-          onClick={() => history.push("/")}
-          className={isActive === "about" ? "activeText" : ""}
+          className={props.userAccountDetails?.activeNavItem === "about" ? "activeText" : ""}
         >
        Origin
         </Heading>
@@ -59,94 +65,93 @@ function Sidebar(props) {
       {props.userAccountDetails?.accountDetails?.address ? (
         <>
           <Wrapper
-            className={createContract ? "activeNavItem" : ""}
+            className={props.userAccountDetails?.activeNavItem === "create" ? "activeNavItem" : ""}
             onClick={() => changeBackgound("create")}
           >
-            {createContract ? (
+            {props.userAccountDetails?.activeNavItem === "create" ? (
               <Icon src="/images/CreateContract_Active.svg" />
             ) : (
               <Icon src="/images/CreateContract_Inactive.svg" />
             )}
-            <Heading className={createContract ? "activeText" : ""}>
+            <Heading className={props.userAccountDetails?.activeNavItem === "create" ? "activeText" : ""}>
               Create Contract
             </Heading>
           </Wrapper>
-          {subNavItems ? (
+          {props.userAccountDetails?.subNavItems ? (
             <SubHeadingContainer>
               <SubWrapper onClick={() => changeSubNavItemStyle("XRC20")}>
-                {isSubNavActive === "XRC20" ? (
+                {props.userAccountDetails?.subNavToken === "XRC20" ? (
                   <SubIcon src="/images/Token-Active.svg" />
                 ) : (
                   <SubIcon src="/images/Token-Inactive.svg" />
                 )}
                 <SubText
-                  className={isSubNavActive === "XRC20" ? "xrc_active" : ""}
+                  className={props.userAccountDetails?.subNavToken === "XRC20" ? "xrc_active" : ""}
                 >
                   XRC20 Token
                 </SubText>
-                {isSubNavActive === "XRC20" ? (
+                {props.userAccountDetails?.subNavToken === "XRC20" ? (
                   <RightArrow src="/images/Next.svg" />
                 ) : (
                   ""
                 )}
               </SubWrapper>
               {/* <SubWrapper onClick={() => changeSubNavItemStyle("XRC223")}>
-                {isSubNavActive === "XRC223" ? (
+                {props.userAccountDetails?.subNavToken === "XRC223" ? (
                   <SubIcon src="/images/Token-Active.svg" />
                 ) : (
                   <SubIcon src="/images/Token-Inactive.svg" />
                 )}
                 <SubText
-                  className={isSubNavActive === "XRC223" ? "xrc_active" : ""}
+                  className={props.userAccountDetails?.subNavToken === "XRC223" ? "xrc_active" : ""}
                 >
                   XRC223 Token
                 </SubText>
-                {isSubNavActive === "XRC223" ? (
+                {props.userAccountDetails?.subNavToken === "XRC223" ? (
                   <RightArrow src="/images/Next.svg" />
                 ) : (
                   ""
                 )}
-              </SubWrapper> */}
-              {/* <SubWrapper onClick={() => changeSubNavItemStyle("Stablecoin")}>
-                {isSubNavActive === "Stablecoin" ? (
+              </SubWrapper>
+              <SubWrapper onClick={() => changeSubNavItemStyle("Stablecoin")}>
+                {props.userAccountDetails?.subNavToken === "Stablecoin" ? (
                   <SubIcon src="/images/Token-Active.svg" />
                 ) : (
                   <SubIcon src="/images/Token-Inactive.svg" />
                 )}
                 <SubText
                   className={
-                    isSubNavActive === "Stablecoin" ? "xrc_active" : ""
+                    props.userAccountDetails?.subNavToken === "Stablecoin" ? "xrc_active" : ""
                   }
                 >
                   Stablecoin
                 </SubText>
-                {isSubNavActive === "Stablecoin" ? (
+                {props.userAccountDetails?.subNavToken === "Stablecoin" ? (
                   <RightArrow src="/images/Next.svg" />
                 ) : (
                   ""
                 )}
-              </SubWrapper> */}
+              </SubWrapper>  */}
             </SubHeadingContainer>
           ) : (
             ""
           )}
           <Wrapper
-            className={isActive === "deploy" ? "activeNavItem" : ""}
+            className={props.userAccountDetails?.activeNavItem === "deploy" ? "activeNavItem" : ""}
             onClick={() => changeBackgound("deploy")}
           >
-            {isActive === "deploy" ? (
+            {props.userAccountDetails?.activeNavItem === "deploy" ? (
               <Icon src="/images/DeployContract_Active.svg" />
             ) : (
               <Icon src="/images/DeployContract_InActive.svg" />
             )}
             <Heading
-              onClick={() => history.push("/deploy-contract")}
               className={
-                isActive === "deploy" ? "activeDeployText" : "deploy-margin"
+                props.userAccountDetails?.activeNavItem === "deploy" ? "activeDeployText" : "deploy-margin"
               }
             >
               {" "}
-              Deploy contracts
+              Deploy Contracts
             </Heading>
           </Wrapper>
           <Wrapper
@@ -172,7 +177,7 @@ function Sidebar(props) {
         <Wrapper
         onClick={handleBtn}
           className={
-            createContract
+            props.userAccountDetails?.subNavItems
               ? "faq-margin-create"
               : props.userAccountDetails?.accountDetails?.address
               ? "faq-margin"
@@ -186,7 +191,7 @@ function Sidebar(props) {
         <Wrapper
         onClick={handleBtn}
           className={
-            createContract
+            props.userAccountDetails?.subNavItems
               ? "faq-margin-create"
               : props.userAccountDetails?.accountDetails?.address
               ? "faq-margin"
@@ -197,10 +202,17 @@ function Sidebar(props) {
           <Heading>FAQs</Heading>
         </Wrapper>
       )}
+      {
+      props.userAccountDetails?.accountDetails?.address ? (
       <Wrapper onClick={() => logout()}>
-        <LogoutIcon src="/images/Logout-InActive.svg" />
+          <LogoutIcon src="/images/Logout-InActive.svg" />
         <Heading>Logout</Heading>
       </Wrapper>
+      ) : (
+        ""
+      )
+      }
+      
       <CenterDiv>
         <img alt="" src="/images/Group 12.svg" />
       </CenterDiv>
@@ -215,6 +227,15 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   logout: () => {
     dispatch(handleLogout());
+  },
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive))
+  },
+  setSubNavItem: (subNavItems) => {
+    dispatch(handleSubNavItem(subNavItems))
+  },
+  setSubNavToken: (isSubNavActive) => {
+    dispatch(handleSubNavToken(isSubNavActive))
   },
 });
 
