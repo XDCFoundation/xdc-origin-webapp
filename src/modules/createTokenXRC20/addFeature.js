@@ -407,7 +407,6 @@ function AddFeatures(props) {
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
-    // console.log('edit---',res[0])
     if (res[0] !== 0) {
       props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res[0] });
@@ -493,4 +492,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapDispatchToProps)(AddFeatures);
+export default connect(null,mapDispatchToProps)(AddFeatures);
