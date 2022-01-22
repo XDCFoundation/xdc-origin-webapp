@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
-import {handleLogout, handleNavItem, handleSubNavItem, handleSubNavToken} from "../../action"
+import {handleLogout, handleNavItem, handleSubNavItem, handleSubNavToken, updateAccountDetails} from "../../action"
 
 function Sidebar(props) {
   const history = useHistory();
@@ -43,6 +43,7 @@ function Sidebar(props) {
     props.logout();
     props.setActiveNavItem("about");
     props.setSubNavItem(false);
+    props.updateAccountDetails(null)
     history.push("/");
   }
 
@@ -237,6 +238,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setSubNavToken: (isSubNavActive) => {
     dispatch(handleSubNavToken(isSubNavActive))
+  },
+  updateAccountDetails: (accountDetails) => {
+    dispatch(updateAccountDetails(accountDetails));
   },
 });
 
