@@ -30,8 +30,8 @@ function Header(props) {
                 src="images/menu.svg"
               />{" "}
             </div>
-            <SmartMintLogo src="/images/About_Active.svg" />
-            <Span onClick={() => history.push("/")}>SmartMint</Span>
+            <SmartMintLogo src="/images/Origin-Active.svg" />
+            <Span onClick={() => history.push("/")}>Origin</Span>
           </div>
           <div className="buttons">
             {/* <UserLogo  src="/images/profile.svg" /> */}

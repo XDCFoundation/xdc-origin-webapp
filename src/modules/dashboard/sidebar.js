@@ -45,7 +45,7 @@ function Sidebar(props) {
         onClick={() => changeBackgound("about")}
       >
         {isActive === "about" ? (
-          <Icon src="/images/About_Active.svg" />
+          <Icon src="/images/Origin-Active.svg" />
         ) : (
           <Icon src="/images/About_Inactive.svg" />
         )}
@@ -53,7 +53,7 @@ function Sidebar(props) {
           onClick={() => history.push("/")}
           className={isActive === "about" ? "activeText" : ""}
         >
-          About SmartMint
+       Origin
         </Heading>
       </Wrapper>
       {props.userAccountDetails?.accountDetails?.address ? (
@@ -90,7 +90,7 @@ function Sidebar(props) {
                   ""
                 )}
               </SubWrapper>
-              <SubWrapper onClick={() => changeSubNavItemStyle("XRC223")}>
+              {/* <SubWrapper onClick={() => changeSubNavItemStyle("XRC223")}>
                 {isSubNavActive === "XRC223" ? (
                   <SubIcon src="/images/Token-Active.svg" />
                 ) : (
@@ -106,8 +106,8 @@ function Sidebar(props) {
                 ) : (
                   ""
                 )}
-              </SubWrapper>
-              <SubWrapper onClick={() => changeSubNavItemStyle("Stablecoin")}>
+              </SubWrapper> */}
+              {/* <SubWrapper onClick={() => changeSubNavItemStyle("Stablecoin")}>
                 {isSubNavActive === "Stablecoin" ? (
                   <SubIcon src="/images/Token-Active.svg" />
                 ) : (
@@ -125,7 +125,7 @@ function Sidebar(props) {
                 ) : (
                   ""
                 )}
-              </SubWrapper>
+              </SubWrapper> */}
             </SubHeadingContainer>
           ) : (
             ""
