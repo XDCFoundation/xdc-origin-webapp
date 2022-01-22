@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
-import { addFeaturesContent,apiSuccessConstants} from "../../constants";
+import { addFeaturesContent, apiSuccessConstants } from "../../constants";
+import { useHistory } from "react-router";
 
 const Parent = styled.div`
   display: flex;
@@ -180,6 +181,16 @@ const BackButton = styled.div`
 `;
 const BackImgDiv = styled.img`
   width: 15px;
+  height: 13px;
+  opacity: 1;
+
+  @media (min-width: 0px) and (max-width: 767px) {
+    margin: 0 8px 0px 8px;
+  }
+`;
+
+const DeployImgDiv = styled.img`
+  width: 15px;
   height: 15px;
   opacity: 1;
 
@@ -187,6 +198,17 @@ const BackImgDiv = styled.img`
     margin: 0 8px 0px 8px;
   }
 `;
+
+const DraftImgDiv = styled.img`
+  width: 18px;
+  height: 17px;
+  opacity: 1;
+
+  @media (min-width: 0px) and (max-width: 767px) {
+    margin: 0 8px 0px 8px;
+  }
+`;
+
 const BackText = styled.div`
   text-align: right;
   font: normal normal medium 18px/21px Inter;
@@ -226,7 +248,7 @@ const DeployButton = styled.button`
   background: #3163f0 0% 0% no-repeat padding-box;
   border-radius: 4px;
   opacity: 1;
-
+  border: none;
   @media (min-width: 0px) and (max-width: 767px) {
     justify-content: center;
     width: 322px;
@@ -290,16 +312,16 @@ const Check = styled.img`
 `;
 
 export default function AddFeatures(props) {
+  const history = useHistory();
   const tab = [
     {
       id: 1,
       name: "Pausable",
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
-      image: "/images/Pausable.svg",
+      image: "/images/Pause_Contract.png",
       checked: props.tokenData.pausable,
-      content: addFeaturesContent.PAUSABLE_CONTENT
-       
+      content: addFeaturesContent.PAUSABLE_CONTENT,
     },
     {
       id: 2,
@@ -309,7 +331,6 @@ export default function AddFeatures(props) {
       activeCheckImage: "/images/Selected-Circle.svg",
       checked: props.tokenData.burnable,
       content: addFeaturesContent.PAUSABLE_CONTENT,
-       
     },
     {
       id: 3,
@@ -318,8 +339,7 @@ export default function AddFeatures(props) {
       activeCheckImage: "/images/Selected-Circle.svg",
       checkImage: "/images/Empty-Circle.svg",
       checked: props.tokenData.mintable,
-      content: addFeaturesContent.MINTABLE_CONTENT
-        
+      content: addFeaturesContent.MINTABLE_CONTENT,
     },
   ];
 
@@ -332,40 +352,72 @@ export default function AddFeatures(props) {
     setArr(newData);
   };
 
-    // saveDraft api function : 
+  // saveDraft api function :
 
-    let createdToken = props.tokenData.tokenName
-    let parsingDecimal = Number(props.tokenData.decimals);
-    let parsingSupply = Number(props.tokenData.tokenSupply);
-  
-    const saveAsDraft = async (e) => {
-      e.preventDefault();
-      let reqObj = {
-        tokenOwner: props.tokenData.tokenOwner,
-        tokenName: createdToken,
-        tokenSymbol: props.tokenData.tokenSymbol,
-        tokenImage: props.tokenData.tokenImage,
-        tokenInitialSupply: parsingSupply,
-        tokenDecimals: parsingDecimal,
-        tokenDescription: props.tokenData.description,
-        network: props.tokenData.network,
-        isBurnable: props.tokenData.burnable,
-        isMintable: props.tokenData.mintable,
-        isPausable: props.tokenData.pausable,
-      };
-  
-      const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
-      // console.log('res---', res)
-      if (res !== 0) {
-        Utils.apiSuccessToast(apiSuccessConstants.DRAFTED_DATA_SUCCESS);
-      }
-    };
+  let createdToken = props.tokenData.tokenName;
+  let parsingDecimal = Number(props.tokenData.tokenDecimals);
+  let parsingSupply = Number(props.tokenData.tokenInitialSupply);
 
-  const deployToken = (e) => {
+  // condition to check if props.tokenData object has id key or not, will return true or false
+  
+  let hasTokenId = "id" in props.tokenData;
+
+  const saveAsDraft = async (e) => {
     e.preventDefault();
-    props.saveAsDraft(e);
-    props.nextStep(e);
-  }
+    let reqObj = {
+      tokenOwner: props.tokenData.tokenOwner,
+      tokenName: createdToken,
+      tokenSymbol: props.tokenData.tokenSymbol,
+      tokenImage: props.tokenData.tokenImage,
+      tokenInitialSupply: parsingSupply,
+      tokenDecimals: parsingDecimal,
+      tokenDescription: props.tokenData.tokenDescription,
+      network: props.tokenData.network,
+      isBurnable: props.tokenData.burnable,
+      isMintable: props.tokenData.mintable,
+      isPausable: props.tokenData.pausable,
+    };
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.saveTokenAsDraft(reqObj)
+    );
+    if (res !== 0) {
+      history.push({ pathname: "/deploy-contract", state: res });
+    }
+  };
+
+  const saveAsDraftbyEdit = async (e) => {
+    e.preventDefault();
+    let reqObj = {
+      id: props.tokenData.id,
+      tokenOwner: props.tokenData.tokenOwner,
+      tokenName: createdToken,
+      tokenSymbol: props.tokenData.tokenSymbol,
+      tokenImage: props.tokenData.tokenImage,
+      tokenInitialSupply: parsingSupply,
+      tokenDecimals: parsingDecimal,
+      tokenDescription: props.tokenData.tokenDescription,
+      network: props.tokenData.network,
+      isBurnable: props.tokenData.burnable,
+      isMintable: props.tokenData.mintable,
+      isPausable: props.tokenData.pausable,
+    };
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.saveTokenAsDraft(reqObj)
+    );
+    // console.log('edit---',res[0])
+    if (res[0] !== 0) {
+      history.push({ pathname: "/deploy-contract", state: res[0] });
+    }
+  };
+
+  const checkSaveOrEditDraft = (e) => {
+    e.preventDefault();
+    if (hasTokenId === true) {
+      saveAsDraftbyEdit(e);
+    } else {
+      saveAsDraft(e);
+    }
+  };
 
   return (
     <>
@@ -413,13 +465,13 @@ export default function AddFeatures(props) {
               </BackButton>
 
               <RightDiv>
-                <SaveDraftButton onClick={saveAsDraft}>
+                <SaveDraftButton onClick={checkSaveOrEditDraft}>
                   <SaveDraftText>Save Draft</SaveDraftText>
-                  <BackImgDiv src="/images/ContractDetails.svg" />
+                  <DraftImgDiv src="/images/Save-Draft-Image.svg" />
                 </SaveDraftButton>
-                <DeployButton onClick={deployToken}>
+                <DeployButton onClick={() => props.nextStep()}>
                   <DeployText>Deploy</DeployText>
-                  <BackImgDiv src="/images/DeployContract_Active.svg" />
+                  <DeployImgDiv src="/images/DeployContract_Active.svg" />
                 </DeployButton>
               </RightDiv>
             </ButtonsRow>
