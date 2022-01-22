@@ -14,6 +14,9 @@ const BgContainer = styled.div`
   background-size: cover;
   padding-top: 4%;
   padding-bottom: 4%;
+  @media(min-width: 768px) and (max-width: 1024px){
+    padding-top: 12%;
+  }
 `;
 
 const ParentContainer = styled.div`
