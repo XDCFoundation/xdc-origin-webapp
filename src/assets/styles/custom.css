@@ -354,9 +354,9 @@ padding-top:8px;
 }
 .answer {
 text-align:left;
-font-size:16px;
+/* font-size:16px; */
 text-align: left;
-font: normal normal normal 16px/20px Inter;
+font: normal normal normal 18px Inter;
 margin-top: 27px;
 font-weight: 600;
 letter-spacing: 0px;
