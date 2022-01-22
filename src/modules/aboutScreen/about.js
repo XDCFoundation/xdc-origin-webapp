@@ -101,7 +101,7 @@ function About(props) {
                 <Span>Stable coin</Span> on XDC Network with no coding required
               </DetailBox>
               <DataBox>
-                SmartMint is a Smart Contract Tokenization platform that enables
+                Origin is a Smart Contract Tokenization platform that enables
                 brands and organisations to seamlessly create Non-Fungible
                 Tokens, StableCoins and fixed income instruments with the need
                 for code.
@@ -206,8 +206,8 @@ function About(props) {
                 )
               }
             </ButtonDiv>
-            <ButtonDiv>
-              <Button className="create-btn">
+            {/* <ButtonDiv> */}
+            {/* <Button className="create-btn">
                 Create XRC223
                 <img className="XRC220" alt="" src="/images/Help.svg" />
               </Button>
@@ -218,8 +218,8 @@ function About(props) {
                 Create Stable coin
                 <img className="stable-coin" alt="" src="/images/Help.svg" />
               </Button>
-              <Img className="" alt="" src="/images/Info.svg" />
-            </ButtonDiv>
+              <Img className="" alt="" src="/images/Info.svg" /> */}
+            {/* </ButtonDiv> */}
           </ButtonContainer>
         </Container>
         <GreyContainer>
@@ -234,7 +234,7 @@ function About(props) {
           </HeadingContainer>
           <IconRow>
             <IconContainer>
-              <img alt="" src="/images/VerifiedContract.svg" />
+              <img className="p-36" alt="" src="/images/VerifiedContract.svg" />
               <Title>Verified Contracts</Title>
               <SubTitle>
                 Deploy your verified token contract on XDC Network without any
@@ -242,7 +242,7 @@ function About(props) {
               </SubTitle>
             </IconContainer>
             <IconContainer>
-              <img alt="" src="/images/AddToWallet.svg" />
+              <img className="p-36" alt="" src="/images/AddToWallet.svg" />
               <Title>Add To Wallet</Title>
               <SubTitle>
                 Add minted tokens directly to your XDCPay wallet by a click of
@@ -250,7 +250,11 @@ function About(props) {
               </SubTitle>
             </IconContainer>
             <IconContainer>
-              <img alt="" src="/images/ModularComponents.svg" />
+              <img
+                className="p-36"
+                alt=""
+                src="/images/ModularComponents.svg"
+              />
               <Title>Modular Components</Title>
               <SubTitle>
                 Add features like minting, burning and pausing to your tokens
@@ -301,6 +305,10 @@ const MainBoxContainer = styled.div`
   flex-direction: column;
   align-item: center;
   padding: 3.125rem;
+
+  @media (min-width: 1025px) and (max-width: 1400px) {
+    display: block;
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     padding: 1.5rem;
     height: 100%;
@@ -313,6 +321,7 @@ const MainBoxContainer = styled.div`
 const Container = styled.div`
   background-color: #ffffff;
   border-radius: 0.375rem;
+  flex-wrap: wrap;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -325,10 +334,12 @@ const Container = styled.div`
     border-radius: 6px;
   }
 `;
-const RightContainer = styled.div``;
+const RightContainer = styled.div`
+  min-width: 50%;
+`;
 const LeftContainer = styled.div`
   display: flex;
-  padding: 2.5rem 2.5rem 0 2.5rem;
+  padding: 2.5rem 2.5rem 0 4rem;
   @media (min-width: 768px) and (max-width: 1024px) {
     flex-direction: column;
     align-items: center;
@@ -362,8 +373,7 @@ const Img = styled.img`
   }
 `;
 const ButtonContainer = styled.div`
-  padding: 0 2.5rem;
-  margin-top: -40px;
+  padding: 0 2.5rem 0 4rem;
   padding-bottom: 50px;
   display: flex;
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -389,9 +399,17 @@ const Span = styled.span`
 const IconRow = styled.div`
   display: flex;
   justify-content: space-between;
-  max-width: 70.438rem;
+  ${"" /* max-width: 70.438rem; */}
+  ${"" /* width:90%; */}
+    max-width: 1000px;
   margin-top: 90px;
   width: 100%;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    padding-bottom: 15px;
+  }
+  @media (min-width: 1025px) and (max-width: 1400px) {
+    margin-top: 10px;
+  }
   @media (min-width: 0px) and (max-width: 767px) {
     display: block;
     margin-top: 10px;
@@ -400,12 +418,17 @@ const IconRow = styled.div`
 const DataBox = styled.div`
   display: flex;
   width: 100%;
-  font-size: 1rem;
+  font: normal normal normal 21px Inter;
   @media (min-width: 768px) and (max-width: 1024px) {
     text-align: center;
     font-size: 18px;
   }
-
+  @media (min-width: 1025px) and (max-width: 1199px) {
+    font: normal normal normal 16px Inter;
+  }
+  @media (min-width: 1200px) and (max-width: 1400px) {
+    font: normal normal normal 19px Inter;
+  }
   @media (min-width: 0px) and (max-width: 767px) {
     ${"" /* display:flex; */}
     height: 145px;
@@ -419,17 +442,23 @@ const DataBox = styled.div`
   }
 `;
 const DetailBox = styled.div`
-  font-size: 16px;
-  ${"" /* width: 100%; */}
-  padding-bottom: 0.938rem;
-  font-size: 2rem;
-  font-weight: 600;
+  font: normal normal 600 32px Inter;
+  ${"" /* padding-left: 35px; */}
+  margin-top: 0px;
+  ${"" /* padding-bottom: 0.938rem; */}
+  padding-bottom: 25px;
+  ${"" /* font: normal normal 600 32px/39px Inter; */}
+  @media (min-width:1200px) and (max-width: 1400px) {
+    font: normal normal 600 29px Inter;
+  }
+  @media (min-width: 1025px) and (max-width: 1199px) {
+    font: normal normal normal 600 26px Inter;
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     text-align: center;
-    font-size: 32px;
+    font: normal normal 600 32px/39px Inter;
   }
   @media (min-width: 0px) and (max-width: 767px) {
-    ${"" /* display:flex; */}
     height: 63px;
     text-align: center;
     font: normal normal 600 18px/21px Inter;
@@ -439,12 +468,20 @@ const DetailBox = styled.div`
 `;
 const ButtonDiv = styled.div`
   ${"" /* display:none; */}
+  margin-top: -30px;
+  @media (min-width: 1400px) and (max-width: 1600px) {
+    margin-top: 17px;
+  }
+  @media (min-width: 1025px) and (max-width: 1400px) {
+    margin-top: 17px;
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     display: flex;
     flex-direction: row;
     justify-content: center;
     margin: 10px 0px 10px 0px;
   }
+
   @media (min-width: 0px) and (max-width: 767px) {
     display: flex;
     flex-direction: row;
@@ -475,7 +512,6 @@ const Button = styled.div`
     margin-right: 6px;
     ${"" /* margin-left: 33px; */}
   }
-
   @media (min-width: 0px) and (max-width: 767px) {
     display: flex;
     padding: 5px;
@@ -492,7 +528,9 @@ const Button = styled.div`
   }
 `;
 const VideoBox = styled.div`
-  width: 540px;
+  ${"" /* width: 540px; */}
+  width:100%;
+
   height: 328px !important;
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 0.125rem solid #d8d8d8;
@@ -522,6 +560,9 @@ const HeadingContainer = styled.div`
   font-weight: 600;
   color: #1f1f1f;
   padding: 3.75rem;
+  @media (min-width: 1025px) and (max-width: 1300px) {
+    padding-top: 10px !important;
+  }
   @media (min-width: 0px) and (max-width: 767px) {
     ${"" /* height: 42px; */}
     display:flex;
