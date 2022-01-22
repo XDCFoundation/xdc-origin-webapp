@@ -84,6 +84,9 @@ const InputDiv = styled.input`
     color: #a8acc1;
     opacity: 1;
   }
+  :focus{
+    outline: 2px solid #8CA6F0;
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
   }
@@ -131,7 +134,7 @@ const BackButton = styled.div`
     margin-bottom: 12px;
   }
 `;
-const ContinueButton = styled.div`
+const ContinueButton = styled.button`
   display: flex;
   justify-content: space-around;
   flex-direction: row;
@@ -142,6 +145,7 @@ const ContinueButton = styled.div`
   background: #3163f0 0% 0% no-repeat padding-box;
   border-radius: 4px;
   opacity: 1;
+  border: none;
   @media (min-width: 0px) and (max-width: 767px) {
     justify-content: center;
     width: 322px;
@@ -179,13 +183,14 @@ const ContinueText = styled.div`
 `;
 
 export default function Tokenomics(props) {
-  const saveAndContinue = () => {
-    if (props.tokenData.tokenSupply >= 1) {
-      props.nextStep();
-    } else {
-      return;
+  
+  const saveAndContinue = (e) => {
+    props.handleChange(e)
+    if(props.tokenData.tokenInitialSupply > 0 && props.tokenData.tokenInitialSupply !== undefined){
+      props.nextStep(e);
     }
   };
+
   return (
     <>
       <Parent>
@@ -202,16 +207,16 @@ export default function Tokenomics(props) {
             <InputDiv
               type="number"
               onChange={(e) => props.handleChange(e)}
-              name="tokenSupply"
-              value={props.tokenData.tokenSupply}
+              name="tokenInitialSupply"
+              value={props.tokenData.tokenInitialSupply}
             />
             <BlurTextDiv>
               Insert the initial numbers of tokens available
             </BlurTextDiv>
-            {props.tokenData.tokenSupply >= 1 ? (
-              ""
-            ) : (
+            {props.tokenData.tokenInitialSupply <= 0 ? (
               <p className="shown-error">Supply should be more than 0</p>
+            ) : (
+              ""
             )}
           </CommonRow>
           <ButtonsRow>

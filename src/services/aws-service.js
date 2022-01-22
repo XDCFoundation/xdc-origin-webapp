@@ -31,4 +31,4 @@ class AWSServices {
         });
     }
 }
-module.exports = AWSServices
+export default AWSServices;
