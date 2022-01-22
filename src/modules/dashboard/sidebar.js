@@ -17,7 +17,6 @@ function Sidebar(props) {
       setCreateContract(!createContract);
 
       props.setActiveNavItem(navItem);
-      props.setActiveNavItem(navItem);
     } else {
      
       props.setActiveNavItem(navItem);
