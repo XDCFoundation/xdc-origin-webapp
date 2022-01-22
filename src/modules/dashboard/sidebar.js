@@ -52,14 +52,14 @@ function Sidebar(props) {
         onClick={() => changeBackgound("about")}
       >
         {props.userAccountDetails?.activeNavItem === "about" ? (
-          <Icon src="/images/About_Active.svg" />
+          <Icon src="/images/Origin-Active.svg" />
         ) : (
-          <Icon src="/images/About_Inactive.svg" />
+          <Icon src="/images/Origin-Active.svg" />
         )}
         <Heading
           className={props.userAccountDetails?.activeNavItem === "about" ? "activeText" : ""}
         >
-          About SmartMint
+       Origin
         </Heading>
       </Wrapper>
       {props.userAccountDetails?.accountDetails?.address ? (
@@ -96,7 +96,7 @@ function Sidebar(props) {
                   ""
                 )}
               </SubWrapper>
-              <SubWrapper onClick={() => changeSubNavItemStyle("XRC223")}>
+              {/* <SubWrapper onClick={() => changeSubNavItemStyle("XRC223")}>
                 {props.userAccountDetails?.subNavToken === "XRC223" ? (
                   <SubIcon src="/images/Token-Active.svg" />
                 ) : (
@@ -131,7 +131,7 @@ function Sidebar(props) {
                 ) : (
                   ""
                 )}
-              </SubWrapper>
+              </SubWrapper>  */}
             </SubHeadingContainer>
           ) : (
             ""
@@ -151,7 +151,7 @@ function Sidebar(props) {
               }
             >
               {" "}
-              Deploy contracts
+              Deploy Contracts
             </Heading>
           </Wrapper>
           <Wrapper
