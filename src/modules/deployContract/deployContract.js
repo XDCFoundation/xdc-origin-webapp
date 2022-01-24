@@ -212,6 +212,7 @@ function DeployContract(props) {
         tokenName={tokenName}
       />
       <DeployPopup
+        networkVersion={networkVersion}
         open={openDeployPopup}
         onClose={deployPopupClose}
         deployPopupClose={deployPopupClose}

@@ -84,7 +84,7 @@ export default function DeployContract(props) {
               <Loader />
               <XDCImg alt="" src="/images/XDC_Blue_Logo.svg" />
             </CommonDiv>
-            <Text>Deploying to XDC Apothem testnet...</Text>
+            <Text>Deploying to {props.networkVersion}...</Text>
           </Div>
         </Column>
       </Parent>
