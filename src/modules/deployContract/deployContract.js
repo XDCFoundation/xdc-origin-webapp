@@ -161,7 +161,7 @@ function DeployContract(props) {
 
         <DataContainer>
           {props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
-            <EmptyRow>No Contract Available</EmptyRow>
+            <EmptyRow>No Contracts Available</EmptyRow>
           ) : 
             props.state.draftFailedXrc20TokenDetails && props.state.draftFailedXrc20TokenDetails.map((item, index) => (
             <>
