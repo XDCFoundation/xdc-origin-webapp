@@ -170,7 +170,7 @@ const SpaceBetween = styled.div`
 const Button = styled.button`
   border: 1px solid #ffffff;
   background: transparent;
-  margin-left: 5%;
+  margin-left: 7%;
   border-radius: 5px;
   font-size: 14px;
   color: #ffffff;
