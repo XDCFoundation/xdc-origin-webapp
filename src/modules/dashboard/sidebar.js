@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
-import {handleLogout, handleNavItem, handleSubNavItem, handleSubNavToken} from "../../action"
+import {handleLogout, handleNavItem, handleSubNavItem, handleSubNavToken, updateAccountDetails} from "../../action"
 
 function Sidebar(props) {
   const history = useHistory();
@@ -16,7 +16,6 @@ function Sidebar(props) {
       props.setSubNavItem(!subNavItems);
       setCreateContract(!createContract);
 
-      props.setActiveNavItem(navItem);
       props.setActiveNavItem(navItem);
     } else {
      
@@ -42,6 +41,9 @@ function Sidebar(props) {
   }
   const logout = () => {
     props.logout();
+    props.setActiveNavItem("about");
+    props.setSubNavItem(false);
+    props.updateAccountDetails(null)
     history.push("/");
   }
 
@@ -237,6 +239,9 @@ const mapDispatchToProps = (dispatch) => ({
   setSubNavToken: (isSubNavActive) => {
     dispatch(handleSubNavToken(isSubNavActive))
   },
+  updateAccountDetails: (accountDetails) => {
+    dispatch(updateAccountDetails(accountDetails));
+  },
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Sidebar);
@@ -248,7 +253,7 @@ const SidebarContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 250px;
-  height: 1023px;
+  height: 1024px;
   padding-top: 40px;
   position: sticky;
   top: 57px;
@@ -326,7 +331,7 @@ const CenterDiv = styled.div`
 `;
 const SubHeadingContainer = styled.div`
   width: 180px;
-  height: 120px;
+  height: 40px;
   margin: 20px 0 25px 0;
 `;
 const SubWrapper = styled.div`
