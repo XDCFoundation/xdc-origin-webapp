@@ -198,7 +198,7 @@ const MobBtn = styled.button`
   width: 130px;
   height: 30px;
 
-  @media (min-width: 768px) {
+  @media (min-width: 767px) {
     display: none;
   }
 `;
@@ -250,7 +250,7 @@ const Span = styled.span`
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
-  @media (min-width: 0px) and (max-width: 768px) {
+  @media (min-width: 0px) and (max-width: 767px) {
     margin-top: 10px;
     margin-left: 3px;
   }
@@ -268,6 +268,9 @@ const AddressContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
+  @media (min-width: 0px) and (max-width: 767px) {
+    display:none;
+  }
 `;
 const Balance = styled.span`
   width: max-content;
