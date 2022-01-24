@@ -56,7 +56,7 @@ function Sidebar(props) {
         {props.userAccountDetails?.activeNavItem === "about" ? (
           <Icon src="/images/Origin-Active.svg" />
         ) : (
-          <Icon src="/images/Origin-InActive.svg" />
+          <Icon src="/images/InActive-Origin.svg" />
         )}
         <Heading
           className={props.userAccountDetails?.activeNavItem === "about" ? "activeText origin-space" : "origin-space"}
@@ -145,7 +145,7 @@ function Sidebar(props) {
             {props.userAccountDetails?.activeNavItem === "deploy" ? (
               <Icon src="/images/DeployContract_Active.svg" />
             ) : (
-              <Icon src="/images/Origin-Active.svg" />
+              <Icon src="/images/Inactive-DeployContract.svg" />
             )}
             <Heading
               className={
@@ -186,7 +186,7 @@ function Sidebar(props) {
               : "faq-margin-tab"
           }
         >
-          <FAQIcon src="/images/FAQ_InActive.svg" />
+          <FAQIcon src="/images/Inactive-Faq.svg" />
           <Heading>FAQs</Heading>
         </Wrapper>
       ) : (
@@ -200,14 +200,14 @@ function Sidebar(props) {
               : "faq-margin-extra"
           }
         >
-          <FAQIcon src="/images/FAQ_InActive.svg" />
+          <FAQIcon src="/images/Inactive-Faq.svg" />
           <Heading>FAQs</Heading>
         </Wrapper>
       )}
       {
       props.userAccountDetails?.accountDetails?.address ? (
       <Wrapper onClick={() => logout()}>
-          <LogoutIcon src="/images/Logout-InActive.svg" />
+          <LogoutIcon src="/images/InActive-Logout.svg" />
         <Heading>Logout</Heading>
       </Wrapper>
       ) : (
