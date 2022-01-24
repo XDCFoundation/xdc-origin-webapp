@@ -30,7 +30,7 @@ function DeployContract(props) {
   };
   const handleDeployPopup = (deployTokenName) => {
     // saveDraft data coming from addFeatures
-    let tokenDetails = props.saveDraftData
+    let tokenDetails = props?.saveDraftData
     setOpenDeployPopup(true);
     setDeployTokenName(deployTokenName)
     sendTransaction(tokenDetails)
@@ -53,6 +53,7 @@ function DeployContract(props) {
   const sendTransaction = async (tokenDetails) => {
     window.web3 = new Web3(window.ethereum)
 
+    let checkNetwork = tokenDetails?.network
     let draftedTokenId = tokenDetails?.id
     let draftedTokenOwner = tokenDetails?.tokenOwner
     let byteCode = tokenDetails?.byteCode
@@ -73,22 +74,50 @@ function DeployContract(props) {
       "data": byteCode
     };
 
-    await window.web3.eth.sendTransaction(transaction)
-      .on('transactionHash', function (hash) {
-      })
-      .on('receipt', function (receipt) {
-        if (receipt !== 0) {
-          history.push({ pathname: '/created-token', state: receipt, gasPrice, createdToken, parsingDecimal, parsingSupply })
-          updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+    if (checkNetwork === "XDC Mainnet") {
+      await window.web3.eth.sendTransaction(transaction)
+        .on('transactionHash', function (hash) {
+          // console.log("transactionHash ====", hash);
+          if (hash !== 0) {
+            // recieve mainnet contractAddress from this function
+            contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken,draftedTokenId, draftedTokenOwner) 
+          }
+        })
+        .on('receipt', function (receipt) {
+          // console.log("receipt ====", receipt);  
         }
-      })
-      .on('confirmation', function (confirmationNumber, receipt) {
-      })
-      .on('error', function(error){
-        if(error){
-          setOpenDeployPopup(false)
+        )
+        .on('confirmation', function (confirmationNumber, receipt) {
+          // console.log("confirmation ====", confirmationNumber, receipt);
+        })
+        .on('error', function (error) {
+          if (error) {
+            setOpenDeployPopup(false)
+          }
+        });
+    }
+    else {
+      await window.web3.eth.sendTransaction(transaction)
+        .on('transactionHash', function (hash) {
+          // console.log("transactionHash ====", hash);
+        })
+        .on('receipt', function (receipt) { //receive the contract address from this object
+          // console.log("receipt ====", receipt);  
+          if (receipt !== 0) {
+            history.push({ pathname: '/created-token', state: receipt, parsingDecimal, parsingSupply, gasPrice, createdToken })
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+          }
         }
-    });
+        )
+        .on('confirmation', function (confirmationNumber, receipt) {
+          // console.log("confirmation ====", confirmationNumber, receipt);
+        })
+        .on('error', function (error) {
+          if (error) {
+            setOpenDeployPopup(false)
+          }
+        });
+    }
   }
 
   const updateTokenDetails = async (resultedTokenId, resultedTokenOwner, resultAddress) => {
@@ -100,6 +129,20 @@ function DeployContract(props) {
       status: apiBodyMessages.STATUS_DEPLOYED
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
+  }
+
+  const contractDetailsFromTxnHash = async (txnHash, parsingDecimal, parsingSupply, gasPrice, createdToken, tokenId, tokenOwner) => {
+    let reqObj = {
+      hash: txnHash 
+    };
+    const [err, res] = await Utils.parseResponse(SaveDraftService.getTxnHashDetails(reqObj));
+    let obtainContractAddress = res?.contractAddress || ""
+    let obtainTxnHash = res?.hash || ""
+    let obtainGasUsed = res?.gasUsed || ""
+    if (res != 0) {
+      history.push({ pathname: '/created-token', state: obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
+      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress)
+    }
   }
 
   return (
