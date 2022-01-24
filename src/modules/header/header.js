@@ -197,7 +197,7 @@ const Span = styled.span`
   color: #ffffff;
   opacity: 1;
   @media (min-width: 0px) and (max-width: 768px) {
-    margin-top: 4px;
+    margin-top: 10px;
     margin-left: 3px;
   }
 `;
