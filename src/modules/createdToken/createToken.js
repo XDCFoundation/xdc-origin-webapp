@@ -374,7 +374,7 @@ const CreateToken = (props) => {
                   >
                     <KeyInfo src="images/Info.svg"></KeyInfo>
                   </Tooltip>
-              </MuiThemeProvider>
+              </MuiThemeProvider> 
                 Transaction Hash:
               </SuccessTokenKey>
               <SuccessTokenValues onClick={() => handleTransactionHash()}>
