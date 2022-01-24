@@ -75,17 +75,14 @@ function DeployContract(props) {
 
     await window.web3.eth.sendTransaction(transaction)
       .on('transactionHash', function (hash) {
-        // console.log("transactionHash ====", hash);
       })
       .on('receipt', function (receipt) {
-        // console.log("receipt ====", receipt);
         if (receipt !== 0) {
           history.push({ pathname: '/created-token', state: receipt, gasPrice, createdToken, parsingDecimal, parsingSupply })
           updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
         }
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        // console.log("confirmation ====", confirmationNumber, receipt);
       })
       .on('error', function(error){
         if(error){
@@ -120,7 +117,10 @@ function DeployContract(props) {
         <Line />
 
         <DataContainer>
-          {props.state.draftFailedXrc20TokenDetails && props.state.draftFailedXrc20TokenDetails.map((item, index) => (
+          {props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
+            <EmptyRow>No Contract Available</EmptyRow>
+          ) : 
+            props.state.draftFailedXrc20TokenDetails && props.state.draftFailedXrc20TokenDetails.map((item, index) => (
             <>
               <TableRow key={index}>
                 <div className="tokenIcon">
@@ -155,7 +155,8 @@ function DeployContract(props) {
               </TableRow>
               <DataLine />
             </>
-          ))}
+          ))
+        }
         </DataContainer>
       </TableContainer>
 
@@ -247,7 +248,15 @@ const TableContainer = styled.div`
     max-width: 1145px;
     overflow-x: scroll;
     ::-webkit-scrollbar {
-      display: none;
+      width: 55px;
+      max-width: 55px;
+      height: 5px;
+      background: #ffffff 0% 0% no-repeat padding-box;
+      border-radius: 12px;
+      opacity: 1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #c4c4c4 ;
     }
   }
   @media screen and (max-width: 1440px) and (min-width: 1280px) {
@@ -256,12 +265,15 @@ const TableContainer = styled.div`
     max-width: 965px;
     overflow-x: scroll;
     ::-webkit-scrollbar {
-      display: none;
-      /* width: 55px;
+      width: 55px;
+      max-width: 55px;
       height: 5px;
-      background: #c4c4c4 0% 0% no-repeat padding-box;
+      background: #ffffff 0% 0% no-repeat padding-box;
       border-radius: 12px;
-      opacity: 1; */
+      opacity: 1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #c4c4c4 ;
     }
   }
   @media screen and (max-width: 1280px) and (min-width: 1024px) {
@@ -393,4 +405,13 @@ const TableContentImg = styled.img`
   height: 35px;
   opacity: 1;
   border-radius: 50%;
+`;
+const EmptyRow = styled.div`
+  height: 168px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #808080;
 `;

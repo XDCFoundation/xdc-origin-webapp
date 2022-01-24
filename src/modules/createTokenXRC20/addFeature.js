@@ -4,6 +4,8 @@ import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import { addFeaturesContent, apiSuccessConstants } from "../../constants";
 import { useHistory } from "react-router";
+import { connect } from "react-redux";
+import { handleNavItem } from "../../action";
 
 const Parent = styled.div`
   display: flex;
@@ -311,7 +313,7 @@ const Check = styled.img`
   margin: 12px 15px 0px 0px;
 `;
 
-export default function AddFeatures(props) {
+function AddFeatures(props) {
   const history = useHistory();
   const tab = [
     {
@@ -381,6 +383,7 @@ export default function AddFeatures(props) {
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
     if (res !== 0) {
+      props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res });
     }
   };
@@ -404,8 +407,8 @@ export default function AddFeatures(props) {
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
-    // console.log('edit---',res[0])
     if (res[0] !== 0) {
+      props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res[0] });
     }
   };
@@ -481,3 +484,12 @@ export default function AddFeatures(props) {
     </>
   );
 }
+
+
+const mapDispatchToProps = (dispatch) => ({
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive))
+  },
+});
+
+export default connect(null,mapDispatchToProps)(AddFeatures);

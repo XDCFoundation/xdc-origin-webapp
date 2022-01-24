@@ -63,6 +63,14 @@ export default function user(state = initialState, action) {
         accountDetails: null,
         isLoggedIn: false,
       };
+    
+      case eventConstants.UPDATE_ACCOUNT_DETAILS:
+        sessionManager.setDataInCookies(action.payload ? action.payload : state.accountDetails, cookiesConstants.USER);
+        return {
+          ...state,
+          accountDetails: action.payload,
+        };
+    
     default:
       return state;
   }
