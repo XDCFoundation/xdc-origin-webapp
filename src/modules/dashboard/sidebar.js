@@ -56,7 +56,7 @@ function Sidebar(props) {
         {props.userAccountDetails?.activeNavItem === "about" ? (
           <Icon src="/images/Origin-Active.svg" />
         ) : (
-          <Icon src="/images/Origin-Active.svg" />
+          <Icon src="/images/Origin-InActive.svg" />
         )}
         <Heading
           className={props.userAccountDetails?.activeNavItem === "about" ? "activeText" : ""}
