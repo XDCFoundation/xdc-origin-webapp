@@ -564,6 +564,7 @@ function CommonTab(props) {
                 case 4:
                   return (
                     <DeployContractPage
+                      networkVersion={networkVersion}
                       hasTokenId={hasTokenId}
                       prevStep={prevStep}
                       saveAsDraft={saveAsDraft}
