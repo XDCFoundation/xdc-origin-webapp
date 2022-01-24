@@ -295,8 +295,15 @@ const useStyles = makeStyles(theme => ({
 const CreateToken = (props) => {
   const classes = useStyles();
 
-  let gasPrice = Number(props.location.gasPrice);
-  let gasFee = (gasPrice * props.location.state.gasUsed) / Math.pow(10, 18);
+  // console.log('pr---',props.location.state)
+  // console.log('pr---',props.location?.obtainContractAddress)
+
+  let maingasUsed = props.location?.obtainGasUsed ? props.location?.obtainGasUsed : props.location.state?.gasUsed
+  let mainContractAddress = props.location?.obtainContractAddress?.slice(0, 26) +"..." + props.location?.obtainContractAddress?.substr(props.location?.obtainContractAddress?.length - 4);
+  let mainTransactionAddres =  props.location?.state?.slice(0, 28) +"..." +props.location?.state?.substr(props.location?.state?.length - 4);
+
+  let gasPrice = Number(props.location?.gasPrice);
+  let gasFee = (gasPrice * maingasUsed) / Math.pow(10, 18);
   let gweiValue = gasPrice / Math.pow(10, 9);
   let transactionAddress =
     props.location?.state?.transactionHash?.slice(0, 28) +
@@ -304,14 +311,16 @@ const CreateToken = (props) => {
     props.location?.state?.transactionHash?.substr(
       props.location?.state?.transactionHash.length - 4
     );
-  let contractAddress = props.location.state.contractAddress.replace(
+    // console.log('v------',props.location.state.contractAddress)
+  let contractAddress = props.location.state?.contractAddress?.replace(
     /0x/,
     "xdc"
   );
+  // console.log('v------',contractAddress)
   let newContractAddress =
     contractAddress?.slice(0, 26) +
     "..." +
-    contractAddress?.substr(contractAddress.length - 4);
+    contractAddress?.substr(contractAddress?.length - 4);
 
   const [open, setOpen] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
@@ -328,17 +337,17 @@ const CreateToken = (props) => {
 
   const handleTransactionHash = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/txs/${props.location?.state?.transactionHash}`, '_blank');
+      window.open(`https://explorer.xinfin.network/txs/${props.location?.state ? props.location?.state :  props.location?.state?.transactionHash}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
-      window.open(`https://explorer.apothem.network/txs/${props.location?.state?.transactionHash}`, '_blank');
+      window.open(`https://explorer.apothem.network/txs/${props.location?.state ? props.location?.state :  props.location?.state?.transactionHash}`, '_blank');
     }
   }
 
   const handleContractAddress = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/address/${contractAddress}`, '_blank');
+      window.open(`https://explorer.xinfin.network/address/${props.location?.obtainContractAddress ? props.location?.obtainContractAddress : contractAddress}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
-      window.open(`https://explorer.apothem.network/address/${contractAddress}`, '_blank');
+      window.open(`https://explorer.apothem.network/address/${props.location?.obtainContractAddress ? props.location?.obtainContractAddress : contractAddress}`, '_blank');
     }
   }
 
@@ -351,7 +360,7 @@ const CreateToken = (props) => {
             <img src="images/Success.svg"></img>
           </SuccessTokenIcon>
           <SuccessTokenText>
-            Successfully Created {props.location.createdToken || ""} Token
+            Successfully Created {props.location?.createdToken || ""} Token
           </SuccessTokenText>
           <SuccessTokenDetails>
             <SuccessRows>
@@ -365,11 +374,11 @@ const CreateToken = (props) => {
                   >
                     <KeyInfo src="images/Info.svg"></KeyInfo>
                   </Tooltip>
-              </MuiThemeProvider>
+              </MuiThemeProvider> 
                 Transaction Hash:
               </SuccessTokenKey>
               <SuccessTokenValues onClick={() => handleTransactionHash()}>
-                {transactionAddress || ""}
+                {mainTransactionAddres ? mainTransactionAddres : transactionAddress || ""}
               </SuccessTokenValues>
               <Tooltip
                 title={open ? "Copied" : "Copy To Clipboard"}
@@ -378,12 +387,8 @@ const CreateToken = (props) => {
                 TransitionComponent={Fade}
                 TransitionProps={{ timeout: 600 }}
               >
-                <CopyToClipboard
-                  text={
-                    props.location.state.transactionHash.length > 0
-                      ? props.location.state.transactionHash
-                      : ""
-                  }
+                <CopyToClipboard 
+                  text={props.location?.state ? props.location?.state :  props.location?.state?.transactionHash}
                 >
                   <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpen}></CopyIcon>
                 </CopyToClipboard>
@@ -405,7 +410,7 @@ const CreateToken = (props) => {
                 Contract Address:
               </SuccessTokenKey>
               <SuccessTokenValues onClick={() => handleContractAddress()}>
-                {newContractAddress || ""}
+                {mainContractAddress ? (mainContractAddress || "") : (newContractAddress || "")}
               </SuccessTokenValues>
               <Tooltip
                 title={openAddress ? "Copied" : "Copy To Clipboard"}
@@ -415,11 +420,7 @@ const CreateToken = (props) => {
                 TransitionProps={{ timeout: 600 }}
               >
                 <CopyToClipboard
-                  text={
-                    contractAddress.length > 0
-                      ? contractAddress
-                      : ""
-                  }
+                  text={props.location?.obtainContractAddress ? props.location?.obtainContractAddress : contractAddress}
                 >
                   <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpenAddress}></CopyIcon>
                 </CopyToClipboard>
@@ -440,7 +441,7 @@ const CreateToken = (props) => {
               </MuiThemeProvider>
                 Tokens Minted:
               </SuccessTokenKey>
-              <ValueDiv>{props.location.parsingSupply || ""}</ValueDiv>
+              <ValueDiv>{props.location?.parsingSupply || ""}</ValueDiv>
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
@@ -458,17 +459,17 @@ const CreateToken = (props) => {
                 Gas Fee:
               </SuccessTokenKey>
               <ValueDiv>
-                {gasFee + " " + "XDC" + "" + "(" + gweiValue + " " + "Gwei)"}
+                {gasFee  + " " + "XDC" + "" + "(" + (gweiValue || "") + " " + "Gwei)"}
               </ValueDiv>
             </SuccessRows>
           </SuccessTokenDetails>
           <Buttons>
-            <ButtonAddToXDCPay>
+            {/* <ButtonAddToXDCPay>
               <ButtonContent>
                 <ButtonName>Add to XDCPay</ButtonName>
                 <ButtonIcon src="images/XDC-Icon-128X128.svg"></ButtonIcon>
               </ButtonContent>
-            </ButtonAddToXDCPay>
+            </ButtonAddToXDCPay> */}
             {/* <ButtonManageToken>
               <ButtonContent>
                 Manage Token
