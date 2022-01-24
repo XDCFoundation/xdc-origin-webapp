@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="333.432" height="75.983" viewBox="0 0 333.432 75.983">
+  <g id="SmartHub" transform="translate(-21.5 -13)">
+    <g id="Group_900" data-name="Group 900" transform="translate(21.5 13)">
+      <circle id="Ellipse_111" data-name="Ellipse 111" cx="18.272" cy="18.272" r="18.272" transform="translate(21.752 18.707)" fill="#fff"/>
+      <g id="Group_892" data-name="Group 892" transform="translate(39.841 32.628)">
+        <ellipse id="Ellipse_112" data-name="Ellipse 112" cx="6.091" cy="5.221" rx="6.091" ry="5.221" transform="translate(27.155 0)" fill="#fff"/>
+        <line id="Line_15" data-name="Line 15" x2="33.391" transform="translate(0 5.031)" fill="none" stroke="#fff" stroke-width="2"/>
+      </g>
+      <g id="Group_895" data-name="Group 895" transform="translate(0 32.158)">
+        <circle id="Ellipse_112-2" data-name="Ellipse 112" cx="5.312" cy="5.312" r="5.312" fill="#fff"/>
+        <line id="Line_15-2" data-name="Line 15" x1="33.391" transform="translate(5.122 5.502)" fill="none" stroke="#fff" stroke-width="2"/>
+      </g>
+      <g id="Group_893" data-name="Group 893" transform="translate(44.964 37.47) rotate(90)">
+        <circle id="Ellipse_112-3" data-name="Ellipse 112" cx="5.312" cy="5.312" r="5.312" transform="translate(27.889 0)" fill="#fff"/>
+        <line id="Line_15-3" data-name="Line 15" x2="33.391" transform="translate(0 5.502)" fill="none" stroke="#fff" stroke-width="2"/>
+      </g>
+      <g id="Group_894" data-name="Group 894" transform="translate(34.339 38.513) rotate(-90)">
+        <circle id="Ellipse_112-4" data-name="Ellipse 112" cx="5.312" cy="5.312" r="5.312" transform="translate(27.889 0)" fill="#fff"/>
+        <line id="Line_15-4" data-name="Line 15" x2="33.391" transform="translate(0 5.122)" fill="none" stroke="#fff" stroke-width="2"/>
+      </g>
+      <g id="Group_896" data-name="Group 896" transform="translate(15.088 6.817) rotate(45)">
+        <circle id="Ellipse_112-5" data-name="Ellipse 112" cx="5.312" cy="5.312" r="5.312" fill="#fff"/>
+        <line id="Line_15-5" data-name="Line 15" x1="33.391" transform="translate(5.122 5.502)" fill="none" stroke="#fff" stroke-width="2"/>
+      </g>
+      <g id="Group_899" data-name="Group 899" transform="translate(7.575 61.641) rotate(-45)">
+        <circle id="Ellipse_112-6" data-name="Ellipse 112" cx="5.312" cy="5.312" r="5.312" transform="translate(0 0)" fill="#fff"/>
+        <line id="Line_15-6" data-name="Line 15" x1="33.391" transform="translate(5.122 5.122)" fill="none" stroke="#fff" stroke-width="2"/>
+      </g>
+      <g id="Group_897" data-name="Group 897" transform="translate(73.259 14.329) rotate(135)">
+        <circle id="Ellipse_112-7" data-name="Ellipse 112" cx="5.312" cy="5.312" r="5.312" transform="translate(0 0)" fill="#fff"/>
+        <line id="Line_15-7" data-name="Line 15" x1="33.391" transform="translate(5.122 5.122)" fill="none" stroke="#fff" stroke-width="2"/>
+      </g>
+      <g id="Group_898" data-name="Group 898" transform="translate(65.746 69.153) rotate(-135)">
+        <circle id="Ellipse_112-8" data-name="Ellipse 112" cx="5.312" cy="5.312" r="5.312" transform="translate(0 0)" fill="#fff"/>
+        <line id="Line_15-8" data-name="Line 15" x1="33.391" transform="translate(5.122 5.502)" fill="none" stroke="#fff" stroke-width="2"/>
+      </g>
+      <g id="XDC-Icon-128X128" transform="translate(26.973 23.927)">
+        <path id="Combined_Shape" data-name="Combined Shape" d="M13.052,26.1a13.154,13.154,0,0,1-8.784-3.349A13,13,0,0,1,0,14.517l2.949-1.465L0,11.586A13,13,0,0,1,4.268,3.349a13.195,13.195,0,0,1,17.568,0A13,13,0,0,1,26.1,11.587l-2.949,1.465L26.1,14.517a13,13,0,0,1-4.267,8.237A13.153,13.153,0,0,1,13.052,26.1Z" transform="translate(0 0)" fill="#102c78"/>
+        <path id="X" d="M2.055,10.113,4.25,6.4l2.188,3.709H8.5l-3.145-5.1L8.429,0H6.388L4.25,3.654,2.111,0H.07L3.152,5.015,0,10.113Z" transform="translate(8.715 8.438)" fill="#fff"/>
+      </g>
+    </g>
+    <text id="SmartHub-2" data-name="SmartHub" transform="translate(110.932 68.147)" fill="#fff" font-size="50" font-family="Inter-Regular, Inter"><tspan x="0" y="0">Smart</tspan><tspan y="0">Hub</tspan></text>
+  </g>
+</svg>
