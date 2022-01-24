@@ -295,8 +295,8 @@ const useStyles = makeStyles(theme => ({
 const CreateToken = (props) => {
   const classes = useStyles();
 
-  console.log('pr---',props.location.state)
-  console.log('pr---',props.location?.obtainContractAddress)
+  // console.log('pr---',props.location.state)
+  // console.log('pr---',props.location?.obtainContractAddress)
 
   let maingasUsed = props.location?.obtainGasUsed ? props.location?.obtainGasUsed : props.location.state?.gasUsed
   let mainContractAddress = props.location?.obtainContractAddress?.slice(0, 26) +"..." + props.location?.obtainContractAddress?.substr(props.location?.obtainContractAddress?.length - 4);
@@ -360,7 +360,7 @@ const CreateToken = (props) => {
             <img src="images/Success.svg"></img>
           </SuccessTokenIcon>
           <SuccessTokenText>
-            Successfully Created {props.location.createdToken || ""} Token
+            Successfully Created {props.location?.createdToken || ""} Token
           </SuccessTokenText>
           <SuccessTokenDetails>
             <SuccessRows>
