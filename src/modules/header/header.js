@@ -170,7 +170,7 @@ const SpaceBetween = styled.div`
 const Button = styled.button`
   border: 1px solid #ffffff;
   background: transparent;
-  margin-left: 5%;
+  margin-left: 7%;
   border-radius: 5px;
   font-size: 14px;
   color: #ffffff;
@@ -197,7 +197,6 @@ const MobBtn = styled.button`
   white-space: nowrap;
   width: 130px;
   height: 30px;
-
   @media (min-width: 767px) {
     display: none;
   }
@@ -243,7 +242,7 @@ const Span = styled.span`
   top: 16px;
   left: 109px;
   width: 110px;
-  margin-top: 7px;
+  margin-top: 8px;
   text-align: left;
   cursor: pointer;
   font: normal normal medium 22px/26px Inter;
