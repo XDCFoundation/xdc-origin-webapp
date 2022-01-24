@@ -145,7 +145,7 @@ function Sidebar(props) {
             {props.userAccountDetails?.activeNavItem === "deploy" ? (
               <Icon src="/images/DeployContract_Active.svg" />
             ) : (
-              <Icon src="/images/DeployContract_InActive.svg" />
+              <Icon src="/images/Origin-Active.svg" />
             )}
             <Heading
               className={
