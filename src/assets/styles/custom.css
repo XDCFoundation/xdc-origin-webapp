@@ -265,7 +265,7 @@ input:focus {
   margin-top: 472px;
 }
 .faq-margin-create {
-  margin-top: 307px;
+  margin-top: 387px;
 }
 .faq-margin-extra {
   margin-top: 682px;
@@ -319,6 +319,15 @@ input:focus {
   }
   .faq-margin-create {
     margin-top: 208px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .faq-margin {
+    margin-top: 304px;
+  }
+  .faq-margin-create {
+    margin-top: 219px;
   }
 }
 
