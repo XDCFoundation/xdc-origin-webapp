@@ -365,7 +365,7 @@ export default function Token(props) {
           </CommonRow>
 
           <DesktopCommonRow>
-            <TextDiv>Token Image (PNG, 256*256 px)</TextDiv>
+            <TextDiv>Token Image (PNG, JPG/JPEG, 32*32 px)</TextDiv>
 
             {/* condition work, when user comes to create token and have uploaded the image*/}
             {props.imgData && props.imgData.length !== undefined ?
@@ -401,6 +401,7 @@ export default function Token(props) {
                       </Div>
                     ) :
                     (
+                      <div>
                       <MainCircle >
                         <PlusImage
                           onClick={(e) => props.toggleUploadPopup(e)}
@@ -411,6 +412,8 @@ export default function Token(props) {
                           <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
                         )}
                       </MainCircle>
+                       <p className="shown-error">{props.formErrors.tokenImage}</p>
+                       </div>
                     )}
 
                 </CircleRow>
@@ -420,7 +423,7 @@ export default function Token(props) {
           {/* --------- */}
 
           <MobCommonRow>
-            <TextDiv>Token Image (PNG, 256*256 px)</TextDiv>
+            <TextDiv>Token Image (PNG, JPG/JPEG, 32*32 px)</TextDiv>
 
             {props.imgData && props.imgData.length !== undefined ? (
               <CircleRow >

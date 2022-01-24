@@ -427,7 +427,7 @@ function CommonTab(props) {
           // console.log("transactionHash ====", hash);
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
-            contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken) 
+            contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken,draftedTokenId, draftedTokenOwner) 
           }
         })
         .on('receipt', function (receipt) {
@@ -478,15 +478,17 @@ function CommonTab(props) {
     const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
   }
 
-  const contractDetailsFromTxnHash = async (txnHash, parsingDecimal, parsingSupply, gasPrice, createdToken) => {
+  const contractDetailsFromTxnHash = async (txnHash, parsingDecimal, parsingSupply, gasPrice, createdToken, tokenId, tokenOwner) => {
     let reqObj = {
       hash: txnHash
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.getTxnHashDetails(reqObj));
     let obtainContractAddress = res?.contractAddress || ""
     let obtainTxnHash = res?.hash || ""
+    let obtainGasUsed = res?.gasUsed || ""
     if (res != 0) {
-      history.push({ pathname: '/created-token', state: obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, createdToken, obtainContractAddress })
+      history.push({ pathname: '/created-token', state: obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
+      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress)
     }
   }
 
