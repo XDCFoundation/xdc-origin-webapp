@@ -298,12 +298,12 @@ const CreateToken = (props) => {
   // console.log('pr---',props.location.state)
   // console.log('pr---',props.location?.obtainContractAddress)
 
-  let maingasUsed = props.location?.obtainGasUsed ? props.location?.obtainGasUsed : props.location.state?.gasUsed
-  let mainContractAddress = props.location?.obtainContractAddress?.slice(0, 26) +"..." + props.location?.obtainContractAddress?.substr(props.location?.obtainContractAddress?.length - 4);
-  let mainTransactionAddres =  props.location?.state?.slice(0, 28) +"..." +props.location?.state?.substr(props.location?.state?.length - 4);
+  // let maingasUsed = props.location?.obtainGasUsed ? props.location?.obtainGasUsed : props.location.state?.gasUsed
+  // let mainContractAddress = props.location?.obtainContractAddress?.slice(0, 26) +"..." + props.location?.obtainContractAddress?.substr(props.location?.obtainContractAddress?.length - 4);
+  // let mainTransactionAddres =  props.location?.state?.slice(0, 28) +"..." +props.location?.state?.substr(props.location?.state?.length - 4);
 
   let gasPrice = Number(props.location?.gasPrice);
-  let gasFee = (gasPrice * maingasUsed) / Math.pow(10, 18);
+  let gasFee = (gasPrice * props.location.state?.gasUsed) / Math.pow(10, 18);
   let gweiValue = gasPrice / Math.pow(10, 9);
   let transactionAddress =
     props.location?.state?.transactionHash?.slice(0, 28) +
@@ -337,17 +337,17 @@ const CreateToken = (props) => {
 
   const handleTransactionHash = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/txs/${props.location?.state ? props.location?.state :  props.location?.state?.transactionHash}`, '_blank');
+      window.open(`https://explorer.xinfin.network/txs/${props.location?.state?.transactionHash}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
-      window.open(`https://explorer.apothem.network/txs/${props.location?.state ? props.location?.state :  props.location?.state?.transactionHash}`, '_blank');
+      window.open(`https://explorer.apothem.network/txs/${props.location?.state?.transactionHash}`, '_blank');
     }
   }
 
   const handleContractAddress = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/address/${props.location?.obtainContractAddress ? props.location?.obtainContractAddress : contractAddress}`, '_blank');
+      window.open(`https://explorer.xinfin.network/address/${contractAddress}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
-      window.open(`https://explorer.apothem.network/address/${props.location?.obtainContractAddress ? props.location?.obtainContractAddress : contractAddress}`, '_blank');
+      window.open(`https://explorer.apothem.network/address/${contractAddress}`, '_blank');
     }
   }
 
@@ -378,7 +378,7 @@ const CreateToken = (props) => {
                 Transaction Hash:
               </SuccessTokenKey>
               <SuccessTokenValues onClick={() => handleTransactionHash()}>
-                {mainTransactionAddres ? mainTransactionAddres : transactionAddress || ""}
+                {transactionAddress}
               </SuccessTokenValues>
               <Tooltip
                 title={open ? "Copied" : "Copy To Clipboard"}
@@ -388,7 +388,7 @@ const CreateToken = (props) => {
                 TransitionProps={{ timeout: 600 }}
               >
                 <CopyToClipboard 
-                  text={props.location?.state ? props.location?.state :  props.location?.state?.transactionHash}
+                  text={props.location?.state?.transactionHash || ""}
                 >
                   <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpen}></CopyIcon>
                 </CopyToClipboard>
@@ -410,7 +410,7 @@ const CreateToken = (props) => {
                 Contract Address:
               </SuccessTokenKey>
               <SuccessTokenValues onClick={() => handleContractAddress()}>
-                {mainContractAddress ? (mainContractAddress || "") : (newContractAddress || "")}
+                {newContractAddress || ""}
               </SuccessTokenValues>
               <Tooltip
                 title={openAddress ? "Copied" : "Copy To Clipboard"}
@@ -420,7 +420,7 @@ const CreateToken = (props) => {
                 TransitionProps={{ timeout: 600 }}
               >
                 <CopyToClipboard
-                  text={props.location?.obtainContractAddress ? props.location?.obtainContractAddress : contractAddress}
+                  text={contractAddress}
                 >
                   <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpenAddress}></CopyIcon>
                 </CopyToClipboard>
