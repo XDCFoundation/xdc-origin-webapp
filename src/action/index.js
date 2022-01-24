@@ -10,6 +10,11 @@ export const handleAccountDetails = (data) => ({
   payload: data,
 });
 
+export const updateAccountDetails = (data) => ({
+  type: eventConstants.UPDATE_ACCOUNT_DETAILS,
+  payload: data,
+});
+
 export const handleLogout = () => ({
   type: eventConstants.LOGOUT_SUCCESS,
   payload: null,

@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
-import { handleWallet } from "../../action";
+import { handleWallet, updateAccountDetails } from "../../action";
 import "../../assets/styles/custom.css";
 import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
+import Web3 from "web3";
 
 function Header(props) {
   const history = useHistory();
   const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isconnectWallet, setIsConnectWallet] = useState(true);
+  const [forceUpdate, setForceUpdate] = useState(0);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -21,6 +23,55 @@ function Header(props) {
     setConnectWalletDialoag(!connectWalletDialoag);
     props.user(isconnectWallet);
   };
+
+  function truncateToDecimals(num, dec = 2) {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
+
+  useEffect(() => {
+    const handleXDCPayWalletChange = async () => {
+      window.web3 = new Web3(window.ethereum);
+  
+      if (window.web3.currentProvider && props?.userDetails?.isLoggedIn) {
+        if (!window.web3.currentProvider.chainId) {
+          //when metamask is disabled
+          const state = window.web3.givenProvider.publicConfigStore._state;
+          let address = state.selectedAddress;
+          let network =
+            state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+  
+        if (address || network) {
+            let balance = null;
+  
+            await window.web3.eth.getBalance(address).then((res) => {
+              balance = res / Math.pow(10, 18);
+              balance = truncateToDecimals(balance);
+            });
+  
+            let accountDetails = {
+              address: address,
+              network: network,
+              balance: balance,
+          };
+          
+            props.updateAccountDetails(accountDetails);
+          }
+        } else {
+          //metamask is also enabled with xdcpay
+          const state = window.web3.givenProvider.publicConfigStore._state;
+          let address = state.selectedAddress;
+          let network =
+            state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+        }
+      }
+    };
+
+    handleXDCPayWalletChange();
+
+  }, []);
+  
+
   return (
     <>
       <HeaderContainer>
@@ -77,6 +128,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   user: (isconnectWallet) => {
     dispatch(handleWallet(isconnectWallet));
+  },
+  updateAccountDetails: (accountDetails) => {
+    dispatch(updateAccountDetails(accountDetails));
   },
 });
 

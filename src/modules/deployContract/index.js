@@ -31,14 +31,18 @@ class DeployContract extends BaseComponent {
     );
     
     if (error || !contractServiceResponse) {
-      console.log("getDraftFailedXrc20Token error -> ", error)
+      console.error("getDraftFailedXrc20Token error -> ", error)
+      if (error?.responseData?.length === 0) {
+        this.setState({
+          draftFailedXrc20TokenDetails: [],
+        });
+      }
       return;
     }
-  
     if (contractServiceResponse) {
-      this.setState({
-        draftFailedXrc20TokenDetails: contractServiceResponse,
-      });
+        this.setState({
+          draftFailedXrc20TokenDetails: contractServiceResponse,
+        });
     }
   }
   deleteContract = async (tokenId) => {
@@ -51,8 +55,7 @@ class DeployContract extends BaseComponent {
     );
 
     if (error || !deleteContractResponse) {
-      console.log("deleteContract error -> ", error)
-      Utility.apiFailureToast("Failed To Delete Token!");
+      console.error("deleteContract error -> ", error)
       return;
     }
   
