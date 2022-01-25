@@ -50,13 +50,13 @@ function Sidebar(props) {
   return (
     <SidebarContainer>
       <Wrapper
-        className={props.userAccountDetails?.activeNavItem ===  "about" ? "activeNavItem" : "m-4" }
+        className={props.userAccountDetails?.activeNavItem ===  "about" ? "activeNavItem" : "" }
         onClick={() => changeBackgound("about")}
       >
         {props.userAccountDetails?.activeNavItem === "about" ? (
           <Icon src="/images/Origin-Active.svg" />
         ) : (
-          <Icon src="/images/InActive-Origin.svg" />
+          <IconOriginInactive src="/images/InActive-Origin.svg" />
         )}
         <Heading
           className={props.userAccountDetails?.activeNavItem === "about" ? "activeText origin-space" : "origin-space"}
@@ -277,6 +277,16 @@ const Icon = styled.img`
   left: 24px;
   width: 30px;
   height: 30px;
+  border: none;
+`;
+const IconOriginInactive = styled.img`
+  cursor: pointer;
+  margin-right: 10px;
+  margin-left: 3px;
+  top: 153px;
+  left: 24px;
+  width: 26px;
+  height: 26px;
   border: none;
 `;
 const FAQIcon = styled.img`
