@@ -5,6 +5,9 @@ import UploadFile from "../uploadTokenImage/uploadImage";
 import UploadTokenImage from "../uploadTokenImage/uploadImageMobile";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
+import { Tooltip, Fade, createTheme } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const Parent = styled.div`
   display: flex;
@@ -96,6 +99,8 @@ const SpanTwo = styled.div`
   }
 `;
 const TextDiv = styled.div`
+display: flex;
+flex-direction: row;
   text-align: left;
   font: normal normal medium 16px/20px Inter;
   letter-spacing: 0px;
@@ -264,6 +269,10 @@ const Div = styled.div`
   flex-direction: column;
 `;
 
+const Span = styled.div`
+  color: red;
+`;
+
 const ReplaceButton = styled.button`
   padding: 5px 0px 0px 30px;
   text-align: left;
@@ -290,8 +299,38 @@ const UrlInput = styled.img`
   opacity: 1;
 `;
 
+const QImg = styled.img`
+  padding-left: 10px;
+`;
+
+const theme = createTheme({
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: "12px",
+        color: "#4B4B4B",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0px 3px 12px #0000001A",
+        border: "1px solid #e6e8ed"
+      }
+    }
+  }
+});
+
+const defaultTheme = createTheme();
+
+const useStyles = makeStyles(theme => ({
+  arrow: {
+    "&:before": {
+      border: "1px solid #e6e8ed"
+    },
+    color: theme.palette.common.white
+  },
+}))
+
 
 export default function Token(props) {
+  const classes = useStyles();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
@@ -317,7 +356,18 @@ export default function Token(props) {
           </RowTwo>
 
           <CommonRow>
-            <TextDiv>Network</TextDiv>
+            <TextDiv>Network<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InsideDiv>
               <InputDiv
                 type="text"
@@ -338,7 +388,19 @@ export default function Token(props) {
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Token Name</TextDiv>
+            <TextDiv>Token Name<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
+
             <InputDiv
               type="text"
               onChange={(e) => props.handleChange(e)}
@@ -351,7 +413,18 @@ export default function Token(props) {
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Symbol</TextDiv>
+            <TextDiv>Symbol<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InputDiv
               type="text"
               onChange={(e) => props.handleChange(e)}
@@ -365,7 +438,18 @@ export default function Token(props) {
           </CommonRow>
 
           <DesktopCommonRow>
-            <TextDiv>Token Image (PNG, JPG/JPEG, 32*32 px)</TextDiv>
+            <TextDiv>Token Image (PNG, JPG/JPEG, 32*32 px)<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
 
             {/* condition work, when user comes to create token and have uploaded the image*/}
             {props.imgData && props.imgData.length !== undefined ?
@@ -374,7 +458,7 @@ export default function Token(props) {
                   <Div >
                     <MainImage src={props.imgData} />
                     <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                    <ReplaceButton onClick={(e) => {props.toggleUploadPopup(e); props.handleChange(e);} }>
+                    <ReplaceButton onClick={(e) => { props.toggleUploadPopup(e); props.handleChange(e); }}>
                       Replace
                     </ReplaceButton>
                     {props.isUploadOpen && (
@@ -402,18 +486,18 @@ export default function Token(props) {
                     ) :
                     (
                       <div>
-                      <MainCircle >
-                        <PlusImage
-                          onClick={(e) => props.toggleUploadPopup(e)}
-                          src="/images/PlusIcon.svg"
-                        />
-                        <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                        {props.isUploadOpen && (
-                          <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                        )}
-                      </MainCircle>
-                       <p className="shown-error">{props.formErrors.tokenImage}</p>
-                       </div>
+                        <MainCircle >
+                          <PlusImage
+                            onClick={(e) => props.toggleUploadPopup(e)}
+                            src="/images/PlusIcon.svg"
+                          />
+                          <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
+                          {props.isUploadOpen && (
+                            <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                          )}
+                        </MainCircle>
+                        <p className="shown-error">{props.formErrors.tokenImage}</p>
+                      </div>
                     )}
 
                 </CircleRow>
@@ -423,7 +507,18 @@ export default function Token(props) {
           {/* --------- */}
 
           <MobCommonRow>
-            <TextDiv>Token Image (PNG, JPG/JPEG, 32*32 px)</TextDiv>
+            <TextDiv>Token Image (PNG, JPG/JPEG, 32*32 px)<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
 
             {props.imgData && props.imgData.length !== undefined ? (
               <CircleRow >
@@ -433,7 +528,7 @@ export default function Token(props) {
                 <Div>
                   <MainImage src={props.imgData} />
                   <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                  <ReplaceButton onClick={(e) => {props.toggleUploadPopup(e); props.handleChange(e);}}>
+                  <ReplaceButton onClick={(e) => { props.toggleUploadPopup(e); props.handleChange(e); }}>
                     Replace
                   </ReplaceButton>
                 </Div>
@@ -476,7 +571,18 @@ export default function Token(props) {
           </MobCommonRow>
 
           <CommonRow>
-            <TextDiv>Decimals</TextDiv>
+            <TextDiv>Decimals<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InputDiv
               type="number"
               onChange={(e) => props.handleChange(e)}
@@ -492,7 +598,18 @@ export default function Token(props) {
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Description</TextDiv>
+            <TextDiv>Description<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InputDiv
               type="text"
               onChange={(e) => props.handleChange(e)}
@@ -506,25 +623,58 @@ export default function Token(props) {
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Website</TextDiv>
+            <TextDiv>Website
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InputDiv type="text" placeholder="Website Address" />
             <BlurTextDiv>Add Website url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Twitter(optional)</TextDiv>
+            <TextDiv>Twitter(optional)
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InputDiv type="text" placeholder="e.g. Twitter Url" />
             <BlurTextDiv>Add Twitter page url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Telegram</TextDiv>
+            <TextDiv>Telegram
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="unique"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InputDiv type="text" placeholder="e.g. Telegram Url" />
             <BlurTextDiv>Add Telegram group url for your token</BlurTextDiv>
           </CommonRow>
 
           <LastRow>
-            <ContinueButton onClick={saveAndContinue}>
+            <ContinueButton disabled={false} onClick={saveAndContinue}>
               <ContinueText>Continue</ContinueText>
               <ImgDiv src="/images/Button_Next_Arrow.svg" />
             </ContinueButton>

@@ -222,7 +222,7 @@ function CommonTab(props) {
     tokenName: "",
     tokenSymbol: "",
     tokenImage: imgData,
-    tokenDecimals: undefined,
+    tokenDecimals: "",
     tokenDescription: "",
     tokenInitialSupply: undefined,
     pausable: false,
@@ -255,7 +255,7 @@ function CommonTab(props) {
     }); //destructuring
   };
 
-  // console.log('to---', tokenData)
+  console.log('to---', tokenData)
 
   // condition checking for nextStep: 
 
