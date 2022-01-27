@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "react-dropdown/style.css";
+import { connect } from "react-redux";
+
 const Header = styled.div`
   display: flex;
   flex-direction: row;
@@ -31,6 +33,10 @@ const NetworksDrop = styled.select`
   width: 100%;
   white-space: pre-wrap;
   opacity: 1;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  padding-left: 5px;
 `;
 const DropdownContainer = styled.div`
   background-color: #ffffff;
@@ -89,7 +95,7 @@ const DesktopTab = styled.div`
     display: none;
   }
 `;
-export default function FormDialog(props) {
+function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -109,11 +115,10 @@ export default function FormDialog(props) {
             <NetworkChangeContainer>
               <DropdownContainer>
                 <img src="images/XDC-Icon-128X128.svg"></img>
-                <NetworksDrop>
+                <NetworksDrop disabled>
                   <option value="XDC Apothem TestNet">
-                    XDC Apothem TestNet
+                    {props.userDetails?.accountDetails?.network}
                   </option>
-                  <option value="XDC Mainnet">XDC Mainnet</option>
                 </NetworksDrop>
               </DropdownContainer>
             </NetworkChangeContainer>
@@ -132,3 +137,9 @@ export default function FormDialog(props) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+export default connect(mapStateToProps)(FormDialog);
