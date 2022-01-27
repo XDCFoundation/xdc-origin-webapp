@@ -332,7 +332,7 @@ function AddFeatures(props) {
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       checked: props.tokenData.burnable,
-      content: addFeaturesContent.PAUSABLE_CONTENT,
+      content: addFeaturesContent.BURNABLE_CONTENT,
     },
     {
       id: 3,

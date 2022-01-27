@@ -48,7 +48,8 @@ export const validationsMessages = {
     VALIDATE_NETWORK: 'Network is required !',
 }
 export const addFeaturesContent = {
-    PAUSABLE_CONTENT:"Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
+    PAUSABLE_CONTENT: "Pausing token transfer during some initial period (e.g. while a crowdsale is taking place), to enable pause/release transfers, this can be used in case of a software vulnerability",
+    BURNABLE_CONTENT:"Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
     MINTABLE_CONTENT:"Building distribution / crowdsale logic directly into the token contract or by including a generic mint function that can be called by an external contract.",
 }
 
