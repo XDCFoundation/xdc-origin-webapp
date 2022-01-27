@@ -43,7 +43,7 @@ const CommonRow = styled.div`
   flex-direction: column;
   padding: 6px 0px 0px 57px;
   @media (min-width: 0px) and (max-width: 1024px) {
-    padding: 30px 0px 0px 18px;
+    padding: 6px 0px 0px 18px;
   }
 `;
 
@@ -335,6 +335,10 @@ export default function Token(props) {
   const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
@@ -623,7 +627,7 @@ export default function Token(props) {
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Website
+            <TextDiv>Website (Optional)
               <MuiThemeProvider theme={theme}>
                 <Tooltip
                   title="unique"
@@ -640,7 +644,7 @@ export default function Token(props) {
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Twitter(optional)
+            <TextDiv>Twitter (Optional)
               <MuiThemeProvider theme={theme}>
                 <Tooltip
                   title="unique"
@@ -657,7 +661,7 @@ export default function Token(props) {
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Telegram
+            <TextDiv>Telegram (Optional)
               <MuiThemeProvider theme={theme}>
                 <Tooltip
                   title="unique"

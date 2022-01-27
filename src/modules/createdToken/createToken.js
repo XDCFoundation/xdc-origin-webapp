@@ -459,7 +459,7 @@ const CreateToken = (props) => {
                 Gas Fee:
               </SuccessTokenKey>
               <ValueDiv>
-                {gasFee  + " " + "XDC" + "" + "(" + (gweiValue || "") + " " + "Gwei)"}
+                {gasFee?.toFixed(8)  + " " + "XDC" + "" + "(" + (gweiValue || "") + " " + "Gwei)"}
               </ValueDiv>
             </SuccessRows>
           </SuccessTokenDetails>

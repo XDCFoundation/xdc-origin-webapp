@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import BasicInfoPage from "./basicInformation";
-import numberToWords from 'number-to-words';
+import numberToWords from "number-to-words";
 import { Tooltip, Fade, createTheme } from "@material-ui/core";
+import Utils from "../../utility";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -63,8 +64,8 @@ const CommonRow = styled.div`
   }
 `;
 const TextDiv = styled.div`
-display: flex;
-flex-direction: row;
+  display: flex;
+  flex-direction: row;
   text-align: left;
   font: normal normal medium 16px/20px Inter;
   letter-spacing: 0px;
@@ -90,8 +91,8 @@ const InputDiv = styled.input`
     color: #a8acc1;
     opacity: 1;
   }
-  :focus{
-    outline: 2px solid #8CA6F0;
+  :focus {
+    outline: 2px solid #8ca6f0;
   }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
@@ -202,35 +203,43 @@ const theme = createTheme({
         color: "#4B4B4B",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 3px 12px #0000001A",
-        border: "1px solid #e6e8ed"
-      }
-    }
-  }
+        border: "1px solid #e6e8ed",
+      },
+    },
+  },
 });
 
 const defaultTheme = createTheme();
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   arrow: {
     "&:before": {
-      border: "1px solid #e6e8ed"
+      border: "1px solid #e6e8ed",
     },
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
-}))
+}));
 
 export default function Tokenomics(props) {
   const classes = useStyles();
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const saveAndContinue = (e) => {
-    props.handleChange(e)
+    props.handleChange(e);
     if (props.tokenData.tokenInitialSupply > 0 && props.tokenData.tokenInitialSupply !== undefined) {
       props.nextStep(e);
     }
+    // if (!Utils.isEmpty(props.tokenData.tokenInitialSupply)) {
+    //   props.nextStep(e);
+    // }
   };
 
-  let convertedNumber = numberToWords?.toWords(props?.tokenData?.tokenInitialSupply || 0)
+  let convertedNumber = numberToWords?.toWords(
+    props?.tokenData?.tokenInitialSupply || 0
+  );
   // console.log('num-----',convertedNumber)
-  
+
   return (
     <>
       <Parent>
@@ -242,7 +251,8 @@ export default function Tokenomics(props) {
             </SpanTwo>
           </RowTwo>
           <CommonRow>
-            <TextDiv>Initial Supply<Span>&nbsp;*</Span>
+            <TextDiv>
+              Initial Supply<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
                   title="unique"
