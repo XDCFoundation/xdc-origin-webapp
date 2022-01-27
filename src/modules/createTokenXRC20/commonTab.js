@@ -240,7 +240,7 @@ function CommonTab(props) {
     setTokenData(props.state?.xrc20TokenDetails)
   }, [props])
 
-  let newImage = imgData.length >=1 ? imgData : tokenData.tokenImage
+  let newImage = imgData?.length >=1 ? imgData : tokenData.tokenImage
 
   const handleChange = (e) => {
     setTokenData({
