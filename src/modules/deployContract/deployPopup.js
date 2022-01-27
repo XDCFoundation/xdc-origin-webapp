@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-function deployPopup({ open, deployPopupClose,deployTokenName }) {
+function deployPopup({ open, deployPopupClose,deployTokenName,networkVersion }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const classes = useStyles();
   return (
@@ -49,7 +49,7 @@ function deployPopup({ open, deployPopupClose,deployTokenName }) {
           <div className="loader" />
         </LoaderContainer>
         <XDCImg src="/images/XDC_Blue_Logo.svg" alt="" />
-        <DialogFooter>Deploying to XDC Apothem Testnet…</DialogFooter>
+        <DialogFooter>Deploying to {networkVersion}…</DialogFooter>
       </DialogContainer>
     </Dialog>
   );
