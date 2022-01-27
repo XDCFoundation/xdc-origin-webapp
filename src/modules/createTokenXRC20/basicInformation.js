@@ -294,7 +294,6 @@ const UrlInput = styled.img`
 export default function Token(props) {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
-  const { id } = useParams();
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
