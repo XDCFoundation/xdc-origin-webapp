@@ -245,7 +245,11 @@ const Span = styled.span`
   margin-top: 8px;
   text-align: left;
   cursor: pointer;
-  font: normal normal medium 22px/26px Inter;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;

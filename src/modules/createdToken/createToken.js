@@ -448,7 +448,7 @@ const CreateToken = (props) => {
               <SuccessTokenKey>
               <MuiThemeProvider theme={theme}>
                   <Tooltip
-                      title="The value being transacted in XDC and fiat value"
+                      title="Cost per unit of gas specified for the transaction, in XDC and Gwei."
                       placement="top-start"
                       arrow
                       classes={{ arrow: classes.arrow }}

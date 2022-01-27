@@ -50,7 +50,7 @@ function Sidebar(props) {
   return (
     <SidebarContainer>
       <Wrapper
-        className={props.userAccountDetails?.activeNavItem ===  "about" ? "activeNavItem" : "m-4" }
+        className={props.userAccountDetails?.activeNavItem ===  "about" ? "activeNavItem" : "" }
         onClick={() => changeBackgound("about")}
       >
         {props.userAccountDetails?.activeNavItem === "about" ? (

@@ -240,7 +240,7 @@ function CommonTab(props) {
     setTokenData(props.state?.xrc20TokenDetails)
   }, [props])
 
-  let newImage = imgData.length >=1 ? imgData : tokenData.tokenImage
+  let newImage = imgData?.length >=1 ? imgData : tokenData.tokenImage
 
   const handleChange = (e) => {
     setTokenData({
@@ -293,7 +293,7 @@ function CommonTab(props) {
 
     if (!values.tokenDecimals) {
       errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_FIELD;
-    } else if (Number(values.tokenDecimals) < 1) {
+    } else if (Number(values.tokenDecimals) < 8) {
       errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_MIN_RANGE;
     } else if (Number(values.tokenDecimals) > 18) {
       errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_MAX_RANGE;
