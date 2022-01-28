@@ -33,7 +33,7 @@ function Header(props) {
     const handleXDCPayWalletChange = async () => {
       window.web3 = new Web3(window.ethereum);
   
-      if (window.web3.currentProvider && props?.userDetails?.isLoggedIn) {
+      if (window.web3.currentProvider && props?.userDetails?.accountDetails?.isLoggedIn) {
         if (!window.web3.currentProvider.chainId) {
           //when metamask is disabled
           const state = window.web3.givenProvider.publicConfigStore._state;
@@ -53,6 +53,7 @@ function Header(props) {
               address: address,
               network: network,
               balance: balance,
+              isLoggedIn: true
           };
           
             props.updateAccountDetails(accountDetails);
@@ -68,7 +69,7 @@ function Header(props) {
     };
 
     handleXDCPayWalletChange();
-
+    window.addEventListener("load",handleXDCPayWalletChange)
   }, []);
   
 
