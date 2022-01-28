@@ -232,6 +232,7 @@ function connectWalletPopup(props) {
             address: address,
             network: network,
             balance: balance,
+            isLoggedIn: true,
           };
           props.login(accountDetails);
           handleDialogClose();

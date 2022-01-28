@@ -332,7 +332,6 @@ export default function Token(props) {
   const classes = useStyles();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
-  const { id } = useParams();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);

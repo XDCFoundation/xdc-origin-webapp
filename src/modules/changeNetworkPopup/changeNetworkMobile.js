@@ -2,13 +2,18 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Header from "../header/header";
 import Footer from "../Footer/footer"
+import { history } from "../../managers/history";
 
 const NetworkChangeContainer = styled.div`
-  background: #f2f2f2 0% 0% no-repeat padding-box;
+  background: #E3E7EB  0% 0% no-repeat padding-box;
   width: 75%;
   padding: 15px;
   margin: 0 auto;
   margin-bottom: 8%;
+  width: 253px;
+  height: 40px;
+  display: flex;
+  align-items: center;
 `;
 
 const NetworksDrop = styled.select`
@@ -26,18 +31,19 @@ const DropdownContainer = styled.div`
   background-color: #ffffff;
   border-radius: 15px;
   width: 40%;
-  padding: 3%;
+  padding: 1% 3% 1% 3%;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   @media (max-width: 768px) {
-    width: 70%;
+    width: 60%;
   }
 `;
 
 const Content = styled.div`
   text-align: center;
   padding: 10%;
+  margin-bottom: 36px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -64,7 +70,7 @@ const ContentText = styled.div`
   font: normal normal normal 16px/24px Inter;
   letter-spacing: 0px;
   color: #4b4b4b;
-  margin-bottom: 5%;
+  margin-bottom: 48px;
   @media (max-width: 768) {
     font: normal normal normal 14px/24px Inter;
   }
@@ -95,6 +101,8 @@ const MobileHeader = styled.div`
 
 const BackArrow = styled.img`
  margin: 0px 20px 0px 0px;
+ width: 19px;
+ height: 17px;
 `;
 
 const MobileScreen = styled.div`
@@ -146,7 +154,7 @@ export default class ChangeNetworkMobile extends Component {
                 <ContentTextNames>XDC Mainnet</ContentTextNames> and{" "}
                 <ContentTextNames>XDC Apothem Testnet</ContentTextNames>.
               </ContentText>
-              <Buttons>
+              <Buttons onClick={() => history.push("/token-XRC20")}>
                 <Ok>OK</Ok>
               </Buttons>
             </Content>
