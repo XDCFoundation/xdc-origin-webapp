@@ -273,7 +273,7 @@ function CommonTab(props) {
     setTokenData(props.state?.xrc20TokenDetails)
   }, [props])
 
-  let newImage = imgData.length >= 1 ? imgData : tokenData.tokenImage
+  let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage
   let initialDecimalValue = tokenData.tokenDecimals ? tokenData.tokenDecimals : "18"
 
   const handleChange = (e) => {
@@ -291,12 +291,12 @@ function CommonTab(props) {
     checkError();
   };
 
-  console.log('to---', tokenData)
+  // console.log('to---', tokenData)
 
   // condition checking for nextStep: 
 
   useEffect(() => {
-    console.log('er--', formErrors)
+    // console.log('er--', formErrors)
     if (Object.keys(formErrors).length === 0 && saveAndContinue) {
       // console.log('to---', tokenData)
     }
@@ -335,7 +335,7 @@ function CommonTab(props) {
 
     if (!values.tokenDecimals) {
       errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_FIELD;
-    } else if (Number(values.tokenDecimals) < 1) {
+    } else if (Number(values.tokenDecimals) < 8) {
       errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_MIN_RANGE;
     } else if (Number(values.tokenDecimals) > 18) {
       errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_MAX_RANGE;
@@ -472,16 +472,18 @@ function CommonTab(props) {
           // console.log("transactionHash ====", hash);
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
-            contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner)
+            setTimeout(() => {
+              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner) 
+            }, 10000);
           }
         })
-        .on('receipt', function (receipt) {
-          // console.log("receipt ====", receipt);  
-        }
-        )
-        .on('confirmation', function (confirmationNumber, receipt) {
-          // console.log("confirmation ====", confirmationNumber, receipt);
-        })
+        // .on('receipt', function (receipt) {
+        //   console.log("receipt ====", receipt);  
+        // }
+        // )
+        // .on('confirmation', function (confirmationNumber, receipt) {
+        //   // console.log("confirmation ====", confirmationNumber, receipt);
+        // })
         .on('error', function (error) {
           if (error) {
             prevStep();
@@ -531,8 +533,8 @@ function CommonTab(props) {
     let obtainContractAddress = res?.contractAddress || ""
     let obtainTxnHash = res?.hash || ""
     let obtainGasUsed = res?.gasUsed || ""
-    if (res != 0) {
-      history.push({ pathname: '/created-token', state: obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
+    if (res) {
+      history.push({ pathname: '/created-token', state: {}, obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
       updateTokenDetails(tokenId, tokenOwner, obtainContractAddress)
     }
   }
