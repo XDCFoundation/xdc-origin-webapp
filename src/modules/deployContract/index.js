@@ -24,6 +24,7 @@ class DeployContract extends BaseComponent {
   getDraftFailedXrc20Token = async () => {
     let requestData = {
       tokenOwner: this.props?.user?.accountDetails?.address,
+      network: this.props?.user?.accountDetails?.network
     };
   
     let [error, contractServiceResponse] = await Utility.parseResponse(
