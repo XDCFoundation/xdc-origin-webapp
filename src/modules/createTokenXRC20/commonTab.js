@@ -258,6 +258,9 @@ function CommonTab(props) {
     pausable: false,
     mintable: true,
     burnable: true,
+    website: "",
+    twitter: "",
+    telegram: ""
   };
 
   const [tokenData, setTokenData] = useState(initialValues);
@@ -270,7 +273,7 @@ function CommonTab(props) {
     setTokenData(props.state?.xrc20TokenDetails)
   }, [props])
 
-  let newImage = imgData.length >=1 ? imgData : tokenData.tokenImage
+  let newImage = imgData.length >= 1 ? imgData : tokenData.tokenImage
   let initialDecimalValue = tokenData.tokenDecimals ? tokenData.tokenDecimals : "18"
 
   const handleChange = (e) => {
@@ -401,10 +404,14 @@ function CommonTab(props) {
       isBurnable: tokenData.burnable,
       isMintable: tokenData.mintable,
       isPausable: tokenData.pausable,
+      website: tokenData.website || "",
+      twitter: tokenData.twitter || "",
+      telegram: tokenData.telegram || "",
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
     // console.log('tr---',res)
     if (res !== 0) {
+      Utils.apiSuccessToast("Saved as Draft")
       sendTransaction(res)
     }
   };
@@ -424,6 +431,9 @@ function CommonTab(props) {
       isBurnable: tokenData.burnable,
       isMintable: tokenData.mintable,
       isPausable: tokenData.pausable,
+      website: tokenData.website || "",
+      twitter: tokenData.twitter || "",
+      telegram: tokenData.telegram || "",
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
@@ -462,7 +472,7 @@ function CommonTab(props) {
           // console.log("transactionHash ====", hash);
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
-            contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken,draftedTokenId, draftedTokenOwner) 
+            contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner)
           }
         })
         .on('receipt', function (receipt) {
@@ -533,7 +543,7 @@ function CommonTab(props) {
         <Parent>
           <Header>Create XRC20 Token</Header>
           <Column>
-          <LineTop/>
+            <LineTop />
             <RowOne>
               {arr.map((item) => {
                 const TextOneActive = step == item.id ? ActiveTextOne : TextOne;
@@ -558,7 +568,7 @@ function CommonTab(props) {
                 );
               })}
             </RowOne>
-            <LineBottom/>
+            <LineBottom />
             {(() => {
               switch (step) {
                 case 1:
