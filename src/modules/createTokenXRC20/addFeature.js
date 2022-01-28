@@ -83,7 +83,7 @@ const RowDiv = styled.div`
 
   @media (min-width: 0px) and (max-width: 767px) {
     width: 322px;
-    height: 190px;
+    height: 170px;
   }
 
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -97,10 +97,14 @@ const ImageDiv = styled.div`
   justify-content: center;
   align-items: center;
   width: 100px;
+  padding: 0px 29px 0px 28px;
   opacity: 1;
 
   @media (min-width: 0px) and (max-width: 767px) {
     padding: 0px 13px 0px 13px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    padding: 0px 19px 0px 30px;
   }
 `;
 
@@ -122,7 +126,7 @@ const LabelDiv = styled.div`
   flex-direction: column;
   align-items: flex-start;
   opacity: 1;
-  padding: 15px 20px 0px 20px;
+  padding: 15px 20px 10px 20px;
 
   @media (min-width: 0px) and (max-width: 767px) {
     padding: 15px 15px 10px 0px;
@@ -310,7 +314,10 @@ const Check = styled.img`
   height: 25px;
   cursor: pointer;
   opacity: 1;
-  margin: 12px 15px 0px 0px;
+  margin: 12px 15px 0px 126px;
+  @media (min-width: 0px) and (max-width: 767px) {
+    margin: 12px 15px 0px 12px;
+  }
 `;
 
 function AddFeatures(props) {
@@ -361,7 +368,7 @@ function AddFeatures(props) {
   let parsingSupply = Number(props.tokenData.tokenInitialSupply);
 
   // condition to check if props.tokenData object has id key or not, will return true or false
-  
+
   let hasTokenId = "id" in props.tokenData;
 
   const saveAsDraft = async (e) => {
@@ -378,6 +385,9 @@ function AddFeatures(props) {
       isBurnable: props.tokenData.burnable,
       isMintable: props.tokenData.mintable,
       isPausable: props.tokenData.pausable,
+      website: props.tokenData.website || "",
+      twitter: props.tokenData.twitter || "",
+      telegram: props.tokenData.telegram || ""
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
@@ -403,6 +413,9 @@ function AddFeatures(props) {
       isBurnable: props.tokenData.burnable,
       isMintable: props.tokenData.mintable,
       isPausable: props.tokenData.pausable,
+      website: props.tokenData.website || "",
+      twitter: props.tokenData.twitter || "",
+      telegram: props.tokenData.telegram || ""
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
@@ -492,4 +505,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(null,mapDispatchToProps)(AddFeatures);
+export default connect(null, mapDispatchToProps)(AddFeatures);

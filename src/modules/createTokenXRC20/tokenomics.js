@@ -108,6 +108,7 @@ const BlurTextDiv = styled.div`
   color: #a2a2a2;
   opacity: 1;
   padding: 7px 0px 7px 0px;
+  text-transform: capitalize;
 `;
 const ButtonsRow = styled.div`
   display: flex;
@@ -222,17 +223,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Tokenomics(props) {
   const classes = useStyles();
+
   React.useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
   const saveAndContinue = (e) => {
     props.handleChange(e);
     if (props.tokenData.tokenInitialSupply > 0 && props.tokenData.tokenInitialSupply !== undefined) {
       props.nextStep(e);
     }
-    // if (!Utils.isEmpty(props.tokenData.tokenInitialSupply)) {
-    //   props.nextStep(e);
-    // }
   };
 
   let convertedNumber = numberToWords?.toWords(
@@ -255,7 +255,7 @@ export default function Tokenomics(props) {
               Initial Supply<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="unique"
+                  title="Number of tokens available initially."
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -272,7 +272,7 @@ export default function Tokenomics(props) {
               value={props.tokenData.tokenInitialSupply}
             />
             {props.tokenData.tokenInitialSupply > 0 ? (
-              <p className="shown-error">{convertedNumber}</p>
+              <BlurTextDiv>{convertedNumber}</BlurTextDiv>
             ) : (
               ""
             )}
