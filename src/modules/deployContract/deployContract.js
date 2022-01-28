@@ -80,7 +80,9 @@ function DeployContract(props) {
           // console.log("transactionHash ====", hash);
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
-            contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken,draftedTokenId, draftedTokenOwner) 
+            setTimeout(() => {
+              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner) 
+            }, 10000);
           }
         })
         .on('receipt', function (receipt) {
@@ -140,7 +142,7 @@ function DeployContract(props) {
     let obtainTxnHash = res?.hash || ""
     let obtainGasUsed = res?.gasUsed || ""
     if (res != 0) {
-      history.push({ pathname: '/created-token', state: obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
+      history.push({ pathname: '/created-token', state: {}, obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
       updateTokenDetails(tokenId, tokenOwner, obtainContractAddress)
     }
   }

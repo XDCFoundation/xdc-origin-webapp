@@ -19,6 +19,7 @@ let initialState = {
     address: accountDetails ? accountDetails.address : null,
     network: accountDetails ? accountDetails.network : null,
     balance: accountDetails ? accountDetails.balance : null,
+    isLoggedIn: accountDetails ? accountDetails.isLoggedIn : false,
   },
 };
 
