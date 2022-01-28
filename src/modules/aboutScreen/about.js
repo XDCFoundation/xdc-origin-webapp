@@ -78,11 +78,11 @@ function About(props) {
 
   const handleXDCPayWallet = async () => {
     if (
-      !props?.currentUser?.isLoggedIn ||
+      !props?.currentUser?.accountDetails?.isLoggedIn ||
       props?.currentUser?.accountDetails === null
     ) {
       props.user(connectWallet);
-    } else if(props?.currentUser?.isLoggedIn){
+    } else if(props?.currentUser?.accountDetails?.isLoggedIn){
       history.push("/token-XRC20");
       props.setActiveNavItem("create");
       props.setSubNavItem(true);
