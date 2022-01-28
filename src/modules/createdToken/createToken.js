@@ -295,32 +295,56 @@ const useStyles = makeStyles(theme => ({
 const CreateToken = (props) => {
   const classes = useStyles();
 
-  // console.log('pr---',props.location.state)
-  // console.log('pr---',props.location?.obtainContractAddress)
+  let gasFee;
+  let gweiValue;
+  let transactionAddress;
+  let contractAddress;
+  let newContractAddress;
+  
 
-  // let maingasUsed = props.location?.obtainGasUsed ? props.location?.obtainGasUsed : props.location.state?.gasUsed
-  // let mainContractAddress = props.location?.obtainContractAddress?.slice(0, 26) +"..." + props.location?.obtainContractAddress?.substr(props.location?.obtainContractAddress?.length - 4);
-  // let mainTransactionAddres =  props.location?.state?.slice(0, 28) +"..." +props.location?.state?.substr(props.location?.state?.length - 4);
+  // For Apothem Test Network
+  if (props.user.accountDetails.network === "XDC Apothem Testnet") {
+    let gasPrice = Number(props.location?.gasPrice);
+    gasFee = (gasPrice * props.location.state?.gasUsed) / Math.pow(10, 18);
+    gweiValue = gasPrice / Math.pow(10, 9);
 
-  let gasPrice = Number(props.location?.gasPrice);
-  let gasFee = (gasPrice * props.location.state?.gasUsed) / Math.pow(10, 18);
-  let gweiValue = gasPrice / Math.pow(10, 9);
-  let transactionAddress =
-    props.location?.state?.transactionHash?.slice(0, 28) +
-    "..." +
-    props.location?.state?.transactionHash?.substr(
-      props.location?.state?.transactionHash.length - 4
+    transactionAddress =
+      props.location?.state?.transactionHash?.slice(0, 28) +
+      "..." +
+      props.location?.state?.transactionHash?.substr(
+        props.location?.state?.transactionHash.length - 4
+      );
+    
+    contractAddress = props.location.state?.contractAddress?.replace(
+      /0x/,
+      "xdc"
     );
-    // console.log('v------',props.location.state.contractAddress)
-  let contractAddress = props.location.state?.contractAddress?.replace(
-    /0x/,
-    "xdc"
-  );
-  // console.log('v------',contractAddress)
-  let newContractAddress =
-    contractAddress?.slice(0, 26) +
-    "..." +
-    contractAddress?.substr(contractAddress?.length - 4);
+
+    newContractAddress =
+      contractAddress?.slice(0, 26) +
+      "..." +
+      contractAddress?.substr(contractAddress?.length - 4);
+    
+  } else if (props.user.accountDetails.network === "XDC Mainnet") {
+    // For Mainnet
+    let gasPrice = Number(props.location?.gasPrice);
+    gasFee = (gasPrice * props.location?.obtainGasUsed) / Math.pow(10, 18);
+    gweiValue = gasPrice / Math.pow(10, 9);
+
+    transactionAddress =
+      props.location?.obtainTxnHash?.slice(0, 28) +
+      "..." +
+      props.location?.obtainTxnHash?.substr(
+        props.location?.obtainTxnHash.length - 4
+      );
+    
+    contractAddress = props.location?.obtainContractAddress;
+    
+    newContractAddress =
+      contractAddress?.slice(0, 26) +
+      "..." +
+      contractAddress?.substr(contractAddress?.length - 4);
+  } 
 
   const [open, setOpen] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
@@ -337,7 +361,7 @@ const CreateToken = (props) => {
 
   const handleTransactionHash = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/txs/${props.location?.state?.transactionHash}`, '_blank');
+      window.open(`https://explorer.xinfin.network/txs/${props.location?.obtainTxnHash}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
       window.open(`https://explorer.apothem.network/txs/${props.location?.state?.transactionHash}`, '_blank');
     }

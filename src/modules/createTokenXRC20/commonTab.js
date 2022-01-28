@@ -427,16 +427,18 @@ function CommonTab(props) {
           // console.log("transactionHash ====", hash);
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
-            contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken,draftedTokenId, draftedTokenOwner) 
+            setTimeout(() => {
+              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner) 
+            }, 10000);
           }
         })
-        .on('receipt', function (receipt) {
-          // console.log("receipt ====", receipt);  
-        }
-        )
-        .on('confirmation', function (confirmationNumber, receipt) {
-          // console.log("confirmation ====", confirmationNumber, receipt);
-        })
+        // .on('receipt', function (receipt) {
+        //   console.log("receipt ====", receipt);  
+        // }
+        // )
+        // .on('confirmation', function (confirmationNumber, receipt) {
+        //   // console.log("confirmation ====", confirmationNumber, receipt);
+        // })
         .on('error', function (error) {
           if (error) {
             prevStep();
@@ -486,8 +488,8 @@ function CommonTab(props) {
     let obtainContractAddress = res?.contractAddress || ""
     let obtainTxnHash = res?.hash || ""
     let obtainGasUsed = res?.gasUsed || ""
-    if (res != 0) {
-      history.push({ pathname: '/created-token', state: obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
+    if (res) {
+      history.push({ pathname: '/created-token', state: {}, obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
       updateTokenDetails(tokenId, tokenOwner, obtainContractAddress)
     }
   }
