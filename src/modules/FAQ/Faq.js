@@ -7,30 +7,51 @@ export default function Faqs(props) {
     {
       id: 0,
       questionText:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ?",
+        "Which chain does Origin support?",
       answerText:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo",
+        "XDC Origin supports the creation of XRC tokens and stablecoins on the XDC blockchain network.",
     },
     {
       id: 1,
       questionText:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ?",
+        "Is Origin free to use?",
       answerText:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo",
+        "XDC Origin does not charge any additional service or administrational fees to create new tokens. You only pay the transaction gas fees for the actual generation of the tokens, and these fees will not go to XDC Network but to the respective miners or validators.",
     },
     {
       id: 2,
       questionText:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ?",
+        "Do I need technical or programming language expertise to create my token?",
       answerText:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo",
+        "No. Simply follow the steps in the token generator and create!",
     },
     {
       id: 3,
       questionText:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ?",
+        "Where can I find my tokens after I mint them?",
       answerText:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo",
+        "After you mint and add the tokens, they will reflect in your XDCPay wallet.",
+    },
+    {
+      id: 4,
+      questionText:
+        "Where can I find the Contract Address of my minted token?",
+      answerText:
+        "After successfully creating and deploying the token, the confirmation screen will present the hash and contract address.",
+    },
+    {
+      id: 5,
+      questionText:
+        "Do I need to have XDC to mint tokens?",
+      answerText:
+        "Yes, you will need XDC in your XDCPay wallet to mint XRC20 tokens on the XDC chain.",
+    },
+    {
+      id: 6,
+      questionText:
+        "It's my first time. Can I do a test first?",
+      answerText:
+        "Yes, you can connect your wallet to the Apothem test network if you want to test XRC20 token generation.",
     },
   ];
 
