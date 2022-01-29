@@ -35,6 +35,12 @@ const MainContainer = styled.div`
   @media screen and (max-width: 1280px) and (min-width: 1024px) {
     margin: 34px 20px 46px 20px;
   }
+  @media screen and (max-width: 1023px) and (min-width: 768px) {
+    margin: 34px 50px 46px 50px;
+  }
+  @media screen and (max-width: 767px) and (min-width: 0px) {
+    margin: 34px 35px 46px 35px;
+  }
 `;
 const Img = styled.img`
   width: 35px;
@@ -68,6 +74,14 @@ const Heading = styled.span`
   }
   @media screen and (max-width: 1280px) and (min-width: 1024px) {
     margin-left: 20px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 768px) {
+    margin-top: 89px;
+    margin-left: 52px;
+  }
+  @media screen and (max-width: 767px) and (min-width: 0px) {
+    margin-top: 89px;
+    margin-left: 37px;
   }
 `;
 const CopyIcon = styled.img`
