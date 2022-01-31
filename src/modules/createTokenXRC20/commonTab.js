@@ -10,6 +10,7 @@ import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import Web3 from 'web3';
 import { connect } from 'react-redux';
+import toast, { Toaster } from "react-hot-toast";
 
 const MainContainer = styled.div`
   display: flex;
@@ -252,7 +253,7 @@ function CommonTab(props) {
     tokenName: "",
     tokenSymbol: "",
     tokenImage: imgData,
-    tokenDecimals: "18",
+    tokenDecimals: '18',
     tokenDescription: "",
     tokenInitialSupply: undefined,
     pausable: false,
@@ -274,7 +275,7 @@ function CommonTab(props) {
   }, [props])
 
   let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage
-  let initialDecimalValue = tokenData.tokenDecimals ? tokenData.tokenDecimals : "18"
+  let initialDecimalValue = tokenData.tokenDecimals ? tokenData.tokenDecimals : '18'
 
   const handleChange = (e) => {
     setTokenData({
@@ -302,7 +303,6 @@ function CommonTab(props) {
     }
   }, [formErrors]);
 
-
   const checkError = () => {
     setFormErrors(validate(tokenData));
     setSaveAndContinue(true);
@@ -313,9 +313,9 @@ function CommonTab(props) {
   const validate = (values) => {
     const errors = {};
 
-    // if (!values.network) {
-    //   errors.network = validationsMessages.VALIDATE_NETWORK;
-    // }
+    if (!values.network) {
+      errors.network = validationsMessages.VALIDATE_NETWORK;
+    }
 
     if (Utils.isEmpty(values.tokenName)) {
       errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_FIELD;
@@ -386,12 +386,32 @@ function CommonTab(props) {
 
   // saveDraft api function : 
 
+  const notifySuccessMsg = () =>
+    toast.success("Token has been Saved as Draft", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+
+  const notifyNameErrorMessage = () =>
+    toast.error("Token with this name already exists!", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+
+  const notifySymbolErrorMessage = () =>
+    toast.error("Token with this symbol already exists!", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+
   let createdToken = tokenData.tokenName
   let parsingDecimal = Number(tokenData.tokenDecimals);
   let parsingSupply = Number(tokenData.tokenInitialSupply);
 
   const saveAsDraft = async (e) => {
-    // e.preventDefault();
     let reqObj = {
       tokenOwner: tokenData.tokenOwner,
       tokenName: createdToken,
@@ -409,15 +429,20 @@ function CommonTab(props) {
       telegram: tokenData.telegram || "",
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
-    // console.log('tr---',res)
-    if (res !== 0) {
-      Utils.apiSuccessToast("Saved as Draft")
+
+    if (res !== 0 && res !== "Token with this name already exists!" && res !== "Token with this symbol already exists!") {
+      notifySuccessMsg()
       sendTransaction(res)
+    } else if (res === "Token with this name already exists!") {
+      notifyNameErrorMessage()
+      prevStep();
+    } else if (res === "Token with this symbol already exists!") {
+      notifySymbolErrorMessage()
+      prevStep();
     }
   };
 
   const saveAsDraftbyEdit = async (e) => {
-    // e.preventDefault();
     let reqObj = {
       id: tokenData.id,
       tokenOwner: tokenData.tokenOwner,
@@ -438,7 +463,8 @@ function CommonTab(props) {
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
-    if (res[0] !== 0) {
+    if (res[0] !== 0 && res !== undefined) {
+      notifySuccessMsg()
       sendTransaction(res[0])
     }
   };
@@ -473,7 +499,7 @@ function CommonTab(props) {
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             setTimeout(() => {
-              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner) 
+              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner)
             }, 10000);
           }
         })
@@ -541,6 +567,7 @@ function CommonTab(props) {
 
   return (
     <>
+      <div><Toaster /></div>
       <MainContainer>
         <Parent>
           <Header>Create XRC20 Token</Header>

@@ -6,6 +6,7 @@ import { addFeaturesContent, apiSuccessConstants } from "../../constants";
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import { handleNavItem } from "../../action";
+import toast, { Toaster } from "react-hot-toast";
 
 const Parent = styled.div`
   display: flex;
@@ -361,6 +362,19 @@ function AddFeatures(props) {
     setArr(newData);
   };
 
+  const notifyNameErrorMessage = () =>
+    toast.error("Token with this name already exists!", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+  const notifySymbolErrorMessage = () =>
+    toast.error("Token with this symbol already exists!", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+
   // saveDraft api function :
 
   let createdToken = props.tokenData.tokenName;
@@ -392,9 +406,14 @@ function AddFeatures(props) {
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
-    if (res !== 0) {
+    // console.log('res', res)
+    if (res !== 0 && res !== "Token with this name already exists!" && res !== "Token with this symbol already exists!") {
       props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res });
+    } else if (res === "Token with this name already exists!") {
+      notifyNameErrorMessage()
+    } else if (res === "Token with this symbol already exists!") {
+      notifySymbolErrorMessage()
     }
   };
 
@@ -437,6 +456,7 @@ function AddFeatures(props) {
 
   return (
     <>
+      <div><Toaster /></div>
       <Parent>
         <Column>
           <RowTwo>

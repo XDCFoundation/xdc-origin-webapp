@@ -529,6 +529,10 @@ opacity: 1;
   padding-top: 4px;
   color: red
 }
+.shown-browser-error{
+  text-align: center;
+  color: red
+}
 .reactEasyCrop_Container {
   position: relative;
   width: 264px;
@@ -599,4 +603,16 @@ opacity: 1;
 } 
 .origin-space{
   margin-left: 4px;
+}
+.toast-div-address{
+  height: 49px;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.1) !important;
+  font-family: Inter;
+  font-size: 15px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  color: #3a3a3a !important;
 }

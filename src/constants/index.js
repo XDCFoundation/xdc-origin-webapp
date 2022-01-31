@@ -23,7 +23,8 @@ export const httpConstants = {
         UPDATE_TOKEN: "update-xrc20token",
         GET_DRAFT_FAILD_XRC20_TOKEN: "/get-draft-failed-xrc20token",
         GET_XRC20TOKEN_BY_ID : "/get-xrc20Token-by-id",
-        GET_TRANSACTION_DETAILS: "getTransactionDetails"
+        GET_TRANSACTION_DETAILS: "getTransactionDetails",
+        DELETE_XRC20_TOKEN: "/delete-xrc20token",
     },
 };
 export const apiBodyMessages = {
