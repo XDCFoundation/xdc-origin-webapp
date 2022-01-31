@@ -332,6 +332,8 @@ export default function Token(props) {
   const classes = useStyles();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
+  const [errors, setErrors] = useState()
+  let formErrors = props.formErrors
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -343,6 +345,9 @@ export default function Token(props) {
 
   const saveAndContinue = (e) => {
     props.handleChange(e);
+    if (Object.keys(formErrors)?.length !== 0) {
+      setErrors(formErrors)
+    }
     props.nextStep(e);
   };
 
@@ -387,7 +392,8 @@ export default function Token(props) {
             </InsideDiv>
 
             <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
-            <p className="shown-error">{props.formErrors.network}</p>
+            {errors?.network ? ( <p className="shown-error">{errors?.network}</p>) : ""}
+            {/* <p className="shown-error">{props.formErrors.network}</p> */}
           </CommonRow>
 
           <CommonRow>
@@ -413,7 +419,8 @@ export default function Token(props) {
               placeholder="e.g. XDC Network"
             />
             <BlurTextDiv>Choose a name for your token</BlurTextDiv>
-            <p className="shown-error">{props.formErrors.tokenName}</p>
+            {errors?.tokenName ? (<p className="shown-error">{errors?.tokenName}</p>) : ""}
+            {/* <p className="shown-error">{props.formErrors.tokenName}</p> */}
           </CommonRow>
 
           <CommonRow>
@@ -439,7 +446,8 @@ export default function Token(props) {
             />
 
             <BlurTextDiv>Choose symbol for your token</BlurTextDiv>
-            <p className="shown-error">{props.formErrors.tokenSymbol}</p>
+            {errors?.tokenSymbol ? (<p className="shown-error">{errors?.tokenSymbol}</p>) : ""}
+            {/* <p className="shown-error">{props.formErrors.tokenSymbol}</p> */}
           </CommonRow>
 
           <DesktopCommonRow>
@@ -524,7 +532,7 @@ export default function Token(props) {
                         />
                       )}
                     </MainCircle>
-                    <p className="shown-error">{props.formErrors.tokenImage}</p>
+                    {errors?.tokenImage ? (<p className="shown-error">{errors?.tokenImage}</p>) : ""}
                   </div>
                 )}
               </CircleRow>
@@ -614,6 +622,7 @@ export default function Token(props) {
                         src="/images/PlusIcon.svg"
                       />
                     </MainCircle>
+                    {errors?.tokenImage ? (<p className="shown-error">{errors?.tokenImage}</p>) : ""}
                   </div>
                 )}
               </CircleRow>
@@ -638,14 +647,15 @@ export default function Token(props) {
               type="number"
               onChange={(e) => props.handleChange(e)}
               name="tokenDecimals"
-              value={props.tokenData.tokenDecimals}
+              value={props.tokenData?.tokenDecimals}
               placeholder="8-18"
             />
 
             <BlurTextDiv>
               Insert the decimal precision of your token
             </BlurTextDiv>
-            <p className="shown-error">{props.formErrors.tokenDecimals}</p>
+            {/* <p className="shown-error">{props.formErrors.tokenDecimals}</p> */}
+            {errors?.tokenDecimals ? (<p className="shown-error">{errors?.tokenDecimals}</p>) : ""}
           </CommonRow>
 
           <CommonRow>
@@ -671,7 +681,8 @@ export default function Token(props) {
             />
 
             <BlurTextDiv>Add description for your token</BlurTextDiv>
-            <p className="shown-error">{props.formErrors.tokenDescription}</p>
+            {/* <p className="shown-error">{props.formErrors.tokenDescription}</p> */}
+            {errors?.tokenDescription ? (<p className="shown-error">{errors?.tokenDescription}</p>) : ""}
           </CommonRow>
 
           <CommonRow>

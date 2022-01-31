@@ -338,7 +338,8 @@ export default function UploadTokenImage(props) {
                 <div>
                   <SeekBar
                     getNumber={setScale}
-                    max={10}
+                    max={1}
+                    min={1}
                     width="300px"
                     backgroundColor="#EDEDED"
                     fillColor="#EDEDED"
