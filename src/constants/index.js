@@ -23,7 +23,8 @@ export const httpConstants = {
         UPDATE_TOKEN: "update-xrc20token",
         GET_DRAFT_FAILD_XRC20_TOKEN: "/get-draft-failed-xrc20token",
         GET_XRC20TOKEN_BY_ID : "/get-xrc20Token-by-id",
-        GET_TRANSACTION_DETAILS: "getTransactionDetails"
+        GET_TRANSACTION_DETAILS: "getTransactionDetails",
+        DELETE_XRC20_TOKEN: "/delete-xrc20token",
     },
 };
 export const apiBodyMessages = {
@@ -48,8 +49,9 @@ export const validationsMessages = {
     VALIDATE_NETWORK: 'Network is required !',
 }
 export const addFeaturesContent = {
-    PAUSABLE_CONTENT:"Keeps the tokens “totalSupply” value up to date, Useful in case someone wants to burn some tokens to reduce the supply for their project or burn unsold tokens",
-    MINTABLE_CONTENT:"Building distribution / crowdsale logic directly into the token contract or by including a generic mint function that can be called by an external contract.",
+    PAUSABLE_CONTENT: "This specifies whether your token and all associated operations can be halted and resumed whenever needed.",
+    BURNABLE_CONTENT:"This specifies whether your tokens can be burned to decrease the supply.",
+    MINTABLE_CONTENT:"Minting specifies, whether more tokens can be created to increase the initial supply.",
 }
 
 export const eventConstants = {

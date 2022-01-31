@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import BasicInfoPage from "./basicInformation";
+import numberToWords from "number-to-words";
+import { Tooltip, Fade, createTheme } from "@material-ui/core";
+import Utils from "../../utility";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const Parent = styled.div`
   display: flex;
@@ -59,6 +64,8 @@ const CommonRow = styled.div`
   }
 `;
 const TextDiv = styled.div`
+  display: flex;
+  flex-direction: row;
   text-align: left;
   font: normal normal medium 16px/20px Inter;
   letter-spacing: 0px;
@@ -84,8 +91,8 @@ const InputDiv = styled.input`
     color: #a8acc1;
     opacity: 1;
   }
-  :focus{
-    outline: 2px solid #8CA6F0;
+  :focus {
+    outline: 2px solid #8ca6f0;
   }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
@@ -101,6 +108,7 @@ const BlurTextDiv = styled.div`
   color: #a2a2a2;
   opacity: 1;
   padding: 7px 0px 7px 0px;
+  text-transform: capitalize;
 `;
 const ButtonsRow = styled.div`
   display: flex;
@@ -181,15 +189,56 @@ const ContinueText = styled.div`
     margin: 0 8px 0px 8px;
   }
 `;
+const Span = styled.div`
+  color: red;
+`;
+const QImg = styled.img`
+  padding-left: 10px;
+`;
+
+const theme = createTheme({
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: "12px",
+        color: "#4B4B4B",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0px 3px 12px #0000001A",
+        border: "1px solid #e6e8ed",
+      },
+    },
+  },
+});
+
+const defaultTheme = createTheme();
+
+const useStyles = makeStyles((theme) => ({
+  arrow: {
+    "&:before": {
+      border: "1px solid #e6e8ed",
+    },
+    color: theme.palette.common.white,
+  },
+}));
 
 export default function Tokenomics(props) {
-  
+  const classes = useStyles();
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const saveAndContinue = (e) => {
-    props.handleChange(e)
-    if(props.tokenData.tokenInitialSupply > 0 && props.tokenData.tokenInitialSupply !== undefined){
+    props.handleChange(e);
+    if (props.tokenData.tokenInitialSupply > 0 && props.tokenData.tokenInitialSupply !== undefined) {
       props.nextStep(e);
     }
   };
+
+  let convertedNumber = numberToWords?.toWords(
+    props?.tokenData?.tokenInitialSupply || 0
+  );
+  // console.log('num-----',convertedNumber)
 
   return (
     <>
@@ -202,14 +251,31 @@ export default function Tokenomics(props) {
             </SpanTwo>
           </RowTwo>
           <CommonRow>
-            <TextDiv>Initial Supply</TextDiv>
-            
+            <TextDiv>
+              Initial Supply<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Number of tokens available initially."
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
+
             <InputDiv
               type="number"
               onChange={(e) => props.handleChange(e)}
               name="tokenInitialSupply"
               value={props.tokenData.tokenInitialSupply}
             />
+            {props.tokenData.tokenInitialSupply > 0 ? (
+              <BlurTextDiv>{convertedNumber}</BlurTextDiv>
+            ) : (
+              ""
+            )}
             <BlurTextDiv>
               Insert the initial numbers of tokens available
             </BlurTextDiv>

@@ -81,17 +81,17 @@ function DeployContract(props) {
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             setTimeout(() => {
-              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner) 
+              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner)
             }, 10000);
           }
         })
-        .on('receipt', function (receipt) {
-          // console.log("receipt ====", receipt);  
-        }
-        )
-        .on('confirmation', function (confirmationNumber, receipt) {
-          // console.log("confirmation ====", confirmationNumber, receipt);
-        })
+        // .on('receipt', function (receipt) {
+        // console.log("receipt ====", receipt);  
+        // }
+        // )
+        // .on('confirmation', function (confirmationNumber, receipt) {
+        // console.log("confirmation ====", confirmationNumber, receipt);
+        // })
         .on('error', function (error) {
           if (error) {
             setOpenDeployPopup(false)
@@ -135,7 +135,7 @@ function DeployContract(props) {
 
   const contractDetailsFromTxnHash = async (txnHash, parsingDecimal, parsingSupply, gasPrice, createdToken, tokenId, tokenOwner) => {
     let reqObj = {
-      hash: txnHash 
+      hash: txnHash
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.getTxnHashDetails(reqObj));
     let obtainContractAddress = res?.contractAddress || ""
@@ -164,44 +164,44 @@ function DeployContract(props) {
         <DataContainer>
           {props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
             <EmptyRow>No Contracts Available</EmptyRow>
-          ) : 
+          ) :
             props.state.draftFailedXrc20TokenDetails && props.state.draftFailedXrc20TokenDetails.map((item, index) => (
-            <>
-              <TableRow key={index}>
-                <div className="tokenIcon">
-                  <TableContentImg alt="" src={item.tokenImage ? item.tokenImage : "/images/XDC_sky_blue.svg"} />
-                </div>
-                <div className="tokenName">
-                  <TableContent>{item.tokenName}</TableContent>
-                </div>
-                <div className="tokenSymbol">
-                  <TableContent>{item.tokenSymbol}</TableContent>
-                </div>
-                <div className="network">
-                  <TableContent>{item.network}</TableContent>
-                </div>
-                <div className="supply">
-                  <TableContent>{item.tokenInitialSupply}</TableContent>
-                </div>
-                <div className="status">
-                  <TableContent>{capitalize(item.status)}</TableContent>
-                </div>
-                <div className="icons">
-                  <div className="deployIcon" onClick={() => handleDeployPopup(item.tokenName)}>
-                    <img src="/images/deploy_contract.png" alt="" />
+              <>
+                <TableRow key={index}>
+                  <div className="tokenIcon">
+                    <TableContentImg alt="" src={item.tokenImage ? item.tokenImage : "/images/XDC_sky_blue.svg"} />
                   </div>
-                  <div className="deleteIcon" onClick={() => handleClickOpen(item.id, item.tokenName)}>
-                    <Delete />
+                  <div className="tokenName">
+                    <TableContent>{item.tokenName}</TableContent>
                   </div>
-                  <div onClick={() => history.push(`/token-XRC20/${item.id}`)} className="editIcon">
-                    <Edit />
+                  <div className="tokenSymbol">
+                    <TableContent>{item.tokenSymbol}</TableContent>
                   </div>
-                </div>
-              </TableRow>
-              <DataLine />
-            </>
-          ))
-        }
+                  <div className="network">
+                    <TableContent>{item.network}</TableContent>
+                  </div>
+                  <div className="supply">
+                    <TableContent>{item.tokenInitialSupply}</TableContent>
+                  </div>
+                  <div className="status">
+                    <TableContent>{capitalize(item.status)}</TableContent>
+                  </div>
+                  <div className="icons">
+                    <div className="deployIcon" onClick={() => handleDeployPopup(item.tokenName)}>
+                      <img src="/images/deploy_contract.png" alt="" />
+                    </div>
+                    <div className="deleteIcon" onClick={() => handleClickOpen(item.id, item.tokenName)}>
+                      <Delete />
+                    </div>
+                    <div onClick={() => history.push(`/token-XRC20/${item.id}`)} className="editIcon">
+                      <Edit />
+                    </div>
+                  </div>
+                </TableRow>
+                <DataLine />
+              </>
+            ))
+          }
         </DataContainer>
       </TableContainer>
 

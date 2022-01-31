@@ -5,8 +5,8 @@ import Sidebar from "../dashboard/sidebar";
 import Header from "../header/header";
 import { Row } from "simple-flexbox";
 import Footer from "../Footer";
-import  Utility  from "../../utility";
-import {contractManagementService} from "../../services"
+import Utility from "../../utility";
+import { contractManagementService } from "../../services";
 import { connect } from "react-redux";
 
 class DeployContract extends BaseComponent {
@@ -26,13 +26,13 @@ class DeployContract extends BaseComponent {
       tokenOwner: this.props?.user?.accountDetails?.address,
       network: this.props?.user?.accountDetails?.network
     };
-  
+
     let [error, contractServiceResponse] = await Utility.parseResponse(
       contractManagementService.getDraftFailedXrc20Token(requestData)
     );
-    
+
     if (error || !contractServiceResponse) {
-      console.error("getDraftFailedXrc20Token error -> ", error)
+      console.error("getDraftFailedXrc20Token error -> ", error);
       if (error?.responseData?.length === 0) {
         this.setState({
           draftFailedXrc20TokenDetails: [],
@@ -41,29 +41,29 @@ class DeployContract extends BaseComponent {
       return;
     }
     if (contractServiceResponse) {
-        this.setState({
-          draftFailedXrc20TokenDetails: contractServiceResponse,
-        });
+      this.setState({
+        draftFailedXrc20TokenDetails: contractServiceResponse,
+      });
     }
-  }
+  };
   deleteContract = async (tokenId) => {
     let requestData = {
       id: tokenId,
     };
-  
+
     let [error, deleteContractResponse] = await Utility.parseResponse(
       contractManagementService.deleteContract(requestData)
     );
 
     if (error || !deleteContractResponse) {
-      console.error("deleteContract error -> ", error)
+      console.error("deleteContract error -> ", error);
       return;
     }
-  
+
     if (deleteContractResponse) {
-      this.getDraftFailedXrc20Token()
+      this.getDraftFailedXrc20Token();
     }
-  }
+  };
 
   render() {
     return (
@@ -71,7 +71,11 @@ class DeployContract extends BaseComponent {
         <Header />
         <Row>
           {window.innerWidth >= 1024 ? <Sidebar /> : ""}
-          <DeployContractComponent saveDraftData={this.props.location.state} state={this.state} deleteContract={this.deleteContract}/>
+          <DeployContractComponent
+            saveDraftData={this.props.location.state}
+            state={this.state}
+            deleteContract={this.deleteContract}
+          />
         </Row>
         {window.innerWidth <= 768 ? <Footer /> : ""}
       </div>

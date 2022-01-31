@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { handleAccountDetails, handleWallet } from "../../action";
 import Web3 from "web3";
 import { useHistory } from "react-router";
+import { detect } from "detect-browser";
 
 const useStyles = makeStyles({
   dialog: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles({
 const Container = styled.div`
   width: 679px;
   min-width: 679px;
-  height: 463px;
+  height: 489px;
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 6px;
   opacity: 1;
@@ -250,6 +251,10 @@ function connectWalletPopup(props) {
     }
   };
 
+  const browser = detect();
+  // if (browser) {
+  //   console.log('bro---',browser.name)
+  // }
   return (
     <Dialog
       aria-labelledby="simple-dialog-title"
@@ -312,14 +317,22 @@ function connectWalletPopup(props) {
             </SubTextContainer>
           </Box>
         </BoxContainer>
-        <ButtonContainer>
-          <Button>
-            <BtnImg src="/images/XDC_Icon_White.svg" />
-            <BtnText onClick={() => handleXDCPayWallet()}>
-              Connect Wallet
-            </BtnText>
-          </Button>
-        </ButtonContainer>
+        <div>
+          {browser?.name !== "chrome" ? (
+            <p className="shown-browser-error">
+              XDCPay wallet only supports Chrome browser.
+            </p>
+          ) : (
+            <ButtonContainer>
+              <Button>
+                <BtnImg src="/images/XDC_Icon_White.svg" />
+                <BtnText onClick={() => handleXDCPayWallet()}>
+                  Connect Wallet
+                </BtnText>
+              </Button>
+            </ButtonContainer>
+          )}
+        </div>
       </Container>
     </Dialog>
   );

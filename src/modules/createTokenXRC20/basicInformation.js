@@ -5,6 +5,9 @@ import UploadFile from "../uploadTokenImage/uploadImage";
 import UploadTokenImage from "../uploadTokenImage/uploadImageMobile";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
+import { Tooltip, Fade, createTheme } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const Parent = styled.div`
   display: flex;
@@ -40,7 +43,7 @@ const CommonRow = styled.div`
   flex-direction: column;
   padding: 6px 0px 0px 57px;
   @media (min-width: 0px) and (max-width: 1024px) {
-    padding: 30px 0px 0px 18px;
+    padding: 6px 0px 0px 18px;
   }
 `;
 
@@ -96,6 +99,8 @@ const SpanTwo = styled.div`
   }
 `;
 const TextDiv = styled.div`
+  display: flex;
+  flex-direction: row;
   text-align: left;
   font: normal normal medium 16px/20px Inter;
   letter-spacing: 0px;
@@ -122,8 +127,8 @@ const InputDiv = styled.input`
     color: #a8acc1;
     opacity: 1;
   }
-  :focus{
-    outline: 2px solid #8CA6F0;
+  :focus {
+    outline: 2px solid #8ca6f0;
   }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
@@ -264,6 +269,10 @@ const Div = styled.div`
   flex-direction: column;
 `;
 
+const Span = styled.div`
+  color: red;
+`;
+
 const ReplaceButton = styled.button`
   padding: 5px 0px 0px 30px;
   text-align: left;
@@ -290,17 +299,55 @@ const UrlInput = styled.img`
   opacity: 1;
 `;
 
+const QImg = styled.img`
+  padding-left: 10px;
+`;
+
+const theme = createTheme({
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: "12px",
+        color: "#4B4B4B",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0px 3px 12px #0000001A",
+        border: "1px solid #e6e8ed",
+      },
+    },
+  },
+});
+
+const defaultTheme = createTheme();
+
+const useStyles = makeStyles((theme) => ({
+  arrow: {
+    "&:before": {
+      border: "1px solid #e6e8ed",
+    },
+    color: theme.palette.common.white,
+  },
+}));
 
 export default function Token(props) {
+  const classes = useStyles();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
+  const [errors, setErrors] = useState()
+  let formErrors = props.formErrors
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
 
   const saveAndContinue = (e) => {
-    props.handleChange(e)
+    props.handleChange(e);
+    if (Object.keys(formErrors)?.length !== 0) {
+      setErrors(formErrors)
+    }
     props.nextStep(e);
   };
 
@@ -316,7 +363,19 @@ export default function Token(props) {
           </RowTwo>
 
           <CommonRow>
-            <TextDiv>Network</TextDiv>
+            <TextDiv>
+              Network<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Name of network"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InsideDiv>
               <InputDiv
                 type="text"
@@ -333,11 +392,25 @@ export default function Token(props) {
             </InsideDiv>
 
             <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
-            <p className="shown-error">{props.formErrors.network}</p>
+            {errors?.network ? ( <p className="shown-error">{errors?.network}</p>) : ""}
+            {/* <p className="shown-error">{props.formErrors.network}</p> */}
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Token Name</TextDiv>
+            <TextDiv>
+              Token Name<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Name of the token"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
+
             <InputDiv
               type="text"
               onChange={(e) => props.handleChange(e)}
@@ -346,11 +419,24 @@ export default function Token(props) {
               placeholder="e.g. XDC Network"
             />
             <BlurTextDiv>Choose a name for your token</BlurTextDiv>
-            <p className="shown-error">{props.formErrors.tokenName}</p>
+            {errors?.tokenName ? (<p className="shown-error">{errors?.tokenName}</p>) : ""}
+            {/* <p className="shown-error">{props.formErrors.tokenName}</p> */}
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Symbol</TextDiv>
+            <TextDiv>
+              Symbol<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Short name of the token"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InputDiv
               type="text"
               onChange={(e) => props.handleChange(e)}
@@ -360,138 +446,232 @@ export default function Token(props) {
             />
 
             <BlurTextDiv>Choose symbol for your token</BlurTextDiv>
-            <p className="shown-error">{props.formErrors.tokenSymbol}</p>
+            {errors?.tokenSymbol ? (<p className="shown-error">{errors?.tokenSymbol}</p>) : ""}
+            {/* <p className="shown-error">{props.formErrors.tokenSymbol}</p> */}
           </CommonRow>
 
           <DesktopCommonRow>
-            <TextDiv>Token Image (PNG, JPG/JPEG, 32*32 px)</TextDiv>
+            <TextDiv>
+              Token Image (PNG, JPG/JPEG, 32*32 px)<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Icon of the token"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
 
             {/* condition work, when user comes to create token and have uploaded the image*/}
-            {props.imgData && props.imgData.length !== undefined ?
-              (
-                <CircleRow >
-                  <Div >
-                    <MainImage src={props.imgData} />
-                    <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                    <ReplaceButton onClick={(e) => {props.toggleUploadPopup(e); props.handleChange(e);} }>
+            {props.imgData && props.imgData.length !== undefined ? (
+              <CircleRow>
+                <Div>
+                  <MainImage src={props.imgData} />
+                  <UrlInput
+                    value={props.tokenData.tokenImage}
+                    readOnly
+                    type="text"
+                    name="tokenImage"
+                  />
+                  <ReplaceButton
+                    onClick={(e) => {
+                      props.toggleUploadPopup(e);
+                      props.handleChange(e);
+                    }}
+                  >
+                    Replace
+                  </ReplaceButton>
+                  {props.isUploadOpen && (
+                    <UploadFile
+                      handleUploadClose={(e) => props.toggleUploadPopup(e)}
+                    />
+                  )}
+                </Div>
+              </CircleRow>
+            ) : (
+              <CircleRow>
+                {/* checking condition, whether user has came to edit token or creation of token,
+                    1st cond. will work for edit and 2nd for first time creation by default*/}
+                {props.tokenData.tokenImage ? (
+                  <Div>
+                    <MainImage src={props.tokenData.tokenImage} />
+                    <UrlInput
+                      value={props.tokenData.tokenImage}
+                      readOnly
+                      type="text"
+                      name="tokenImage"
+                    />
+                    <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
                       Replace
                     </ReplaceButton>
                     {props.isUploadOpen && (
-                      <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                      <UploadFile
+                        handleUploadClose={(e) => props.toggleUploadPopup(e)}
+                      />
                     )}
                   </Div>
-                </CircleRow>
-              ) : (
-                <CircleRow>
-
-                  {/* checking condition, whether user has came to edit token or creation of token,
-                    1st cond. will work for edit and 2nd for first time creation by default*/}
-                  {props.tokenData.tokenImage ?
-                    (
-                      <Div>
-                        <MainImage src={props.tokenData.tokenImage} />
-                        <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                        <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
-                          Replace
-                        </ReplaceButton>
-                        {props.isUploadOpen && (
-                          <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                        )}
-                      </Div>
-                    ) :
-                    (
-                      <div>
-                      <MainCircle >
-                        <PlusImage
-                          onClick={(e) => props.toggleUploadPopup(e)}
-                          src="/images/PlusIcon.svg"
+                ) : (
+                  <div>
+                    <MainCircle>
+                      <PlusImage
+                        onClick={(e) => props.toggleUploadPopup(e)}
+                        src="/images/PlusIcon.svg"
+                      />
+                      <UrlInput
+                        value={props.tokenData.tokenImage}
+                        readOnly
+                        type="text"
+                        name="tokenImage"
+                      />
+                      {props.isUploadOpen && (
+                        <UploadFile
+                          handleUploadClose={(e) => props.toggleUploadPopup(e)}
                         />
-                        <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                        {props.isUploadOpen && (
-                          <UploadFile handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                        )}
-                      </MainCircle>
-                       <p className="shown-error">{props.formErrors.tokenImage}</p>
-                       </div>
-                    )}
-
-                </CircleRow>
-              )}
+                      )}
+                    </MainCircle>
+                    {errors?.tokenImage ? (<p className="shown-error">{errors?.tokenImage}</p>) : ""}
+                  </div>
+                )}
+              </CircleRow>
+            )}
           </DesktopCommonRow>
 
           {/* --------- */}
 
           <MobCommonRow>
-            <TextDiv>Token Image (PNG, JPG/JPEG, 32*32 px)</TextDiv>
+            <TextDiv>
+              Token Image (PNG, JPG/JPEG, 32*32 px)<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Icon of the token"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
 
             {props.imgData && props.imgData.length !== undefined ? (
-              <CircleRow >
+              <CircleRow>
                 {props.isUploadOpen && (
-                  <UploadTokenImage handleUploadClose={(e) => props.toggleUploadPopup(e)} />
+                  <UploadTokenImage
+                    handleUploadClose={(e) => props.toggleUploadPopup(e)}
+                  />
                 )}
                 <Div>
                   <MainImage src={props.imgData} />
-                  <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                  <ReplaceButton onClick={(e) => {props.toggleUploadPopup(e); props.handleChange(e);}}>
+                  <UrlInput
+                    value={props.tokenData.tokenImage}
+                    readOnly
+                    type="text"
+                    name="tokenImage"
+                  />
+                  <ReplaceButton
+                    onClick={(e) => {
+                      props.toggleUploadPopup(e);
+                      props.handleChange(e);
+                    }}
+                  >
                     Replace
                   </ReplaceButton>
                 </Div>
               </CircleRow>
             ) : (
               <CircleRow>
-
                 {/* checking condition, whether user has came to edit token or creation of token,
                     1st cond. will work for edit and 2nd for first time creation by default*/}
-                {props.tokenData.tokenImage ?
-                  (
-                    <Div>
-                      {props.isUploadOpen && (
-                        <UploadTokenImage handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                      )}
-                      <MainImage src={props.tokenData.tokenImage} />
-                      <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                      <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
-                        Replace
-                      </ReplaceButton>
-                    </Div>
-                  ) :
-                  (
-                    <div>
-                      {props.isUploadOpen && (
-                        <UploadTokenImage handleUploadClose={(e) => props.toggleUploadPopup(e)} />
-                      )}
-                      <MainCircle >
-                        <UrlInput value={props.tokenData.tokenImage} readOnly type="text" name="tokenImage" />
-                        <PlusImage
-                          onClick={(e) => props.toggleUploadPopup(e)}
-                          src="/images/PlusIcon.svg"
-                        />
-                      </MainCircle>
-                    </div>
-                  )}
-
+                {props.tokenData.tokenImage ? (
+                  <Div>
+                    {props.isUploadOpen && (
+                      <UploadTokenImage
+                        handleUploadClose={(e) => props.toggleUploadPopup(e)}
+                      />
+                    )}
+                    <MainImage src={props.tokenData.tokenImage} />
+                    <UrlInput
+                      value={props.tokenData.tokenImage}
+                      readOnly
+                      type="text"
+                      name="tokenImage"
+                    />
+                    <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
+                      Replace
+                    </ReplaceButton>
+                  </Div>
+                ) : (
+                  <div>
+                    {props.isUploadOpen && (
+                      <UploadTokenImage
+                        handleUploadClose={(e) => props.toggleUploadPopup(e)}
+                      />
+                    )}
+                    <MainCircle>
+                      <UrlInput
+                        value={props.tokenData.tokenImage}
+                        readOnly
+                        type="text"
+                        name="tokenImage"
+                      />
+                      <PlusImage
+                        onClick={(e) => props.toggleUploadPopup(e)}
+                        src="/images/PlusIcon.svg"
+                      />
+                    </MainCircle>
+                    {errors?.tokenImage ? (<p className="shown-error">{errors?.tokenImage}</p>) : ""}
+                  </div>
+                )}
               </CircleRow>
             )}
           </MobCommonRow>
 
           <CommonRow>
-            <TextDiv>Decimals</TextDiv>
+            <TextDiv>
+              Decimals<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Number of digits that come after the decimal place when displaying token values on-screen"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InputDiv
               type="number"
               onChange={(e) => props.handleChange(e)}
               name="tokenDecimals"
-              value={props.tokenData.tokenDecimals}
+              value={props.tokenData?.tokenDecimals}
               placeholder="8-18"
             />
 
             <BlurTextDiv>
               Insert the decimal precision of your token
             </BlurTextDiv>
-            <p className="shown-error">{props.formErrors.tokenDecimals}</p>
+            {/* <p className="shown-error">{props.formErrors.tokenDecimals}</p> */}
+            {errors?.tokenDecimals ? (<p className="shown-error">{errors?.tokenDecimals}</p>) : ""}
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Description</TextDiv>
+            <TextDiv>
+              Description<Span>&nbsp;*</Span>
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Description of the token"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
             <InputDiv
               type="text"
               onChange={(e) => props.handleChange(e)}
@@ -501,29 +681,84 @@ export default function Token(props) {
             />
 
             <BlurTextDiv>Add description for your token</BlurTextDiv>
-            <p className="shown-error">{props.formErrors.tokenDescription}</p>
+            {/* <p className="shown-error">{props.formErrors.tokenDescription}</p> */}
+            {errors?.tokenDescription ? (<p className="shown-error">{errors?.tokenDescription}</p>) : ""}
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Website</TextDiv>
-            <InputDiv type="text" placeholder="Website Address" />
+            <TextDiv>
+              Website (Optional)
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Official website of the token"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="website"
+              value={props.tokenData.website}
+              placeholder="Website Address"
+            />
             <BlurTextDiv>Add Website url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Twitter(optional)</TextDiv>
-            <InputDiv type="text" placeholder="e.g. Twitter Url" />
+            <TextDiv>
+              Twitter (Optional)
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Twitter handle of the token"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="twitter"
+              value={props.tokenData.twitter}
+              placeholder="e.g. Twitter Url"
+            />
             <BlurTextDiv>Add Twitter page url for your token</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
-            <TextDiv>Telegram</TextDiv>
-            <InputDiv type="text" placeholder="e.g. Telegram Url" />
+            <TextDiv>
+              Telegram (Optional)
+              <MuiThemeProvider theme={theme}>
+                <Tooltip
+                  title="Telegram channel of the token"
+                  placement="right-end"
+                  arrow
+                  classes={{ arrow: classes.arrow }}
+                >
+                  <QImg src="/images/Info.svg"></QImg>
+                </Tooltip>
+              </MuiThemeProvider>
+            </TextDiv>
+            <InputDiv
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+              name="telegram"
+              value={props.tokenData.telegram}
+              placeholder="e.g. Telegram Url"
+            />
             <BlurTextDiv>Add Telegram group url for your token</BlurTextDiv>
           </CommonRow>
 
           <LastRow>
-            <ContinueButton onClick={saveAndContinue}>
+            <ContinueButton disabled={false} onClick={saveAndContinue}>
               <ContinueText>Continue</ContinueText>
               <ImgDiv src="/images/Button_Next_Arrow.svg" />
             </ContinueButton>

@@ -10,6 +10,7 @@ import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import Web3 from 'web3';
 import { connect } from 'react-redux';
+import toast, { Toaster } from "react-hot-toast";
 
 const MainContainer = styled.div`
   display: flex;
@@ -44,6 +45,7 @@ const Header = styled.div`
   opacity: 1;
   padding: 20px 0px 0px 0px;
   @media (min-width: 0px) and (max-width: 767px) {
+    margin: 63px 0px 0px 0px;
     font: normal normal 600 18px/21px Inter;
   }
 `;
@@ -58,6 +60,7 @@ const Column = styled.div`
 const RowOne = styled.div`
   display: flex;
   flex-direction: row;
+  /* padding: 0 10px; */
 `;
 
 const Div = styled.div`
@@ -65,7 +68,8 @@ const Div = styled.div`
   flex-direction: row;
   cursor: pointer;
   width: 224.5px;
-  border-bottom: 1px solid #f0f0f0;
+  border: none;
+  /* border-bottom: 1px solid red; */
   @media (min-width: 767px) and (max-width: 1024px) {
     width: 180.5px;
   }
@@ -75,8 +79,7 @@ const ImageDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 56px;
-  height: 56px;
+  width: 54px;
   opacity: 1;
   border-left: 1px solid #f0f0f0;
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -92,6 +95,10 @@ const Img = styled.img`
   justify-content: center;
   align-items: center;
   opacity: 1;
+  @media(min-width: 0px) and (max-width: 767px){
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 const Description = styled.div`
@@ -151,6 +158,30 @@ const ActiveTextTwo = styled.div`
     white-space: nowrap;
     font: normal normal 600 15px/20px Inter;
     padding: 0px 10px 0px 0px;
+  }
+`;
+
+const LineTop = styled.hr`
+  width: 864px;
+  margin: 0 0 10px 0;
+  border-top: 1px solid #f0f0f0;
+  @media (min-width: 0px) and (max-width: 767px) {
+    width: 323px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 688px;
+  }
+`;
+
+const LineBottom = styled.hr`
+  width: 864px;
+  margin-top: 10px;
+  border-top: 1px solid #f0f0f0;
+  @media (min-width: 0px) and (max-width: 767px) {
+    width: 320px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 688px;
   }
 `;
 
@@ -222,12 +253,15 @@ function CommonTab(props) {
     tokenName: "",
     tokenSymbol: "",
     tokenImage: imgData,
-    tokenDecimals: undefined,
+    tokenDecimals: '18',
     tokenDescription: "",
     tokenInitialSupply: undefined,
     pausable: false,
     mintable: true,
     burnable: true,
+    website: "",
+    twitter: "",
+    telegram: ""
   };
 
   const [tokenData, setTokenData] = useState(initialValues);
@@ -240,7 +274,8 @@ function CommonTab(props) {
     setTokenData(props.state?.xrc20TokenDetails)
   }, [props])
 
-  let newImage = imgData?.length >=1 ? imgData : tokenData.tokenImage
+  let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage
+  let initialDecimalValue = tokenData.tokenDecimals ? tokenData.tokenDecimals : '18'
 
   const handleChange = (e) => {
     setTokenData({
@@ -249,10 +284,12 @@ function CommonTab(props) {
       pausable: false,
       tokenOwner: userAddress,
       tokenImage: newImage,
+      tokenDecimals: initialDecimalValue,
       burnable: true,
       mintable: true,
       [e.target.name]: e.target.value
     }); //destructuring
+    checkError();
   };
 
   // console.log('to---', tokenData)
@@ -262,32 +299,37 @@ function CommonTab(props) {
   useEffect(() => {
     // console.log('er--', formErrors)
     if (Object.keys(formErrors).length === 0 && saveAndContinue) {
+      // console.log('to---', tokenData)
     }
   }, [formErrors]);
 
+  const checkError = () => {
+    setFormErrors(validate(tokenData));
+    setSaveAndContinue(true);
+  }
 
   //form error validations :
 
   const validate = (values) => {
     const errors = {};
 
-    // if (!values.network) {
-    //   errors.network = validationsMessages.VALIDATE_NETWORK;
-    // }
+    if (!values.network) {
+      errors.network = validationsMessages.VALIDATE_NETWORK;
+    }
 
-    if (!values.tokenName) {
+    if (Utils.isEmpty(values.tokenName)) {
       errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_FIELD;
     } else if (values.tokenName.length > 30) {
       errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_LIMIT;
     }
 
-    if (!values.tokenSymbol) {
+    if (Utils.isEmpty(values.tokenSymbol)) {
       errors.tokenSymbol = validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD;
     } else if (values.tokenSymbol.length > 15) {
       errors.tokenSymbol = validationsMessages.VALIDATE_TOKEN_SYMBOL_LIMIT;
     }
 
-    if (!values.tokenImage) {
+    if (Utils.isEmpty(values.tokenImage)) {
       errors.tokenImage = validationsMessages.VALIDATE_IMAGE_FIELD;
     }
 
@@ -301,7 +343,7 @@ function CommonTab(props) {
       errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_VALUE;
     }
 
-    if (!values.tokenDescription) {
+    if (Utils.isEmpty(values.tokenDescription)) {
       errors.tokenDescription = validationsMessages.VALIDATE_DESCRIPTION_FIELD;
     } else if (values.tokenDescription.length > 500) {
       errors.tokenDescription = validationsMessages.VALIDATE_DESCRIPTION_LIMIT;
@@ -311,13 +353,9 @@ function CommonTab(props) {
   };
 
   // Steps navigation functions : 
-  const checkError = () => {
-    setFormErrors(validate(tokenData));
-    setSaveAndContinue(true);
-  }
 
   const nextStep = (e) => {
-    checkError();
+    // checkError();
     if (Object.keys(formErrors).length === 0 && saveAndContinue === true) {
       let newData = arr.map((item) => {
         return item.id !== step
@@ -348,12 +386,32 @@ function CommonTab(props) {
 
   // saveDraft api function : 
 
+  const notifySuccessMsg = () =>
+    toast.success("Token has been Saved as Draft", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+
+  const notifyNameErrorMessage = () =>
+    toast.error("Token with this name already exists!", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+
+  const notifySymbolErrorMessage = () =>
+    toast.error("Token with this symbol already exists!", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+
   let createdToken = tokenData.tokenName
   let parsingDecimal = Number(tokenData.tokenDecimals);
   let parsingSupply = Number(tokenData.tokenInitialSupply);
 
   const saveAsDraft = async (e) => {
-    // e.preventDefault();
     let reqObj = {
       tokenOwner: tokenData.tokenOwner,
       tokenName: createdToken,
@@ -366,16 +424,25 @@ function CommonTab(props) {
       isBurnable: tokenData.burnable,
       isMintable: tokenData.mintable,
       isPausable: tokenData.pausable,
+      website: tokenData.website || "",
+      twitter: tokenData.twitter || "",
+      telegram: tokenData.telegram || "",
     };
     const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
-    // console.log('tr---',res)
-    if (res !== 0) {
+
+    if (res !== 0 && res !== "Token with this name already exists!" && res !== "Token with this symbol already exists!") {
+      notifySuccessMsg()
       sendTransaction(res)
+    } else if (res === "Token with this name already exists!") {
+      notifyNameErrorMessage()
+      prevStep();
+    } else if (res === "Token with this symbol already exists!") {
+      notifySymbolErrorMessage()
+      prevStep();
     }
   };
 
   const saveAsDraftbyEdit = async (e) => {
-    // e.preventDefault();
     let reqObj = {
       id: tokenData.id,
       tokenOwner: tokenData.tokenOwner,
@@ -389,11 +456,15 @@ function CommonTab(props) {
       isBurnable: tokenData.burnable,
       isMintable: tokenData.mintable,
       isPausable: tokenData.pausable,
+      website: tokenData.website || "",
+      twitter: tokenData.twitter || "",
+      telegram: tokenData.telegram || "",
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
-    if (res[0] !== 0) {
+    if (res[0] !== 0 && res !== undefined) {
+      notifySuccessMsg()
       sendTransaction(res[0])
     }
   };
@@ -428,7 +499,7 @@ function CommonTab(props) {
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             setTimeout(() => {
-              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner) 
+              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner)
             }, 10000);
           }
         })
@@ -496,10 +567,12 @@ function CommonTab(props) {
 
   return (
     <>
+      <div><Toaster /></div>
       <MainContainer>
         <Parent>
           <Header>Create XRC20 Token</Header>
           <Column>
+            <LineTop />
             <RowOne>
               {arr.map((item) => {
                 const TextOneActive = step == item.id ? ActiveTextOne : TextOne;
@@ -524,6 +597,7 @@ function CommonTab(props) {
                 );
               })}
             </RowOne>
+            <LineBottom />
             {(() => {
               switch (step) {
                 case 1:

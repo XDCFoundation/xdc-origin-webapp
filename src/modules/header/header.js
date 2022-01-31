@@ -7,7 +7,7 @@ import "../../assets/styles/custom.css";
 import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 import Web3 from "web3";
-import Identicon from "./identIcon"
+import Identicon from "./identIcon";
 
 function Header(props) {
   const history = useHistory();
@@ -33,31 +33,36 @@ function Header(props) {
   useEffect(() => {
     const handleXDCPayWalletChange = async () => {
       window.web3 = new Web3(window.ethereum);
-  
-      if (window.web3.currentProvider && props?.userDetails?.accountDetails?.isLoggedIn) {
+
+      if (
+        window.web3.currentProvider &&
+        props?.userDetails?.accountDetails?.isLoggedIn
+      ) {
         if (!window.web3.currentProvider.chainId) {
           //when metamask is disabled
           const state = window.web3.givenProvider.publicConfigStore._state;
           if (state.selectedAddress !== undefined) {
             let address = state.selectedAddress;
             let network =
-              state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
-  
+              state.networkVersion === "50"
+                ? "XDC Mainnet"
+                : "XDC Apothem Testnet";
+
             if (address || network) {
               let balance = null;
-  
+
               await window.web3.eth.getBalance(address).then((res) => {
                 balance = res / Math.pow(10, 18);
                 balance = truncateToDecimals(balance);
               });
-  
+
               let accountDetails = {
                 address: address,
                 network: network,
                 balance: balance,
-                isLoggedIn: true
+                isLoggedIn: true,
               };
-          
+
               props.updateAccountDetails(accountDetails);
               setForceUpdate(true);
             }
@@ -66,16 +71,17 @@ function Header(props) {
             const state = window.web3.givenProvider.publicConfigStore._state;
             let address = state.selectedAddress;
             let network =
-              state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+              state.networkVersion === "50"
+                ? "XDC Mainnet"
+                : "XDC Apothem Testnet";
           }
         }
       }
     };
 
     handleXDCPayWalletChange();
-    window.addEventListener("load",handleXDCPayWalletChange)
+    window.addEventListener("load", handleXDCPayWalletChange);
   }, []);
-  
 
   return (
     <>
@@ -100,25 +106,35 @@ function Header(props) {
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
             {props.userDetails?.accountDetails?.address ? (
               <AddressContainer>
-                <Balance>{props.userDetails?.accountDetails?.balance} XDC</Balance>
+                <Balance>
+                  {props.userDetails?.accountDetails?.balance} XDC
+                </Balance>
                 <Address>
-                  {props.userDetails?.accountDetails?.address.slice(0, 5).replace(/0x/, 'xdc') +
+                  {props.userDetails?.accountDetails?.address
+                    .slice(0, 5)
+                    .replace(/0x/, "xdc") +
                     "..." +
                     props.userDetails?.accountDetails?.address.substr(
                       props.userDetails?.accountDetails?.address.length - 5
                     )}
                 </Address>
-                {
-                  forceUpdate ? (
-                    <AccountIcon>
-                      <Identicon
-                        diameter={20}
-                        address={props.userDetails?.accountDetails?.address}
-                        network={props.userDetails?.accountDetails?.network}
-                      />
-                    </AccountIcon>
-                  ) : ""
-                }
+                {forceUpdate ? (
+                  <AccountIcon>
+                    <Identicon
+                      diameter={20}
+                      address={props.userDetails?.accountDetails?.address}
+                      network={props.userDetails?.accountDetails?.network}
+                    />
+                  </AccountIcon>
+                ) : (
+                  <AccountIcon>
+                    <Identicon
+                      diameter={20}
+                      address={props.userDetails?.accountDetails?.address}
+                      network={props.userDetails?.accountDetails?.network}
+                    />
+                  </AccountIcon>
+                )}
               </AddressContainer>
             ) : (
               <Button onClick={() => connectWallet()}>Connect Wallet</Button>
@@ -149,7 +165,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
 const HeaderContainer = styled.div`
   background: #091f5c 0% 0% no-repeat padding-box;
@@ -287,7 +303,7 @@ const AddressContainer = styled.div`
   justify-content: space-between;
   overflow: hidden;
   @media (min-width: 0px) and (max-width: 767px) {
-    display:none;
+    display: none;
   }
 `;
 const Balance = styled.span`
