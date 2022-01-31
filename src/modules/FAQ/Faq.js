@@ -54,12 +54,15 @@ export default function Faqs(props) {
         "Yes, you can connect your wallet to the Apothem test network if you want to test XRC20 token generation.",
     },
   ];
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <div className="app-container">
       <div className="faqs-container">
         <div id="Heading-section">
-          <h1 className="heading">FAQs</h1>
+          <div className="heading">FAQs</div>
         </div>
         <ul className="ui-margin">
           <div className="faqs-list">
