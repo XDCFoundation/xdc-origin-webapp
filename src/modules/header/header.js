@@ -7,13 +7,14 @@ import "../../assets/styles/custom.css";
 import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 import Web3 from "web3";
+import Identicon from "./identIcon"
 
 function Header(props) {
   const history = useHistory();
   const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isconnectWallet, setIsConnectWallet] = useState(true);
-  const [forceUpdate, setForceUpdate] = useState(0);
+  const [forceUpdate, setForceUpdate] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -37,33 +38,36 @@ function Header(props) {
         if (!window.web3.currentProvider.chainId) {
           //when metamask is disabled
           const state = window.web3.givenProvider.publicConfigStore._state;
-          let address = state.selectedAddress;
-          let network =
-            state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+          if (state.selectedAddress !== undefined) {
+            let address = state.selectedAddress;
+            let network =
+              state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
   
-        if (address || network) {
-            let balance = null;
+            if (address || network) {
+              let balance = null;
   
-            await window.web3.eth.getBalance(address).then((res) => {
-              balance = res / Math.pow(10, 18);
-              balance = truncateToDecimals(balance);
-            });
+              await window.web3.eth.getBalance(address).then((res) => {
+                balance = res / Math.pow(10, 18);
+                balance = truncateToDecimals(balance);
+              });
   
-            let accountDetails = {
-              address: address,
-              network: network,
-              balance: balance,
-              isLoggedIn: true
-          };
+              let accountDetails = {
+                address: address,
+                network: network,
+                balance: balance,
+                isLoggedIn: true
+              };
           
-            props.updateAccountDetails(accountDetails);
+              props.updateAccountDetails(accountDetails);
+              setForceUpdate(true);
+            }
+          } else {
+            //metamask is also enabled with xdcpay
+            const state = window.web3.givenProvider.publicConfigStore._state;
+            let address = state.selectedAddress;
+            let network =
+              state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
           }
-        } else {
-          //metamask is also enabled with xdcpay
-          const state = window.web3.givenProvider.publicConfigStore._state;
-          let address = state.selectedAddress;
-          let network =
-            state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
         }
       }
     };
@@ -104,7 +108,17 @@ function Header(props) {
                       props.userDetails?.accountDetails?.address.length - 5
                     )}
                 </Address>
-                <AccountIcon src="/images/XDC_Icon_White.svg" />
+                {
+                  forceUpdate ? (
+                    <AccountIcon>
+                      <Identicon
+                        diameter={20}
+                        address={props.userDetails?.accountDetails?.address}
+                        network={props.userDetails?.accountDetails?.network}
+                      />
+                    </AccountIcon>
+                  ) : ""
+                }
               </AddressContainer>
             ) : (
               <Button onClick={() => connectWallet()}>Connect Wallet</Button>
@@ -298,8 +312,10 @@ const Address = styled.span`
   opacity: 1;
   padding: 10px;
 `;
-const AccountIcon = styled.img`
-  width: 28px;
+const AccountIcon = styled.div`
+  width: 22px;
   height: 28px;
   opacity: 1;
+  display: flex;
+  align-items: center;
 `;
