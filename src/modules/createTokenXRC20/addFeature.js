@@ -6,6 +6,7 @@ import { addFeaturesContent, apiSuccessConstants } from "../../constants";
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import { handleNavItem } from "../../action";
+import toast, { Toaster } from "react-hot-toast";
 
 const Parent = styled.div`
   display: flex;
@@ -83,7 +84,7 @@ const RowDiv = styled.div`
 
   @media (min-width: 0px) and (max-width: 767px) {
     width: 322px;
-    height: 190px;
+    height: 170px;
   }
 
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -97,10 +98,14 @@ const ImageDiv = styled.div`
   justify-content: center;
   align-items: center;
   width: 100px;
+  padding: 0px 29px 0px 28px;
   opacity: 1;
 
   @media (min-width: 0px) and (max-width: 767px) {
     padding: 0px 13px 0px 13px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    padding: 0px 19px 0px 30px;
   }
 `;
 
@@ -122,7 +127,7 @@ const LabelDiv = styled.div`
   flex-direction: column;
   align-items: flex-start;
   opacity: 1;
-  padding: 15px 20px 0px 20px;
+  padding: 15px 20px 10px 20px;
 
   @media (min-width: 0px) and (max-width: 767px) {
     padding: 15px 15px 10px 0px;
@@ -310,7 +315,10 @@ const Check = styled.img`
   height: 25px;
   cursor: pointer;
   opacity: 1;
-  margin: 12px 15px 0px 0px;
+  margin: 12px 15px 0px 126px;
+  @media (min-width: 0px) and (max-width: 767px) {
+    margin: 12px 15px 0px 12px;
+  }
 `;
 
 function AddFeatures(props) {
@@ -332,7 +340,7 @@ function AddFeatures(props) {
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       checked: true,
-      content: addFeaturesContent.PAUSABLE_CONTENT,
+      content: addFeaturesContent.BURNABLE_CONTENT,
     },
     {
       id: 3,
@@ -354,6 +362,19 @@ function AddFeatures(props) {
     setArr(newData);
   };
 
+  const notifyNameErrorMessage = () =>
+    toast.error("Token with this name already exists!", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+  const notifySymbolErrorMessage = () =>
+    toast.error("Token with this symbol already exists!", {
+      duration: 4000,
+      position: "top-center",
+      className: "toast-div-address",
+    });
+
   // saveDraft api function :
 
   let createdToken = props.tokenData.tokenName;
@@ -361,7 +382,7 @@ function AddFeatures(props) {
   let parsingSupply = Number(props.tokenData.tokenInitialSupply);
 
   // condition to check if props.tokenData object has id key or not, will return true or false
-  
+
   let hasTokenId = "id" in props.tokenData;
 
   const saveAsDraft = async (e) => {
@@ -378,13 +399,21 @@ function AddFeatures(props) {
       isBurnable: props.tokenData.burnable,
       isMintable: props.tokenData.mintable,
       isPausable: props.tokenData.pausable,
+      website: props.tokenData.website || "",
+      twitter: props.tokenData.twitter || "",
+      telegram: props.tokenData.telegram || ""
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
-    if (res !== 0) {
+    // console.log('res', res)
+    if (res !== 0 && res !== "Token with this name already exists!" && res !== "Token with this symbol already exists!") {
       props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res });
+    } else if (res === "Token with this name already exists!") {
+      notifyNameErrorMessage()
+    } else if (res === "Token with this symbol already exists!") {
+      notifySymbolErrorMessage()
     }
   };
 
@@ -403,6 +432,9 @@ function AddFeatures(props) {
       isBurnable: props.tokenData.burnable,
       isMintable: props.tokenData.mintable,
       isPausable: props.tokenData.pausable,
+      website: props.tokenData.website || "",
+      twitter: props.tokenData.twitter || "",
+      telegram: props.tokenData.telegram || ""
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
@@ -424,6 +456,7 @@ function AddFeatures(props) {
 
   return (
     <>
+      <div><Toaster /></div>
       <Parent>
         <Column>
           <RowTwo>
@@ -492,4 +525,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(null,mapDispatchToProps)(AddFeatures);
+export default connect(null, mapDispatchToProps)(AddFeatures);

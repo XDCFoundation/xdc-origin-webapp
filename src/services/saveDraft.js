@@ -25,7 +25,7 @@ async function saveTokenAsDraft(requestdata) {
         !response.responseData ||
         response.responseData.length === 0
       )
-        return Promise.reject();
+        return Promise.resolve(response);
       return Promise.resolve(response.responseData);
     })
     .catch(function (err) {

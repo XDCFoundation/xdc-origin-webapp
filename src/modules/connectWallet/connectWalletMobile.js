@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../header/header";
 import styled from "styled-components";
 import { useHistory } from "react-router";
+import { detect } from "detect-browser";
 
 const Container = styled.div`
   position: fixed;
@@ -128,6 +129,8 @@ const BtnText = styled.span`
   opacity: 1;
 `;
 
+const browser = detect();
+
 function ConnectWalletMobile() {
   const history = useHistory();
   return (
@@ -137,6 +140,7 @@ function ConnectWalletMobile() {
         <LeftArrow onClick={() => history.push('/')} src="/images/Button_Back_Arrow.svg" alt="" />
         <Heading>Connect Wallet</Heading>
       </HeadingContainer>
+      <div>{browser?.name !== "chrome" ? (<p className="shown-browser-error">XDCPay wallet only supports Chrome browser !!</p>) : ("")}</div>
       <BoxContainer>
         <Box>
           <BoxContent>
