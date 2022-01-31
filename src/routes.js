@@ -17,6 +17,8 @@ import Faq from "./modules/FAQ";
 
 import WalletPopup from "../src/modules/connectWallet/connectWalletMobile";
 import WalletPopupDesktop from "./modules/connectWallet";
+import ManageContracts from "./modules/manageContracts";
+import UpdateProfile from "./modules/updateProfile";
 
 class Routes extends BaseComponent {
   constructor(props) {
@@ -61,6 +63,16 @@ class Routes extends BaseComponent {
               exact
               path={"/connect-wallet-desktop"}
               component={WalletPopupDesktop}
+            />
+            <Route
+              exact
+              path={"/manage-contracts"}
+              component={ManageContracts}
+            />
+            <Route
+              exact
+              path={"/update-profile"}
+              component={UpdateProfile}
             />
             <Redirect exact from="*" to="/" />
           </Switch>
