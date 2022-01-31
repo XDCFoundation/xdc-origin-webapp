@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
-  <g id="Telegram_Inactive" transform="translate(-920 -91)">
-    <g id="Rectangle_570" data-name="Rectangle 570" transform="translate(920 91)" fill="#fff" stroke="#f0f0f0" stroke-width="1">
-      <rect width="26" height="26" rx="2" stroke="none"/>
-      <rect x="0.5" y="0.5" width="25" height="25" rx="1.5" fill="none"/>
-    </g>
-    <path id="telegram" d="M14.7,65.524,12.478,76c-.168.74-.6.924-1.226.575l-3.386-2.5L6.232,75.655a.85.85,0,0,1-.68.332l.243-3.448,6.275-5.671c.273-.243-.059-.378-.424-.135L3.888,71.618.548,70.573c-.726-.227-.74-.726.151-1.075l13.064-5.033C14.368,64.238,14.9,64.6,14.7,65.524Z" transform="translate(925.983 33.601)" fill="#a2a2a2"/>
-  </g>
-</svg>
