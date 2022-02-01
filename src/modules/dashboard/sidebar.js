@@ -37,6 +37,7 @@ function Sidebar(props) {
   };
 
   const handleBtn = () => {
+    props.setActiveNavItem("faq");
     history.push("/FAQ");
   }
   const logout = () => {
@@ -176,33 +177,65 @@ function Sidebar(props) {
       )}
 
       {window.innerWidth <= 768 ? (
-        <Wrapper
-        onClick={handleBtn}
-          className={
-            props.userAccountDetails?.subNavItems
-              ? "faq-margin-create"
-              : props.userAccountDetails?.accountDetails?.address
-              ? "faq-margin"
-              : "faq-margin-tab"
-          }
-        >
+        props.userAccountDetails?.activeNavItem === "faq" ? (
+          <ActiveWrapper
+            onClick={handleBtn}
+              className={
+                props.userAccountDetails?.subNavItems
+                  ? "faq-margin-create"
+                  : props.userAccountDetails?.accountDetails?.address
+                  ? "faq-margin"
+                  : "faq-margin-tab"
+              }
+          >
+          <FAQIconActive src="/images/FAQ_Active.png" />
+          <HeadingFAQActive className="activeText">FAQs</HeadingFAQActive>
+        </ActiveWrapper>
+          ): (
+            <Wrapper
+              onClick={handleBtn}
+                className={
+                  props.userAccountDetails?.subNavItems
+                    ? "faq-margin-create"
+                    : props.userAccountDetails?.accountDetails?.address
+                    ? "faq-margin"
+                    : "faq-margin-tab"
+                }
+            >
           <FAQIcon src="/images/Inactive-Faq.svg" />
           <Heading>FAQs</Heading>
         </Wrapper>
+          )
       ) : (
-        <Wrapper
-        onClick={handleBtn}
-          className={
-            props.userAccountDetails?.subNavItems
-              ? "faq-margin-create"
-              : props.userAccountDetails?.accountDetails?.address
-              ? "faq-margin"
-              : "faq-margin-extra"
-          }
-        >
-          <FAQIcon src="/images/Inactive-Faq.svg" />
-          <Heading>FAQs</Heading>
-        </Wrapper>
+            props.userAccountDetails?.activeNavItem === "faq" ? (
+            <ActiveWrapper
+              onClick={handleBtn}
+                className={
+                  props.userAccountDetails?.subNavItems
+                    ? "faq-margin-create"
+                    : props.userAccountDetails?.accountDetails?.address
+                    ? "faq-margin"
+                    : "faq-margin-extra"
+              }
+            >
+              <FAQIconActive src="/images/FAQ_Active.png" />
+              <HeadingFAQActive className="activeText">FAQs</HeadingFAQActive>
+            </ActiveWrapper>
+            ): (
+              <Wrapper
+              onClick={handleBtn}
+                className={
+                  props.userAccountDetails?.subNavItems
+                    ? "faq-margin-create"
+                    : props.userAccountDetails?.accountDetails?.address
+                    ? "faq-margin"
+                    : "faq-margin-extra"
+                }
+              >
+                <FAQIcon src="/images/Inactive-Faq.svg" />
+                <Heading>FAQs</Heading>
+              </Wrapper>
+            )
       )}
       {
       props.userAccountDetails?.accountDetails?.address ? (
@@ -288,6 +321,16 @@ const FAQIcon = styled.img`
   height: 24px;
   border: none;
 `;
+const FAQIconActive = styled.img`
+  cursor: pointer;
+  margin-right: 20px;
+  margin-left: -4px;
+  margin-top: -4px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  object-fit: cover;
+`;
 const LogoutIcon = styled.img`
   cursor: pointer;
   margin-right: 13px;
@@ -314,6 +357,25 @@ const Wrapper = styled.div`
     margin-left: -20px;
   }
 `;
+const ActiveWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+  width: 250px;
+  height: 70px;
+  white-space: nowrap;
+  padding: 23px;
+  background-color: #1d3c93 !important;
+  &:hover {
+    background: #1d3c93;
+  }
+  @media (min-width: 320px) and (max-width: 425px) {
+    width: 100%;
+    margin-left: -20px;
+    background-color: #1d3c93 !important;
+  }
+`;
 const Heading = styled.span`
   text-align: left;
   font: normal normal medium 16px/20px Inter;
@@ -321,6 +383,17 @@ const Heading = styled.span`
   
   color: #8ca6f0;
   opacity: 1;
+`;
+const HeadingFAQActive = styled.span`
+  text-align: left;
+  font: normal normal medium 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #8ca6f0;
+  opacity: 1;
+  margin-top: -4px;
+  @media (min-width: 0px) and (max-width: 768px) {
+    margin-top: 0px;
+  }
 `;
 const CenterDiv = styled.div`
   display: flex;
