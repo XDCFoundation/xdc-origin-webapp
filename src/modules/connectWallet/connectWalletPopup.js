@@ -8,6 +8,7 @@ import { handleAccountDetails, handleWallet } from "../../action";
 import Web3 from "web3";
 import { useHistory } from "react-router";
 import { detect } from "detect-browser";
+import { XDCPay_EXTENSION_URL } from "../../constants"
 
 const useStyles = makeStyles({
   dialog: {
@@ -284,7 +285,7 @@ function connectWalletPopup(props) {
             <MainText>Install XDCPay</MainText>
             <SubTextContainer>
               <SubText>
-                Install XDCPay Chrome extension from <Link>here</Link>.
+                Install XDCPay Chrome extension from <Link href={XDCPay_EXTENSION_URL} target="_blank">here</Link>.
               </SubText>
             </SubTextContainer>
           </Box>
