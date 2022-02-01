@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { apiBodyMessages, apiSuccessConstants, validationsMessages } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
+import { handleNavItem } from "../../action";
 
 function DeployContract(props) {
   const history = useHistory()
@@ -147,6 +148,11 @@ function DeployContract(props) {
     }
   }
 
+  const handleEdit = (id) => {
+    props.setActiveNavItem('create')
+    history.push(`/token-XRC20/${id}`)
+  }
+
   return (
     <Container>
       <Heading>Deploy Contracts</Heading>
@@ -193,7 +199,7 @@ function DeployContract(props) {
                     <div className="deleteIcon" onClick={() => handleClickOpen(item.id, item.tokenName)}>
                       <Delete />
                     </div>
-                    <div onClick={() => history.push(`/token-XRC20/${item.id}`)} className="editIcon">
+                    <div onClick={() => handleEdit(item.id)} className="editIcon">
                       <Edit />
                     </div>
                   </div>
@@ -228,8 +234,13 @@ function DeployContract(props) {
 const mapStateToProps = (state) => ({
   userDetails: state.user,
 });
+const mapDispatchToProps = (dispatch) => ({
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive))
+  },
+});
 
-export default connect(mapStateToProps)(DeployContract);
+export default connect(mapStateToProps,mapDispatchToProps)(DeployContract);
 
 const Container = styled.div`
   width: 100vw;
