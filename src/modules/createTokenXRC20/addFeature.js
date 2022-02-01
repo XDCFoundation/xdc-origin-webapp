@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
-import { addFeaturesContent, apiSuccessConstants } from "../../constants";
+import {
+  addFeaturesContent,
+  apiSuccessConstants,
+  validationsMessages,
+} from "../../constants";
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import { handleNavItem } from "../../action";
@@ -363,15 +367,15 @@ function AddFeatures(props) {
   };
 
   const notifyNameErrorMessage = () =>
-    toast.error("Token with this name already exists!", {
+    toast.error(validationsMessages.TOKEN_NAME_ERROR_MESSAGE, {
       duration: 4000,
-      position: "top-center",
+      position: validationsMessages.TOASTS_POSITION,
       className: "toast-div-address",
     });
   const notifySymbolErrorMessage = () =>
-    toast.error("Token with this symbol already exists!", {
+    toast.error(validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE, {
       duration: 4000,
-      position: "top-center",
+      position: validationsMessages.TOASTS_POSITION,
       className: "toast-div-address",
     });
 
@@ -401,19 +405,23 @@ function AddFeatures(props) {
       isPausable: props.tokenData.pausable,
       website: props.tokenData.website || "",
       twitter: props.tokenData.twitter || "",
-      telegram: props.tokenData.telegram || ""
+      telegram: props.tokenData.telegram || "",
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
     // console.log('res', res)
-    if (res !== 0 && res !== "Token with this name already exists!" && res !== "Token with this symbol already exists!") {
+    if (
+      res !== 0 &&
+      res !== validationsMessages.TOKEN_NAME_ERROR_MESSAGE &&
+      res !== validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE
+    ) {
       props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res });
-    } else if (res === "Token with this name already exists!") {
-      notifyNameErrorMessage()
-    } else if (res === "Token with this symbol already exists!") {
-      notifySymbolErrorMessage()
+    } else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
+      notifyNameErrorMessage();
+    } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
+      notifySymbolErrorMessage();
     }
   };
 
@@ -434,7 +442,7 @@ function AddFeatures(props) {
       isPausable: props.tokenData.pausable,
       website: props.tokenData.website || "",
       twitter: props.tokenData.twitter || "",
-      telegram: props.tokenData.telegram || ""
+      telegram: props.tokenData.telegram || "",
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
@@ -456,7 +464,9 @@ function AddFeatures(props) {
 
   return (
     <>
-      <div><Toaster /></div>
+      <div>
+        <Toaster />
+      </div>
       <Parent>
         <Column>
           <RowTwo>
@@ -518,10 +528,9 @@ function AddFeatures(props) {
   );
 }
 
-
 const mapDispatchToProps = (dispatch) => ({
   setActiveNavItem: (isActive) => {
-    dispatch(handleNavItem(isActive))
+    dispatch(handleNavItem(isActive));
   },
 });
 

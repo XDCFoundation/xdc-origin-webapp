@@ -5,11 +5,15 @@ import BasicInfoPage from "./basicInformation";
 import TokenomicsPage from "./tokenomics";
 import AddFeaturesPage from "./addFeature";
 import DeployContractPage from "./deployContract";
-import { apiBodyMessages, apiSuccessConstants, validationsMessages } from "../../constants";
+import {
+  apiBodyMessages,
+  apiSuccessConstants,
+  validationsMessages,
+} from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
-import Web3 from 'web3';
-import { connect } from 'react-redux';
+import Web3 from "web3";
+import { connect } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 
 const MainContainer = styled.div`
@@ -95,7 +99,7 @@ const Img = styled.img`
   justify-content: center;
   align-items: center;
   opacity: 1;
-  @media(min-width: 0px) and (max-width: 767px){
+  @media (min-width: 0px) and (max-width: 767px) {
     width: 25px;
     height: 25px;
   }
@@ -244,8 +248,8 @@ function CommonTab(props) {
 
   //redux data:
 
-  let networkVersion = props.userDetails?.accountDetails?.network || ""
-  let userAddress = props.userDetails?.accountDetails?.address || ""
+  let networkVersion = props.userDetails?.accountDetails?.network || "";
+  let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const initialValues = {
     network: networkVersion,
@@ -253,7 +257,7 @@ function CommonTab(props) {
     tokenName: "",
     tokenSymbol: "",
     tokenImage: imgData,
-    tokenDecimals: '18',
+    tokenDecimals: "18",
     tokenDescription: "",
     tokenInitialSupply: undefined,
     pausable: false,
@@ -261,21 +265,21 @@ function CommonTab(props) {
     burnable: true,
     website: "",
     twitter: "",
-    telegram: ""
+    telegram: "",
   };
 
   const [tokenData, setTokenData] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
-  const [saveAndContinue, setSaveAndContinue] = useState(false);
 
-  // capturing all fields value: 
+  // capturing all fields value:
 
   useEffect(() => {
-    setTokenData(props.state?.xrc20TokenDetails)
-  }, [props])
+    setTokenData(props.state?.xrc20TokenDetails);
+  }, [props]);
 
-  let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage
-  let initialDecimalValue = tokenData.tokenDecimals ? tokenData.tokenDecimals : '18'
+  let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage;
+  let initialDecimalValue = tokenData.tokenDecimals
+    ? tokenData.tokenDecimals
+    : "18";
 
   const handleChange = (e) => {
     setTokenData({
@@ -287,88 +291,23 @@ function CommonTab(props) {
       tokenDecimals: initialDecimalValue,
       burnable: true,
       mintable: true,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }); //destructuring
-    checkError();
   };
 
   // console.log('to---', tokenData)
 
-  // condition checking for nextStep: 
-
-  useEffect(() => {
-    // console.log('er--', formErrors)
-    if (Object.keys(formErrors).length === 0 && saveAndContinue) {
-      // console.log('to---', tokenData)
-    }
-  }, [formErrors]);
-
-  const checkError = () => {
-    setFormErrors(validate(tokenData));
-    setSaveAndContinue(true);
-  }
-
-  //form error validations :
-
-  const validate = (values) => {
-    const errors = {};
-
-    if (!values.network) {
-      errors.network = validationsMessages.VALIDATE_NETWORK;
-    }
-
-    if (Utils.isEmpty(values.tokenName)) {
-      errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_FIELD;
-    } else if (values.tokenName.length > 30) {
-      errors.tokenName = validationsMessages.VALIDATE_TOKEN_NAME_LIMIT;
-    }
-
-    if (Utils.isEmpty(values.tokenSymbol)) {
-      errors.tokenSymbol = validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD;
-    } else if (values.tokenSymbol.length > 15) {
-      errors.tokenSymbol = validationsMessages.VALIDATE_TOKEN_SYMBOL_LIMIT;
-    }
-
-    if (Utils.isEmpty(values.tokenImage)) {
-      errors.tokenImage = validationsMessages.VALIDATE_IMAGE_FIELD;
-    }
-
-    if (!values.tokenDecimals) {
-      errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_FIELD;
-    } else if (Number(values.tokenDecimals) < 8) {
-      errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_MIN_RANGE;
-    } else if (Number(values.tokenDecimals) > 18) {
-      errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_MAX_RANGE;
-    } else if (Number(values.tokenDecimals) === 0) {
-      errors.tokenDecimals = validationsMessages.VALIDATE_DECIMAL_VALUE;
-    }
-
-    if (Utils.isEmpty(values.tokenDescription)) {
-      errors.tokenDescription = validationsMessages.VALIDATE_DESCRIPTION_FIELD;
-    } else if (values.tokenDescription.length > 500) {
-      errors.tokenDescription = validationsMessages.VALIDATE_DESCRIPTION_LIMIT;
-    }
-
-    return errors;
-  };
-
-  // Steps navigation functions : 
+  // Steps navigation functions :
 
   const nextStep = (e) => {
-    // checkError();
-    if (Object.keys(formErrors).length === 0 && saveAndContinue === true) {
-      let newData = arr.map((item) => {
-        return item.id !== step
-          ? item
-          : { ...item, image: item.circleImage, activeImage: item.circleImage };
-      });
+    let newData = arr.map((item) => {
+      return item.id !== step
+        ? item
+        : { ...item, image: item.circleImage, activeImage: item.circleImage };
+    });
 
-      setArr(newData);
-      setStep(step + 1);
-    }
-    else {
-      return;
-    }
+    setArr(newData);
+    setStep(step + 1);
   };
 
   const prevStep = (e) => {
@@ -384,30 +323,30 @@ function CommonTab(props) {
   // condition to check if tokenData object has id key or not, will return true or false
   let hasTokenId = "id" in tokenData;
 
-  // saveDraft api function : 
+  // saveDraft api function :
 
   const notifySuccessMsg = () =>
-    toast.success("Token has been Saved as Draft", {
+    toast.success(validationsMessages.TOKEN_SAVED_AS_DRAFT, {
       duration: 4000,
-      position: "top-center",
+      position: validationsMessages.TOASTS_POSITION,
       className: "toast-div-address",
     });
 
   const notifyNameErrorMessage = () =>
-    toast.error("Token with this name already exists!", {
+    toast.error(validationsMessages.TOKEN_NAME_ERROR_MESSAGE, {
       duration: 4000,
-      position: "top-center",
+      position: validationsMessages.TOASTS_POSITION,
       className: "toast-div-address",
     });
 
   const notifySymbolErrorMessage = () =>
-    toast.error("Token with this symbol already exists!", {
+    toast.error(validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE, {
       duration: 4000,
-      position: "top-center",
+      position: validationsMessages.TOASTS_POSITION,
       className: "toast-div-address",
     });
 
-  let createdToken = tokenData.tokenName
+  let createdToken = tokenData.tokenName;
   let parsingDecimal = Number(tokenData.tokenDecimals);
   let parsingSupply = Number(tokenData.tokenInitialSupply);
 
@@ -428,16 +367,22 @@ function CommonTab(props) {
       twitter: tokenData.twitter || "",
       telegram: tokenData.telegram || "",
     };
-    const [err, res] = await Utils.parseResponse(SaveDraftService.saveTokenAsDraft(reqObj));
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.saveTokenAsDraft(reqObj)
+    );
 
-    if (res !== 0 && res !== "Token with this name already exists!" && res !== "Token with this symbol already exists!") {
-      notifySuccessMsg()
-      sendTransaction(res)
-    } else if (res === "Token with this name already exists!") {
-      notifyNameErrorMessage()
+    if (
+      res !== 0 &&
+      res !== validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE &&
+      res !== validationsMessages.TOKEN_NAME_ERROR_MESSAGE
+    ) {
+      notifySuccessMsg();
+      sendTransaction(res);
+    } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
+      notifyNameErrorMessage();
       prevStep();
-    } else if (res === "Token with this symbol already exists!") {
-      notifySymbolErrorMessage()
+    } else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
+      notifySymbolErrorMessage();
       prevStep();
     }
   };
@@ -464,20 +409,19 @@ function CommonTab(props) {
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
     if (res[0] !== 0 && res !== undefined) {
-      notifySuccessMsg()
-      sendTransaction(res[0])
+      notifySuccessMsg();
+      sendTransaction(res[0]);
     }
   };
 
-
-  // function to open xdc pay extension: 
+  // function to open xdc pay extension:
 
   const sendTransaction = async (tokenDetails) => {
-    window.web3 = new Web3(window.ethereum)
-    let checkNetwork = tokenDetails?.network
-    let draftedTokenId = tokenDetails?.id
-    let draftedTokenOwner = tokenDetails?.tokenOwner
-    let byteCode = tokenDetails?.byteCode
+    window.web3 = new Web3(window.ethereum);
+    let checkNetwork = tokenDetails?.network;
+    let draftedTokenId = tokenDetails?.id;
+    let draftedTokenOwner = tokenDetails?.tokenOwner;
+    let byteCode = tokenDetails?.byteCode;
 
     // let xdce_address = tokenData.tokenOwner;
     // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
@@ -486,88 +430,127 @@ function CommonTab(props) {
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
-      "from": userAddress,
-      "gas": 7920000,
-      "gasPrice": gasPrice,
-      "data": byteCode
+      from: userAddress,
+      gas: 7920000,
+      gasPrice: gasPrice,
+      data: byteCode,
     };
 
     if (checkNetwork === "XDC Mainnet") {
-      await window.web3.eth.sendTransaction(transaction)
-        .on('transactionHash', function (hash) {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {
           // console.log("transactionHash ====", hash);
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             setTimeout(() => {
-              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner)
+              contractDetailsFromTxnHash(
+                hash,
+                parsingDecimal,
+                parsingSupply,
+                gasPrice,
+                createdToken,
+                draftedTokenId,
+                draftedTokenOwner
+              );
             }, 10000);
           }
         })
-        // .on('receipt', function (receipt) {
-        //   console.log("receipt ====", receipt);  
-        // }
-        // )
-        // .on('confirmation', function (confirmationNumber, receipt) {
-        //   // console.log("confirmation ====", confirmationNumber, receipt);
-        // })
-        .on('error', function (error) {
+        .on("error", function (error) {
           if (error) {
             prevStep();
           }
         });
-    }
-    else {
-      await window.web3.eth.sendTransaction(transaction)
-        .on('transactionHash', function (hash) {
+    } else {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {
           // console.log("transactionHash ====", hash);
         })
-        .on('receipt', function (receipt) { //receive the contract address from this object
-          // console.log("receipt ====", receipt);  
+        .on("receipt", function (receipt) {
+          //receive the contract address from this object
           if (receipt !== 0) {
-            history.push({ pathname: '/created-token', state: receipt, parsingDecimal, parsingSupply, gasPrice, createdToken })
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+            history.push({
+              pathname: "/created-token",
+              state: receipt,
+              parsingDecimal,
+              parsingSupply,
+              gasPrice,
+              createdToken,
+            });
+            updateTokenDetails(
+              draftedTokenId,
+              draftedTokenOwner,
+              receipt.contractAddress
+            );
           }
-        }
-        )
-        .on('confirmation', function (confirmationNumber, receipt) {
-          // console.log("confirmation ====", confirmationNumber, receipt);
         })
-        .on('error', function (error) {
+        .on("confirmation", function (confirmationNumber, receipt) {
+
+        })
+        .on("error", function (error) {
           if (error) {
             prevStep();
           }
         });
     }
-  }
+  };
 
-  const updateTokenDetails = async (resultedTokenId, resultedTokenOwner, resultAddress) => {
-
+  const updateTokenDetails = async (
+    resultedTokenId,
+    resultedTokenOwner,
+    resultAddress
+  ) => {
     let reqObj = {
       tokenId: resultedTokenId,
       tokenOwner: resultedTokenOwner,
       smartContractAddress: resultAddress,
-      status: apiBodyMessages.STATUS_DEPLOYED
+      status: apiBodyMessages.STATUS_DEPLOYED,
     };
-    const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
-  }
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.updateDraftedToken(reqObj)
+    );
+  };
 
-  const contractDetailsFromTxnHash = async (txnHash, parsingDecimal, parsingSupply, gasPrice, createdToken, tokenId, tokenOwner) => {
+  const contractDetailsFromTxnHash = async (
+    txnHash,
+    parsingDecimal,
+    parsingSupply,
+    gasPrice,
+    createdToken,
+    tokenId,
+    tokenOwner
+  ) => {
     let reqObj = {
-      hash: txnHash
+      hash: txnHash,
     };
-    const [err, res] = await Utils.parseResponse(SaveDraftService.getTxnHashDetails(reqObj));
-    let obtainContractAddress = res?.contractAddress || ""
-    let obtainTxnHash = res?.hash || ""
-    let obtainGasUsed = res?.gasUsed || ""
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.getTxnHashDetails(reqObj)
+    );
+    let obtainContractAddress = res?.contractAddress || "";
+    let obtainTxnHash = res?.hash || "";
+    let obtainGasUsed = res?.gasUsed || "";
     if (res) {
-      history.push({ pathname: '/created-token', state: {}, obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
-      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress)
+      history.push({
+        pathname: "/created-token",
+        state: {},
+        obtainTxnHash,
+        parsingDecimal,
+        parsingSupply,
+        gasPrice,
+        obtainGasUsed,
+        createdToken,
+        obtainContractAddress,
+      });
+      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress);
     }
-  }
+  };
 
   return (
     <>
-      <div><Toaster /></div>
+      <div>
+        <Toaster />
+      </div>
       <MainContainer>
         <Parent>
           <Header>Create XRC20 Token</Header>
@@ -604,7 +587,8 @@ function CommonTab(props) {
                   return (
                     <BasicInfoPage
                       tokenData={tokenData}
-                      formErrors={formErrors}
+                      // formErrors={formErrors}
+                      imgData={imgData}
                       nextStep={nextStep}
                       handleChange={handleChange}
                       isUploadOpen={isUploadOpen}
@@ -617,7 +601,7 @@ function CommonTab(props) {
                   return (
                     <TokenomicsPage
                       tokenData={tokenData}
-                      formErrors={formErrors}
+                      // formErrors={formErrors}
                       nextStep={nextStep}
                       prevStep={prevStep}
                       handleChange={handleChange}
@@ -630,7 +614,7 @@ function CommonTab(props) {
                       nextStep={nextStep}
                       prevStep={prevStep}
                       tokenData={tokenData}
-                      formErrors={formErrors}
+                      // formErrors={formErrors}
                       saveAsDraft={saveAsDraft}
                       saveAsDraftbyEdit={saveAsDraftbyEdit}
                       sendTransaction={sendTransaction}

@@ -295,7 +295,12 @@ const useStyles = makeStyles(theme => ({
 const CreateToken = (props) => {
   const classes = useStyles();
 
+  let coinMarketPrice = props?.priceValue || ""
+  let tokenMinted = (props.location?.parsingSupply)?.toFixed(2)?.replace(/\d(?=(\d{3})+\.)/g, '$&,')?.split('.')[0];
+  // console.log('h---',tokenMinted)
+
   let gasFee;
+  let usdPriceValue;
   let gweiValue;
   let transactionAddress;
   let contractAddress;
@@ -306,6 +311,7 @@ const CreateToken = (props) => {
   if (props.user.accountDetails.network === "XDC Apothem Testnet") {
     let gasPrice = Number(props.location?.gasPrice);
     gasFee = (gasPrice * props.location.state?.gasUsed) / Math.pow(10, 18);
+    usdPriceValue = gasFee?.toFixed(8) * coinMarketPrice;
     gweiValue = gasPrice / Math.pow(10, 9);
 
     transactionAddress =
@@ -329,6 +335,7 @@ const CreateToken = (props) => {
     // For Mainnet
     let gasPrice = Number(props.location?.gasPrice);
     gasFee = (gasPrice * props.location?.obtainGasUsed) / Math.pow(10, 18);
+    usdPriceValue = gasFee?.toFixed(8) * coinMarketPrice;
     gweiValue = gasPrice / Math.pow(10, 9);
 
     transactionAddress =
@@ -465,7 +472,7 @@ const CreateToken = (props) => {
               </MuiThemeProvider>
                 Tokens Minted:
               </SuccessTokenKey>
-              <ValueDiv>{props.location?.parsingSupply || ""}</ValueDiv>
+              <ValueDiv>{tokenMinted || ""}</ValueDiv>
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
@@ -483,7 +490,7 @@ const CreateToken = (props) => {
                 Gas Fee:
               </SuccessTokenKey>
               <ValueDiv>
-                {gasFee?.toFixed(8)  + " " + "XDC" + "" + "(" + (gweiValue || "") + " " + "Gwei)"}
+                {gasFee?.toFixed(8)  + " " + "XDC" + " " + "(" + '$' + " " + usdPriceValue?.toFixed(8) + ")"}
               </ValueDiv>
             </SuccessRows>
           </SuccessTokenDetails>
