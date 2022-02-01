@@ -392,7 +392,7 @@ function Token(props) {
               </MobPopupBtn>
             </InsideDiv>
 
-            <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
+            <BlurTextDiv>Current XDCPay network connected</BlurTextDiv>
             {errors?.network ? ( <p className="shown-error">{errors?.network}</p>) : ""}
             {/* <p className="shown-error">{props.formErrors.network}</p> */}
           </CommonRow>
