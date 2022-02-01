@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { Tooltip, Fade, createTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 const Parent = styled.div`
   display: flex;
@@ -328,7 +329,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Token(props) {
+function Token(props) {
   const classes = useStyles();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
@@ -381,7 +382,7 @@ export default function Token(props) {
                 type="text"
                 name="network"
                 readOnly
-                value={props.tokenData.network}
+                value={props.userDetails?.accountDetails?.network}
                 placeholder="XDC Mainnet"
               />
               <PopButton onClick={togglePopup}>Change Network</PopButton>
@@ -768,3 +769,9 @@ export default function Token(props) {
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+export default connect(mapStateToProps)(Token);
