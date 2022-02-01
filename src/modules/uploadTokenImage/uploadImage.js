@@ -9,6 +9,7 @@ import { useDropzone } from "react-dropzone";
 import AWSServices from "../../services/aws-service";
 import Cropper from "react-easy-crop";
 import GetCroppedImg from "./cropImage";
+import { CircularProgress} from "@material-ui/core";
 
 const Header = styled.div`
   display: flex;
@@ -176,6 +177,14 @@ const FileError = styled.span`
   color: #ff0000;
   opacity: 1;
 `;
+const Loader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 70px;
+  left: 225px;
+`;
 
 const zoomStep = 0.05;
 const maxScale = 5;
@@ -194,6 +203,7 @@ export default function UploadTokenImage(props) {
   const [croppedImage, setCroppedImage] = React.useState("");
   const [crop, setCrop] = React.useState({ x: 1, y: 1 });
   const [zoom, setZoom] = React.useState(1);
+  const [isUploading, setIsUploading] = React.useState(false);
 
   const s3Bucket = process.env.REACT_APP_S3_BUCKET_NAME;
 
@@ -242,10 +252,12 @@ export default function UploadTokenImage(props) {
       "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" +
       awsFile.sourceFileName;
     props.handleUploadClose(obtainUrl);
+    setIsUploading(false);
   };
 
   const showCroppedImage = useCallback(async () => {
     try {
+      setIsUploading(true);
       const croppedImage = await GetCroppedImg(filePreview, croppedAreaPixels);
       setFile({ content: croppedImage });
       setCroppedImage(croppedImage);
@@ -291,18 +303,27 @@ export default function UploadTokenImage(props) {
 
     if (!upload) {
       return (
-        <Content>
-          <UploadCircle {...getRootProps()}>
-            <input {...getInputProps()} />
-            <UploadIcon src="/images/Upload.svg"></UploadIcon>
-            <UploadText>Drag and drop your token icon here</UploadText>
-          </UploadCircle>
-          <ContentText>or</ContentText>
-          <UploadPhoto {...getRootProps()}>
-            <input {...getInputProps()} />
-            <ButtonName>Upload a photo</ButtonName>
-          </UploadPhoto>
-        </Content>
+        <>
+          {isUploading ? (
+            <Loader>
+              <CircularProgress />
+            </Loader>
+          ) : (
+            ""
+          )}
+          <Content>
+            <UploadCircle {...getRootProps()}>
+              <input {...getInputProps()} />
+              <UploadIcon src="/images/Upload.svg"></UploadIcon>
+              <UploadText>Drag and drop your token icon here</UploadText>
+            </UploadCircle>
+            <ContentText>or</ContentText>
+            <UploadPhoto {...getRootProps()}>
+              <input {...getInputProps()} />
+              <ButtonName>Upload a photo</ButtonName>
+            </UploadPhoto>
+          </Content>
+        </>
       );
     } else {
       return (
