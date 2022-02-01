@@ -123,8 +123,7 @@ function FormDialog(props) {
               </DropdownContainer>
             </NetworkChangeContainer>
             <ContentText>
-              To mint the tokens on new network, open XDCPay and simply change
-              the network. Currently we support only{" "}
+              Open XDCPay and switch the network to create token on a new network. At the moment, we only support the{" "}
               <ContentTextNames>XDC Mainnet</ContentTextNames> and{" "}
               <ContentTextNames>XDC Apothem Testnet</ContentTextNames>.
             </ContentText>

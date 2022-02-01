@@ -14,6 +14,7 @@ import {
 } from "../../constants";
 import { detect } from "detect-browser";
 import toast, { Toaster } from "react-hot-toast";
+import { XDCPay_EXTENSION_URL } from "../../constants"
 
 const useStyles = makeStyles({
   dialog: {
@@ -306,7 +307,7 @@ function connectWalletPopup(props) {
             <MainText>Install XDCPay</MainText>
             <SubTextContainer>
               <SubText>
-                Install XDCPay Chrome extension from <Link>here</Link>.
+                Install XDCPay Chrome extension from <Link href={XDCPay_EXTENSION_URL} target="_blank">here</Link>.
               </SubText>
             </SubTextContainer>
           </Box>
@@ -320,7 +321,7 @@ function connectWalletPopup(props) {
             <MainText>Login to XDCPay</MainText>
             <SubTextContainer>
               <SubText>
-                Login to you account on XDCPay Chrome extension.
+                Login to your account on XDCPay Chrome extension.
               </SubText>
             </SubTextContainer>
           </Box>
@@ -334,7 +335,7 @@ function connectWalletPopup(props) {
             <MainText>Connect Wallet</MainText>
             <SubTextContainer>
               <SubText>
-                Connect your <div></div> XDCPay wallet with SmartHub.
+                Connect your <div></div> XDCPay wallet with Origin.
               </SubText>
             </SubTextContainer>
           </Box>

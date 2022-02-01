@@ -7,6 +7,7 @@ import { handleAccountDetails, handleNavItem, handleSubNavItem, handleSubNavToke
 import { connect } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Tooltip, Typography, ClickAwayListener } from "@material-ui/core";
+import { DASHBOARD_VIDEO_URL } from "../../constants"
 
 const CustomTooltip = withStyles((theme) => ({
   tooltip: {
@@ -110,7 +111,7 @@ function About(props) {
             <RightContainer>
               <VideoBox>
                 <ReactPlayer
-                  url="https://www.youtube.com/watch?v=K-tHZkV6zAs"
+                  url={DASHBOARD_VIDEO_URL}
                   controls
                   width="100%"
                   height="100%"
