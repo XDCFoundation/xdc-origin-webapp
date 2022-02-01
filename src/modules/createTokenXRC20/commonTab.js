@@ -457,6 +457,7 @@ function CommonTab(props) {
           }
         })
         .on("error", function (error) {
+          // console.log('er',error, error.message)
           if (error) {
             prevStep();
           }
@@ -469,6 +470,8 @@ function CommonTab(props) {
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object
+          let newContractAddress = receipt.contractAddress?.replace(/0x/,"xdc");
+
           if (receipt !== 0) {
             history.push({
               pathname: "/created-token",
@@ -481,7 +484,7 @@ function CommonTab(props) {
             updateTokenDetails(
               draftedTokenId,
               draftedTokenOwner,
-              receipt.contractAddress
+              newContractAddress
             );
           }
         })
@@ -530,6 +533,7 @@ function CommonTab(props) {
     let obtainContractAddress = res?.contractAddress || "";
     let obtainTxnHash = res?.hash || "";
     let obtainGasUsed = res?.gasUsed || "";
+    
     if (res) {
       history.push({
         pathname: "/created-token",
