@@ -64,7 +64,9 @@ function Header(props) {
               };
 
               props.updateAccountDetails(accountDetails);
-              setForceUpdate(true);
+              setTimeout(() => {
+                setForceUpdate(true);
+              }, 100);
             }
           } else {
             //metamask is also enabled with xdcpay
@@ -127,13 +129,7 @@ function Header(props) {
                     />
                   </AccountIcon>
                 ) : (
-                  <AccountIcon>
-                    <Identicon
-                      diameter={20}
-                      address={props.userDetails?.accountDetails?.address}
-                      network={props.userDetails?.accountDetails?.network}
-                    />
-                  </AccountIcon>
+                    ""
                 )}
               </AddressContainer>
             ) : (
