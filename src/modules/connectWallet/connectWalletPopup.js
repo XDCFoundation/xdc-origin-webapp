@@ -7,7 +7,13 @@ import { connect } from "react-redux";
 import { handleAccountDetails, handleWallet } from "../../action";
 import Web3 from "web3";
 import { useHistory } from "react-router";
+import {
+  addFeaturesContent,
+  apiSuccessConstants,
+  validationsMessages,
+} from "../../constants";
 import { detect } from "detect-browser";
+import toast, { Toaster } from "react-hot-toast";
 import { XDCPay_EXTENSION_URL } from "../../constants"
 
 const useStyles = makeStyles({
@@ -199,6 +205,20 @@ function connectWalletPopup(props) {
     return Math.trunc(num * calcDec) / calcDec;
   }
 
+  const loginErrorMessage = () =>
+  toast.error(validationsMessages.VALIDATE_BROWSER_LOGIN, {
+    duration: 4000,
+    position: validationsMessages.TOASTS_POSITION,
+    className: "toast-div-address",
+  });
+  const redirectErrorMessage = () =>
+  toast.error(validationsMessages.VALIDATE_BROWSER_REDIRECTING, {
+    duration: 4000,
+    position: validationsMessages.TOASTS_POSITION,
+    className: "toast-div-address",
+  });
+
+
   const handleXDCPayWallet = async () => {
     window.web3 = new Web3(window.ethereum);
 
@@ -221,7 +241,7 @@ function connectWalletPopup(props) {
         });
 
         if (!account) {
-          alert("Please Login To XDC PAY");
+          loginErrorMessage();
         } else if (address || network) {
           let balance = null;
 
@@ -248,7 +268,7 @@ function connectWalletPopup(props) {
       }
     } else {
       // For mobile and tab - redirect to App Store
-      alert("Redirect To Download XDC PAY App !");
+      redirectErrorMessage();
     }
   };
 
@@ -257,6 +277,8 @@ function connectWalletPopup(props) {
   //   console.log('bro---',browser.name)
   // }
   return (
+    <>
+    <div><Toaster /></div>
     <Dialog
       aria-labelledby="simple-dialog-title"
       open={props.user.isWalletOpen}
@@ -336,6 +358,7 @@ function connectWalletPopup(props) {
         </div>
       </Container>
     </Dialog>
+    </>
   );
 }
 

@@ -25,6 +25,7 @@ export const httpConstants = {
         GET_XRC20TOKEN_BY_ID : "/get-xrc20Token-by-id",
         GET_TRANSACTION_DETAILS: "getTransactionDetails",
         DELETE_XRC20_TOKEN: "/delete-xrc20token",
+        GET_COIN_MARKET_CAP: "/getCoinMarketCap/USD"
     },
 };
 export const apiBodyMessages = {
@@ -35,11 +36,10 @@ export const apiSuccessConstants = {
     UPDATE_DATA_SUCCESS: "Contract Details Updated",
 }
 export const validationsMessages = {
+    FORM_FIELD_ERROR : "Fill all required fields !!",
     VALIDATE_DESCRIPTION_LIMIT:"Description should not be more than 500 characters",
     VALIDATE_DESCRIPTION_FIELD:"Description is required !",
-    VALIDATE_DECIMAL_VALUE:"Decimal can't be 0",
-    VALIDATE_DECIMAL_MAX_RANGE:'Decimal should not be more than 18',
-    VALIDATE_DECIMAL_MIN_RANGE:'Decimal should not be less than 8',
+    VALIDATE_DECIMAL_RANGE:'Decimal should be between 8-18',
     VALIDATE_DECIMAL_FIELD:'Decimal is required !',
     VALIDATE_IMAGE_FIELD: 'Token image/icon is required !',
     VALIDATE_TOKEN_SYMBOL_LIMIT:'Symbol should not be more than 15 characters',
@@ -47,6 +47,14 @@ export const validationsMessages = {
     VALIDATE_TOKEN_NAME_LIMIT:'Token Name should not be more than 30 characters',
     VALIDATE_TOKEN_NAME_FIELD:'TokenName is required !',
     VALIDATE_NETWORK: 'Network is required !',
+    VALIDATE_IMAGE_FIELD: "Token Image/Icon Field is required !",
+    VALIDATE_INITIAL_SUPPY_FIELD: "Token Initial Supply is required !",
+    TOASTS_POSITION: "top-center",
+    TOKEN_SAVED_AS_DRAFT: "Token has been Saved as Draft",
+    TOKEN_NAME_ERROR_MESSAGE: "Token with this name already exists!",
+    TOKEN_SYMBOL_ERROR_MESSAGE: "Token with this symbol already exists!",
+    VALIDATE_BROWSER_LOGIN: "Please Login To XDCPay !",
+    VALIDATE_BROWSER_REDIRECTING: "Redirect To Download XDC PAY App !",
 }
 export const addFeaturesContent = {
     PAUSABLE_CONTENT: "This specifies whether your token and all associated operations can be halted and resumed whenever needed.",

@@ -4,8 +4,14 @@ import BasicInfoPage from "./basicInformation";
 import numberToWords from "number-to-words";
 import { Tooltip, Fade, createTheme } from "@material-ui/core";
 import Utils from "../../utility";
+import {
+  apiBodyMessages,
+  apiSuccessConstants,
+  validationsMessages,
+} from "../../constants";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
+import toast, { Toaster } from "react-hot-toast";
 
 const Parent = styled.div`
   display: flex;
@@ -225,23 +231,38 @@ export default function Tokenomics(props) {
   const classes = useStyles();
 
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
+
+  const supplyErrorMessage = () =>
+  toast.error(validationsMessages.VALIDATE_INITIAL_SUPPY_FIELD, {
+    duration: 4000,
+    position: validationsMessages.TOASTS_POSITION,
+    className: "toast-div-address",
+  });
 
   const saveAndContinue = (e) => {
+    if (props.tokenData?.tokenInitialSupply === undefined) {
+      supplyErrorMessage();
+    }
     props.handleChange(e);
-    if (props.tokenData.tokenInitialSupply > 0 && props.tokenData.tokenInitialSupply !== undefined) {
+    if (
+      props.tokenData.tokenInitialSupply >= 1 &&
+      props.tokenData.tokenInitialSupply !== undefined
+    ) {
       props.nextStep(e);
     }
   };
 
   let convertedNumber = numberToWords?.toWords(
     props?.tokenData?.tokenInitialSupply || 0
-  );
-  // console.log('num-----',convertedNumber)
+  )
+  // let news = convertedNumber?.split(',')[0]
+  // console.log('num-----',news+" "+'Approx')
 
   return (
     <>
+    <div><Toaster/></div>
       <Parent>
         <Column>
           <RowTwo>
@@ -279,8 +300,8 @@ export default function Tokenomics(props) {
             <BlurTextDiv>
               Insert the initial numbers of tokens available
             </BlurTextDiv>
-            {props.tokenData.tokenInitialSupply <= 0 ? (
-              <p className="shown-error">Supply should be more than 0</p>
+            {props.tokenData.tokenInitialSupply < 1 ? (
+              <p className="shown-error">Supply should not be less than 1</p>
             ) : (
               ""
             )}
