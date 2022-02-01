@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <g id="AddToWallet" transform="translate(-722 -271)">
+    <rect id="Rectangle_609" data-name="Rectangle 609" width="100" height="100" transform="translate(722 271)" fill="none"/>
+    <g id="Group_962" data-name="Group 962" transform="translate(-313 -505)">
+      <g id="Wallet" transform="translate(717.623 503.967)">
+        <g id="Group_754" data-name="Group 754" transform="translate(332 273.76)">
+          <g id="Group_753" data-name="Group 753" transform="translate(2.377 29.033)">
+            <path id="Path_791" data-name="Path 791" d="M60.977,37.128a8.788,8.788,0,0,0-8.749-8.095H11.155a8.788,8.788,0,0,0-8.779,8.779V78.428a8.788,8.788,0,0,0,8.779,8.779H58.6a8.788,8.788,0,0,0,8.779-8.779V45.578A8.792,8.792,0,0,0,60.977,37.128ZM11.155,33.134H52.228A4.685,4.685,0,0,1,56.794,36.8H11.155a8.723,8.723,0,0,0-4.678,1.355v-.343A4.683,4.683,0,0,1,11.155,33.134ZM58.6,83.106H11.155a4.683,4.683,0,0,1-4.678-4.678V45.578A4.683,4.683,0,0,1,11.155,40.9H58.6a4.683,4.683,0,0,1,4.678,4.678v7.156H50.207a9.4,9.4,0,0,0,0,18.793H63.282v6.9A4.683,4.683,0,0,1,58.6,83.106Zm4.678-15.68H50.207a5.3,5.3,0,0,1,0-10.591H63.282Z" transform="translate(-2.377 -29.033)" fill="#091f5c"/>
+            <circle id="Ellipse_102" data-name="Ellipse 102" cx="2.135" cy="2.135" r="2.135" transform="translate(46.456 31.118)" fill="#091f5c"/>
+          </g>
+        </g>
+      </g>
+      <circle id="Ellipse_103" data-name="Ellipse 103" cx="7.5" cy="7.5" r="7.5" transform="translate(1067 797)" fill="#0089ff"/>
+      <circle id="Ellipse_104" data-name="Ellipse 104" cx="7.5" cy="7.5" r="7.5" transform="translate(1082 787)" fill="#0089ff"/>
+    </g>
+  </g>
+</svg>
