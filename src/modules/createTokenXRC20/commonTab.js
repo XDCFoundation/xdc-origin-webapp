@@ -119,7 +119,7 @@ const Description = styled.div`
 const TextOne = styled.div`
   font: normal normal normal 12px/15px Inter;
   letter-spacing: 0px;
-  color: #4b4b4b;
+  color: #7b7979;
   opacity: 1;
   @media (min-width: 0px) and (max-width: 767px) {
     display: none;
@@ -191,7 +191,7 @@ const LineBottom = styled.hr`
 
 function CommonTab(props) {
   const history = useHistory();
-
+  let obtainHash;
   const tab = [
     {
       id: 1,
@@ -378,10 +378,10 @@ function CommonTab(props) {
     ) {
       notifySuccessMsg();
       sendTransaction(res);
-    } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
+    } else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
       notifyNameErrorMessage();
       prevStep();
-    } else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
+    } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
       notifySymbolErrorMessage();
       prevStep();
     }
@@ -418,6 +418,7 @@ function CommonTab(props) {
 
   const sendTransaction = async (tokenDetails) => {
     window.web3 = new Web3(window.ethereum);
+    // console.log('token---',tokenDetails)
     let checkNetwork = tokenDetails?.network;
     let draftedTokenId = tokenDetails?.id;
     let draftedTokenOwner = tokenDetails?.tokenOwner;
@@ -440,7 +441,7 @@ function CommonTab(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
+          obtainHash = hash 
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             setTimeout(() => {
@@ -457,8 +458,19 @@ function CommonTab(props) {
           }
         })
         .on("error", function (error) {
-          // console.log('er',error, error.message)
-          if (error) {
+          let obtainTxnHash = obtainHash
+          // console.log('er--',hash, typeof hash)
+          if (error.message !== 'Returned error: Error: XDCPay Tx Signature: User denied transaction signature.') {
+            history.push({
+              pathname: "/created-token",
+              state: {},
+              obtainTxnHash,
+              parsingDecimal,
+              parsingSupply,
+              gasPrice,
+              createdToken,
+            });
+          } else if(error.message === "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." ) {
             prevStep();
           }
         });
@@ -470,7 +482,10 @@ function CommonTab(props) {
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          let newContractAddress = receipt.contractAddress?.replace(/0x/,"xdc");
+          let newContractAddress = receipt.contractAddress?.replace(
+            /0x/,
+            "xdc"
+          );
 
           if (receipt !== 0) {
             history.push({
@@ -488,9 +503,7 @@ function CommonTab(props) {
             );
           }
         })
-        .on("confirmation", function (confirmationNumber, receipt) {
-
-        })
+        .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
           if (error) {
             prevStep();
@@ -533,7 +546,7 @@ function CommonTab(props) {
     let obtainContractAddress = res?.contractAddress || "";
     let obtainTxnHash = res?.hash || "";
     let obtainGasUsed = res?.gasUsed || "";
-    
+
     if (res) {
       history.push({
         pathname: "/created-token",
