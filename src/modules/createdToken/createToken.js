@@ -345,7 +345,7 @@ const CreateToken = (props) => {
         props.location?.obtainTxnHash.length - 4
       );
     
-    contractAddress = props.location?.obtainContractAddress;
+    contractAddress = props.location?.obtainContractAddress === undefined ? "" : props.location?.obtainContractAddress
     
     newContractAddress =
       contractAddress?.slice(0, 26) +

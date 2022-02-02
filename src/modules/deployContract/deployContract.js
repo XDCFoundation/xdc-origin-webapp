@@ -5,15 +5,20 @@ import styled from "styled-components";
 import { Delete, Edit } from "@material-ui/icons";
 import DeleteContract from "./deleteContractPopup";
 import DeployPopup from "./deployPopup";
-import Web3 from 'web3';
-import { connect } from 'react-redux';
-import { apiBodyMessages, apiSuccessConstants, validationsMessages } from "../../constants";
+import Web3 from "web3";
+import { connect } from "react-redux";
+import {
+  apiBodyMessages,
+  apiSuccessConstants,
+  validationsMessages,
+} from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import { handleNavItem } from "../../action";
 
 function DeployContract(props) {
-  const history = useHistory()
+  const history = useHistory();
+  let obtainHash;
   const [open, setOpen] = useState(false);
   const [openDeployPopup, setOpenDeployPopup] = useState(false);
   const [tokenId, setTokenId] = useState("");
@@ -31,10 +36,10 @@ function DeployContract(props) {
   };
   const handleDeployPopup = (deployTokenName) => {
     // saveDraft data coming from addFeatures
-    let tokenDetails = props?.saveDraftData
+    let tokenDetails = props?.saveDraftData;
     setOpenDeployPopup(true);
-    setDeployTokenName(deployTokenName)
-    sendTransaction(tokenDetails)
+    setDeployTokenName(deployTokenName);
+    sendTransaction(tokenDetails);
   };
 
   const deployPopupClose = () => {
@@ -44,23 +49,23 @@ function DeployContract(props) {
     let lowerStr = str.toLowerCase();
     let newtr = lowerStr.charAt(0).toUpperCase() + lowerStr.slice(1);
     return newtr;
-  }
+  };
 
   // deploy Token Function :
 
-  let networkVersion = props.userDetails?.accountDetails?.network || ""
-  let userAddress = props.userDetails?.accountDetails?.address || ""
+  let networkVersion = props.userDetails?.accountDetails?.network || "";
+  let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const sendTransaction = async (tokenDetails) => {
-    window.web3 = new Web3(window.ethereum)
+    window.web3 = new Web3(window.ethereum);
 
-    let checkNetwork = tokenDetails?.network
-    let draftedTokenId = tokenDetails?.id
-    let draftedTokenOwner = tokenDetails?.tokenOwner
-    let byteCode = tokenDetails?.byteCode
-    let createdToken = tokenDetails?.tokenName
-    let parsingDecimal = tokenDetails?.tokenDecimals
-    let parsingSupply = tokenDetails?.tokenInitialSupply
+    let checkNetwork = tokenDetails?.network;
+    let draftedTokenId = tokenDetails?.id;
+    let draftedTokenOwner = tokenDetails?.tokenOwner;
+    let byteCode = tokenDetails?.byteCode;
+    let createdToken = tokenDetails?.tokenName;
+    let parsingDecimal = tokenDetails?.tokenDecimals;
+    let parsingSupply = tokenDetails?.tokenInitialSupply;
 
     // let xdce_address = tokenDetails.tokenOwner;
     // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
@@ -69,89 +74,146 @@ function DeployContract(props) {
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
-      "from": userAddress,
-      "gas": 7920000,
-      "gasPrice": gasPrice,
-      "data": byteCode
+      from: userAddress,
+      gas: 7920000,
+      gasPrice: gasPrice,
+      data: byteCode,
     };
 
     if (checkNetwork === "XDC Mainnet") {
-      await window.web3.eth.sendTransaction(transaction)
-        .on('transactionHash', function (hash) {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {
           // console.log("transactionHash ====", hash);
+          obtainHash = hash
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             setTimeout(() => {
-              contractDetailsFromTxnHash(hash, parsingDecimal, parsingSupply, gasPrice, createdToken, draftedTokenId, draftedTokenOwner)
+              contractDetailsFromTxnHash(
+                hash,
+                parsingDecimal,
+                parsingSupply,
+                gasPrice,
+                createdToken,
+                draftedTokenId,
+                draftedTokenOwner
+              );
             }, 10000);
           }
         })
-        // .on('receipt', function (receipt) {
-        // console.log("receipt ====", receipt);  
-        // }
-        // )
-        // .on('confirmation', function (confirmationNumber, receipt) {
-        // console.log("confirmation ====", confirmationNumber, receipt);
-        // })
-        .on('error', function (error) {
-          if (error) {
-            setOpenDeployPopup(false)
+
+        .on("error", function (error) {
+          let obtainTxnHash = obtainHash
+          if (
+            error.message !==
+            "Returned error: Error: XDCPay Tx Signature: User denied transaction signature."
+          ) {
+            history.push({
+              pathname: "/created-token",
+              state: {},
+              parsingDecimal,
+              obtainTxnHash,
+              parsingSupply,
+              gasPrice,
+              createdToken,
+            });
+          } else if (
+            error.message ===
+            "Returned error: Error: XDCPay Tx Signature: User denied transaction signature."
+          ) {
+            setOpenDeployPopup(false);
           }
         });
-    }
-    else {
-      await window.web3.eth.sendTransaction(transaction)
-        .on('transactionHash', function (hash) {
+    } else {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {
           // console.log("transactionHash ====", hash);
         })
-        .on('receipt', function (receipt) { //receive the contract address from this object
-          // console.log("receipt ====", receipt);  
+        .on("receipt", function (receipt) {
+          //receive the contract address from this object
+          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
-            history.push({ pathname: '/created-token', state: receipt, parsingDecimal, parsingSupply, gasPrice, createdToken })
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, receipt.contractAddress)
+            history.push({
+              pathname: "/created-token",
+              state: receipt,
+              parsingDecimal,
+              parsingSupply,
+              gasPrice,
+              createdToken,
+            });
+            updateTokenDetails(
+              draftedTokenId,
+              draftedTokenOwner,
+              receipt.contractAddress
+            );
           }
-        }
-        )
-        .on('confirmation', function (confirmationNumber, receipt) {
+        })
+        .on("confirmation", function (confirmationNumber, receipt) {
           // console.log("confirmation ====", confirmationNumber, receipt);
         })
-        .on('error', function (error) {
+        .on("error", function (error) {
           if (error) {
-            setOpenDeployPopup(false)
+            setOpenDeployPopup(false);
           }
         });
     }
-  }
+  };
 
-  const updateTokenDetails = async (resultedTokenId, resultedTokenOwner, resultAddress) => {
-
+  const updateTokenDetails = async (
+    resultedTokenId,
+    resultedTokenOwner,
+    resultAddress
+  ) => {
     let reqObj = {
       tokenId: resultedTokenId,
       tokenOwner: resultedTokenOwner,
       smartContractAddress: resultAddress,
-      status: apiBodyMessages.STATUS_DEPLOYED
+      status: apiBodyMessages.STATUS_DEPLOYED,
     };
-    const [err, res] = await Utils.parseResponse(SaveDraftService.updateDraftedToken(reqObj));
-  }
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.updateDraftedToken(reqObj)
+    );
+  };
 
-  const contractDetailsFromTxnHash = async (txnHash, parsingDecimal, parsingSupply, gasPrice, createdToken, tokenId, tokenOwner) => {
+  const contractDetailsFromTxnHash = async (
+    txnHash,
+    parsingDecimal,
+    parsingSupply,
+    gasPrice,
+    createdToken,
+    tokenId,
+    tokenOwner
+  ) => {
     let reqObj = {
-      hash: txnHash
+      hash: txnHash,
     };
-    const [err, res] = await Utils.parseResponse(SaveDraftService.getTxnHashDetails(reqObj));
-    let obtainContractAddress = res?.contractAddress || ""
-    let obtainTxnHash = res?.hash || ""
-    let obtainGasUsed = res?.gasUsed || ""
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.getTxnHashDetails(reqObj)
+    );
+    let obtainContractAddress = res?.contractAddress || "";
+    let obtainTxnHash = res?.hash || "";
+    let obtainGasUsed = res?.gasUsed || "";
     if (res != 0) {
-      history.push({ pathname: '/created-token', state: {}, obtainTxnHash, parsingDecimal, parsingSupply, gasPrice, obtainGasUsed, createdToken, obtainContractAddress })
-      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress)
+      history.push({
+        pathname: "/created-token",
+        state: {},
+        obtainTxnHash,
+        parsingDecimal,
+        parsingSupply,
+        gasPrice,
+        obtainGasUsed,
+        createdToken,
+        obtainContractAddress,
+      });
+      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress);
     }
-  }
+  };
 
   const handleEdit = (id) => {
-    props.setActiveNavItem('create')
-    history.push(`/token-XRC20/${id}`)
-  }
+    props.setActiveNavItem("create");
+    history.push(`/token-XRC20/${id}`);
+  };
 
   return (
     <Container>
@@ -170,12 +232,20 @@ function DeployContract(props) {
         <DataContainer>
           {props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
             <EmptyRow>No Contracts Available</EmptyRow>
-          ) :
-            props.state.draftFailedXrc20TokenDetails && props.state.draftFailedXrc20TokenDetails.map((item, index) => (
+          ) : (
+            props.state.draftFailedXrc20TokenDetails &&
+            props.state.draftFailedXrc20TokenDetails.map((item, index) => (
               <>
                 <TableRow key={index}>
                   <div className="tokenIcon">
-                    <TableContentImg alt="" src={item.tokenImage ? item.tokenImage : "/images/XDC_sky_blue.svg"} />
+                    <TableContentImg
+                      alt=""
+                      src={
+                        item.tokenImage
+                          ? item.tokenImage
+                          : "/images/XDC_sky_blue.svg"
+                      }
+                    />
                   </div>
                   <div className="tokenName">
                     <TableContent>{item.tokenName}</TableContent>
@@ -193,13 +263,22 @@ function DeployContract(props) {
                     <TableContent>{capitalize(item.status)}</TableContent>
                   </div>
                   <div className="icons">
-                    <div className="deployIcon" onClick={() => handleDeployPopup(item.tokenName)}>
+                    <div
+                      className="deployIcon"
+                      onClick={() => handleDeployPopup(item.tokenName)}
+                    >
                       <img src="/images/deploy_contract.png" alt="" />
                     </div>
-                    <div className="deleteIcon" onClick={() => handleClickOpen(item.id, item.tokenName)}>
+                    <div
+                      className="deleteIcon"
+                      onClick={() => handleClickOpen(item.id, item.tokenName)}
+                    >
                       <Delete />
                     </div>
-                    <div onClick={() => handleEdit(item.id)} className="editIcon">
+                    <div
+                      onClick={() => handleEdit(item.id)}
+                      className="editIcon"
+                    >
                       <Edit />
                     </div>
                   </div>
@@ -207,7 +286,7 @@ function DeployContract(props) {
                 <DataLine />
               </>
             ))
-          }
+          )}
         </DataContainer>
       </TableContainer>
 
@@ -236,11 +315,11 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   setActiveNavItem: (isActive) => {
-    dispatch(handleNavItem(isActive))
+    dispatch(handleNavItem(isActive));
   },
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(DeployContract);
+export default connect(mapStateToProps, mapDispatchToProps)(DeployContract);
 
 const Container = styled.div`
   width: 100vw;
@@ -313,7 +392,7 @@ const TableContainer = styled.div`
       opacity: 1;
     }
     ::-webkit-scrollbar-thumb {
-      background-color: #c4c4c4 ;
+      background-color: #c4c4c4;
     }
   }
   @media screen and (max-width: 1440px) and (min-width: 1280px) {
@@ -330,7 +409,7 @@ const TableContainer = styled.div`
       opacity: 1;
     }
     ::-webkit-scrollbar-thumb {
-      background-color: #c4c4c4 ;
+      background-color: #c4c4c4;
     }
   }
   @media screen and (max-width: 1280px) and (min-width: 1024px) {
