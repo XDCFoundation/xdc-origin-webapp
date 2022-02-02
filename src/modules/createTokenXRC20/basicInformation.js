@@ -138,6 +138,11 @@ const InputDiv = styled.input`
   :focus {
     outline: 2px solid #8ca6f0;
   }
+  ::-webkit-inner-spin-button, 
+  ::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
   }
