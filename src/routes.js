@@ -19,6 +19,7 @@ import WalletPopup from "../src/modules/connectWallet/connectWalletMobile";
 import WalletPopupDesktop from "./modules/connectWallet";
 import ManageContracts from "./modules/manageContracts";
 import UpdateProfile from "./modules/updateProfile";
+import ManageContractDetails from "./modules/manageContractDetails";
 
 class Routes extends BaseComponent {
   constructor(props) {
@@ -68,6 +69,11 @@ class Routes extends BaseComponent {
               exact
               path={"/manage-contracts"}
               component={ManageContracts}
+            />
+            <Route
+              exact
+              path={"/manage-contract-details"}
+              component={ManageContractDetails}
             />
             <Route
               exact
