@@ -186,6 +186,10 @@ const Loader = styled.div`
   left: 225px;
 `;
 
+const Span = styled.span`
+  color: #1f1f1f;
+`;
+
 const zoomStep = 0.05;
 const maxScale = 5;
 const minScale = 1;
@@ -388,7 +392,7 @@ export default function UploadTokenImage(props) {
         {" "}
         {/**change true to state "open" while integrating */}
         <Header>
-          <DialogTitle>Upload Token Image</DialogTitle>
+          <DialogTitle><Span>Upload Token Image</Span></DialogTitle>
           <Cross
             onClick={(e) => props.handleUploadClose(e)}
             src="/images/Cross.svg"
