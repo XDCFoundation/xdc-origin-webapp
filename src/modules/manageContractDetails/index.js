@@ -25,7 +25,7 @@ class ManageContracts extends BaseComponent {
         <Header />
         <Row>
           {window.innerWidth >= 1024 ? <Sidebar /> : ""}
-          <ManageContractDetails />
+          <ManageContractDetails deolyedTokenDetails={this.props?.location?.state?.deolyedTokenDetails}/>
         </Row>
         {window.innerWidth <= 768 ? <Footer /> : ""}
       </div>
