@@ -5,7 +5,8 @@ import {httpConstants} from "../constants"
 export default {
   getDraftFailedXrc20Token,
   deleteContract,
-  getXrc20TokenById
+  getXrc20TokenById,
+  getDeployedXrc20Token
   };
 
 
@@ -80,6 +81,34 @@ async function getXrc20TokenById(requestData) {
         httpConstants.API_END_POINT.GET_XRC20TOKEN_BY_ID;
     
   // let url = "http://xdc-mycontract-dev-2107657444.us-east-1.elb.amazonaws.com:3001/get-xrc20Token-by-id";
+
+    return httpService(
+      httpConstants.METHOD_TYPE.POST,
+      getHeaders(),
+      requestData,
+      url
+    )
+      .then((response) => {
+        if (
+          !response.success ||
+          response.responseCode !== 200 ||
+          !response.responseData ||
+          response.responseData.length === 0
+        )
+          return Promise.reject(response);
+        return Promise.resolve(response.responseData);
+      })
+      .catch(function (err) {
+        return Promise.reject(err);
+      });
+}
+
+async function getDeployedXrc20Token(requestData) {
+    // let url =
+    //   process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
+    //     httpConstants.API_END_POINT.GET_DEPLOYED_XRC20TOKEN;
+    
+  let url = "http://xdc-mycontract-dev-2107657444.us-east-1.elb.amazonaws.com:3001/get-deployed-xrc20Token";
 
     return httpService(
       httpConstants.METHOD_TYPE.POST,

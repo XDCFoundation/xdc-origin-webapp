@@ -4,6 +4,10 @@ import styled from "styled-components";
 import { Tooltip, Fade, Menu, MenuItem } from "@material-ui/core";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { makeStyles } from "@material-ui/core/styles";
+import millify from "millify";
+import moment from "moment";
+import toast, { Toaster } from "react-hot-toast";
+import {history} from "../../managers/history"
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -14,9 +18,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#1F1F1F",
     fontSize: "15px",
     fontWeight: 500,
-  },
-  selected: {
-    backgroundColor: "none",
   },
 }));
 
@@ -319,7 +320,7 @@ const TransferButton = styled.div`
   justify-content: center;
 `;
 
-function manageContractDetails() {
+function manageContractDetails(props) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
@@ -336,13 +337,28 @@ function manageContractDetails() {
     setAnchorEl(null);
   };
 
-  const openMenu = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const handleURL = (link) => {
+    if (link === "") {
+      toast.error("Link Not Provided", {
+        duration: 4000,
+        position: "top-center",
+        // className: "toast-div-address",
+      });
+    } else {
+      window.open(link, '_blank');
+    }
+  };
+  
+  const handleOptionClick = () => {
+    history.push("/update-profile")
+  };
 
-  const handleOptionClick = () => {};
+  const createdTime = moment(props.deolyedTokenDetails?.createdAt).format('h:mm a');
+  const createdDate = moment(props.deolyedTokenDetails?.createdAt).format('DD MMMM YYYY');
 
   return (
     <Container>
+      <div><Toaster /></div>
       <CommonContainer>
         <Heading>
           <BackArrow src="images/Button_Back_Arrow.svg" />
@@ -353,14 +369,14 @@ function manageContractDetails() {
           <TopContainer>
             <LeftDiv>
               <ImgContainer>
-                <TokenImg src="/images/XDC_sky_blue.svg" />
+                <TokenImg src={props.deolyedTokenDetails?.tokenImage} />
               </ImgContainer>
               <InfoContainer>
-                <TokenName>Metaverse</TokenName>
-                <TokenSymbol>META</TokenSymbol>
+                <TokenName>{props.deolyedTokenDetails?.tokenName}</TokenName>
+                <TokenSymbol>{props.deolyedTokenDetails?.tokenSymbol}</TokenSymbol>
                 <AddressContainer>
                   <ContractAddress>
-                    xdc5e6d170445cea1e9bf1ba5aae9eda2a1
+                    {props.deolyedTokenDetails?.smartContractAddress?.replace(/0x/,"xdc")}
                   </ContractAddress>
                   <Tooltip
                     title={open ? "Copied" : "Copy To Clipboard"}
@@ -369,7 +385,7 @@ function manageContractDetails() {
                     TransitionComponent={Fade}
                     TransitionProps={{ timeout: 600 }}
                   >
-                    <CopyToClipboard text="xdc5e6d170445cea1e9bf1ba5aae9eda2a1">
+                    <CopyToClipboard text={props.deolyedTokenDetails?.smartContractAddress}>
                       <CopyIcon
                         src="/images/Copy.svg"
                         onClick={handleTooltipOpen}
@@ -378,14 +394,14 @@ function manageContractDetails() {
                   </Tooltip>
                 </AddressContainer>
                 <MediaImgContainer>
-                  <MediaImg src="/images/Website_active.svg" />
-                  <MediaImg src="/images/Email_Active.svg" />
-                  <MediaImg src="/images/Facebook_Active.svg" />
-                  <MediaImg src="/images/Twitter_Active.svg" />
-                  <MediaImg src="/images/Telegram_Active.svg" />
-                  <MediaImg src="/images/LinkedIn_Active.svg" />
-                  <MediaImg src="/images/Reditt_Active.svg" />
-                  <MediaImg src="/images/CoinDecko_Active.svg" />
+                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.website)} src="/images/Website_active.svg" />
+                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.email)} src="/images/Email_Active.svg" />
+                  <MediaImg onClick={() => handleURL("")} src="/images/Facebook_Active.svg" />
+                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.twitter)} src="/images/Twitter_Active.svg" />
+                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.telegram)} src="/images/Telegram_Active.svg" />
+                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.linkedIn)} src="/images/LinkedIn_Active.svg" />
+                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.reddit)} src="/images/Reditt_Active.svg" />
+                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.coinGecko)} src="/images/CoinDecko_Active.svg" />
                 </MediaImgContainer>
               </InfoContainer>
             </LeftDiv>
@@ -407,15 +423,9 @@ function manageContractDetails() {
                   paper: classes.menu,
                 }}
               >
-                <MenuItem
-                  selected={false}
-                  classes={{ selected: classes.selected }}
-                  className={classes.item}
-                >
-                  View on XDCScan
-                </MenuItem>
+                <MenuItem className={classes.item}>View on XDCScan</MenuItem>
                 <MenuItem className={classes.item}>Add to XDCPay</MenuItem>
-                <MenuItem className={classes.item}>
+                <MenuItem className={classes.item} onClick={() => handleOptionClick()}>
                   Edit Contract Profile
                 </MenuItem>
                 <MenuItem className={classes.item}>Download .Sol File</MenuItem>
@@ -426,35 +436,35 @@ function manageContractDetails() {
           <MiddleContainer>
             <DetailsContainerFirst>
               <Title>Initial Supply</Title>
-              <Amount>10M</Amount>
+              <Amount>{ millify(props.deolyedTokenDetails?.tokenInitialSupply) }</Amount>
               <Description>
                 <SubDes>Created on:</SubDes>{" "}
-                <SubContentSupply>11:30 AM, 7 Dec 2021</SubContentSupply>
+                <SubContentSupply>{createdTime.toUpperCase()}, {createdDate}</SubContentSupply>
               </Description>
             </DetailsContainerFirst>
             <Divider />
             <DetailsContainer>
               <Title>Minted Tokens</Title>
-              <Amount>2M</Amount>
+              <Amount>{ millify(props.deolyedTokenDetails?.mintedTokens) }</Amount>
               <Description>
                 <SubDes>Last minted:</SubDes>{" "}
-                <SubContent>2 days ago</SubContent>
+                <SubContent>NA</SubContent>
               </Description>
             </DetailsContainer>
             <Divider />
             <DetailsContainer>
               <Title>Burnt Tokens</Title>
-              <Amount>0.5M</Amount>
+              <Amount>{ millify(props.deolyedTokenDetails?.burntTokens) }</Amount>
               <Description>
-                <SubDes>Last burnt:</SubDes> <SubContent>1 day ago</SubContent>
+                <SubDes>Last burnt:</SubDes> <SubContent>NA</SubContent>
               </Description>
             </DetailsContainer>
             <Divider />
             <DetailsContainer>
               <Title>Current Supply</Title>
-              <Amount>11.5M</Amount>
+              <Amount>{ millify(props.deolyedTokenDetails?.tokenCurrentSupply) }</Amount>
               <Description>
-                <SubDes>Updated:</SubDes> <SubContent>5 min ago</SubContent>
+                <SubDes>Updated:</SubDes> <SubContent>{moment(props.deolyedTokenDetails?.updatedAt, "YYYYMMDD").fromNow()}</SubContent>
               </Description>
             </DetailsContainer>
           </MiddleContainer>
