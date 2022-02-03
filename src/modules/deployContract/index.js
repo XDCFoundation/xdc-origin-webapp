@@ -14,6 +14,7 @@ class DeployContract extends BaseComponent {
     super(props);
     this.state = {
       draftFailedXrc20TokenDetails: [],
+      isLoading: false,
     };
   }
 
@@ -22,6 +23,10 @@ class DeployContract extends BaseComponent {
   }
 
   getDraftFailedXrc20Token = async () => {
+    this.setState({
+      isLoading: true,
+    })
+
     let requestData = {
       tokenOwner: this.props?.user?.accountDetails?.address,
       network: this.props?.user?.accountDetails?.network
@@ -36,6 +41,7 @@ class DeployContract extends BaseComponent {
       if (error?.responseData?.length === 0) {
         this.setState({
           draftFailedXrc20TokenDetails: [],
+          isLoading: false,
         });
       }
       return;
@@ -43,6 +49,7 @@ class DeployContract extends BaseComponent {
     if (contractServiceResponse) {
       this.setState({
         draftFailedXrc20TokenDetails: contractServiceResponse,
+        isLoading: false,
       });
     }
   };

@@ -15,6 +15,7 @@ import {
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import { handleNavItem } from "../../action";
+import { CircularProgress } from "@material-ui/core";
 
 function DeployContract(props) {
   const history = useHistory();
@@ -230,11 +231,16 @@ function DeployContract(props) {
         <Line />
 
         <DataContainer>
-          {props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
-            <EmptyRow>No Contracts Available</EmptyRow>
+          {props.state?.isLoading ? (
+            <EmptyRow>
+              <CircularProgress />
+            </EmptyRow>
           ) : (
-            props.state.draftFailedXrc20TokenDetails &&
-            props.state.draftFailedXrc20TokenDetails.map((item, index) => (
+              props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
+                <EmptyRow>No Contracts Available</EmptyRow>
+              ) : (
+                props.state.draftFailedXrc20TokenDetails &&
+                props.state.draftFailedXrc20TokenDetails.map((item, index) => (
               <>
                 <TableRow key={index}>
                   <div className="tokenIcon">
@@ -286,6 +292,7 @@ function DeployContract(props) {
                 <DataLine />
               </>
             ))
+            )
           )}
         </DataContainer>
       </TableContainer>
