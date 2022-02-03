@@ -51,6 +51,7 @@ const BackArrow = styled.img`
   width: 35px;
   height: 24px;
   margin-right: 13.46px;
+  cursor: pointer;
 `;
 const Text = styled.span`
   width: 109px;
@@ -350,7 +351,12 @@ function manageContractDetails(props) {
   };
   
   const handleOptionClick = () => {
-    history.push("/update-profile")
+    history.push(({
+      pathname: "/update-profile",
+      state: {
+        deolyedTokenDetails: props.deolyedTokenDetails,
+      }
+    }))
   };
 
   const createdTime = moment(props.deolyedTokenDetails?.createdAt).format('h:mm a');
@@ -361,7 +367,7 @@ function manageContractDetails(props) {
       <div><Toaster /></div>
       <CommonContainer>
         <Heading>
-          <BackArrow src="images/Button_Back_Arrow.svg" />
+          <BackArrow onClick={() => history.push("/manage-contracts")} src="images/Button_Back_Arrow.svg" />
           <Text>Manage</Text>
         </Heading>
 

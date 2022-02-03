@@ -27,6 +27,7 @@ export const httpConstants = {
         DELETE_XRC20_TOKEN: "/delete-xrc20token",
         GET_COIN_MARKET_CAP: "/getCoinMarketCap/USD",
         GET_DEPLOYED_XRC20TOKEN: "/get-deployed-xrc20Token",
+        UPDATE_CONTRACTS: "/update-contracts",
     },
 };
 export const apiBodyMessages = {
