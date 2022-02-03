@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="Cross" transform="translate(-1484 -131)">
+    <rect id="Rectangle_614" data-name="Rectangle 614" width="20" height="20" transform="translate(1484 131)" fill="none"/>
+    <g id="Close" transform="translate(1457.998 104.925)">
+      <line id="Line_2" data-name="Line 2" x2="12.857" y2="12.857" transform="translate(30.073 30.119)" fill="#75767a"/>
+      <path id="Path_795" data-name="Path 795" d="M42.976,44.047a1.071,1.071,0,0,1-.757-.314L29.362,30.877a1.071,1.071,0,0,1,1.514-1.514L43.733,42.219a1.071,1.071,0,0,1-.757,1.828Z" transform="translate(-0.046)"/>
+      <line id="Line_3" data-name="Line 3" y1="12.857" x2="12.857" transform="translate(30.073 30.119)" fill="#75767a"/>
+      <path id="Path_796" data-name="Path 796" d="M30.073,44.047a1.071,1.071,0,0,1-.757-1.828L42.172,29.362a1.071,1.071,0,0,1,1.514,1.514L30.83,43.733A1.071,1.071,0,0,1,30.073,44.047Z" transform="translate(0 0)"/>
+    </g>
+  </g>
+</svg>
