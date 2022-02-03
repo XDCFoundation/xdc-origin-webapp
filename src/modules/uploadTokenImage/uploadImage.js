@@ -10,6 +10,7 @@ import AWSServices from "../../services/aws-service";
 import Cropper from "react-easy-crop";
 import GetCroppedImg from "./cropImage";
 import { CircularProgress} from "@material-ui/core";
+import { transparent } from "material-ui/styles/colors";
 
 const Header = styled.div`
   display: flex;
@@ -139,7 +140,7 @@ const TokenImage = styled.div`
   width: 264px;
   height: 264px;
   position: "relative";
-  background: #000000 0% 0% no-repeat padding-box;
+  background: none;
   overflow: hidden;
   top: 100px;
   left: 200px;
@@ -286,7 +287,7 @@ export default function UploadTokenImage(props) {
 
     const { getInputProps, getRootProps, fileRejections } = useDropzone({
       onDrop,
-      accept: "image/jpeg, image/png, image/jpg",
+      accept: "image/png",
     });
 
     const fileRejectionItems = fileRejections.map(({ file, errors }) => (
@@ -341,7 +342,7 @@ export default function UploadTokenImage(props) {
           ) : (
             <Content>
               <TokenImage>
-                <Cropper
+                <Cropper 
                   image={filePreview}
                   crop={crop}
                   zoom={scale}
@@ -349,14 +350,15 @@ export default function UploadTokenImage(props) {
                   onCropChange={setCrop}
                   onCropComplete={onCropComplete}
                   onZoomChange={setZoom}
+                  
                   showGrid={false}
-                  cropSize={{ width: 220, height: 220 }}
-                  cropShape="round"
+                  cropSize={{ width: 270, height: 270}}
+                  // cropShape="round"
                   objectFit={"horizontal-cover" || "vertical-cover"}
                   disableAutomaticStylesInjection={true}
                 />
               </TokenImage>
-              <CropImage>
+              {/* <CropImage>
                 <ControlButtons onClick={zoomOut}>
                   <img src="/images/Minus-Icon.svg"></img>
                 </ControlButtons>
@@ -378,7 +380,7 @@ export default function UploadTokenImage(props) {
                 <ControlButtons onClick={zoomIn}>
                   <Plus src="/images/Token_Image.svg"></Plus>
                 </ControlButtons>
-              </CropImage>
+              </CropImage> */}
             </Content>
           )}
         </>
