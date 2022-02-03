@@ -192,6 +192,8 @@ const LineBottom = styled.hr`
 function CommonTab(props) {
   const history = useHistory();
   let obtainHash;
+  let contractAdd = "";
+
   const tab = [
     {
       id: 1,
@@ -441,6 +443,7 @@ function CommonTab(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
+          // console.log('has---',hash)
           obtainHash = hash 
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
@@ -459,12 +462,14 @@ function CommonTab(props) {
         })
         .on("error", function (error) {
           let obtainTxnHash = obtainHash
-          // console.log('er--',hash, typeof hash)
-          if (error.message !== 'Returned error: Error: XDCPay Tx Signature: User denied transaction signature.') {
+          let obtainContractAddress = contractAdd
+
+          if (error.message !== 'Returned error: Error: XDCPay Tx Signature: User denied transaction signature.' && contractAdd === "") {
             history.push({
               pathname: "/created-token",
               state: {},
               obtainTxnHash,
+              obtainContractAddress,
               parsingDecimal,
               parsingSupply,
               gasPrice,
@@ -472,6 +477,9 @@ function CommonTab(props) {
             });
           } else if(error.message === "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." ) {
             prevStep();
+          } 
+          else{
+            console.log('')
           }
         });
     } else {
@@ -543,11 +551,13 @@ function CommonTab(props) {
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.getTxnHashDetails(reqObj)
     );
-    let obtainContractAddress = res?.contractAddress || "";
-    let obtainTxnHash = res?.hash || "";
-    let obtainGasUsed = res?.gasUsed || "";
+    let obtainContractAddress = res?.contractAddress;
+    let obtainTxnHash = res?.hash !== undefined ? res?.hash : obtainHash 
+    let obtainGasUsed = res?.gasUsed;
+    //-------
+    contractAdd = res?.contractAddress
 
-    if (res) {
+    if (contractAdd !== "") {
       history.push({
         pathname: "/created-token",
         state: {},
