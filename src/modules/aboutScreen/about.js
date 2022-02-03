@@ -3,11 +3,17 @@ import styled from "styled-components";
 import ReactPlayer from "react-player";
 import { useHistory } from "react-router";
 import Web3 from "web3";
-import { handleAccountDetails, handleNavItem, handleSubNavItem, handleSubNavToken, handleWallet } from "../../action";
+import {
+  handleAccountDetails,
+  handleNavItem,
+  handleSubNavItem,
+  handleSubNavToken,
+  handleWallet,
+} from "../../action";
 import { connect } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Tooltip, Typography, ClickAwayListener } from "@material-ui/core";
-import { DASHBOARD_VIDEO_URL } from "../../constants"
+import { DASHBOARD_VIDEO_URL } from "../../constants";
 
 const CustomTooltip = withStyles((theme) => ({
   tooltip: {
@@ -21,7 +27,7 @@ const CustomTooltip = withStyles((theme) => ({
     boxShadow: "0px 3px 12px #0000001A",
     padding: "23.5px",
     borderRadius: "4px",
-    wordSpacing: "2px"
+    wordSpacing: "2px",
   },
 }))(Tooltip);
 
@@ -38,11 +44,11 @@ const MobileTooltip = withStyles((theme) => ({
     padding: "23.5px 15.77px 23.5px 23.5px",
     borderRadius: "4px",
     wordSpacing: "2px",
-    lineHeight: "17px"
+    lineHeight: "17px",
   },
 }))(Tooltip);
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   arrow: {
     "&:before": {
       border: "1px solid #e6e8ed",
@@ -53,15 +59,15 @@ const useStyles = makeStyles(theme => ({
     color: "#1F1F1F",
     fontSize: "18px",
     fontWeight: 600,
-    marginBottom: "13px"
+    marginBottom: "13px",
   },
   typographyMobile: {
     color: "#1F1F1F",
     fontSize: "14px",
     fontWeight: 600,
-    marginBottom: "14px"
+    marginBottom: "14px",
   },
-}))
+}));
 
 function About(props) {
   const classes = useStyles();
@@ -83,7 +89,7 @@ function About(props) {
       props?.currentUser?.accountDetails === null
     ) {
       props.user(connectWallet);
-    } else if(props?.currentUser?.accountDetails?.isLoggedIn){
+    } else if (props?.currentUser?.accountDetails?.isLoggedIn) {
       history.push("/token-XRC20");
       props.setActiveNavItem("create");
       props.setSubNavItem(true);
@@ -98,14 +104,15 @@ function About(props) {
           <LeftContainer>
             <Para>
               <DetailBox>
-                Create your <Span>XRC20</Span>, <Span>XRC223</Span> and{" "}
-                <Span>Stable coin</Span> on XDC Network with no coding required
+                {/* Create your <Span>XRC20</Span>, <Span>XRC223</Span> and{" "}
+                <Span>Stable coin</Span> on XDC Network with no coding required */}
+                Create your own token on XDC Network with no coding <br />{" "}
+                required
               </DetailBox>
               <DataBox>
                 Origin is a Smart Contract Tokenization platform that enables
-                brands and organisations to seamlessly create Non-Fungible
-                Tokens, StableCoins and fixed income instruments with the need
-                for code.
+                brands and organizations to seamlessly create fixed income
+                instruments without the need for code.
               </DataBox>
             </Para>
             <RightContainer>
@@ -129,7 +136,10 @@ function About(props) {
                   classes={{ arrow: classes.arrow }}
                   title={
                     <React.Fragment>
-                      <Typography color="inherit" className={classes.typography}>
+                      <Typography
+                        color="inherit"
+                        className={classes.typography}
+                      >
                         What is XRC20 Token?
                       </Typography>
                       {
@@ -141,10 +151,9 @@ function About(props) {
                   <img className="XRC20" alt="" src="/images/Help.svg" />
                 </CustomTooltip>
               </Button>
-              {
-                window.innerWidth < 768 ? (
-                  <ClickAwayListener onClickAway={handleTooltipClose}>
-                <MobileTooltip
+              {window.innerWidth < 768 ? (
+                <ClickAwayListener onClickAway={handleTooltipClose}>
+                  <MobileTooltip
                     arrow
                     placement="bottom-end"
                     classes={{ arrow: classes.arrow }}
@@ -159,7 +168,10 @@ function About(props) {
                     title={
                       <React.Fragment>
                         <TooltipHeader>
-                          <Typography color="inherit" className={classes.typographyMobile}>
+                          <Typography
+                            color="inherit"
+                            className={classes.typographyMobile}
+                          >
                             What is XRC20 Token?
                           </Typography>
                           <CrossImgMobile src="/images/Cross.svg" alt="" />
@@ -170,42 +182,54 @@ function About(props) {
                       </React.Fragment>
                     }
                   >
-                  <Img className="" alt="" src="/images/Info.svg" onClick={handleTooltipOpen}/>
-                </MobileTooltip>
-              </ClickAwayListener>
-                ) : (
-                  <ClickAwayListener onClickAway={handleTooltipClose}>
+                    <Img
+                      className=""
+                      alt=""
+                      src="/images/Info.svg"
+                      onClick={handleTooltipOpen}
+                    />
+                  </MobileTooltip>
+                </ClickAwayListener>
+              ) : (
+                <ClickAwayListener onClickAway={handleTooltipClose}>
                   <CustomTooltip
-                      arrow
-                      placement="bottom-start"
-                      classes={{ arrow: classes.arrow }}
-                      PopperProps={{
-                        disablePortal: true,
-                      }}
-                      onClose={handleTooltipClose}
-                      open={open}
-                      disableFocusListener
-                      disableHoverListener
-                      disableTouchListener
-                      title={
-                        <React.Fragment>
-                          <TooltipHeader>
-                            <Typography color="inherit" className={classes.typography}>
-                              What is XRC20 Token?
-                            </Typography>
-                            <CrossImg src="/images/Cross.svg" alt="" />
-                          </TooltipHeader>
-                          {
-                            "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
-                          }
-                        </React.Fragment>
-                      }
-                    >
-                    <Img className="" alt="" src="/images/Info.svg" onClick={handleTooltipOpen}/>
+                    arrow
+                    placement="bottom-start"
+                    classes={{ arrow: classes.arrow }}
+                    PopperProps={{
+                      disablePortal: true,
+                    }}
+                    onClose={handleTooltipClose}
+                    open={open}
+                    disableFocusListener
+                    disableHoverListener
+                    disableTouchListener
+                    title={
+                      <React.Fragment>
+                        <TooltipHeader>
+                          <Typography
+                            color="inherit"
+                            className={classes.typography}
+                          >
+                            What is XRC20 Token?
+                          </Typography>
+                          <CrossImg src="/images/Cross.svg" alt="" />
+                        </TooltipHeader>
+                        {
+                          "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
+                        }
+                      </React.Fragment>
+                    }
+                  >
+                    <Img
+                      className=""
+                      alt=""
+                      src="/images/Info.svg"
+                      onClick={handleTooltipOpen}
+                    />
                   </CustomTooltip>
                 </ClickAwayListener>
-                )
-              }
+              )}
             </ButtonDiv>
             {/* <ButtonDiv> */}
             {/* <Button className="create-btn">
@@ -280,13 +304,13 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(handleAccountDetails(accountDetails));
   },
   setActiveNavItem: (isActive) => {
-    dispatch(handleNavItem(isActive))
+    dispatch(handleNavItem(isActive));
   },
   setSubNavItem: (subNavItems) => {
-    dispatch(handleSubNavItem(subNavItems))
+    dispatch(handleSubNavItem(subNavItems));
   },
   setSubNavToken: (isSubNavActive) => {
-    dispatch(handleSubNavToken(isSubNavActive))
+    dispatch(handleSubNavToken(isSubNavActive));
   },
 });
 

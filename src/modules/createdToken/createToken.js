@@ -6,6 +6,7 @@ import { Tooltip, Fade,createTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import AddToXDCPayPopup from "./addToXDCPayPopup";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -384,6 +385,12 @@ const CreateToken = (props) => {
     }
   }
 
+  const [isPopUpOpen, setIsPopUPOpen] = useState(false);
+ 
+  const togglePopup = () => {
+    setIsPopUPOpen(!isPopUpOpen);
+  }
+
   return (
     <MuiThemeProvider theme={defaultTheme}>
     <>
@@ -497,12 +504,13 @@ const CreateToken = (props) => {
             </SuccessRows>
           </SuccessTokenDetails>
           <Buttons>
-            {/* <ButtonAddToXDCPay>
+            <ButtonAddToXDCPay onClick={togglePopup}>
               <ButtonContent>
                 <ButtonName>Add to XDCPay</ButtonName>
                 <ButtonIcon src="images/XDC-Icon-128X128.svg"></ButtonIcon>
               </ButtonContent>
-            </ButtonAddToXDCPay> */}
+            </ButtonAddToXDCPay>
+            {isPopUpOpen && <AddToXDCPayPopup isOpen={isPopUpOpen} handleClose={togglePopup}/>}
             {/* <ButtonManageToken>
               <ButtonContent>
                 Manage Token

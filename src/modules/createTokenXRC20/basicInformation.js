@@ -11,6 +11,7 @@ import {
   apiBodyMessages,
   apiSuccessConstants,
   validationsMessages,
+  toolTipContentMessages,
 } from "../../constants";
 import { makeStyles } from "@material-ui/core/styles";
 import toast, { Toaster } from "react-hot-toast";
@@ -318,7 +319,7 @@ const theme = createTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: "14px",
+        fontSize: "16px",
         color: "#4B4B4B",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 3px 12px #0000001A",
@@ -449,7 +450,7 @@ function Token(props) {
               Network<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Name of network"
+                  title={toolTipContentMessages.TOKEN_NETWORK_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -481,7 +482,7 @@ function Token(props) {
               Token Name<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Name of the token"
+                  title={toolTipContentMessages.TOKEN_NAME_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -517,7 +518,7 @@ function Token(props) {
               Symbol<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Short name of the token"
+                  title={toolTipContentMessages.TOKEN_SYMBOL_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -553,7 +554,7 @@ function Token(props) {
             Token Image (PNG, 256*256 px)<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Icon of the token"
+                  title={toolTipContentMessages.TOKEN_IMAGE_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -652,7 +653,7 @@ function Token(props) {
               Token Image (PNG, 256*256 px)<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Icon of the token"
+                  title={toolTipContentMessages.TOKEN_IMAGE_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -746,7 +747,7 @@ function Token(props) {
               Decimals<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Number of digits that come after the decimal place when displaying token values on-screen"
+                  title={toolTipContentMessages.TOKEN_DECIMAL_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -781,7 +782,7 @@ function Token(props) {
               Description<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Description of the token"
+                  title={toolTipContentMessages.TOKEN_DESCRIPTION_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -817,7 +818,7 @@ function Token(props) {
               Website (Optional)
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Official website of the token"
+                  title={toolTipContentMessages.TOKEN_WEBSITE_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -841,7 +842,7 @@ function Token(props) {
               Twitter (Optional)
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Twitter handle of the token"
+                  title={toolTipContentMessages.TOKEN_TWITTER_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -865,7 +866,7 @@ function Token(props) {
               Telegram (Optional)
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Telegram channel of the token"
+                  title={toolTipContentMessages.TOKEN_TELEGRAM_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
