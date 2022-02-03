@@ -14,6 +14,7 @@ class ManageContracts extends BaseComponent {
     super(props);
     this.state = {
       deolyedXrc20TokenDetails: [],
+      isLoading: false,
     };
   }
 
@@ -22,6 +23,10 @@ class ManageContracts extends BaseComponent {
   }
 
   getDeployedXrc20Token = async () => {
+    this.setState({
+      isLoading: true,
+    })
+
     let requestData = {
       tokenOwner: this.props?.user?.accountDetails?.address,
       network: this.props?.user?.accountDetails?.network
@@ -36,6 +41,7 @@ class ManageContracts extends BaseComponent {
       if (error?.responseData?.length === 0) {
         this.setState({
           deolyedXrc20TokenDetails: [],
+          isLoading: false,
         });
       }
       return;
@@ -43,6 +49,7 @@ class ManageContracts extends BaseComponent {
     if (contractServiceResponse) {
       this.setState({
         deolyedXrc20TokenDetails: contractServiceResponse,
+        isLoading: false,
       });
     }
   };
@@ -53,7 +60,10 @@ class ManageContracts extends BaseComponent {
         <Header />
         <Row>
           {window.innerWidth >= 1024 ? <Sidebar /> : ""}
-          <ManageContractsComponent deolyedXrc20TokenDetails={ this.state.deolyedXrc20TokenDetails }/>
+          <ManageContractsComponent
+          state={this.state}
+          network={this.props?.user?.accountDetails?.network}  
+          deolyedXrc20TokenDetails={this.state.deolyedXrc20TokenDetails} />
         </Row>
         {window.innerWidth <= 768 ? <Footer /> : ""}
       </div>

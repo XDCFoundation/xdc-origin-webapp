@@ -110,12 +110,13 @@ function About(props) {
             </Para>
             <RightContainer>
               <VideoBox>
-                <ReactPlayer
+                {/* <ReactPlayer
                   url={DASHBOARD_VIDEO_URL}
                   controls
                   width="100%"
                   height="100%"
-                />
+                /> */}
+                <img src="/images/dashboard_img.svg" alt="" />
               </VideoBox>
             </RightContainer>
           </LeftContainer>
@@ -534,7 +535,7 @@ const VideoBox = styled.div`
 
   height: 328px !important;
   background: #ffffff 0% 0% no-repeat padding-box;
-  border: 0.125rem solid #d8d8d8;
+  /* border: 0.125rem solid #d8d8d8; */
   border-radius: 0.125rem;
   opacity: 1;
   position: relative;

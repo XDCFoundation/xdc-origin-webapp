@@ -13,7 +13,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip, Fade } from "@material-ui/core";
-import {history} from "../../managers/history"
+import { history } from "../../managers/history";
+import { CircularProgress } from "@material-ui/core";
 
 const Container = styled.div`
   width: 100vw;
@@ -126,6 +127,9 @@ const useStyles = makeStyles({
   },
   address: {
     color: "#3163F0 !important",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center"
   },
   tokenIcon: {
     minWidth: "94px",
@@ -141,6 +145,17 @@ function manageContracts(props) {
     setOpen(true);
     setId(id);
   };
+
+  const handleContractAddress = (contractAddress) => {
+    let address = contractAddress.replace(/0x/, "xdc");
+
+    if (props?.network === "XDC Mainnet") {
+      window.open(`https://explorer.xinfin.network/address/${contractAddress}`, '_blank');
+    } else if (props?.network === "XDC Apothem Testnet") {
+      window.open(`https://explorer.apothem.network/address/${address}`, '_blank');
+    }
+  }
+
   return (
     <Container>
       <Heading>Manage Contracts</Heading>
@@ -179,11 +194,13 @@ function manageContracts(props) {
                     <TableCell align="left">{row.tokenSymbol}</TableCell>
                     <TableCell align="left">{row.network}</TableCell>
                     <TableCell className={classes.address} align="left">
-                      {row.smartContractAddress.slice(0, 26) +
-                        "..." +
+                      <div onClick={() => handleContractAddress(row.smartContractAddress)}>
+                        {row.smartContractAddress.slice(0, 26) +
+                          "..." +
                         row.smartContractAddress.substr(
                           row.smartContractAddress?.length - 4
                         )}
+                      </div>
                       <Tooltip
                         title={open && id === row.id ? "Copied" : "Copy To Clipboard"}
                         placement="top"
@@ -212,10 +229,14 @@ function manageContracts(props) {
               ))}
           </Table>
         </TableContainer>
-        {props.deolyedXrc20TokenDetails.length === 0 ? (
-          <EmptyRow>No Contracts Available</EmptyRow>
+        {props.state?.isLoading ? (
+          <EmptyRow>
+            <CircularProgress />
+          </EmptyRow>
         ) : (
-          ""
+            props.deolyedXrc20TokenDetails.length === 0 ? (
+              <EmptyRow>No Contracts Available</EmptyRow>
+          ) : ""
         )}
       </MainContainer>
     </Container>
