@@ -12,7 +12,8 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Tooltip, Fade, createTheme } from "@material-ui/core";
+import { Tooltip, Fade } from "@material-ui/core";
+import {history} from "../../managers/history"
 
 const Container = styled.div`
   width: 100vw;
@@ -45,6 +46,7 @@ const MainContainer = styled.div`
 const Img = styled.img`
   width: 35px;
   height: 35px;
+  border-radius: 50%;
 `;
 const Button = styled.button`
   width: 90px;
@@ -95,6 +97,16 @@ const CopyIcon = styled.img`
     color: pink;
   }
 `;
+const EmptyRow = styled.div`
+  height: 168px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #808080;
+`;
 
 const useStyles = makeStyles({
   table: {
@@ -120,35 +132,20 @@ const useStyles = makeStyles({
   },
 });
 
-const rows = [
-  {
-    tokenIcon: "",
-    tokenName: "MetaVerse",
-    tokenSymbol: "META",
-    network: "XDC Apothem Testnet",
-    contractAddress: "xdc5e6d170445cea1e9bf1bad…a2a1",
-  },
-  {
-    tokenIcon: "",
-    tokenName: "MetaVerse",
-    tokenSymbol: "META",
-    network: "XDC Apothem Testnet",
-    contractAddress: "xdc5e6d170445cea1e9bf1bad…a2a1",
-  },
-];
-
-function manageContracts() {
+function manageContracts(props) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const handleTooltipOpen = () => {
+  const [id, setId] = useState(null);
+  const handleTooltipOpen = (id) => {
     setOpen(true);
+    setId(id);
   };
   return (
     <Container>
       <Heading>Manage Contracts</Heading>
       <MainContainer>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ boxShadow: 0 }}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -170,40 +167,56 @@ function manageContracts() {
                 <TableCell width="10%" align="left"></TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">
-                    <Img src="/images/XDC_sky_blue.svg" alt="" />
-                  </TableCell>
-                  <TableCell align="left">{row.tokenName}</TableCell>
-                  <TableCell align="left">{row.tokenSymbol}</TableCell>
-                  <TableCell align="left">{row.network}</TableCell>
-                  <TableCell className={classes.address} align="left">
-                    {row.contractAddress}
-                    <Tooltip
-                      title={open ? "Copied" : "Copy To Clipboard"}
-                      placement="top"
-                      arrow
-                      TransitionComponent={Fade}
-                      TransitionProps={{ timeout: 600 }}
-                    >
-                      <CopyToClipboard text={row.contractAddress || ""}>
-                        <CopyIcon
-                          src="/images/Copy.svg"
-                          onClick={handleTooltipOpen}
-                        />
-                      </CopyToClipboard>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Button>Manage</Button>
-                  </TableCell>
-                </TableRow>
+
+            {props.deolyedXrc20TokenDetails &&
+              props.deolyedXrc20TokenDetails.map((row) => (
+                <TableBody>
+                  <TableRow key={row.name}>
+                    <TableCell component="th" scope="row">
+                      <Img src={row.tokenImage} alt="" />
+                    </TableCell>
+                    <TableCell align="left">{row.tokenName}</TableCell>
+                    <TableCell align="left">{row.tokenSymbol}</TableCell>
+                    <TableCell align="left">{row.network}</TableCell>
+                    <TableCell className={classes.address} align="left">
+                      {row.smartContractAddress.slice(0, 26) +
+                        "..." +
+                        row.smartContractAddress.substr(
+                          row.smartContractAddress?.length - 4
+                        )}
+                      <Tooltip
+                        title={open && id === row.id ? "Copied" : "Copy To Clipboard"}
+                        placement="top"
+                        arrow
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                      >
+                        <CopyToClipboard text={row.smartContractAddress || ""}>
+                          <CopyIcon
+                            src="/images/Copy.svg"
+                            onClick={() => handleTooltipOpen(row.id)}
+                          />
+                        </CopyToClipboard>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Button onClick={() => history.push({
+                        pathname: "/manage-contract-details",
+                        state: {
+                          deolyedTokenDetails: row,
+                        }
+                      })}>Manage</Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
               ))}
-            </TableBody>
           </Table>
         </TableContainer>
+        {props.deolyedXrc20TokenDetails.length === 0 ? (
+          <EmptyRow>No Contracts Available</EmptyRow>
+        ) : (
+          ""
+        )}
       </MainContainer>
     </Container>
   );
