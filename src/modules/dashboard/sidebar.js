@@ -28,6 +28,9 @@ function Sidebar(props) {
       
       if(navItem === "deploy")
         history.push("/deploy-contract")
+      
+      if(navItem === "manage")
+        history.push("/manage-contracts")
     }
   };
 
@@ -158,16 +161,15 @@ function Sidebar(props) {
             </Heading>
           </Wrapper>
           <Wrapper
-            id="manage-contract-hide"
-            className={isActive === "manage" ? "activeNavItem" : ""}
+            className={props.userAccountDetails?.activeNavItem === "manage" ? "activeNavItem" : ""}
             onClick={() => changeBackgound("manage")}
           >
-            {isActive === "manage" ? (
+            {props.userAccountDetails?.activeNavItem === "manage" ? (
               <Icon src="/images/ManageContract_Active.svg" />
             ) : (
               <Icon src="/images/ManageContract_InActive.svg" />
             )}
-            <Heading className={isActive === "manage" ? "activeText" : ""}>
+            <Heading className={props.userAccountDetails?.activeNavItem === "manage" ? "activeText" : ""}>
               Manage Contracts
             </Heading>
           </Wrapper>
