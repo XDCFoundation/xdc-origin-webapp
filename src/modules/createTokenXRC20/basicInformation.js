@@ -270,11 +270,12 @@ const MainCircle = styled.div`
   height: 128px;
   background: #f0f2fc 0% 0% no-repeat padding-box;
   border: 1px dashed #8ca6f0;
-  border-radius: 124px;
+  /* border-radius: 124px; */
   opacity: 1;
   position: relative;
   top: 0;
   left: 0;
+  margin-top: 17px;
 `;
 
 const Div = styled.div`
@@ -300,7 +301,7 @@ const ReplaceButton = styled.button`
 const MainImage = styled.img`
   width: 128px;
   height: 128px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   /* position: absolute;
   top: 0px; */
 `;
@@ -317,7 +318,7 @@ const theme = createTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: "12px",
+        fontSize: "14px",
         color: "#4B4B4B",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 3px 12px #0000001A",
@@ -549,7 +550,7 @@ function Token(props) {
 
           <DesktopCommonRow>
             <TextDiv>
-              Token Image (PNG, JPG/JPEG, 32*32 px)<Span>&nbsp;*</Span>
+            Token Image (PNG, 256*256 px)<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
                   title="Icon of the token"
@@ -648,7 +649,7 @@ function Token(props) {
 
           <MobCommonRow>
             <TextDiv>
-              Token Image (PNG, JPG/JPEG, 32*32 px)<Span>&nbsp;*</Span>
+              Token Image (PNG, 256*256 px)<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
                   title="Icon of the token"

@@ -19,6 +19,8 @@ import { handleNavItem } from "../../action";
 function DeployContract(props) {
   const history = useHistory();
   let obtainHash;
+  let contractAdd = "";
+
   const [open, setOpen] = useState(false);
   const [openDeployPopup, setOpenDeployPopup] = useState(false);
   const [tokenId, setTokenId] = useState("");
@@ -85,7 +87,7 @@ function DeployContract(props) {
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
           // console.log("transactionHash ====", hash);
-          obtainHash = hash
+          obtainHash = hash;
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             setTimeout(() => {
@@ -103,16 +105,19 @@ function DeployContract(props) {
         })
 
         .on("error", function (error) {
-          let obtainTxnHash = obtainHash
+          let obtainTxnHash = obtainHash;
+          let obtainContractAddress = contractAdd;
           if (
             error.message !==
-            "Returned error: Error: XDCPay Tx Signature: User denied transaction signature."
+              "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." &&
+            contractAdd === ""
           ) {
             history.push({
               pathname: "/created-token",
               state: {},
               parsingDecimal,
               obtainTxnHash,
+              obtainContractAddress,
               parsingSupply,
               gasPrice,
               createdToken,
@@ -122,6 +127,9 @@ function DeployContract(props) {
             "Returned error: Error: XDCPay Tx Signature: User denied transaction signature."
           ) {
             setOpenDeployPopup(false);
+          }
+          else{
+            console.log('')
           }
         });
     } else {
@@ -191,10 +199,13 @@ function DeployContract(props) {
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.getTxnHashDetails(reqObj)
     );
-    let obtainContractAddress = res?.contractAddress || "";
-    let obtainTxnHash = res?.hash || "";
-    let obtainGasUsed = res?.gasUsed || "";
-    if (res != 0) {
+    let obtainContractAddress = res?.contractAddress;
+    // let obtainTxnHash = res?.hash || "";
+    let obtainTxnHash = res?.hash !== undefined ? res?.hash : obtainHash 
+    let obtainGasUsed = res?.gasUsed;
+     //-------
+     contractAdd = res?.contractAddress
+    if (contractAdd !== "") {
       history.push({
         pathname: "/created-token",
         state: {},
