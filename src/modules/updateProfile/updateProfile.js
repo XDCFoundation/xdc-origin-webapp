@@ -1,6 +1,9 @@
-import React from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Column, Row } from "simple-flexbox";
+import { history } from "../../managers/history";
+import { CircularProgress } from "@material-ui/core";
+import UploadFile from "../uploadTokenImage/uploadImage";
 
 const Container = styled.div`
   width: 100vw;
@@ -10,6 +13,12 @@ const Container = styled.div`
   height: auto;
   background: #ecf0f7 0% 0% no-repeat padding-box;
   opacity: 1;
+`;
+const Loader = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 const ColumnContainer = styled.div`
   width: 898px;
@@ -52,6 +61,7 @@ const BackArrow = styled.img`
   width: 35px;
   height: 24px;
   margin-right: 13.46px;
+  cursor: pointer;
   @media screen and (max-width: 767px) and (min-width: 0px) {
     width: 19px;
     height: 17px;
@@ -109,6 +119,7 @@ const ChangeImg = styled.span`
   font: normal normal medium 14px/17px Inter;
   color: #3163f0;
   opacity: 1;
+  cursor: pointer;
   @media screen and (max-width: 767px) and (min-width: 0px) {
     font-size: 14px;
     font-weight: medium;
@@ -206,24 +217,76 @@ const ButtonUpdate = styled.div`
   }
 `;
 
-function updateProfile() {
+function updateProfile(props) {
+  const [website, setWebsite] = useState(null);
+  const [twitter, setTwitter] = useState(null);
+  const [telegram, setTelegram] = useState(null);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [image, setImage] = useState("");
+
+  const handleUpdate = () => {
+    const updatedData = {
+      website,
+      twitter,
+      telegram,
+      image
+    }
+
+    props.updateDeployedXrc20Token(updatedData);
+  }
+
+  const toggleUploadPopup = (imageData) => {
+    setImage(imageData);
+    setIsUploadOpen(!isUploadOpen);
+  }
+
   return (
     <Container>
       <ColumnContainer>
+        {props.state.isUpdating ? (
+          <Loader>
+            <CircularProgress />
+          </Loader>
+        ) : (
+          ""
+        )}
         <Heading>
-          <BackArrow src="images/Button_Back_Arrow.svg" />
+          <BackArrow
+            onClick={() =>
+              history.push({
+                pathname: "/manage-contract-details",
+                state: {
+                  deolyedTokenDetails: props.deolyedTokenDetails,
+                },
+              })
+            }
+            src="images/Button_Back_Arrow.svg"
+          />
           <Text>Update Profile</Text>
         </Heading>
         <FormContainer>
           <ImageUploadContainer>
             <ImageContainer>
-              <TokenImg src="/images/XDC_Blue_Logo.svg" />
+              <TokenImg src={image ? image : props.deolyedTokenDetails?.tokenImage} />
             </ImageContainer>
-            <ChangeImg>Change Image</ChangeImg>
+            <ChangeImg onClick={(e) => toggleUploadPopup(e)}>
+              Change Image
+            </ChangeImg>
           </ImageUploadContainer>
+          {isUploadOpen ? (
+            <UploadFile handleUploadClose={(e) => toggleUploadPopup(e)} />
+          ) : (
+            ""
+          )}
           <InputElementContainer>
             <InputText>Website</InputText>
-            <Input type="text" placeholder="https://www.metaversespace.com" />
+            <Input
+              type="text"
+              placeholder="https://www.metaversespace.com"
+              value={website}
+              defaultValue={props.deolyedTokenDetails.website}
+              onChange={(e) => setWebsite(e.target.value)}
+            />
           </InputElementContainer>
 
           <InputElementContainer>
@@ -233,17 +296,32 @@ function updateProfile() {
 
           <InputElementContainer>
             <InputText>Facebook</InputText>
-            <Input type="text" placeholder="https://www.facebook.com/metaversespace" />
+            <Input
+              type="text"
+              placeholder="https://www.facebook.com/metaversespace"
+            />
           </InputElementContainer>
 
           <InputElementContainer>
             <InputText>Twitter</InputText>
-            <Input type="text" placeholder="https://www.twitter.com/metaversespace" />
+            <Input
+              type="text"
+              placeholder="https://www.twitter.com/metaversespace"
+              value={twitter}
+              defaultValue={props.deolyedTokenDetails.twitter}
+              onChange={(e) => setTwitter(e.target.value)}
+            />
           </InputElementContainer>
 
           <InputElementContainer>
             <InputText>Telegram</InputText>
-            <Input type="text" placeholder="Add Telegram group url" />
+            <Input
+              type="text"
+              placeholder="Add Telegram group url"
+              value={telegram}
+              defaultValue={props.deolyedTokenDetails.telegram}
+              onChange={(e) => setTelegram(e.target.value)}
+            />
           </InputElementContainer>
 
           <InputElementContainer>
@@ -262,8 +340,19 @@ function updateProfile() {
           </InputElementContainer>
 
           <ButtonContainer>
-            <ButtonCancel>Cancel</ButtonCancel>
-            <ButtonUpdate>Update</ButtonUpdate>
+            <ButtonCancel
+              onClick={() =>
+                history.push({
+                  pathname: "/manage-contract-details",
+                  state: {
+                    deolyedTokenDetails: props?.deolyedTokenDetails,
+                  },
+                })
+              }
+            >
+              Cancel
+            </ButtonCancel>
+            <ButtonUpdate onClick={() => handleUpdate()}>Update</ButtonUpdate>
           </ButtonContainer>
         </FormContainer>
       </ColumnContainer>

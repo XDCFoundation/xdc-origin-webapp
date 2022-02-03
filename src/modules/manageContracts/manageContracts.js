@@ -46,6 +46,7 @@ const MainContainer = styled.div`
 const Img = styled.img`
   width: 35px;
   height: 35px;
+  border-radius: 50%;
 `;
 const Button = styled.button`
   width: 90px;
@@ -135,8 +136,10 @@ function manageContracts(props) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const handleTooltipOpen = () => {
+  const [id, setId] = useState(null);
+  const handleTooltipOpen = (id) => {
     setOpen(true);
+    setId(id);
   };
   return (
     <Container>
@@ -182,7 +185,7 @@ function manageContracts(props) {
                           row.smartContractAddress?.length - 4
                         )}
                       <Tooltip
-                        title={open ? "Copied" : "Copy To Clipboard"}
+                        title={open && id === row.id ? "Copied" : "Copy To Clipboard"}
                         placement="top"
                         arrow
                         TransitionComponent={Fade}
@@ -191,7 +194,7 @@ function manageContracts(props) {
                         <CopyToClipboard text={row.smartContractAddress || ""}>
                           <CopyIcon
                             src="/images/Copy.svg"
-                            onClick={handleTooltipOpen}
+                            onClick={() => handleTooltipOpen(row.id)}
                           />
                         </CopyToClipboard>
                       </Tooltip>

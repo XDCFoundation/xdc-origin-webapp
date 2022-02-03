@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import millify from "millify";
 import moment from "moment";
 import toast, { Toaster } from "react-hot-toast";
-import {history} from "../../managers/history"
+import { history } from "../../managers/history";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -51,6 +51,7 @@ const BackArrow = styled.img`
   width: 35px;
   height: 24px;
   margin-right: 13.46px;
+  cursor: pointer;
 `;
 const Text = styled.span`
   width: 109px;
@@ -323,6 +324,7 @@ const TransferButton = styled.div`
 function manageContractDetails(props) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isMintToken, setIsMintToken] = useState(false);
   const classes = useStyles();
 
   const handleTooltipOpen = () => {
@@ -350,18 +352,28 @@ function manageContractDetails(props) {
   };
   
   const handleOptionClick = () => {
-    history.push("/update-profile")
+    history.push(({
+      pathname: "/update-profile",
+      state: {
+        deolyedTokenDetails: props.deolyedTokenDetails,
+      }
+    }))
   };
+
+  const handleMintOpen = () => {
+    setIsMintToken(!isMintToken);
+  }
 
   const createdTime = moment(props.deolyedTokenDetails?.createdAt).format('h:mm a');
   const createdDate = moment(props.deolyedTokenDetails?.createdAt).format('DD MMMM YYYY');
 
   return (
+    <>
     <Container>
       <div><Toaster /></div>
       <CommonContainer>
         <Heading>
-          <BackArrow src="images/Button_Back_Arrow.svg" />
+          <BackArrow onClick={() => history.push("/manage-contracts")} src="images/Button_Back_Arrow.svg" />
           <Text>Manage</Text>
         </Heading>
 
@@ -464,7 +476,7 @@ function manageContractDetails(props) {
               <Title>Current Supply</Title>
               <Amount>{ millify(props.deolyedTokenDetails?.tokenCurrentSupply) }</Amount>
               <Description>
-                <SubDes>Updated:</SubDes> <SubContent>{moment(props.deolyedTokenDetails?.updatedAt, "YYYYMMDD").fromNow()}</SubContent>
+                <SubDes>Updated:</SubDes> <SubContent>{moment(props.deolyedTokenDetails?.updatedAt).fromNow()}</SubContent>
               </Description>
             </DetailsContainer>
           </MiddleContainer>
@@ -488,7 +500,7 @@ function manageContractDetails(props) {
               <BottomImg src="/images/Mint_Contract.svg" />
               <ActionHeading>Mint Tokens</ActionHeading>
               <ActionText>Add tokens to increase the supply</ActionText>
-              <MintButton>Mint</MintButton>
+              <MintButton onClick={() => handleMintOpen()}>Mint</MintButton>
             </ActionDiv>
 
             <ActionDiv>
@@ -501,6 +513,12 @@ function manageContractDetails(props) {
         </ColumnContainer>
       </CommonContainer>
     </Container>
+      {/* {
+        isMintToken ? (
+          <MintToken isOpen={isMintToken} handleClose={handleMintOpen}/>
+        ) : ""
+      } */}
+  </>
   );
 }
 
