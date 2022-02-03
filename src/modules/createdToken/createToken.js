@@ -345,12 +345,14 @@ const CreateToken = (props) => {
         props.location?.obtainTxnHash.length - 4
       );
     
-    contractAddress = props.location?.obtainContractAddress === undefined ? "" : props.location?.obtainContractAddress
+    contractAddress = props.location?.obtainContractAddress !== undefined ? props.location?.obtainContractAddress : ""
+    // console.log('h---',contractAddress)
     
     newContractAddress =
       contractAddress?.slice(0, 26) +
       "..." +
       contractAddress?.substr(contractAddress?.length - 4);
+      // console.log('new---',newContractAddress)
   } 
 
   const [open, setOpen] = useState(false);
@@ -441,7 +443,7 @@ const CreateToken = (props) => {
                 Contract Address:
               </SuccessTokenKey>
               <SuccessTokenValues onClick={() => handleContractAddress()}>
-                {newContractAddress || ""}
+                {newContractAddress}
               </SuccessTokenValues>
               <Tooltip
                 title={openAddress ? "Copied" : "Copy To Clipboard"}
@@ -490,7 +492,7 @@ const CreateToken = (props) => {
                 Gas Fee:
               </SuccessTokenKey>
               <ValueDiv>
-                {gasFee?.toFixed(8)  + " " + "XDC" + " " + "(" + '$' + " " + usdPriceValue?.toFixed(8) + ")"}
+                {isNaN(gasFee) ? "N/A" : (gasFee?.toFixed(8)  + " " + "XDC" + " " + "(" + '$' + " " + usdPriceValue?.toFixed(8) + ")")}
               </ValueDiv>
             </SuccessRows>
           </SuccessTokenDetails>

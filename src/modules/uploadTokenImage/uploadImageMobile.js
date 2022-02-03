@@ -77,10 +77,10 @@ const UploadName = styled.span`
 `;
 
 const TokenImage = styled.div`
-  width: 264px;
-  height: 264px;
+  width: 256px;
+  height: 256px;
   position: "relative";
-  background: #000000 0% 0% no-repeat padding-box;
+  background: none;
   overflow: hidden;
   top: 100px;
   left: 200px;
@@ -209,13 +209,13 @@ export default function UploadTokenImage(props) {
                 onCropComplete={onCropComplete}
                 onZoomChange={setZoom}
                 showGrid={false}
-                cropSize={{ width: 220, height: 220 }}
-                cropShape="round"
+                cropSize={{ width: 270, height: 270 }}
+                // cropShape="round"
                 objectFit={"horizontal-cover" || "vertical-cover"}
                 disableAutomaticStylesInjection={true}
               />
             </TokenImage>
-            <CropImage>
+            {/* <CropImage>
               <ControlButtons onClick={zoomOut}>
                 <img src="images/Minus-Icon.svg"></img>
               </ControlButtons>
@@ -235,7 +235,7 @@ export default function UploadTokenImage(props) {
               <ControlButtons onClick={zoomIn}>
                 <Plus src="images/Token_Image.svg"></Plus>
               </ControlButtons>
-            </CropImage>
+            </CropImage> */}
             <UploadButton onClick={saveCroppedImage}>
               <UploadName>Upload</UploadName>
             </UploadButton>
