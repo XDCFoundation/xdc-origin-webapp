@@ -46,6 +46,7 @@ const MainContainer = styled.div`
 const Img = styled.img`
   width: 35px;
   height: 35px;
+  border-radius: 50%;
 `;
 const Button = styled.button`
   width: 90px;
