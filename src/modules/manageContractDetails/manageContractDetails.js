@@ -8,6 +8,8 @@ import millify from "millify";
 import moment from "moment";
 import toast, { Toaster } from "react-hot-toast";
 import { history } from "../../managers/history";
+import PauseContractPopup from './pauseContractPopup';
+import BurnContractPopup from "./burnContractPopups";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -326,6 +328,15 @@ function manageContractDetails(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isMintToken, setIsMintToken] = useState(false);
   const classes = useStyles();
+  const [isPauseOpen, setIsPauseOpen] = useState(false);
+  const [isBurnOpen, setIsBurnOpen] = useState(false);
+
+  const togglePausePopup = () => {
+    setIsPauseOpen(!isPauseOpen);
+  }
+  const toggleBurnPopup = () => {
+    setIsBurnOpen(!isBurnOpen);
+  }
 
   const handleTooltipOpen = () => {
     setOpen(true);
@@ -486,14 +497,14 @@ function manageContractDetails(props) {
               <BottomImg src="/images/Pause_Contract.png" />
               <ActionHeading>Pause Contract</ActionHeading>
               <ActionText>Pause all transactions on this Contract</ActionText>
-              <PauseButton>Pause</PauseButton>
+              <PauseButton onClick={togglePausePopup}>Pause</PauseButton>
             </ActionDiv>
 
             <ActionDiv>
               <BottomImg src="/images/Burn_Contract.svg" />
               <ActionHeading>Burn Tokens</ActionHeading>
               <ActionText>Burn tokens to reduce the supply</ActionText>
-              <BurnButton>Burn</BurnButton>
+              <BurnButton onClick={toggleBurnPopup}>Burn</BurnButton>
             </ActionDiv>
 
             <ActionDiv>
@@ -513,6 +524,8 @@ function manageContractDetails(props) {
         </ColumnContainer>
       </CommonContainer>
     </Container>
+    {isPauseOpen && <PauseContractPopup isOpen={isPauseOpen} handleClose={togglePausePopup} />}
+    {isBurnOpen && <BurnContractPopup isOpen={isBurnOpen} handleClose={toggleBurnPopup} />}
       {/* {
         isMintToken ? (
           <MintToken isOpen={isMintToken} handleClose={handleMintOpen}/>
