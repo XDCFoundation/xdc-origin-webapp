@@ -167,7 +167,7 @@ function Sidebar(props) {
             {props.userAccountDetails?.activeNavItem === "manage" ? (
               <Icon src="/images/ManageContract_Active.svg" />
             ) : (
-              <Icon src="/images/ManageContract_InActive.svg" />
+              <Icon src="/images/Inactive-ManageContract.svg" />
             )}
             <Heading className={props.userAccountDetails?.activeNavItem === "manage" ? "activeText" : ""}>
               Manage Contracts
