@@ -80,7 +80,7 @@ function Sidebar(props) {
               <Icon src="/images/CreateContract_Inactive.svg" />
             )}
             <Heading className={props.userAccountDetails?.activeNavItem === "create" ? "activeText" : ""}>
-              Create Contract
+              Create Token
             </Heading>
           </Wrapper>
           {props.userAccountDetails?.subNavItems ? (
@@ -157,20 +157,21 @@ function Sidebar(props) {
               }
             >
               {" "}
-              Deploy Contracts
+              Deploy Saved Tokens
             </Heading>
           </Wrapper>
           <Wrapper
             className={props.userAccountDetails?.activeNavItem === "manage" ? "activeNavItem" : ""}
             onClick={() => changeBackgound("manage")}
+            id="extraWidth"
           >
             {props.userAccountDetails?.activeNavItem === "manage" ? (
-              <Icon src="/images/ManageContract_Active.svg" />
+              <Icon id="manageIcon" src="/images/ManageContract_Active.svg" />
             ) : (
-              <Icon src="/images/Inactive-ManageContract.svg" />
+              <Icon id="manageIcon" src="/images/Inactive-ManageContract.svg" />
             )}
-            <Heading className={props.userAccountDetails?.activeNavItem === "manage" ? "activeText" : ""}>
-              Manage Contracts
+            <Heading  className={props.userAccountDetails?.activeNavItem === "manage" ? "activeText" : ""}>
+              Manage Deployed Tokens
             </Heading>
           </Wrapper>
         </>
