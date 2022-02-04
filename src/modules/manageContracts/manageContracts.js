@@ -128,8 +128,6 @@ const useStyles = makeStyles({
   address: {
     color: "#3163F0 !important",
     cursor: "pointer",
-    display: "flex",
-    alignItems: "center"
   },
   tokenIcon: {
     minWidth: "94px",
@@ -193,14 +191,12 @@ function manageContracts(props) {
                     <TableCell align="left">{row.tokenName}</TableCell>
                     <TableCell align="left">{row.tokenSymbol}</TableCell>
                     <TableCell align="left">{row.network}</TableCell>
-                    <TableCell className={classes.address} align="left">
-                      <div onClick={() => handleContractAddress(row.smartContractAddress)}>
+                    <TableCell className={classes.address} align="left" onClick={() => handleContractAddress(row.smartContractAddress)}>
                         {row.smartContractAddress.slice(0, 26) +
                           "..." +
                         row.smartContractAddress.substr(
                           row.smartContractAddress?.length - 4
                         )}
-                      </div>
                       <Tooltip
                         title={open && id === row.id ? "Copied" : "Copy To Clipboard"}
                         placement="top"
