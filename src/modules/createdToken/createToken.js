@@ -393,7 +393,7 @@ const CreateToken = (props) => {
             <img src="images/Success.svg"></img>
           </SuccessTokenIcon>
           <SuccessTokenText>
-            Successfully Created {props.location?.createdToken || ""} Token
+            Successfully Created {props.location?.createdToken || ""} {props.location?.createdToken?.includes("token") || props.location?.createdToken?.includes("Token") || props.location?.createdToken?.includes("TOKEN") ? "" : "Token"}
           </SuccessTokenText>
           <SuccessTokenDetails>
             <SuccessRows>
