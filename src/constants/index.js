@@ -57,6 +57,7 @@ export const validationsMessages = {
     TOKEN_SYMBOL_ERROR_MESSAGE: "Token with this symbol already exists!",
     VALIDATE_BROWSER_LOGIN: "Please Login To XDCPay !",
     VALIDATE_BROWSER_REDIRECTING: "Redirect To Download XDC PAY App !",
+    INITIAL_SUPPLY_LIMIT_ERROR: "Initial Supply limit reached",
 }
 export const addFeaturesContent = {
     PAUSABLE_CONTENT: "This specifies whether your token and all associated operations can be halted and resumed whenever needed.",
