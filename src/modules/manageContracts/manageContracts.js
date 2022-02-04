@@ -65,7 +65,7 @@ const Button = styled.button`
 const Heading = styled.span`
   margin-top: 37px;
   margin-left: 185px;
-  width: 250px;
+  /* width: 250px; */
   height: 34px;
   text-align: left;
   font: normal normal 600 28px/34px Inter;
@@ -156,7 +156,7 @@ function manageContracts(props) {
 
   return (
     <Container>
-      <Heading>Manage Contracts</Heading>
+      <Heading>Manage Deployed Tokens</Heading>
       <MainContainer>
         <TableContainer component={Paper} sx={{ boxShadow: 0 }}>
           <Table className={classes.table} aria-label="simple table">
