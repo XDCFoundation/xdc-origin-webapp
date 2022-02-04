@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
@@ -48,7 +48,7 @@ function Header(props) {
                 ? "XDC Mainnet"
                 : "XDC Apothem Testnet";
 
-            if (address || network) {
+            if ((address || network) && address !== props.userDetails?.accountDetails?.address) {
               let balance = null;
 
               await window.web3.eth.getBalance(address).then((res) => {
@@ -64,9 +64,7 @@ function Header(props) {
               };
 
               props.updateAccountDetails(accountDetails);
-              setTimeout(() => {
-                setForceUpdate(true);
-              }, 100);
+              setForceUpdate(true);
             }
           } else {
             //metamask is also enabled with xdcpay
@@ -120,7 +118,7 @@ function Header(props) {
                       props.userDetails?.accountDetails?.address.length - 5
                     )}
                 </Address>
-                {forceUpdate ? (
+                {forceUpdate ? ( 
                   <AccountIcon>
                     <Identicon
                       diameter={20}
@@ -129,8 +127,15 @@ function Header(props) {
                     />
                   </AccountIcon>
                 ) : (
-                    ""
-                )}
+                  <AccountIcon>
+                    <Identicon
+                      diameter={20}
+                      address={props.userDetails?.accountDetails?.address}
+                      network={props.userDetails?.accountDetails?.network}
+                    />
+                  </AccountIcon>
+                )
+                } 
               </AddressContainer>
             ) : (
               <Button onClick={() => connectWallet()}>Connect Wallet</Button>
