@@ -229,7 +229,7 @@ function DeployContract(props) {
 
   return (
     <Container>
-      <Heading>Deploy Contracts</Heading>
+      <Heading>Deploy Saved Tokens</Heading>
       <TableContainer>
         <TableHeader>
           <Title>Token Icon</Title>
@@ -351,7 +351,7 @@ const Container = styled.div`
 const Heading = styled.span`
   margin-top: 37px;
   margin-left: 185px;
-  width: 236px;
+  /* width: 236px; */
   height: 34px;
   text-align: left;
   font: normal normal 600 28px/34px Inter;

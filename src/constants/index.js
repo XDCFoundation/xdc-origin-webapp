@@ -47,7 +47,7 @@ export const validationsMessages = {
     VALIDATE_TOKEN_SYMBOL_LIMIT:'Symbol should not be more than 15 characters',
     VALIDATE_TOKEN_SYMBOL_FIELD:'Symbol is required !',
     VALIDATE_TOKEN_NAME_LIMIT:'Token Name should not be more than 30 characters',
-    VALIDATE_TOKEN_NAME_FIELD:'TokenName is required !',
+    VALIDATE_TOKEN_NAME_FIELD:'Token name is required !',
     VALIDATE_NETWORK: 'Network is required !',
     VALIDATE_IMAGE_FIELD: "Token Image/Icon Field is required !",
     VALIDATE_INITIAL_SUPPY_FIELD: "Token Initial Supply is required !",
@@ -57,6 +57,7 @@ export const validationsMessages = {
     TOKEN_SYMBOL_ERROR_MESSAGE: "Token with this symbol already exists!",
     VALIDATE_BROWSER_LOGIN: "Please Login To XDCPay !",
     VALIDATE_BROWSER_REDIRECTING: "Redirect To Download XDC PAY App !",
+    INITIAL_SUPPLY_LIMIT_ERROR: "Initial Supply limit reached",
 }
 export const addFeaturesContent = {
     PAUSABLE_CONTENT: "This specifies whether your token and all associated operations can be halted and resumed whenever needed.",

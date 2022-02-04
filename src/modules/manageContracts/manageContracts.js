@@ -65,7 +65,7 @@ const Button = styled.button`
 const Heading = styled.span`
   margin-top: 37px;
   margin-left: 185px;
-  width: 250px;
+  /* width: 250px; */
   height: 34px;
   text-align: left;
   font: normal normal 600 28px/34px Inter;
@@ -128,8 +128,6 @@ const useStyles = makeStyles({
   address: {
     color: "#3163F0 !important",
     cursor: "pointer",
-    display: "flex",
-    alignItems: "center"
   },
   tokenIcon: {
     minWidth: "94px",
@@ -141,7 +139,8 @@ function manageContracts(props) {
 
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(null);
-  const handleTooltipOpen = (id) => {
+  const handleTooltipOpen = (e, id) => {
+    e.stopPropagation();
     setOpen(true);
     setId(id);
   };
@@ -158,7 +157,7 @@ function manageContracts(props) {
 
   return (
     <Container>
-      <Heading>Manage Contracts</Heading>
+      <Heading>Manage Deployed Tokens</Heading>
       <MainContainer>
         <TableContainer component={Paper} sx={{ boxShadow: 0 }}>
           <Table className={classes.table} aria-label="simple table">
@@ -193,14 +192,12 @@ function manageContracts(props) {
                     <TableCell align="left">{row.tokenName}</TableCell>
                     <TableCell align="left">{row.tokenSymbol}</TableCell>
                     <TableCell align="left">{row.network}</TableCell>
-                    <TableCell className={classes.address} align="left">
-                      <div onClick={() => handleContractAddress(row.smartContractAddress)}>
+                    <TableCell className={classes.address} align="left" onClick={() => handleContractAddress(row.smartContractAddress)}>
                         {row.smartContractAddress.slice(0, 26) +
                           "..." +
                         row.smartContractAddress.substr(
                           row.smartContractAddress?.length - 4
                         )}
-                      </div>
                       <Tooltip
                         title={open && id === row.id ? "Copied" : "Copy To Clipboard"}
                         placement="top"
@@ -211,7 +208,7 @@ function manageContracts(props) {
                         <CopyToClipboard text={row.smartContractAddress || ""}>
                           <CopyIcon
                             src="/images/Copy.svg"
-                            onClick={() => handleTooltipOpen(row.id)}
+                            onClick={(e) => handleTooltipOpen(e,row.id)}
                           />
                         </CopyToClipboard>
                       </Tooltip>

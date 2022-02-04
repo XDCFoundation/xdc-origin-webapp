@@ -284,6 +284,13 @@ function CommonTab(props) {
     : "18";
 
   const handleChange = (e) => {
+    if (e.target.name === "tokenInitialSupply" && e.target.value.length >= 16) {
+      toast.error(validationsMessages.INITIAL_SUPPLY_LIMIT_ERROR, {
+        duration: 4000,
+        position: validationsMessages.TOASTS_POSITION,
+        className: "toast-div-address",
+      });
+    }
     setTokenData({
       ...tokenData,
       network: networkVersion,

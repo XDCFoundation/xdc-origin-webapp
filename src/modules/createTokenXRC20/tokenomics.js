@@ -296,6 +296,7 @@ export default function Tokenomics(props) {
               onChange={(e) => props.handleChange(e)}
               name="tokenInitialSupply"
               value={props.tokenData.tokenInitialSupply}
+              onInput={(e) => (e.target.value = e.target.value.slice(0, 16))}
             />
             {props.tokenData.tokenInitialSupply > 0 ? (
               <BlurTextDiv>{convertedNumber}</BlurTextDiv>
