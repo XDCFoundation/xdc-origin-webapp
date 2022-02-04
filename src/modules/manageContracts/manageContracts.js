@@ -139,7 +139,8 @@ function manageContracts(props) {
 
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(null);
-  const handleTooltipOpen = (id) => {
+  const handleTooltipOpen = (e, id) => {
+    e.stopPropagation();
     setOpen(true);
     setId(id);
   };
@@ -207,7 +208,7 @@ function manageContracts(props) {
                         <CopyToClipboard text={row.smartContractAddress || ""}>
                           <CopyIcon
                             src="/images/Copy.svg"
-                            onClick={() => handleTooltipOpen(row.id)}
+                            onClick={(e) => handleTooltipOpen(e,row.id)}
                           />
                         </CopyToClipboard>
                       </Tooltip>
