@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { Dialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,7 +7,16 @@ import { CircularProgress } from "@material-ui/core";
 
 const DialogContainer = styled.div`
   width: 466px;
-  height: 226px;
+  height: 325px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 6px;
+  opacity: 1;
+`;
+const ThirdContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 466px;
+  height: 381px;
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 6px;
   opacity: 1;
@@ -95,6 +105,36 @@ const Header = styled.div`
   justify-content: center;
   padding: 0 0 20px 0;
 `;
+const MidSection = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 10px 0 50px 0;
+`;
+const InputDiv = styled.input`
+  width: 341px;
+  height: 40px;
+  background: #f0f2fc 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  opacity: 1;
+  border: none;
+  ::placeholder {
+    padding: 0px 0px 0px 10px;
+    font: normal normal medium 14px/17px Inter;
+    letter-spacing: 0px;
+    color: #a8acc1;
+    opacity: 1;
+  }
+  :focus {
+    outline: 2px solid #8ca6f0;
+  }
+  ::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
 const SecondHeader = styled.div`
   display: flex;
   align-items: center;
@@ -107,7 +147,30 @@ const ThirdHeader = styled.div`
   align-items: center;
   text-align: center;
   justify-content: center;
-  padding: 50px 0 46px 0;
+  padding: 30px 0 46px 0;
+`;
+const DoneButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding-top: 47px;
+`;
+const DoneButton = styled.button`
+  width: 121px;
+  height: 44px;
+  background: #3163f0 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  opacity: 1;
+  border: none;
+  cursor: pointer;
+`;
+const DoneText = styled.span`
+  text-align: center;
+  font: normal normal medium 18px/21px Inter;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
 `;
 const TextDiv = styled.span`
   display: flex;
@@ -120,6 +183,13 @@ const PauseText = styled.span`
   font: normal normal normal 20px/24px Inter;
   letter-spacing: 0px;
   color: #101010;
+  opacity: 1;
+`;
+const SpanText = styled.span`
+  text-align: center;
+  font: normal normal normal 14px/17px Inter;
+  letter-spacing: 0px;
+  color: #4b4b4b;
   opacity: 1;
 `;
 const ConfirmDiv = styled.span`
@@ -150,9 +220,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PauseContract(props) {
+export default function TransferOwnershipContract(props) {
+  const history = useHistory();
   const [steps, setSteps] = useState(1);
   const classes = useStyles();
+  const [inputToken, setInputAddress] = useState("");
 
   const handleSteps = () => {
     setSteps(2);
@@ -178,7 +250,7 @@ export default function PauseContract(props) {
                 <>
                   <DialogContainer>
                     <DialogHeader>
-                      <DeleteText>Pause Contract</DeleteText>
+                      <DeleteText>Transfer Contract</DeleteText>
                       <CrossIcon
                         onClick={props.handleClose}
                         src="/images/Cross.svg"
@@ -187,15 +259,23 @@ export default function PauseContract(props) {
                     </DialogHeader>
                     <Line />
                     <Header>
-                      Do you want to Pause the MetaVerse Contract?
-                      <br /> All transactions will be stopped until you unpause
-                      <br /> the contract again.
+                      Transfer the ownership of the contract to <br /> another
+                      address. This action is not reversible.
                     </Header>
+                    <MidSection>
+                      <InputDiv
+                        type="text"
+                        placeholder="New owner address"
+                        onChange={(e) => setInputAddress(e.target.value)}
+                      />
+                    </MidSection>
                     <ButtonContainer>
                       <CancelButton onClick={props.handleClose}>
                         Cancel
                       </CancelButton>
-                      <DeleteButton onClick={handleSteps}>Pause</DeleteButton>
+                      <DeleteButton onClick={handleSteps}>
+                        Transfer
+                      </DeleteButton>
                     </ButtonContainer>
                   </DialogContainer>
                 </>
@@ -205,7 +285,7 @@ export default function PauseContract(props) {
                 <>
                   <LoaderSection>
                     <DialogHeader>
-                      <DeleteText>Pause Contract</DeleteText>
+                      <DeleteText>Transfer Contract</DeleteText>
                       <CrossIcon
                         onClick={props.handleClose}
                         src="/images/Cross.svg"
@@ -217,7 +297,7 @@ export default function PauseContract(props) {
                       <CircularProgress />
                     </SecondHeader>
                     <TextDiv>
-                      <PauseText>Pausing Contract</PauseText>
+                      <PauseText>Transferring Contract</PauseText>
                       <ConfirmDiv>
                         <ConfirmText>
                           Confirm this transaction on XDCPay
@@ -230,11 +310,11 @@ export default function PauseContract(props) {
             case 3:
               return (
                 <>
-                  <LoaderSection>
+                  <ThirdContainer>
                     <DialogHeader>
-                      <DeleteText>Pause Contract</DeleteText>
+                      <DeleteText>Transfer Contract</DeleteText>
                       <CrossIcon
-                        onClick={() => props.handleClose("change")}
+                        onClick={props.handleClose}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -244,14 +324,19 @@ export default function PauseContract(props) {
                       <Img src="/images/Selected-Circle.svg" />
                     </ThirdHeader>
                     <TextDiv>
-                      <PauseText>Contract Paused</PauseText>
-                      <ConfirmDiv>
-                        <ConfirmText>
-                          Unpause the contract to allow transactions
-                        </ConfirmText>
-                      </ConfirmDiv>
+                      <PauseText>Transaction Completed</PauseText>
+                      <SpanText>
+                        Metaverse Contract is removed from your list
+                      </SpanText>
                     </TextDiv>
-                  </LoaderSection>
+                    <DoneButtonContainer>
+                      <DoneButton
+                        onClick={() => history.push("/manage-contracts")}
+                      >
+                        <DoneText>Done</DoneText>
+                      </DoneButton>
+                    </DoneButtonContainer>
+                  </ThirdContainer>
                 </>
               );
             default:

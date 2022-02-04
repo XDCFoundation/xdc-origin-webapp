@@ -6,7 +6,7 @@ import { CircularProgress } from "@material-ui/core";
 
 const DialogContainer = styled.div`
   width: 466px;
-  height: 226px;
+  height: 325px;
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 6px;
   opacity: 1;
@@ -95,6 +95,38 @@ const Header = styled.div`
   justify-content: center;
   padding: 0 0 20px 0;
 `;
+const MidSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 19px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 5px 0 26px 0;
+`;
+const InputDiv = styled.input`
+  width: 341px;
+  height: 40px;
+  background: #f0f2fc 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  opacity: 1;
+  border: none;
+  ::placeholder {
+    padding: 0px 0px 0px 7px;
+    font: normal normal medium 14px/17px Inter;
+    letter-spacing: 0px;
+    color: #A8ACC1;
+    opacity: 1;
+  }
+  :focus {
+    outline: 2px solid #8ca6f0;
+  }
+  ::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
 const SecondHeader = styled.div`
   display: flex;
   align-items: center;
@@ -150,9 +182,10 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PauseContract(props) {
+export default function MintContract(props) {
   const [steps, setSteps] = useState(1);
   const classes = useStyles();
+  const [inputToken, setInputToken] = useState("");
 
   const handleSteps = () => {
     setSteps(2);
@@ -178,7 +211,7 @@ export default function PauseContract(props) {
                 <>
                   <DialogContainer>
                     <DialogHeader>
-                      <DeleteText>Pause Contract</DeleteText>
+                      <DeleteText>Mint Contract</DeleteText>
                       <CrossIcon
                         onClick={props.handleClose}
                         src="/images/Cross.svg"
@@ -187,15 +220,24 @@ export default function PauseContract(props) {
                     </DialogHeader>
                     <Line />
                     <Header>
-                      Do you want to Pause the MetaVerse Contract?
-                      <br /> All transactions will be stopped until you unpause
-                      <br /> the contract again.
+                      Enter the number of tokens you want to mint.
                     </Header>
+                    <MidSection>
+                      <InputDiv
+                        type="number"
+                        placeholder="Number of Tokens"
+                        onChange={(e) => setInputToken(e.target.value)}
+                      />
+                        <InputDiv
+                        type="text"
+                        placeholder="Address to be added"
+                      />
+                    </MidSection>
                     <ButtonContainer>
                       <CancelButton onClick={props.handleClose}>
                         Cancel
                       </CancelButton>
-                      <DeleteButton onClick={handleSteps}>Pause</DeleteButton>
+                      <DeleteButton onClick={handleSteps}>Mint</DeleteButton>
                     </ButtonContainer>
                   </DialogContainer>
                 </>
@@ -205,7 +247,7 @@ export default function PauseContract(props) {
                 <>
                   <LoaderSection>
                     <DialogHeader>
-                      <DeleteText>Pause Contract</DeleteText>
+                      <DeleteText>Mint Contract</DeleteText>
                       <CrossIcon
                         onClick={props.handleClose}
                         src="/images/Cross.svg"
@@ -217,7 +259,7 @@ export default function PauseContract(props) {
                       <CircularProgress />
                     </SecondHeader>
                     <TextDiv>
-                      <PauseText>Pausing Contract</PauseText>
+                      <PauseText>Minting {inputToken} Tokens</PauseText>
                       <ConfirmDiv>
                         <ConfirmText>
                           Confirm this transaction on XDCPay
@@ -232,9 +274,9 @@ export default function PauseContract(props) {
                 <>
                   <LoaderSection>
                     <DialogHeader>
-                      <DeleteText>Pause Contract</DeleteText>
+                      <DeleteText>Mint Contract</DeleteText>
                       <CrossIcon
-                        onClick={() => props.handleClose("change")}
+                        onClick={props.handleClose}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -244,12 +286,7 @@ export default function PauseContract(props) {
                       <Img src="/images/Selected-Circle.svg" />
                     </ThirdHeader>
                     <TextDiv>
-                      <PauseText>Contract Paused</PauseText>
-                      <ConfirmDiv>
-                        <ConfirmText>
-                          Unpause the contract to allow transactions
-                        </ConfirmText>
-                      </ConfirmDiv>
+                      <PauseText>Transaction Completed</PauseText>
                     </TextDiv>
                   </LoaderSection>
                 </>

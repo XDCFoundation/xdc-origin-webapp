@@ -106,7 +106,7 @@ function About(props) {
               <DetailBox>
                 {/* Create your <Span>XRC20</Span>, <Span>XRC223</Span> and{" "}
                 <Span>Stable coin</Span> on XDC Network with no coding required */}
-                Create your own token on XDC Network with no coding <br />{" "}
+                Create your own token on XDC Network with no coding 
                 required
               </DetailBox>
               <DataBox>
