@@ -136,7 +136,7 @@ const InputElementContainer = styled.div`
 const InputText = styled.span`
   text-align: left;
   font-size: 16px;
-  font-weight: normal;
+  font-weight: 500;
   letter-spacing: 0px;
   color: #303134;
   opacity: 1;

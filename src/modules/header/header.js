@@ -311,7 +311,10 @@ const Balance = styled.span`
   width: max-content;
   height: 36px;
   text-align: center;
-  font: normal normal medium 15px/19px Inter;
+  /* font: normal normal medium 15px/19px Inter; */
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
@@ -324,7 +327,10 @@ const Address = styled.span`
   width: max-content;
   min-width: 103px;
   text-align: left;
-  font: normal normal medium 15px/19px Inter;
+  /* font: normal normal medium 15px/19px Inter; */
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
   color: #ffffff;
   opacity: 1;
   padding: 10px;
