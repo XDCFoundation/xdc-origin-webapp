@@ -116,7 +116,7 @@ function About(props) {
                   width="100%"
                   height="100%"
                 /> */}
-                <img src="/images/dashboard_img.svg" alt="" />
+                <DashboadrdImg src="/images/dashboard_img.svg" alt="" />
               </VideoBox>
             </RightContainer>
           </LeftContainer>
@@ -338,6 +338,13 @@ const Container = styled.div`
 `;
 const RightContainer = styled.div`
   min-width: 50%;
+  @media (min-width: 0px) and (max-width: 767px) {
+    width: 100%;
+    min-width: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 const LeftContainer = styled.div`
   display: flex;
@@ -666,4 +673,14 @@ const CrossImgMobile = styled.img`
   cursor: pointer !important;
   width: 13px;
   height: 13px;
+`;
+const DashboadrdImg = styled.img`
+  @media (min-width: 0px) and (max-width: 425px) {
+    width: 320px;
+    object-fit: contain;
+  }
+  @media (min-width: 425px) and (max-width: 767px) {
+    width: 420px;
+    object-fit: contain;
+  }
 `;
