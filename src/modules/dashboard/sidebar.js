@@ -383,7 +383,10 @@ const ActiveWrapper = styled.div`
 `;
 const Heading = styled.span`
   text-align: left;
-  font: normal normal medium 16px/20px Inter;
+  /* font: normal normal medium 16px/20px Inter; */
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
   letter-spacing: 0px;
   
   color: #8ca6f0;
