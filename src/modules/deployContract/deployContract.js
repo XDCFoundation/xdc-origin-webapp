@@ -15,6 +15,7 @@ import {
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import { handleNavItem } from "../../action";
+import { CircularProgress } from "@material-ui/core";
 
 function DeployContract(props) {
   const history = useHistory();
@@ -228,7 +229,7 @@ function DeployContract(props) {
 
   return (
     <Container>
-      <Heading>Deploy Contracts</Heading>
+      <Heading>Deploy Saved Tokens</Heading>
       <TableContainer>
         <TableHeader>
           <Title>Token Icon</Title>
@@ -241,11 +242,16 @@ function DeployContract(props) {
         <Line />
 
         <DataContainer>
-          {props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
-            <EmptyRow>No Contracts Available</EmptyRow>
+          {props.state?.isLoading ? (
+            <EmptyRow>
+              <CircularProgress />
+            </EmptyRow>
           ) : (
-            props.state.draftFailedXrc20TokenDetails &&
-            props.state.draftFailedXrc20TokenDetails.map((item, index) => (
+              props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
+                <EmptyRow>No Contracts Available</EmptyRow>
+              ) : (
+                props.state.draftFailedXrc20TokenDetails &&
+                props.state.draftFailedXrc20TokenDetails.map((item, index) => (
               <>
                 <TableRow key={index}>
                   <div className="tokenIcon">
@@ -297,6 +303,7 @@ function DeployContract(props) {
                 <DataLine />
               </>
             ))
+            )
           )}
         </DataContainer>
       </TableContainer>
@@ -344,7 +351,7 @@ const Container = styled.div`
 const Heading = styled.span`
   margin-top: 37px;
   margin-left: 185px;
-  width: 236px;
+  /* width: 236px; */
   height: 34px;
   text-align: left;
   font: normal normal 600 28px/34px Inter;

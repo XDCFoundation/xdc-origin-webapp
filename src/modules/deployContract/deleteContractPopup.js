@@ -39,7 +39,7 @@ function deleteContract(props) {
           <CrossIcon onClick={props.handleClose} src="/images/Cross.svg" alt="" />
         </DialogHeader>
         <Line />
-        <DialogText>Do you want to delete {props.tokenName} Contract?</DialogText>
+        <DialogText>Do you want to delete {props.tokenName} Token?</DialogText>
         <ButtonContainer>
           <CancelButton onClick={props.handleClose}>Cancel</CancelButton>
           <DeleteButton onClick={() => handleDeleteClick(props.tokenId)}>Delete</DeleteButton>
