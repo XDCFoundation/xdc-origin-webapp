@@ -294,16 +294,18 @@ const SidebarContainer = styled.div`
   position: sticky;
   top: 57px;
   @media (min-width: 425px) and (max-width: 768px) {
-    height: 967px;
+    height: 100%;
     /* margin-top: 56px; */
     position: fixed;
+    overflow-y: scroll;
   }
   @media (min-width: 320px) and (max-width: 425px) {
     width: 100%;
-    height: 967px;
+    height: 100%;
     /* margin-top: 55px; */
     padding-top: 20px;
     position: fixed;
+    overflow-y: scroll;
   }
 `;
 const Icon = styled.img`
@@ -381,7 +383,10 @@ const ActiveWrapper = styled.div`
 `;
 const Heading = styled.span`
   text-align: left;
-  font: normal normal medium 16px/20px Inter;
+  /* font: normal normal medium 16px/20px Inter; */
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
   letter-spacing: 0px;
   
   color: #8ca6f0;
@@ -405,6 +410,12 @@ const CenterDiv = styled.div`
   margin: 2rem 15px 3rem 0;
   width: 230px;
   max-width: 230px;
+  @media (min-width: 0px) and (max-width: 424px) {
+    margin: 30px 0 100px 0;
+  }
+  @media (min-width: 425px) and (max-width: 460px) {
+    margin: 30px 0 100px 0;
+  }
 `;
 const SubHeadingContainer = styled.div`
   width: 180px;

@@ -201,8 +201,8 @@ const BackImgDiv = styled.img`
 `;
 
 const DeployImgDiv = styled.img`
-  width: 15px;
-  height: 15px;
+  width: 24px;
+  height: 24px;
   opacity: 1;
 
   @media (min-width: 0px) and (max-width: 767px) {
@@ -222,7 +222,10 @@ const DraftImgDiv = styled.img`
 
 const BackText = styled.div`
   text-align: right;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #4b4b4b;
   opacity: 1;
@@ -270,7 +273,10 @@ const DeployButton = styled.button`
 
 const DeployText = styled.div`
   text-align: left;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
@@ -304,7 +310,10 @@ const SaveDraftButton = styled.button`
 
 const SaveDraftText = styled.div`
   text-align: left;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #4b4b4b;
   opacity: 1;

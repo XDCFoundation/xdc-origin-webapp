@@ -120,11 +120,7 @@ function Header(props) {
                 </Address>
                 {forceUpdate ? ( 
                   <AccountIcon>
-                    <Identicon
-                      diameter={20}
-                      address={props.userDetails?.accountDetails?.address}
-                      network={props.userDetails?.accountDetails?.network}
-                    />
+                    <WalletDummyImg src="/images/wallet_dummy_image.svg" alt="" />
                   </AccountIcon>
                 ) : (
                   <AccountIcon>
@@ -311,7 +307,10 @@ const Balance = styled.span`
   width: max-content;
   height: 36px;
   text-align: center;
-  font: normal normal medium 15px/19px Inter;
+  /* font: normal normal medium 15px/19px Inter; */
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
@@ -324,7 +323,10 @@ const Address = styled.span`
   width: max-content;
   min-width: 103px;
   text-align: left;
-  font: normal normal medium 15px/19px Inter;
+  /* font: normal normal medium 15px/19px Inter; */
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
   color: #ffffff;
   opacity: 1;
   padding: 10px;
@@ -335,4 +337,10 @@ const AccountIcon = styled.div`
   opacity: 1;
   display: flex;
   align-items: center;
+`;
+const WalletDummyImg = styled.img`
+  width: 28px;
+  height: 28px;
+  opacity: 1;
+  object-fit: contain;
 `;
