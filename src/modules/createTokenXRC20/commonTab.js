@@ -387,13 +387,14 @@ function CommonTab(props) {
     ) {
       notifySuccessMsg();
       sendTransaction(res);
-    } else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
-      notifyNameErrorMessage();
-      prevStep();
-    } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
-      notifySymbolErrorMessage();
-      prevStep();
     }
+    // else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
+    //   notifyNameErrorMessage();
+    //   prevStep();
+    // } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
+    //   notifySymbolErrorMessage();
+    //   prevStep();
+    // }
   };
 
   const saveAsDraftbyEdit = async (e) => {
