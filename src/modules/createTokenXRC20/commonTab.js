@@ -9,6 +9,7 @@ import {
   apiBodyMessages,
   apiSuccessConstants,
   validationsMessages,
+  DEFAULT_TOKEN_IMAGE_URL
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
@@ -278,7 +279,8 @@ function CommonTab(props) {
     setTokenData(props.state?.xrc20TokenDetails);
   }, [props]);
 
-  let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage;
+  // let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage;
+  let newImage = imgData?.length >= 1 ? imgData : (tokenData.tokenImage === undefined ? DEFAULT_TOKEN_IMAGE_URL : tokenData.tokenImage);
   let initialDecimalValue = tokenData.tokenDecimals
     ? tokenData.tokenDecimals
     : "18";
