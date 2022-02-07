@@ -37,16 +37,16 @@ const Column = styled.div`
   }
 `;
 const FooterImg = styled.img`
-  height: 37.23px;
-  width: 160.8px;
-  margin: 0 0 24.84px 0;
+  width: 39px;
+  height: 37px;
+  margin: 14px 10px 24.84px 0;
   @media screen and (min-width: 0px) and (max-width: 767px) {
-    margin: 0 0 22.45px 0;
+    margin: 14px 10px 22.45px 0;
   }
 `;
 const Text = styled.span`
   width: 297px;
-  height: 77px;
+  height: 107px;
   text-align: left;
   font: normal normal normal 18px/28px Inter;
   letter-spacing: 0px;
@@ -121,10 +121,10 @@ const ContactContainer = styled.div`
   align-items: center;
 `;
 const SocialIcon = styled.img`
-  width: 17px;
-  height: 14px;
+  /* width: 17px;
+  height: 14px; */
   margin-right: 9px;
-  background: #8ca6f0 0% 0% no-repeat padding-box;
+  /* background: #8ca6f0 0% 0% no-repeat padding-box; */
   opacity: 1;
 `;
 const CopyrightContainer = styled.div`
@@ -142,16 +142,27 @@ const XDCIcon = styled.img`
   background: transparent 0% 0% no-repeat padding-box;
   opacity: 1;
 `;
+const ImgContainer = styled.div`
+ display: flex;
+ align-items: center;
+ height: 58px;
+`;
+const OriginText = styled.span`
+ font: normal normal 600 27px/28px Inter;
+ color: #FFFFFF;
+`;
 
 function footer() {
   return (
     <FooterContainer>
       <ColumnContainer>
         <Column>
-          <FooterImg src="/images/SmartHub.svg" alt="" />
+          <ImgContainer>
+            <FooterImg src="/images/Origin-Logo-White.svg" alt="" />
+            <OriginText>Origin</OriginText>
+          </ImgContainer>
           <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit Ut quis
-            maximus augue.
+          SmartMint is a Smart Contract Tokenization platform that enables brands to create Non-Fungible Tokens.
           </Text>
         </Column>
         <SecondColumn>
@@ -181,11 +192,11 @@ function footer() {
         <ColHeading>Contact</ColHeading>
         <LinkContainerThird>
           <ContactContainer>
-            <SocialIcon src="/images/Twitter_Inactive.svg" />
+            <SocialIcon src="/images/Twitter_Footer.svg" />
             <Link>Twitter</Link>
           </ContactContainer>
           <ContactContainer>
-            <SocialIcon src="/images/Telegram_Inactive.svg" />
+            <SocialIcon src="/images/Telegram_Footer.svg" />
             <Link> Telegram </Link>
           </ContactContainer>
         </LinkContainerThird>
