@@ -4,6 +4,15 @@ import styled from "styled-components";
 import { Dialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
+import {
+  apiBodyMessages,
+  apiSuccessConstants,
+  validationsMessages,
+} from "../../constants";
+import Utils from "../../utility";
+import { SaveDraftService } from "../../services/index";
+import Web3 from "web3";
+import { connect } from "react-redux";
 
 const DialogContainer = styled.div`
   width: 466px;
@@ -118,6 +127,7 @@ const InputDiv = styled.input`
   background: #f0f2fc 0% 0% no-repeat padding-box;
   border-radius: 4px;
   opacity: 1;
+  padding: 7px 0 7px 16px;
   border: none;
   ::placeholder {
     padding: 0px 0px 0px 10px;
@@ -220,18 +230,95 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TransferOwnershipContract(props) {
+function TransferOwnershipContract(props) {
   const history = useHistory();
   const [steps, setSteps] = useState(1);
   const classes = useStyles();
-  const [inputToken, setInputAddress] = useState("");
+  const [inputAddress, setInputAddress] = useState("");
+
+  let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
+    /xdc/,
+    "0x"
+  )
+
+  let networkVersion = props.userDetails?.accountDetails?.network || "";
+  let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
     setSteps(2);
-    setTimeout(() => {
-      setSteps(3);
-    }, 4000);
+    sendTransaction();
   };
+
+  const sendTransaction = async () => {
+    window.web3 = new Web3(window.ethereum);
+
+    let newAbi = props?.deployedContract?.contractAbiString;
+    let jsonAbi = JSON.parse(newAbi);
+
+    let contractInstance = new window.web3.eth.Contract(jsonAbi, contractAddress);
+
+    const gasPrice = await window.web3.eth.getGasPrice();
+
+    let transaction = {
+      from: userAddress,
+      to: contractAddress, //contractAddress of the concerned token (same in data below)
+      gas: 7920000,
+      gasPrice: gasPrice,
+      data: contractInstance.methods.transferOwnership(inputAddress).encodeABI()
+    };
+
+    if (networkVersion === "XDC Mainnet") {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {
+          // console.log("transactionHash ====", hash);
+        })
+        .on("receipt", function (receipt) {
+          // console.log("receipt ====", receipt); 
+        })
+        .on("confirmation", function (confirmationNumber, receipt) {
+        })
+        .on("error", function (error) {
+          // console.log("error error error error ====", error);
+        });
+    } else {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {
+        })
+        .on("receipt", function (receipt) {
+          //receive the contract address from this object
+          console.log("receipt ====", receipt);
+          if (receipt !== 0) {
+            transferXRC20Token();
+            setSteps(3);
+          }
+        })
+        .on("confirmation", function (confirmationNumber, receipt) {
+        })
+        .on("error", function (error) {
+          if (error) {
+            setSteps(1);
+          }
+        });
+    }
+  };
+
+  const transferXRC20Token = async () => {
+    let reqObj = {
+      tokenOwner: props?.deployedContract?.tokenOwner,
+      tokenId: props?.deployedContract?.id,
+      newTokenOwner: inputAddress, //address of the new token owner
+      network: networkVersion,
+      smartContractAddress: props?.deployedContract?.smartContractAddress,
+    };
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.transferOwnershipXRC20Token(reqObj)
+    );
+    if (res !== 0 && res !== undefined) {
+      console.log('res--', res)
+    }
+  }
 
   return (
     <>
@@ -347,3 +434,8 @@ export default function TransferOwnershipContract(props) {
     </>
   );
 }
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+export default connect(mapStateToProps)(TransferOwnershipContract);

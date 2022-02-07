@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Tooltip, Fade, Menu, MenuItem } from "@material-ui/core";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -13,6 +13,7 @@ import BurnContractPopup from "./burnContractPopups";
 import ResumeContractPopup from "./resumeContractPopup";
 import MintContractPopup from "./mintContractPopup";
 import TransferOwnershipPopup from "./transferOwnershipPopup";
+import Web3 from "web3";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -359,20 +360,28 @@ function manageContractDetails(props) {
   const [isTransferOpen, setIsTransferOpen] = useState(false);
 
   const togglePausePopup = (closeOpt) => {
-    // console.log('h--',closeOpt)
+    console.log("h--", closeOpt);
     setIsPauseOpen(!isPauseOpen);
     setChangeToResume(closeOpt);
   };
   const toggleResumePopup = (opt) => {
-    // console.log('pa--',opt)
+    console.log("pa--", opt);
     setIsResumeOpen(!isResumeOpen);
     setUnpause(true);
-    if (opt === "pause") {
-      setChangeToResume("");
-      setUnpause(false);
-    } else if (opt === "resume") {
-      setUnpause(false);
+    switch(opt) {
+      case 'pause':
+        return setChangeToResume(""), setUnpause(false);
+      case "resume":
+        return setUnpause(false);     
+      default:
+        return;
     }
+    // if (opt === "pause") {
+    //   setChangeToResume("");
+    //   setUnpause(false);
+    // } else if (opt === "resume") {
+    //   setUnpause(false);
+    // }
   };
   const toggleBurnPopup = () => {
     setIsBurnOpen(!isBurnOpen);
@@ -390,12 +399,12 @@ function manageContractDetails(props) {
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
-    setIsActive(!isActive)
+    setIsActive(!isActive);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-    setIsActive(!isActive)
+    setIsActive(!isActive);
   };
 
   const handleURL = (link) => {
@@ -425,6 +434,8 @@ function manageContractDetails(props) {
   const createdDate = moment(props.deolyedTokenDetails?.createdAt).format(
     "DD MMMM YYYY"
   );
+
+  console.log("p---", props?.deolyedTokenDetails);
 
   return (
     <>
@@ -579,7 +590,13 @@ function manageContractDetails(props) {
                   {millify(props.deolyedTokenDetails?.mintedTokens)}
                 </Amount>
                 <Description>
-                  <SubDes>Last minted:</SubDes> <SubContent>NA</SubContent>
+                  <SubDes>Last minted:</SubDes>{" "}
+                  <SubContent>
+                    {" "}
+                    {props.deolyedTokenDetails?.lastMinted !== null
+                      ? moment(props.deolyedTokenDetails?.lastMinted).fromNow()
+                      : "NA"}
+                  </SubContent>
                 </Description>
               </DetailsContainer>
               <Divider />
@@ -589,7 +606,12 @@ function manageContractDetails(props) {
                   {millify(props.deolyedTokenDetails?.burntTokens)}
                 </Amount>
                 <Description>
-                  <SubDes>Last burnt:</SubDes> <SubContent>NA</SubContent>
+                  <SubDes>Last burnt:</SubDes>{" "}
+                  <SubContent>
+                    {props.deolyedTokenDetails?.lastBurnt !== null
+                      ? moment(props.deolyedTokenDetails?.lastBurnt).fromNow()
+                      : "NA"}
+                  </SubContent>
                 </Description>
               </DetailsContainer>
               <Divider />
@@ -608,7 +630,8 @@ function manageContractDetails(props) {
             </MiddleContainer>
 
             <BottomContainer>
-              {changeToResume !== "change" ? (
+              {changeToResume !== "change" &&
+              props.deolyedTokenDetails?.isPaused !== true ? (
                 <ActionDiv>
                   <BottomImg src="/images/Pause_Contract.png" />
 
@@ -640,21 +663,42 @@ function manageContractDetails(props) {
                 <BottomImg src="/images/Mint_Contract.svg" />
                 <ActionHeading>Mint Tokens</ActionHeading>
                 <ActionText>Add tokens to increase the supply</ActionText>
-                <MintButton onClick={toggleMintPopup}>Mint</MintButton>
+                {props.deolyedTokenDetails?.isPaused !== true ? (
+                  <MintButton disabled={false} onClick={toggleMintPopup}>
+                    Mint
+                  </MintButton>
+                ) : (
+                  <MintButton disabled={true}>Mint</MintButton>
+                )}
               </ActionDiv>
 
               <ActionDiv>
                 <BottomImg src="/images/Burn_Contract.svg" />
                 <ActionHeading>Burn Tokens</ActionHeading>
                 <ActionText>Burn tokens to reduce the supply</ActionText>
-                <BurnButton onClick={toggleBurnPopup}>Burn</BurnButton>
+                {props.deolyedTokenDetails?.isPaused !== true ? (
+                  <BurnButton disabled={false} onClick={toggleBurnPopup}>
+                    Burn
+                  </BurnButton>
+                ) : (
+                  <BurnButton disabled={true}>Burn</BurnButton>
+                )}
               </ActionDiv>
 
               <ActionDiv>
                 <BottomImg src="/images/Transfer_Contract.svg" />
                 <ActionHeading>Transfer Contract</ActionHeading>
                 <ActionText>Transfer ownership of the Contract</ActionText>
-                <TransferButton onClick={toggleTransferPopup}>Transfer</TransferButton>
+                {props.deolyedTokenDetails?.isPaused !== true ? (
+                  <TransferButton
+                    disabled={false}
+                    onClick={toggleTransferPopup}
+                  >
+                    Transfer
+                  </TransferButton>
+                ) : (
+                  <TransferButton disabled={true}>Transfer</TransferButton>
+                )}
               </ActionDiv>
             </BottomContainer>
           </ColumnContainer>
@@ -664,22 +708,36 @@ function manageContractDetails(props) {
         <PauseContractPopup
           isOpen={isPauseOpen}
           handleClose={togglePausePopup}
+          deployedContract={props.deolyedTokenDetails}
         />
       )}
       {isResumeOpen && (
         <ResumeContractPopup
           isOpen={isResumeOpen}
           handleClose={toggleResumePopup}
+          deployedContract={props.deolyedTokenDetails}
         />
       )}
       {isBurnOpen && (
-        <BurnContractPopup isOpen={isBurnOpen} handleClose={toggleBurnPopup} />
+        <BurnContractPopup
+          isOpen={isBurnOpen}
+          handleClose={toggleBurnPopup}
+          deployedContract={props.deolyedTokenDetails}
+        />
       )}
       {isMintOpen && (
-        <MintContractPopup isOpen={isMintOpen} handleClose={toggleMintPopup} />
+        <MintContractPopup
+          isOpen={isMintOpen}
+          handleClose={toggleMintPopup}
+          deployedContract={props.deolyedTokenDetails}
+        />
       )}
       {isTransferOpen && (
-        <TransferOwnershipPopup isOpen={isTransferOpen} handleClose={toggleTransferPopup} />
+        <TransferOwnershipPopup
+          isOpen={isTransferOpen}
+          handleClose={toggleTransferPopup}
+          deployedContract={props.deolyedTokenDetails}
+        />
       )}
     </>
   );
