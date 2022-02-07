@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#1F1F1F",
     fontSize: "15px",
     fontWeight: 500,
+    marginBottom: "3px",
   },
 }));
 
@@ -344,6 +345,7 @@ const TransferButton = styled.div`
 function manageContractDetails(props) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isActive, setIsActive] = useState(false);
   const classes = useStyles();
 
   //pause-popups-flow-states :
@@ -388,10 +390,12 @@ function manageContractDetails(props) {
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+    setIsActive(!isActive)
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    setIsActive(!isActive)
   };
 
   const handleURL = (link) => {
