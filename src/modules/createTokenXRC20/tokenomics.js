@@ -182,7 +182,10 @@ const ImgDiv = styled.img`
 `;
 const BackText = styled.div`
   text-align: right;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #4b4b4b;
   opacity: 1;
@@ -192,7 +195,10 @@ const BackText = styled.div`
 `;
 const ContinueText = styled.div`
   text-align: left;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;

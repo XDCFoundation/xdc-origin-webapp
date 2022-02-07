@@ -3,12 +3,12 @@ import Header from "../header/header";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 import { detect } from "detect-browser";
+import Footer from '../Footer'
 
 const Container = styled.div`
-  position: fixed;
+position: absolute;
   top: 57px;
   width: 100%;
-  height: 1024px;
   background: #ecf0f7 0% 0% no-repeat padding-box;
 `;
 const HeadingContainer = styled.div`
@@ -29,13 +29,18 @@ const Heading = styled.span`
   color: #1f1f1f;
   opacity: 1;
 `;
+const CommonContainer = styled.div`
+  width: 355px;
+  opacity: 1;
+  margin: 0 auto 36px auto;
+`;
 const BoxContainer = styled.div`
   width: 355px;
   height: 597px;
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 6px;
   opacity: 1;
-  margin-left: 10px;
+  margin: 0 auto 0 auto;
   padding-top: 22px;
 `;
 const Box = styled.div`
@@ -136,10 +141,11 @@ function ConnectWalletMobile() {
   return (
     <Container>
       <Header />
-      <HeadingContainer>
-        <LeftArrow onClick={() => history.push('/')} src="/images/Button_Back_Arrow.svg" alt="" />
-        <Heading>Connect Wallet</Heading>
-      </HeadingContainer>
+      <CommonContainer>
+        <HeadingContainer>
+          <LeftArrow onClick={() => history.push('/')} src="/images/Button_Back_Arrow.svg" alt="" />
+          <Heading>Connect Wallet</Heading>
+        </HeadingContainer>
       <div>{browser?.name !== "chrome" ? (<p className="shown-browser-error">XDCPay wallet only supports Chrome browser !!</p>) : ("")}</div>
       <BoxContainer>
         <Box>
@@ -164,7 +170,7 @@ function ConnectWalletMobile() {
               <TextContainer>
                 <Text>Login to XDCPay</Text>
                 <SubText>
-                  Login to you account on XDCPay<div></div> App.
+                  Login to your account on XDCPay<div></div> App.
                 </SubText>
               </TextContainer>
             </InfoContainer>
@@ -177,7 +183,7 @@ function ConnectWalletMobile() {
               <Img src="/images/Wallet.svg" />
               <TextContainer>
                 <Text>Connect Wallet</Text>
-                <SubText>Connect your XDCPay wallet with SmartHub.</SubText>
+                <SubText>Connect your XDCPay wallet with Origin.</SubText>
               </TextContainer>
             </InfoContainer>
           </BoxContent>
@@ -188,7 +194,9 @@ function ConnectWalletMobile() {
             <BtnText>Connect Wallet</BtnText>
           </Button>
         </ButtonContainer>
-      </BoxContainer>
+      </BoxContainer> 
+      </CommonContainer>
+      <Footer />
     </Container>
   );
 }
