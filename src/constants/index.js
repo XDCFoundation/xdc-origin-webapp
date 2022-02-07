@@ -59,6 +59,20 @@ export const validationsMessages = {
     VALIDATE_BROWSER_REDIRECTING: "Redirect To Download XDC PAY App !",
     INITIAL_SUPPLY_LIMIT_ERROR: "Initial Supply limit reached",
 }
+
+export const toolTipContentMessages = {
+    TOKEN_NETWORK_CONTENT: "Type of network to which you are connected",
+    TOKEN_NAME_CONTENT: "Name of the token",
+    TOKEN_SYMBOL_CONTENT: "Symbol or short name representing the token",
+    TOKEN_IMAGE_CONTENT: "Icon of the token in the given format",
+    TOKEN_DECIMAL_CONTENT: "Number of digits after the decimal when displaying token values on-screen",
+    TOKEN_DESCRIPTION_CONTENT: "Description of token in 80-100 words",
+    TOKEN_WEBSITE_CONTENT: "Link of the official website of the token being deployed; if applicable",
+    TOKEN_TWITTER_CONTENT: "Link of the official Twitter handle of the token; if applicable",
+    TOKEN_TELEGRAM_CONTENT: "Link of the official Telegram channel of the token; if applicable",
+    TOKEN_SUPPLY_CONTENT: "Number of tokens in circulation when the token starts to be traded on exchanges",
+}
+
 export const addFeaturesContent = {
     PAUSABLE_CONTENT: "This specifies whether your token and all associated operations can be halted and resumed whenever needed.",
     BURNABLE_CONTENT:"This specifies whether your tokens can be burned to decrease the supply.",

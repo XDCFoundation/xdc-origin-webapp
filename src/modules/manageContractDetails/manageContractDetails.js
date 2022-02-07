@@ -8,6 +8,11 @@ import millify from "millify";
 import moment from "moment";
 import toast, { Toaster } from "react-hot-toast";
 import { history } from "../../managers/history";
+import PauseContractPopup from "./pauseContractPopup";
+import BurnContractPopup from "./burnContractPopups";
+import ResumeContractPopup from "./resumeContractPopup";
+import MintContractPopup from "./mintContractPopup";
+import TransferOwnershipPopup from "./transferOwnershipPopup";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -276,6 +281,21 @@ const PauseButton = styled.div`
   align-items: center;
   justify-content: center;
 `;
+const ResumeButton = styled.div`
+  width: 96px;
+  height: 36px;
+  background: #1f1f1f 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  opacity: 1;
+  border-radius: 4px;
+  cursor: pointer;
+  font: normal normal normal 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const BurnButton = styled.div`
   width: 96px;
   height: 36px;
@@ -325,9 +345,44 @@ const TransferButton = styled.div`
 function manageContractDetails(props) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isMintToken, setIsMintToken] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const classes = useStyles();
+
+  //pause-popups-flow-states :
+  const [isPauseOpen, setIsPauseOpen] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [unpause, setUnpause] = useState(false);
+  const [changeToResume, setChangeToResume] = useState("");
+
+  const [isBurnOpen, setIsBurnOpen] = useState(false);
+  const [isMintOpen, setIsMintOpen] = useState(false);
+  const [isTransferOpen, setIsTransferOpen] = useState(false);
+
+  const togglePausePopup = (closeOpt) => {
+    // console.log('h--',closeOpt)
+    setIsPauseOpen(!isPauseOpen);
+    setChangeToResume(closeOpt);
+  };
+  const toggleResumePopup = (opt) => {
+    // console.log('pa--',opt)
+    setIsResumeOpen(!isResumeOpen);
+    setUnpause(true);
+    if (opt === "pause") {
+      setChangeToResume("");
+      setUnpause(false);
+    } else if (opt === "resume") {
+      setUnpause(false);
+    }
+  };
+  const toggleBurnPopup = () => {
+    setIsBurnOpen(!isBurnOpen);
+  };
+  const toggleMintPopup = () => {
+    setIsMintOpen(!isMintOpen);
+  };
+  const toggleTransferPopup = () => {
+    setIsTransferOpen(!isTransferOpen);
+  };
 
   const handleTooltipOpen = () => {
     setOpen(true);
@@ -351,187 +406,282 @@ function manageContractDetails(props) {
         // className: "toast-div-address",
       });
     } else {
-      window.open(link, '_blank');
+      window.open(link, "_blank");
     }
   };
-  
+
   const handleOptionClick = () => {
-    history.push(({
+    history.push({
       pathname: "/update-profile",
       state: {
         deolyedTokenDetails: props.deolyedTokenDetails,
-      }
-    }))
+      },
+    });
   };
 
-  const handleMintOpen = () => {
-    setIsMintToken(!isMintToken);
-  }
-
-  const createdTime = moment(props.deolyedTokenDetails?.createdAt).format('h:mm a');
-  const createdDate = moment(props.deolyedTokenDetails?.createdAt).format('DD MMMM YYYY');
+  const createdTime = moment(props.deolyedTokenDetails?.createdAt).format(
+    "h:mm a"
+  );
+  const createdDate = moment(props.deolyedTokenDetails?.createdAt).format(
+    "DD MMMM YYYY"
+  );
 
   return (
     <>
-    <Container>
-      <div><Toaster /></div>
-      <CommonContainer>
-        <Heading>
-          <BackArrow onClick={() => history.push("/manage-contracts")} src="images/Button_Back_Arrow.svg" />
-          <Text>Manage</Text>
-        </Heading>
+      <Container>
+        <div>
+          <Toaster />
+        </div>
+        <CommonContainer>
+          <Heading>
+            <BackArrow
+              onClick={() => history.push("/manage-contracts")}
+              src="images/Button_Back_Arrow.svg"
+            />
+            <Text>Manage</Text>
+          </Heading>
 
-        <ColumnContainer>
-          <TopContainer>
-            <LeftDiv>
-              <ImgContainer>
-                <TokenImg src={props.deolyedTokenDetails?.tokenImage} />
-              </ImgContainer>
-              <InfoContainer>
-                <TokenName>{props.deolyedTokenDetails?.tokenName}</TokenName>
-                <TokenSymbol>{props.deolyedTokenDetails?.tokenSymbol}</TokenSymbol>
-                <AddressContainer>
-                  <ContractAddress>
-                    {props.deolyedTokenDetails?.smartContractAddress?.replace(/0x/,"xdc")}
-                  </ContractAddress>
-                  <Tooltip
-                    title={open ? "Copied" : "Copy To Clipboard"}
-                    placement="top"
-                    arrow
-                    TransitionComponent={Fade}
-                    TransitionProps={{ timeout: 600 }}
-                  >
-                    <CopyToClipboard text={props.deolyedTokenDetails?.smartContractAddress}>
-                      <CopyIcon
-                        src="/images/Copy.svg"
-                        onClick={handleTooltipOpen}
-                      />
-                    </CopyToClipboard>
-                  </Tooltip>
-                </AddressContainer>
-                <MediaImgContainer>
-                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.website)} src="/images/Website_active.svg" />
-                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.email)} src="/images/Email_Active.svg" />
-                  <MediaImg onClick={() => handleURL("")} src="/images/Facebook_Active.svg" />
-                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.twitter)} src="/images/Twitter_Active.svg" />
-                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.telegram)} src="/images/Telegram_Active.svg" />
-                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.linkedIn)} src="/images/LinkedIn_Active.svg" />
-                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.reddit)} src="/images/Reditt_Active.svg" />
-                  <MediaImg onClick={() => handleURL(props.deolyedTokenDetails?.coinGecko)} src="/images/CoinDecko_Active.svg" />
-                </MediaImgContainer>
-              </InfoContainer>
-            </LeftDiv>
-              <RightDiv>
-                {
-                  isActive ? (
-                    <OptionImg
-                      src="/images/Options_Active.svg"
-                      onClick={handleMenuOpen}
-                   />
-                  ): (
-                    <OptionImg
-                      src="/images/Options_Inactive.svg"
-                      onClick={handleMenuOpen}
+          <ColumnContainer>
+            <TopContainer>
+              <LeftDiv>
+                <ImgContainer>
+                  <TokenImg src={props.deolyedTokenDetails?.tokenImage} />
+                </ImgContainer>
+                <InfoContainer>
+                  <TokenName>{props.deolyedTokenDetails?.tokenName}</TokenName>
+                  <TokenSymbol>
+                    {props.deolyedTokenDetails?.tokenSymbol}
+                  </TokenSymbol>
+                  <AddressContainer>
+                    <ContractAddress>
+                      {props.deolyedTokenDetails?.smartContractAddress?.replace(
+                        /0x/,
+                        "xdc"
+                      )}
+                    </ContractAddress>
+                    <Tooltip
+                      title={open ? "Copied" : "Copy To Clipboard"}
+                      placement="top"
+                      arrow
+                      TransitionComponent={Fade}
+                      TransitionProps={{ timeout: 600 }}
+                    >
+                      <CopyToClipboard
+                        text={props.deolyedTokenDetails?.smartContractAddress}
+                      >
+                        <CopyIcon
+                          src="/images/Copy.svg"
+                          onClick={handleTooltipOpen}
+                        />
+                      </CopyToClipboard>
+                    </Tooltip>
+                  </AddressContainer>
+                  <MediaImgContainer>
+                    <MediaImg
+                      onClick={() =>
+                        handleURL(props.deolyedTokenDetails?.website)
+                      }
+                      src="/images/Website_active.svg"
                     />
-                  )
-                }
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                getContentAnchorEl={null}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                transformOrigin={{ vertical: "top", horizontal: "right" }}
-                classes={{
-                  paper: classes.menu,
-                }}
-              >
-                <MenuItem className={classes.item}>View on XDCScan</MenuItem>
-                <MenuItem className={classes.item}>Add to XDCPay</MenuItem>
-                <MenuItem className={classes.item} onClick={() => handleOptionClick()}>
-                  Edit Contract Profile
-                </MenuItem>
-                <MenuItem className={classes.item}>Download .Sol File</MenuItem>
-              </Menu>
-            </RightDiv>
-          </TopContainer>
+                    <MediaImg
+                      onClick={() =>
+                        handleURL(props.deolyedTokenDetails?.email)
+                      }
+                      src="/images/Email_Active.svg"
+                    />
+                    <MediaImg
+                      onClick={() => handleURL("")}
+                      src="/images/Facebook_Active.svg"
+                    />
+                    <MediaImg
+                      onClick={() =>
+                        handleURL(props.deolyedTokenDetails?.twitter)
+                      }
+                      src="/images/Twitter_Active.svg"
+                    />
+                    <MediaImg
+                      onClick={() =>
+                        handleURL(props.deolyedTokenDetails?.telegram)
+                      }
+                      src="/images/Telegram_Active.svg"
+                    />
+                    <MediaImg
+                      onClick={() =>
+                        handleURL(props.deolyedTokenDetails?.linkedIn)
+                      }
+                      src="/images/LinkedIn_Active.svg"
+                    />
+                    <MediaImg
+                      onClick={() =>
+                        handleURL(props.deolyedTokenDetails?.reddit)
+                      }
+                      src="/images/Reditt_Active.svg"
+                    />
+                    <MediaImg
+                      onClick={() =>
+                        handleURL(props.deolyedTokenDetails?.coinGecko)
+                      }
+                      src="/images/CoinDecko_Active.svg"
+                    />
+                  </MediaImgContainer>
+                </InfoContainer>
+              </LeftDiv>
+              <RightDiv>
+                <OptionImg
+                  src="/images/Options_Inactive.svg"
+                  onClick={handleMenuOpen}
+                />
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                  getContentAnchorEl={null}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  classes={{
+                    paper: classes.menu,
+                  }}
+                >
+                  <MenuItem className={classes.item}>View on XDCScan</MenuItem>
+                  <MenuItem className={classes.item}>Add to XDCPay</MenuItem>
+                  <MenuItem
+                    className={classes.item}
+                    onClick={() => handleOptionClick()}
+                  >
+                    Edit Contract Profile
+                  </MenuItem>
+                  <MenuItem className={classes.item}>
+                    Download .Sol File
+                  </MenuItem>
+                </Menu>
+              </RightDiv>
+            </TopContainer>
 
-          <MiddleContainer>
-            <DetailsContainerFirst>
-              <Title>Initial Supply</Title>
-              <Amount>{ millify(props.deolyedTokenDetails?.tokenInitialSupply) }</Amount>
-              <Description>
-                <SubDes>Created on:</SubDes>{" "}
-                <SubContentSupply>{createdTime.toUpperCase()}, {createdDate}</SubContentSupply>
-              </Description>
-            </DetailsContainerFirst>
-            <Divider />
-            <DetailsContainer>
-              <Title>Minted Tokens</Title>
-              <Amount>{ millify(props.deolyedTokenDetails?.mintedTokens) }</Amount>
-              <Description>
-                <SubDes>Last minted:</SubDes>{" "}
-                <SubContent>NA</SubContent>
-              </Description>
-            </DetailsContainer>
-            <Divider />
-            <DetailsContainer>
-              <Title>Burnt Tokens</Title>
-              <Amount>{ millify(props.deolyedTokenDetails?.burntTokens) }</Amount>
-              <Description>
-                <SubDes>Last burnt:</SubDes> <SubContent>NA</SubContent>
-              </Description>
-            </DetailsContainer>
-            <Divider />
-            <DetailsContainer>
-              <Title>Current Supply</Title>
-              <Amount>{ millify(props.deolyedTokenDetails?.tokenCurrentSupply) }</Amount>
-              <Description>
-                <SubDes>Updated:</SubDes> <SubContent>{moment(props.deolyedTokenDetails?.updatedAt).fromNow()}</SubContent>
-              </Description>
-            </DetailsContainer>
-          </MiddleContainer>
+            <MiddleContainer>
+              <DetailsContainerFirst>
+                <Title>Initial Supply</Title>
+                <Amount>
+                  {millify(props.deolyedTokenDetails?.tokenInitialSupply)}
+                </Amount>
+                <Description>
+                  <SubDes>Created on:</SubDes>{" "}
+                  <SubContentSupply>
+                    {createdTime.toUpperCase()}, {createdDate}
+                  </SubContentSupply>
+                </Description>
+              </DetailsContainerFirst>
+              <Divider />
+              <DetailsContainer>
+                <Title>Minted Tokens</Title>
+                <Amount>
+                  {millify(props.deolyedTokenDetails?.mintedTokens)}
+                </Amount>
+                <Description>
+                  <SubDes>Last minted:</SubDes> <SubContent>NA</SubContent>
+                </Description>
+              </DetailsContainer>
+              <Divider />
+              <DetailsContainer>
+                <Title>Burnt Tokens</Title>
+                <Amount>
+                  {millify(props.deolyedTokenDetails?.burntTokens)}
+                </Amount>
+                <Description>
+                  <SubDes>Last burnt:</SubDes> <SubContent>NA</SubContent>
+                </Description>
+              </DetailsContainer>
+              <Divider />
+              <DetailsContainer>
+                <Title>Current Supply</Title>
+                <Amount>
+                  {millify(props.deolyedTokenDetails?.tokenCurrentSupply)}
+                </Amount>
+                <Description>
+                  <SubDes>Updated:</SubDes>{" "}
+                  <SubContent>
+                    {moment(props.deolyedTokenDetails?.updatedAt).fromNow()}
+                  </SubContent>
+                </Description>
+              </DetailsContainer>
+            </MiddleContainer>
 
-          <BottomContainer>
-            <ActionDiv>
-              <BottomImg src="/images/Pause_Contract.png" />
-              <ActionHeading>Pause Contract</ActionHeading>
-              <ActionText>Pause all transactions on this Contract</ActionText>
-              <PauseButton>Pause</PauseButton>
-            </ActionDiv>
+            <BottomContainer>
+              {changeToResume !== "change" ? (
+                <ActionDiv>
+                  <BottomImg src="/images/Pause_Contract.png" />
 
-            <ActionDiv>
-              <BottomImg src="/images/Burn_Contract.svg" />
-              <ActionHeading>Burn Tokens</ActionHeading>
-              <ActionText>Burn tokens to reduce the supply</ActionText>
-              <BurnButton>Burn</BurnButton>
-            </ActionDiv>
+                  <ActionHeading>Pause Contract</ActionHeading>
+                  <ActionText>
+                    Pause all transactions on this Contract
+                  </ActionText>
+                  <PauseButton onClick={togglePausePopup}>Pause</PauseButton>
+                </ActionDiv>
+              ) : (
+                <ActionDiv>
+                  <BottomImg src="/images/Pause_Contract.png" />
 
-            <ActionDiv>
-              <BottomImg src="/images/Mint_Contract.svg" />
-              <ActionHeading>Mint Tokens</ActionHeading>
-              <ActionText>Add tokens to increase the supply</ActionText>
-              <MintButton onClick={() => handleMintOpen()}>Mint</MintButton>
-            </ActionDiv>
+                  <ActionHeading>Unpause Contract</ActionHeading>
+                  <ActionText>
+                    Unpause Contract to allow transactions
+                  </ActionText>
+                  {unpause !== true ? (
+                    <ResumeButton onClick={toggleResumePopup}>
+                      Resume
+                    </ResumeButton>
+                  ) : (
+                    <ResumeButton>Unpause</ResumeButton>
+                  )}
+                </ActionDiv>
+              )}
 
-            <ActionDiv>
-              <BottomImg src="/images/Transfer_Contract.svg" />
-              <ActionHeading>Transfer Contract</ActionHeading>
-              <ActionText>Transfer ownership of the Contract</ActionText>
-              <TransferButton>Transfer</TransferButton>
-            </ActionDiv>
-          </BottomContainer>
-        </ColumnContainer>
-      </CommonContainer>
-    </Container>
-      {/* {
-        isMintToken ? (
-          <MintToken isOpen={isMintToken} handleClose={handleMintOpen}/>
-        ) : ""
-      } */}
-  </>
+              <ActionDiv>
+                <BottomImg src="/images/Mint_Contract.svg" />
+                <ActionHeading>Mint Tokens</ActionHeading>
+                <ActionText>Add tokens to increase the supply</ActionText>
+                <MintButton onClick={toggleMintPopup}>Mint</MintButton>
+              </ActionDiv>
+
+              <ActionDiv>
+                <BottomImg src="/images/Burn_Contract.svg" />
+                <ActionHeading>Burn Tokens</ActionHeading>
+                <ActionText>Burn tokens to reduce the supply</ActionText>
+                <BurnButton onClick={toggleBurnPopup}>Burn</BurnButton>
+              </ActionDiv>
+
+              <ActionDiv>
+                <BottomImg src="/images/Transfer_Contract.svg" />
+                <ActionHeading>Transfer Contract</ActionHeading>
+                <ActionText>Transfer ownership of the Contract</ActionText>
+                <TransferButton onClick={toggleTransferPopup}>Transfer</TransferButton>
+              </ActionDiv>
+            </BottomContainer>
+          </ColumnContainer>
+        </CommonContainer>
+      </Container>
+      {isPauseOpen && (
+        <PauseContractPopup
+          isOpen={isPauseOpen}
+          handleClose={togglePausePopup}
+        />
+      )}
+      {isResumeOpen && (
+        <ResumeContractPopup
+          isOpen={isResumeOpen}
+          handleClose={toggleResumePopup}
+        />
+      )}
+      {isBurnOpen && (
+        <BurnContractPopup isOpen={isBurnOpen} handleClose={toggleBurnPopup} />
+      )}
+      {isMintOpen && (
+        <MintContractPopup isOpen={isMintOpen} handleClose={toggleMintPopup} />
+      )}
+      {isTransferOpen && (
+        <TransferOwnershipPopup isOpen={isTransferOpen} handleClose={toggleTransferPopup} />
+      )}
+    </>
   );
 }
 
