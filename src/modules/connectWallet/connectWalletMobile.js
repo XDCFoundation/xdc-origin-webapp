@@ -188,12 +188,12 @@ function ConnectWalletMobile() {
             </InfoContainer>
           </BoxContent>
         </Box>
-        <ButtonContainer>
+        {/* <ButtonContainer>
           <Button>
             <BtnImg src="/images/XDC_Icon_White.svg" />
             <BtnText>Connect Wallet</BtnText>
           </Button>
-        </ButtonContainer>
+        </ButtonContainer> */}
       </BoxContainer> 
       </CommonContainer>
       <Footer />

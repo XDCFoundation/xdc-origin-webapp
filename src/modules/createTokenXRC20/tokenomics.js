@@ -8,6 +8,7 @@ import {
   apiBodyMessages,
   apiSuccessConstants,
   validationsMessages,
+  toolTipContentMessages,
 } from "../../constants";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -217,7 +218,7 @@ const theme = createTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: "12px",
+        fontSize: "16px",
         color: "#4B4B4B",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 3px 12px #0000001A",
@@ -287,7 +288,7 @@ export default function Tokenomics(props) {
               Initial Supply<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Number of tokens available initially."
+                  title={toolTipContentMessages.TOKEN_SUPPLY_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
