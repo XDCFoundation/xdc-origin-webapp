@@ -123,7 +123,7 @@ function About(props) {
                   width="100%"
                   height="100%"
                 /> */}
-                <img src="/images/dashboard_img.svg" alt="" />
+                <DashboadrdImg src="/images/dashboard_img.svg" alt="" />
               </VideoBox>
             </RightContainer>
           </LeftContainer>
@@ -362,6 +362,13 @@ const Container = styled.div`
 `;
 const RightContainer = styled.div`
   min-width: 50%;
+  @media (min-width: 0px) and (max-width: 767px) {
+    width: 100%;
+    min-width: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 const LeftContainer = styled.div`
   display: flex;
@@ -444,7 +451,7 @@ const IconRow = styled.div`
 const DataBox = styled.div`
   display: flex;
   width: 100%;
-  font: normal normal normal 21px Inter;
+  font: normal normal normal 21px/28px Inter;
   @media (min-width: 768px) and (max-width: 1024px) {
     text-align: center;
     font-size: 18px;
@@ -469,6 +476,7 @@ const DataBox = styled.div`
 `;
 const DetailBox = styled.div`
   font: normal normal 600 32px Inter;
+  line-height: 39px;
   ${"" /* padding-left: 35px; */}
   margin-top: 0px;
   ${"" /* padding-bottom: 0.938rem; */}
@@ -521,7 +529,7 @@ const Button = styled.div`
   background-position: 0.5rem;
   margin-right: 10px;
   padding: 0.875rem;
-  item-align: center;
+  align-items: center;
   background-size: 0.875rem;
   position: relative;
   background-color: #3163f0;
@@ -530,8 +538,10 @@ const Button = styled.div`
   border-radius: 0.25rem;
   height: 3.125rem;
   display: flex;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  /* font: normal normal medium 16px/20px Inter; */
   white-space: nowrap;
   cursor: pointer;
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -609,18 +619,20 @@ const GreyContainer = styled.div`
   align-items: center;
 `;
 const Title = styled.div`
+  font: normal normal 600 20px/24px Inter;
   text-align: center;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.375rem;
+  /* font-size: 1.25rem;
+  font-weight: 600; */
+  margin-bottom: 11px;
   color: #1f1f1f;
   opacity: 1;
 `;
 const SubTitle = styled.div`
+  width: 225px;
+  height: 60px;
+  font: normal normal normal 16px/20px Inter;
   text-align: center;
-  font-size: 1rem;
   color: #4b4b4b;
-  margin-top: 0.438rem;
   @media (min-width: 0px) and (max-width: 767px) {
     width: 236px;
   }
@@ -648,11 +660,12 @@ const IconContainer = styled.div`
 `;
 
 const SubHead = styled.div`
-  font-size: 2rem;
-  color: #4b4b4b;
+  font: normal normal 600 32px/39px Inter;
+  /* font-size: 2rem; */
+  color: #1F1F1F;
   text-align: center;
   width: 100%;
-  padding-bottom: 1.25rem;
+  padding-bottom: 9px;
   @media (min-width: 768px) and (max-width: 1024px) {
     font-size: 25px;
   }
@@ -690,4 +703,14 @@ const CrossImgMobile = styled.img`
   cursor: pointer !important;
   width: 13px;
   height: 13px;
+`;
+const DashboadrdImg = styled.img`
+  @media (min-width: 0px) and (max-width: 425px) {
+    width: 320px;
+    object-fit: contain;
+  }
+  @media (min-width: 425px) and (max-width: 767px) {
+    width: 420px;
+    object-fit: contain;
+  }
 `;
