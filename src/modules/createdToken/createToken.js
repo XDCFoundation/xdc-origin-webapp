@@ -371,7 +371,7 @@ const CreateToken = (props) => {
 
   const handleTransactionHash = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/txs/${props.location?.obtainTxnHash}`, '_blank');
+      window.open(`https://observer.xdc.org/transaction-details/${props.location?.obtainTxnHash}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
       window.open(`https://explorer.apothem.network/txs/${props.location?.state?.transactionHash}`, '_blank');
     }
@@ -379,7 +379,7 @@ const CreateToken = (props) => {
 
   const handleContractAddress = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/address/${contractAddress}`, '_blank');
+      window.open(`https://observer.xdc.org/address-details/${contractAddress}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
       window.open(`https://explorer.apothem.network/address/${contractAddress}`, '_blank');
     }
