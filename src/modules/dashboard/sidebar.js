@@ -429,8 +429,8 @@ const SubWrapper = styled.div`
   cursor: pointer;
 `;
 const SubIcon = styled.img`
-  width: 20px;
-  height: 20px;
+  /* width: 20px;
+  height: 20px; */
   /* background: #ffffff 0% 0% no-repeat padding-box; */
   opacity: 1;
   margin-right: 20px;
