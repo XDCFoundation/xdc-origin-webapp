@@ -8,15 +8,20 @@ const FooterContainer = styled.div`
   min-height: 569px;
   background: #102c78 0% 0% no-repeat padding-box;
   opacity: 1;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
-    width: 375px;
+  @media screen and (min-width: 769px) and (max-width: 1023px) {
+    width: 100%;
+    height: 745px;
+    min-height: 745px;
+  }
+  @media screen and (min-width: 0px) and (max-width: 767px) {
+    width: 100%;
     height: 745px;
     min-height: 745px;
   }
 `;
 const ColumnContainer = styled.div`
   display: flex;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 0px) and (max-width: 767px) {
     flex-direction: column;
   }
 `;
@@ -25,9 +30,9 @@ const Column = styled.div`
   margin: 50px 23px 0 86.5px;
   display: flex;
   flex-direction: column;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 0px) and (max-width: 767px) {
     flex-direction: column;
-    width: 100%;
+    width: 94%;
     margin: 55.66px 0 0 22.75px;
   }
 `;
@@ -35,7 +40,7 @@ const FooterImg = styled.img`
   height: 37.23px;
   width: 160.8px;
   margin: 0 0 24.84px 0;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 0px) and (max-width: 767px) {
     margin: 0 0 22.45px 0;
   }
 `;
@@ -57,14 +62,14 @@ const SecondColumn = styled.div`
 const SubColOne = styled.div`
   width: 90px;
   margin: 54px 0 0 24px;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 0px) and (max-width: 767px) {
     margin: 32px 0 0 24px;
   }
 `;
 const SubColTwo = styled.div`
   width: 165px;
   margin: 54px 0 0 70px;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 0px) and (max-width: 767px) {
     margin: 32px 0 0 70px;
   }
 `;
@@ -76,7 +81,7 @@ const ColHeading = styled.div`
   color: #ffffff;
   opacity: 1;
   margin-bottom: 27px;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 0px) and (max-width: 767px) {
     margin-bottom: 17px;
   }
 `;
@@ -99,7 +104,7 @@ const Link = styled.span`
 `;
 const ContactRow = styled.div`
   margin: 116px 0 0 407px;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 0px) and (max-width: 767px) {
     margin: 96px 0 0 28.95px;
   }
 `;
@@ -107,7 +112,7 @@ const LinkContainerThird = styled.div`
   width: 95.95px;
   height: 106px;
   margin-bottom: 66.34px;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 0px) and (max-width: 767px) {
     margin-bottom: 25.34px;
   }
 `;
@@ -127,7 +132,7 @@ const CopyrightContainer = styled.div`
   display: flex;
   align-items: center;
   height: 15px;
-  @media screen and (min-width: 375px) and (max-width: 425px) {
+  @media screen and (min-width: 0px) and (max-width: 767px) {
     margin: 35px 0 0 28.95px;
   }
 `;
