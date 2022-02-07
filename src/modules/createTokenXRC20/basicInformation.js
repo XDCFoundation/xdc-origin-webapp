@@ -266,11 +266,11 @@ const ContinueText = styled.div`
   }
 `;
 const MainCircle = styled.div`
-  width: 128px;
-  overflow: hidden;
-  height: 128px;
-  background: #f0f2fc 0% 0% no-repeat padding-box;
-  border: 1px dashed #8ca6f0;
+  /* width: 128px; */
+  /* overflow: hidden; */
+  /* height: 128px; */
+  /* background: #f0f2fc 0% 0% no-repeat padding-box;
+  border: 1px dashed #8ca6f0; */
   /* border-radius: 124px; */
   opacity: 1;
   position: relative;
@@ -290,6 +290,16 @@ const Span = styled.div`
 
 const ReplaceButton = styled.button`
   padding: 5px 0px 0px 30px;
+  text-align: left;
+  font: normal normal medium 14px/17px Inter;
+  letter-spacing: 0px;
+  color: #3163f0;
+  background: transparent;
+  opacity: 1;
+  border: none;
+`;
+const CustomReplaceButton = styled.button`
+  padding: 5px 0px 0px 0px;
   text-align: left;
   font: normal normal medium 14px/17px Inter;
   letter-spacing: 0px;
@@ -407,15 +417,16 @@ function Token(props) {
       nameErrorMessage();
     } else if (props.tokenData?.tokenDecimals === undefined) {
       decimalErrorMessage();
-    } else if (imgData === "") {
-      imageErrorMessage();
     }
+    // else if (imgData === "") {
+    //   imageErrorMessage();
+    // }
     if (
       props.tokenData.tokenDecimals >= 8 &&
       props.tokenData.tokenDecimals <= 18 &&
       props.tokenData.tokenDecimals !== undefined &&
-      imgData !== "" &&
-      imgData !== undefined &&
+      // imgData !== "" &&
+      // imgData !== undefined &&
       props.tokenData?.tokenDescription !== undefined &&
       props.tokenData?.tokenDescription !== "" &&
       props.tokenData?.tokenDescription?.length < 500 &&
@@ -604,9 +615,9 @@ function Token(props) {
                       type="text"
                       name="tokenImage"
                     />
-                    <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
-                      Replace
-                    </ReplaceButton>
+                    <CustomReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
+                    Use Custom Image
+                    </CustomReplaceButton>
                     {props.isUploadOpen && (
                       <UploadFile
                         handleUploadClose={(e) => props.toggleUploadPopup(e)}
@@ -616,10 +627,11 @@ function Token(props) {
                 ) : (
                   <div>
                     <MainCircle>
-                      <PlusImage
+                      {/* <PlusImage
                         onClick={(e) => props.toggleUploadPopup(e)}
                         src="/images/PlusIcon.svg"
-                      />
+                      /> */}
+                      <img src="/images/default_xrc20_img.svg" alt="" />
                       <UrlInput
                         value={props.tokenData.tokenImage}
                         readOnly
@@ -631,7 +643,10 @@ function Token(props) {
                           handleUploadClose={(e) => props.toggleUploadPopup(e)}
                         />
                       )}
-                    </MainCircle>
+                      </MainCircle>
+                    <CustomReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
+                      Use Custom Image
+                    </CustomReplaceButton>
 
                     {props.tokenData?.tokenImage === "" ? (
                       <p className="shown-error">

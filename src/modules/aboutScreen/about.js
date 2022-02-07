@@ -452,6 +452,7 @@ const DataBox = styled.div`
   display: flex;
   width: 100%;
   font: normal normal normal 21px/28px Inter;
+  color: #4B4B4B;
   @media (min-width: 768px) and (max-width: 1024px) {
     text-align: center;
     font-size: 18px;
@@ -476,6 +477,7 @@ const DataBox = styled.div`
 `;
 const DetailBox = styled.div`
   font: normal normal 600 32px Inter;
+  color: #1F1F1F;
   line-height: 39px;
   ${"" /* padding-left: 35px; */}
   margin-top: 0px;
