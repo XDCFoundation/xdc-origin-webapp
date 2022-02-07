@@ -120,11 +120,7 @@ function Header(props) {
                 </Address>
                 {forceUpdate ? ( 
                   <AccountIcon>
-                    <Identicon
-                      diameter={20}
-                      address={props.userDetails?.accountDetails?.address}
-                      network={props.userDetails?.accountDetails?.network}
-                    />
+                    <WalletDummyImg src="/images/wallet_dummy_image.svg" alt="" />
                   </AccountIcon>
                 ) : (
                   <AccountIcon>
@@ -341,4 +337,10 @@ const AccountIcon = styled.div`
   opacity: 1;
   display: flex;
   align-items: center;
+`;
+const WalletDummyImg = styled.img`
+  width: 28px;
+  height: 28px;
+  opacity: 1;
+  object-fit: contain;
 `;
