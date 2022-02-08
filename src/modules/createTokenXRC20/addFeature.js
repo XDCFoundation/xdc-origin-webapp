@@ -427,11 +427,12 @@ function AddFeatures(props) {
     ) {
       props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res });
-    } else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
-      notifyNameErrorMessage();
-    } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
-      notifySymbolErrorMessage();
     }
+    // else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
+    //   notifyNameErrorMessage();
+    // } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
+    //   notifySymbolErrorMessage();
+    // }
   };
 
   const saveAsDraftbyEdit = async (e) => {

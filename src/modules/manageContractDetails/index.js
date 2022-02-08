@@ -19,13 +19,26 @@ class ManageContracts extends BaseComponent {
     
   }
 
+  downloadSolFile = () => {
+    let tokenCode = this.props?.location?.state?.deolyedTokenDetails?.tokenContractCode;
+
+    const element = document.createElement("a");
+    const file = new Blob([tokenCode], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = this.props?.location?.state?.deolyedTokenDetails?.tokenName;
+    document.body.appendChild(element); 
+    element.click();
+  }
+
   render() {
     return (
       <div>
         <Header />
         <Row>
           {window.innerWidth >= 1024 ? <Sidebar /> : ""}
-          <ManageContractDetails deolyedTokenDetails={this.props?.location?.state?.deolyedTokenDetails}/>
+          <ManageContractDetails
+          downloadSolFile={this.downloadSolFile}
+          deolyedTokenDetails={this.props?.location?.state?.deolyedTokenDetails} />
         </Row>
         {window.innerWidth <= 768 ? <Footer /> : ""}
       </div>
