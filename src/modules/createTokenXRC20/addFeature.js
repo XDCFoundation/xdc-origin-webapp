@@ -373,6 +373,16 @@ function AddFeatures(props) {
       item.id !== id ? item : { ...item, checked: !item.checked }
     );
     setArr(newData);
+
+    let checked = arr.map((item) =>
+    item.id === id ? { checked: !item.checked } : { checked: item.checked }
+    );
+    props.handleChange({
+      target: {
+        value: "fromFeature"
+      },
+      checked
+    })
   };
 
   const notifyNameErrorMessage = () =>
