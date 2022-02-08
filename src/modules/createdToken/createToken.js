@@ -503,7 +503,7 @@ const CreateToken = (props) => {
                 Gas Fee:
               </SuccessTokenKey>
               <ValueDiv>
-                {isNaN(gasFee) ? "N/A" : (gasFee?.toFixed(8)  + " " + "XDC" + " " + "(" + '$' + " " + usdPriceValue?.toFixed(8) + ")")}
+                {isNaN(gasFee) ? "N/A" : (gasFee?.toFixed(8)  + " " + "XDC" + " " + "(" + '$' + usdPriceValue?.toFixed(8) + ")")}
               </ValueDiv>
             </SuccessRows>
           </SuccessTokenDetails>

@@ -286,7 +286,7 @@ function CommonTab(props) {
     : "18";
 
   const handleChange = (e) => {
-    if (e.target.name === "tokenInitialSupply" && e.target.value.length >= 16) {
+    if (e.target.value !== "fromFeature" && e.target.name === "tokenInitialSupply" && e.target.value.length >= 16) {
       toast.error(validationsMessages.INITIAL_SUPPLY_LIMIT_ERROR, {
         duration: 2000,
         position: validationsMessages.TOASTS_POSITION,
@@ -296,17 +296,16 @@ function CommonTab(props) {
     setTokenData({
       ...tokenData,
       network: networkVersion,
-      pausable: true,
+      pausable: e.target.value === "fromFeature" ? e.checked[0].checked : true,
       tokenOwner: userAddress,
       tokenImage: newImage,
       tokenDecimals: initialDecimalValue,
-      burnable: true,
-      mintable: true,
+      burnable: e.target.value === "fromFeature" ? e.checked[1].checked : true,
+      mintable: e.target.value === "fromFeature" ? e.checked[2].checked : true,
       [e.target.name]: e.target.value,
     }); //destructuring
   };
 
-  console.log('to---', tokenData)
 
   // Steps navigation functions :
 
