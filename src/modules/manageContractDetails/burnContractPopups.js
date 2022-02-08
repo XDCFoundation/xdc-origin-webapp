@@ -1,3 +1,4 @@
+/* global BigInt */
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Dialog } from "@material-ui/core";
@@ -216,6 +217,10 @@ function BurnContract(props) {
     let jsonAbi = JSON.parse(newAbi);
 
     let contractInstance = new window.web3.eth.Contract(jsonAbi, contractAddress);
+    let finalToken = Number(inputToken) * Math.pow(10, props?.deployedContract?.tokenDecimals);
+
+    // console.log('j--',finalToken, typeof finalToken)
+    // console.log('t---',BigInt(finalToken))
 
     const gasPrice = await window.web3.eth.getGasPrice();
 
@@ -224,7 +229,7 @@ function BurnContract(props) {
       to: contractAddress, //contractAddress of the concerned token (same in data below)
       gas: 7920000,
       gasPrice: gasPrice,
-      data: contractInstance.methods.burn(Number(inputToken) * 1000).encodeABI()  
+      data: contractInstance.methods.burn(BigInt(finalToken)).encodeABI()  
       //value given by user should be multiplied by 1000
     };
 

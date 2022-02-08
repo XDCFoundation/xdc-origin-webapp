@@ -96,7 +96,7 @@ async function getCoinMarketCap(requestData) {
 
   return httpService(
     httpConstants.METHOD_TYPE.GET,
-    { "Content-Type": httpConstants.CONTENT_TYPE.APPLICATION_JSON },
+    { "Content-Type": httpConstants.CONTENT_TYPE.APPLICATION_JSON, 'X-API-KEY': 'UYIQSLAYpd1i6aOAXL1okajcWJhoDQJr5KX82Zlu'},
     {},
     url
   )

@@ -246,17 +246,21 @@ function TransferOwnershipContract(props) {
 
   const handleSteps = () => {
     setSteps(2);
-    sendTransaction();
+    sendTransaction(inputAddress);
   };
 
-  const sendTransaction = async () => {
+  const sendTransaction = async (givenContractAddress) => {
     window.web3 = new Web3(window.ethereum);
 
     let newAbi = props?.deployedContract?.contractAbiString;
     let jsonAbi = JSON.parse(newAbi);
 
     let contractInstance = new window.web3.eth.Contract(jsonAbi, contractAddress);
-
+    let givenAddress = givenContractAddress?.replace(
+      /xdc/,
+      "0x"
+    );
+    // console.log("inside", givenAddress);
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
@@ -264,7 +268,7 @@ function TransferOwnershipContract(props) {
       to: contractAddress, //contractAddress of the concerned token (same in data below)
       gas: 7920000,
       gasPrice: gasPrice,
-      data: contractInstance.methods.transferOwnership(inputAddress).encodeABI()
+      data: contractInstance.methods.transferOwnership(givenAddress).encodeABI()
     };
 
     if (networkVersion === "XDC Mainnet") {
@@ -308,7 +312,7 @@ function TransferOwnershipContract(props) {
     let reqObj = {
       tokenOwner: props?.deployedContract?.tokenOwner,
       tokenId: props?.deployedContract?.id,
-      newTokenOwner: inputAddress, //address of the new token owner
+      newTokenOwner: inputAddress?.replace(/xdc/,"0x"), //address of the new token owner
       network: networkVersion,
       smartContractAddress: props?.deployedContract?.smartContractAddress,
     };
