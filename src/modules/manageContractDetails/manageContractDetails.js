@@ -572,7 +572,7 @@ function manageContractDetails(props) {
                     paper: classes.menu,
                   }}
                 >
-                  <MenuItem className={classes.item}>View on XDCScan</MenuItem>
+                  <MenuItem className={classes.item}>View on XDC Observer</MenuItem>
                   <MenuItem className={classes.item}>Add to XDCPay</MenuItem>
                   <MenuItem
                     className={classes.item}
