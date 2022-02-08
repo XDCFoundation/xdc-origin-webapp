@@ -1,3 +1,4 @@
+/* global BigInt */
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Dialog } from "@material-ui/core";
@@ -13,6 +14,7 @@ import {
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
+import { BigNumber } from "ethers";
 
 const DialogContainer = styled.div`
   width: 466px;
@@ -197,30 +199,44 @@ function MintContract(props) {
   const [steps, setSteps] = useState(1);
   const classes = useStyles();
   const [inputToken, setInputToken] = useState();
-  const [inputAddress, setInputAddress] = useState();
-
-  let networkVersion = props.userDetails?.accountDetails?.network || "";
-  let userAddress = props.userDetails?.accountDetails?.address || "";
 
   let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
     /xdc/,
     "0x"
-  )
-console.log('x---',contractAddress)
+  );
+  const [inputAddress, setInputAddress] = useState();
+
+  // let givenContractAddress;
+
+  let networkVersion = props.userDetails?.accountDetails?.network || "";
+  let userAddress = props.userDetails?.accountDetails?.address || "";
+
   const handleSteps = () => {
     setSteps(2);
-    sendTransaction();
+    sendTransaction(inputAddress);
   };
 
   // function to open xdc pay extension:
 
-  const sendTransaction = async () => {
+  const sendTransaction = async (givenContractAddress) => {
     window.web3 = new Web3(window.ethereum);
 
     let newAbi = props?.deployedContract?.contractAbiString;
     let jsonAbi = JSON.parse(newAbi);
-  
-    let contractInstance = new window.web3.eth.Contract(jsonAbi, contractAddress);
+
+    let contractInstance = new window.web3.eth.Contract(
+      jsonAbi,
+      contractAddress
+    );
+    let givenAddress = givenContractAddress?.replace(
+      /xdc/,
+      "0x"
+    );
+    let finalToken = Number(inputToken) * Math.pow(10, props?.deployedContract?.tokenDecimals);
+
+    console.log('j--',finalToken, typeof finalToken)
+    console.log('t---',BigInt(finalToken))
+    // console.log("inside", givenAddress);
 
     const gasPrice = await window.web3.eth.getGasPrice();
 
@@ -229,7 +245,9 @@ console.log('x---',contractAddress)
       to: contractAddress, //contractAddress of the concerned token (same in data below)
       gas: 7920000,
       gasPrice: gasPrice,
-      data: contractInstance.methods.mint(contractAddress, Number(inputToken) * Math.pow(10, props?.deployedContract?.tokenDecimals)).encodeABI()
+      data: contractInstance.methods
+        .mint(givenAddress, BigInt(finalToken))
+        .encodeABI(),
     };
 
     if (networkVersion === "XDC Mainnet") {
@@ -239,28 +257,25 @@ console.log('x---',contractAddress)
           // console.log("transactionHash ====", hash);
         })
         .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt); 
+          // console.log("receipt ====", receipt);
         })
-        .on("confirmation", function (confirmationNumber, receipt) {
-        })
+        .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
           // console.log("error error error error ====", error);
         });
     } else {
       await window.web3.eth
         .sendTransaction(transaction)
-        .on("transactionHash", function (hash) {
-        })
+        .on("transactionHash", function (hash) {})
         .on("receipt", function (receipt) {
           //receive the contract address from this object
           console.log("receipt ====", receipt);
           if (receipt !== 0) {
-            mintXRC20Token()
+            mintXRC20Token();
             setSteps(3);
           }
         })
-        .on("confirmation", function (confirmationNumber, receipt) {
-        })
+        .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
           if (error) {
             setSteps(1);
@@ -269,7 +284,7 @@ console.log('x---',contractAddress)
     }
   };
 
-  let mintTokens = Number(inputToken)
+  let mintTokens = Number(inputToken);
 
   const mintXRC20Token = async () => {
     let reqObj = {
@@ -285,17 +300,18 @@ console.log('x---',contractAddress)
       SaveDraftService.mintBurnXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      console.log('res--', res)
+      console.log("res--", res);
     }
-  }
+  };
 
   // contract to display in field:
 
   let updatedContractAddress =
     props?.deployedContract?.smartContractAddress?.slice(0, 26) +
     "..." +
-    props?.deployedContract?.smartContractAddress?.substr(props?.deployedContract?.smartContractAddress?.length - 4);
-
+    props?.deployedContract?.smartContractAddress?.substr(
+      props?.deployedContract?.smartContractAddress?.length - 4
+    );
   return (
     <>
       <Dialog
@@ -332,18 +348,17 @@ console.log('x---',contractAddress)
                       />
                       <InputDiv
                         // readOnly
-                        value={updatedContractAddress}
+                        value={inputAddress}
                         type="text"
                         placeholder="Address to be added"
+                        onChange={(e) => setInputAddress(e.target.value)}
                       />
                     </MidSection>
                     <ButtonContainer>
                       <CancelButton onClick={props.handleClose}>
                         Cancel
                       </CancelButton>
-                      <DeleteButton onClick={handleSteps}>
-                        Mint
-                      </DeleteButton>
+                      <DeleteButton onClick={handleSteps}>Mint</DeleteButton>
                     </ButtonContainer>
                   </DialogContainer>
                 </>

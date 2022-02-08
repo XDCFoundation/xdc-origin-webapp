@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { Row, Column } from "simple-flexbox";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -213,6 +214,8 @@ const ButtonManageToken = styled.button`
   border-width: 0px;
   color: #ffffff;
   opacity: 1;
+  width: 211px;
+  height: 50px;
   @media (max-width: 768px) {
     order: 1;
     width: 100%;
@@ -294,6 +297,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateToken = (props) => {
+  const history = useHistory()
   const classes = useStyles();
 
   let coinMarketPrice = props?.priceValue || ""
@@ -511,12 +515,12 @@ const CreateToken = (props) => {
               </ButtonContent>
             </ButtonAddToXDCPay>
             {isPopUpOpen && <AddToXDCPayPopup isOpen={isPopUpOpen} handleClose={togglePopup}/>}
-            {/* <ButtonManageToken>
+            <ButtonManageToken onClick={() => history.push('/manage-contracts')}>
               <ButtonContent>
                 Manage Token
                 <ButtonIcon src="images/Button_Next_Arrow.svg"></ButtonIcon>
               </ButtonContent>
-            </ButtonManageToken> */}
+            </ButtonManageToken>
           </Buttons>
         </ParentContainer>
       </BgContainer>

@@ -13,7 +13,7 @@ import BurnContractPopup from "./burnContractPopups";
 import ResumeContractPopup from "./resumeContractPopup";
 import MintContractPopup from "./mintContractPopup";
 import TransferOwnershipPopup from "./transferOwnershipPopup";
-import Web3 from "web3";
+import AddToXDCPayPopup from "../createdToken/addToXDCPayPopup";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -349,6 +349,11 @@ function manageContractDetails(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const classes = useStyles();
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+ 
+  const addToXDCPayPopup = () => {
+    setIsAddPopupOpen(!isAddPopupOpen);
+  }
 
   //pause-popups-flow-states :
   const [isPauseOpen, setIsPauseOpen] = useState(false);
@@ -573,7 +578,7 @@ function manageContractDetails(props) {
                   }}
                 >
                   <MenuItem className={classes.item}>View on XDCScan</MenuItem>
-                  <MenuItem className={classes.item}>Add to XDCPay</MenuItem>
+                  <MenuItem className={classes.item} onClick={addToXDCPayPopup}>Add to XDCPay</MenuItem>
                   <MenuItem
                     className={classes.item}
                     onClick={() => handleOptionClick()}
@@ -721,6 +726,12 @@ function manageContractDetails(props) {
           </ColumnContainer>
         </CommonContainer>
       </Container>
+      {isAddPopupOpen && (
+        <AddToXDCPayPopup
+          isOpen={isAddPopupOpen}
+          handleClose={addToXDCPayPopup}
+        />
+      )}
       {isPauseOpen && (
         <PauseContractPopup
           isOpen={isPauseOpen}
