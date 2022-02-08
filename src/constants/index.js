@@ -28,10 +28,15 @@ export const httpConstants = {
         GET_COIN_MARKET_CAP: "/getCoinMarketCap/USD",
         GET_DEPLOYED_XRC20TOKEN: "/get-deployed-xrc20Token",
         UPDATE_CONTRACTS: "/update-contracts",
+        MINT_BURN_XRC20_TOKEN: "mint-burn-xrc20Token",
+        TRANSFER_OWNERSHIP: "transfer-ownership-xrc20-token",
+        PAUSE_RESUME_XRC20_TOKEN:"pause-resume-xrc20-token",
     },
 };
 export const apiBodyMessages = {
     STATUS_DEPLOYED: "DEPLOYED",
+    STATUS_MINT: "mint",
+    STATUS_BURN: "burn"
 };
 export const apiSuccessConstants = {
     DRAFTED_DATA_SUCCESS: "Saved Data as Draft",

@@ -263,7 +263,7 @@ function CommonTab(props) {
     tokenDecimals: "18",
     tokenDescription: "",
     tokenInitialSupply: undefined,
-    pausable: false,
+    pausable: true,
     mintable: true,
     burnable: true,
     website: "",
@@ -296,7 +296,7 @@ function CommonTab(props) {
     setTokenData({
       ...tokenData,
       network: networkVersion,
-      pausable: false,
+      pausable: true,
       tokenOwner: userAddress,
       tokenImage: newImage,
       tokenDecimals: initialDecimalValue,
@@ -306,7 +306,7 @@ function CommonTab(props) {
     }); //destructuring
   };
 
-  // console.log('to---', tokenData)
+  console.log('to---', tokenData)
 
   // Steps navigation functions :
 
