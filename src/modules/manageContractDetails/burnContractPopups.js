@@ -237,7 +237,11 @@ function BurnContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
+          console.log("transactionHash ====", hash);
+          setTimeout(() => {
+            burnXRC20Token();
+            setSteps(3);  
+          }, 15000);
         })
         .on("receipt", function (receipt) {
           // console.log("receipt ====", receipt); 
@@ -245,7 +249,7 @@ function BurnContract(props) {
         .on("confirmation", function (confirmationNumber, receipt) {
         })
         .on("error", function (error) {
-          // console.log("error error error error ====", error);
+          console.error("error error error error ====", error);
         });
     } else {
       await window.web3.eth
