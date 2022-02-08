@@ -197,6 +197,7 @@ function MintContract(props) {
   const [steps, setSteps] = useState(1);
   const classes = useStyles();
   const [inputToken, setInputToken] = useState();
+  const [inputAddress, setInputAddress] = useState();
 
   let networkVersion = props.userDetails?.accountDetails?.network || "";
   let userAddress = props.userDetails?.accountDetails?.address || "";
@@ -228,8 +229,7 @@ console.log('x---',contractAddress)
       to: contractAddress, //contractAddress of the concerned token (same in data below)
       gas: 7920000,
       gasPrice: gasPrice,
-      data: contractInstance.methods.mint(contractAddress, Number(inputToken)*1000).encodeABI()
-      //value given by user should be multiplied by 1000
+      data: contractInstance.methods.mint(contractAddress, Number(inputToken) * Math.pow(10, props?.deployedContract?.tokenDecimals)).encodeABI()
     };
 
     if (networkVersion === "XDC Mainnet") {
@@ -331,7 +331,7 @@ console.log('x---',contractAddress)
                         onChange={(e) => setInputToken(e.target.value)}
                       />
                       <InputDiv
-                        readOnly
+                        // readOnly
                         value={updatedContractAddress}
                         type="text"
                         placeholder="Address to be added"
