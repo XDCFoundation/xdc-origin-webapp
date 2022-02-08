@@ -135,9 +135,9 @@ async function getDeployedXrc20Token(requestData) {
 async function updateDeployedXrc20Token(requestData) {
     // let url =
     //   process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
-    //     httpConstants.API_END_POINT.UPDATE_CONTRACTS + "/" + requestData.contractAddress;
+    //     httpConstants.API_END_POINT.UPDATE_CONTRACTS;
     
-  let url = "https://1lzur2qul1.execute-api.us-east-2.amazonaws.com/prod/update-contracts/" + requestData.contractAddress;
+    let url = "http://xdc-mycontract-dev-2107657444.us-east-1.elb.amazonaws.com:3001/update-social-media-urls";
 
     return httpService(
       httpConstants.METHOD_TYPE.POST,
