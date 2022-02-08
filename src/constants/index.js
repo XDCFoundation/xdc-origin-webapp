@@ -27,7 +27,7 @@ export const httpConstants = {
         DELETE_XRC20_TOKEN: "/delete-xrc20token",
         GET_COIN_MARKET_CAP: "/getCoinMarketCap/USD",
         GET_DEPLOYED_XRC20TOKEN: "/get-deployed-xrc20Token",
-        UPDATE_CONTRACTS: "/update-contracts",
+        UPDATE_CONTRACTS: "/update-social-media-urls",
         MINT_BURN_XRC20_TOKEN: "mint-burn-xrc20Token",
         TRANSFER_OWNERSHIP: "transfer-ownership-xrc20-token",
         PAUSE_RESUME_XRC20_TOKEN:"pause-resume-xrc20-token",

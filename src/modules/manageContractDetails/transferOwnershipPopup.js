@@ -312,7 +312,7 @@ function TransferOwnershipContract(props) {
     let reqObj = {
       tokenOwner: props?.deployedContract?.tokenOwner,
       tokenId: props?.deployedContract?.id,
-      newTokenOwner: inputAddress, //address of the new token owner
+      newTokenOwner: inputAddress?.replace(/xdc/,"0x"), //address of the new token owner
       network: networkVersion,
       smartContractAddress: props?.deployedContract?.smartContractAddress,
     };

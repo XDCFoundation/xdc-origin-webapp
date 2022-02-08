@@ -38,11 +38,14 @@ class UpdateProfile extends BaseComponent {
         this.props?.location?.state?.deolyedTokenDetails?.smartContractAddress;
     }
     let requestData = {
-      contractAddress: contractAddress,
-      website: updatedData.website,
-      twitter: updatedData.twitter,
-      telegram: updatedData.telegram,
-      symbolUrl: updatedData.image
+      tokenId: this.props?.location?.state?.deolyedTokenDetails?.id,
+      tokenOwner: this.props?.location?.state?.deolyedTokenDetails?.tokenOwner,
+      smartContractAddress: contractAddress,
+      network: this.props?.user?.accountDetails?.network,
+      website: updatedData.website ? updatedData.website : this.props?.location?.state?.deolyedTokenDetails.website,
+      twitter: updatedData.twitter ? updatedData.twitter : this.props?.location?.state?.deolyedTokenDetails.twitter,
+      telegram: updatedData.telegram ? updatedData.telegram : this.props?.location?.state?.deolyedTokenDetails.telegram,
+      symbolUrl: updatedData.image ? updatedData.image : this.props?.location?.state?.deolyedTokenDetails.tokenImage
     };
 
     let [error, contractServiceResponse] = await Utility.parseResponse(
