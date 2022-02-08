@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
-  <g id="LinkedIn_Active" transform="translate(-951 -131)">
-    <g id="Rectangle_597" data-name="Rectangle 597" transform="translate(951 131)" fill="#fff" stroke="#1f1f1f" stroke-width="1">
-      <rect width="26" height="26" rx="2" stroke="none"/>
-      <rect x="0.5" y="0.5" width="25" height="25" rx="1.5" fill="none"/>
-    </g>
-    <path id="linkedin" d="M46.159,59.181H48.85v8.1H46.159Zm1.363-3.9a1.4,1.4,0,1,0-.035,2.8H47.5a1.4,1.4,0,1,0,.018-2.8Zm7.934,3.713a2.671,2.671,0,0,0-2.425,1.336V59.181H50.34c.036.76,0,8.1,0,8.1h2.691V62.756a1.853,1.853,0,0,1,.088-.657,1.474,1.474,0,0,1,1.38-.984c.975,0,1.364.743,1.364,1.831v4.332h2.691V62.635C58.555,60.148,57.227,58.991,55.456,58.991Z" transform="translate(912 82.722)" fill="#1f1f1f" opacity="0.996"/>
-  </g>
-</svg>
