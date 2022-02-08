@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
   <g id="Telegram_Active" transform="translate(-920 -131)">
-    <g id="Rectangle_596" data-name="Rectangle 596" transform="translate(920 131)" fill="#fff" stroke="#1f1f1f" stroke-width="1">
+    <g id="Rectangle_596" data-name="Rectangle 596" transform="translate(920 131)" fill="#fff" stroke="#f0f0f0" stroke-width="1">
       <rect width="26" height="26" rx="2" stroke="none"/>
       <rect x="0.5" y="0.5" width="25" height="25" rx="1.5" fill="none"/>
     </g>

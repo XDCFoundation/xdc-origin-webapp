@@ -538,10 +538,17 @@ function manageContractDetails(props) {
                 </InfoContainer>
               </LeftDiv>
               <RightDiv>
-                <OptionImg
+                {isActive ? (
+                  <OptionImg
+                  src="/images/Options_Active.svg"
+                  onClick={handleMenuOpen}
+                />
+                ) : (
+                  <OptionImg
                   src="/images/Options_Inactive.svg"
                   onClick={handleMenuOpen}
                 />
+                )}
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
@@ -563,7 +570,7 @@ function manageContractDetails(props) {
                   >
                     Edit Contract Profile
                   </MenuItem>
-                  <MenuItem className={classes.item}>
+                  <MenuItem className={classes.item} onClick={() => props.downloadSolFile()}>
                     Download .Sol File
                   </MenuItem>
                 </Menu>
