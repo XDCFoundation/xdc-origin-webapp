@@ -404,7 +404,6 @@ const CreateToken = (props) => {
   return (
     <MuiThemeProvider theme={defaultTheme}>
       <>
-        {console.log("props",props)}
       <BgContainer>
         <ParentContainer>
           <SuccessTokenIcon>
