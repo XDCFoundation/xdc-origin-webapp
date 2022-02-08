@@ -84,6 +84,7 @@ class ManageContracts extends BaseComponent {
   }
 
   getDeployedXrc20Token = async () => {
+    
     let requestData = {
       tokenOwner: this.props?.user?.accountDetails?.address,
       network: this.props?.user?.accountDetails?.network

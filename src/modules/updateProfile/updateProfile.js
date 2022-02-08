@@ -221,6 +221,10 @@ function updateProfile(props) {
   const [website, setWebsite] = useState(null);
   const [twitter, setTwitter] = useState(null);
   const [telegram, setTelegram] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [linkedIn, setLinkedIn] = useState(null);
+  const [reddit, setReddit] = useState(null);
+  const [coinGecko, setCoinGecko] = useState(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [image, setImage] = useState("");
 
@@ -229,7 +233,11 @@ function updateProfile(props) {
       website,
       twitter,
       telegram,
-      image
+      image,
+      email,
+      linkedIn,
+      reddit,
+      coinGecko,
     }
 
     props.updateDeployedXrc20Token(updatedData);
@@ -291,7 +299,7 @@ function updateProfile(props) {
 
           <InputElementContainer>
             <InputText>Email</InputText>
-            <Input type="email" placeholder="support@www.metaversespace.com" />
+            <Input type="email" placeholder="support@www.metaversespace.com" onChange={(e) => setEmail(e.target.value)} defaultValue={props.deolyedTokenDetails.email}/>
           </InputElementContainer>
 
           <InputElementContainer>
@@ -326,17 +334,17 @@ function updateProfile(props) {
 
           <InputElementContainer>
             <InputText>LinkedIn</InputText>
-            <Input type="text" placeholder="Add LinkedIn page url" />
+            <Input type="text" placeholder="Add LinkedIn page url" onChange={(e) => setLinkedIn(e.target.value)} defaultValue={props.deolyedTokenDetails.linkedIn}/>
           </InputElementContainer>
 
           <InputElementContainer>
             <InputText>Reddit</InputText>
-            <Input type="text" placeholder="Add Reditt page url" />
+            <Input type="text" placeholder="Add Reditt page url" onChange={(e) => setReddit(e.target.value)} defaultValue={props.deolyedTokenDetails.reddit}/>
           </InputElementContainer>
 
           <InputElementContainer>
             <InputText>CoinGecko</InputText>
-            <Input type="text" placeholder="Add CoinGecko page url" />
+            <Input type="text" placeholder="Add CoinGecko page url" onChange={(e) => setCoinGecko(e.target.value)} defaultValue={props.deolyedTokenDetails.coinGecko}/>
           </InputElementContainer>
 
           <ButtonContainer>

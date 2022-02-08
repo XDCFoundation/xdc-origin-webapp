@@ -8,6 +8,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import AddToXDCPayPopup from "./addToXDCPayPopup";
+import { handleNavItem } from "../../action";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -383,7 +384,7 @@ const CreateToken = (props) => {
 
   const handleContractAddress = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://observer.xdc.org/address-details/${contractAddress}`, '_blank');
+      window.open(`https://observer.xdc.org/token-data/${contractAddress}/${props.location?.tokenSymbol}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
       window.open(`https://explorer.apothem.network/address/${contractAddress}`, '_blank');
     }
@@ -395,9 +396,15 @@ const CreateToken = (props) => {
     setIsPopUPOpen(!isPopUpOpen);
   }
 
+  const handleManageRedirect = () => {
+    props.setActiveNavItem("manage");
+    history.push('/manage-contracts')
+  }
+
   return (
     <MuiThemeProvider theme={defaultTheme}>
-    <>
+      <>
+        {console.log("props",props)}
       <BgContainer>
         <ParentContainer>
           <SuccessTokenIcon>
@@ -515,7 +522,7 @@ const CreateToken = (props) => {
               </ButtonContent>
             </ButtonAddToXDCPay>
             {isPopUpOpen && <AddToXDCPayPopup isOpen={isPopUpOpen} handleClose={togglePopup}/>}
-            <ButtonManageToken onClick={() => history.push('/manage-contracts')}>
+            <ButtonManageToken onClick={() => handleManageRedirect()}>
               <ButtonContent>
                 Manage Token
                 <ButtonIcon src="images/Button_Next_Arrow.svg"></ButtonIcon>
@@ -533,4 +540,10 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps)(CreateToken);
+const mapDispatchToProps = (dispatch) => ({
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive))
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateToken);

@@ -69,6 +69,7 @@ function DeployContract(props) {
     let createdToken = tokenDetails?.tokenName;
     let parsingDecimal = tokenDetails?.tokenDecimals;
     let parsingSupply = tokenDetails?.tokenInitialSupply;
+    let tokenSymbol = tokenDetails?.tokenSymbol;
 
     // let xdce_address = tokenDetails.tokenOwner;
     // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
@@ -99,7 +100,8 @@ function DeployContract(props) {
                 gasPrice,
                 createdToken,
                 draftedTokenId,
-                draftedTokenOwner
+                draftedTokenOwner,
+                tokenSymbol
               );
             }, 10000);
           }
@@ -122,6 +124,7 @@ function DeployContract(props) {
               parsingSupply,
               gasPrice,
               createdToken,
+              tokenSymbol
             });
           } else if (
             error.message ===
@@ -192,7 +195,8 @@ function DeployContract(props) {
     gasPrice,
     createdToken,
     tokenId,
-    tokenOwner
+    tokenOwner,
+    tokenSymbol
   ) => {
     let reqObj = {
       hash: txnHash,
@@ -217,6 +221,7 @@ function DeployContract(props) {
         obtainGasUsed,
         createdToken,
         obtainContractAddress,
+        tokenSymbol
       });
       updateTokenDetails(tokenId, tokenOwner, obtainContractAddress);
     }
