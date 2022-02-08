@@ -20,7 +20,7 @@ class UpdateProfile extends BaseComponent {
   }
 
   componentDidMount() {
-    console.log("details", this.props?.location?.state?.deolyedTokenDetails)
+    
   }
 
   updateDeployedXrc20Token = async (updatedData) => {

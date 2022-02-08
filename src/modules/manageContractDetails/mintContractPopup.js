@@ -234,8 +234,8 @@ function MintContract(props) {
     );
     let finalToken = Number(inputToken) * Math.pow(10, props?.deployedContract?.tokenDecimals);
 
-    console.log('j--',finalToken, typeof finalToken)
-    console.log('t---',BigInt(finalToken))
+    // console.log('j--',finalToken, typeof finalToken)
+    // console.log('t---',BigInt(finalToken))
     // console.log("inside", givenAddress);
 
     const gasPrice = await window.web3.eth.getGasPrice();
@@ -254,7 +254,7 @@ function MintContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          console.log("transactionHash ====", hash);
+          // console.log("transactionHash ====", hash);
           setTimeout(() => {
             mintXRC20Token();
             setSteps(3);  
@@ -278,7 +278,7 @@ function MintContract(props) {
         .on("transactionHash", function (hash) {})
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          console.log("receipt ====", receipt);
+          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             mintXRC20Token();
             setSteps(3);
@@ -309,7 +309,7 @@ function MintContract(props) {
       SaveDraftService.mintBurnXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      console.log("res--", res);
+      // console.log("res--", res);
     }
   };
 

@@ -204,7 +204,7 @@ function PauseContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          console.log("transactionHash ====", hash);
+          // console.log("transactionHash ====", hash);
           setTimeout(() => {
             pauseXRC20Token();
             setSteps(3);  
@@ -223,7 +223,7 @@ function PauseContract(props) {
         .on("transactionHash", function (hash) {})
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          console.log("receipt ====", receipt);
+          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             pauseXRC20Token()
             setSteps(3);
@@ -250,7 +250,7 @@ function PauseContract(props) {
       SaveDraftService.pauseResumeXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      console.log('res--', res)
+      // console.log('res--', res)
     }
   }
 
