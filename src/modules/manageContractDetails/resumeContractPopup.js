@@ -3,6 +3,15 @@ import styled from "styled-components";
 import { Dialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
+import Web3 from "web3";
+import { connect } from "react-redux";
+import {
+  apiBodyMessages,
+  apiSuccessConstants,
+  validationsMessages,
+} from "../../constants";
+import Utils from "../../utility";
+import { SaveDraftService } from "../../services/index";
 
 const DialogContainer = styled.div`
   width: 466px;
@@ -91,8 +100,94 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ResumeContract(props) {
+function ResumeContract(props) {
   const classes = useStyles();
+
+  let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
+    /xdc/,
+    "0x"
+  );
+
+  let networkVersion = props.userDetails?.accountDetails?.network || "";
+  let userAddress = props.userDetails?.accountDetails?.address || "";
+
+  const handleSteps = () => {
+    sendTransaction();
+  };
+
+  // function to open xdc pay extension:
+
+  const sendTransaction = async () => {
+    window.web3 = new Web3(window.ethereum);
+
+    let newAbi = props?.deployedContract?.contractAbiString;
+    let jsonAbi = JSON.parse(newAbi);
+
+    let contractInstance = new window.web3.eth.Contract(
+      jsonAbi,
+      contractAddress
+    );
+
+    const gasPrice = await window.web3.eth.getGasPrice();
+
+    let transaction = {
+      from: userAddress,
+      to: contractAddress, //contractAddress of the concerned token (same in data below)
+      gas: 7920000,
+      gasPrice: gasPrice,
+      data: contractInstance.methods.unpause().encodeABI(),
+      //value given by user should be multiplied by 1000
+    };
+
+    if (networkVersion === "XDC Mainnet") {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {
+          // console.log("transactionHash ====", hash);
+        })
+        .on("receipt", function (receipt) {
+          // console.log("receipt ====", receipt);
+        })
+        .on("confirmation", function (confirmationNumber, receipt) {})
+        .on("error", function (error) {
+          // console.log("error error error error ====", error);
+        });
+    } else {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {})
+        .on("receipt", function (receipt) {
+          //receive the contract address from this object
+          console.log("receipt ====", receipt);
+          if (receipt !== 0) {
+            pauseXRC20Token()
+          }
+        })
+        .on("confirmation", function (confirmationNumber, receipt) {})
+        .on("error", function (error) {
+          if (error) {
+            props.handleClose("resume")
+          }
+        });
+    }
+  };
+
+  const pauseXRC20Token = async () => {
+    let reqObj = {
+      tokenOwner: props?.deployedContract?.tokenOwner,
+      tokenId: props?.deployedContract?.id,
+      pause: false,
+      network: networkVersion,
+      smartContractAddress: props?.deployedContract?.smartContractAddress,
+    };
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.pauseResumeXRC20Token(reqObj)
+    );
+    if (res !== 0 && res !== undefined) {
+      console.log('res--', res)
+      props.handleClose("pause")
+    }
+  }
 
   return (
     <>
@@ -115,14 +210,14 @@ export default function ResumeContract(props) {
           </DialogHeader>
           <Line />
           <Header>
-            Do you want to unpause the MetaVerse
+            Do you want to resume the MetaVerse
             <br /> Contract? All transactions will be allowed again.
           </Header>
           <ButtonContainer>
             <CancelButton onClick={() => props.handleClose("resume")}>
               Cancel
             </CancelButton>
-            <ResumeButton onClick={() => props.handleClose("pause")}>
+            <ResumeButton onClick={handleSteps}>
               Resume
             </ResumeButton>
           </ButtonContainer>
@@ -131,3 +226,8 @@ export default function ResumeContract(props) {
     </>
   );
 }
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+export default connect(mapStateToProps)(ResumeContract);
