@@ -149,7 +149,7 @@ function manageContracts(props) {
     let address = contractAddress.replace(/0x/, "xdc");
 
     if (props?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/address/${contractAddress}`, '_blank');
+      window.open(`https://observer.xdc.org/address-details/${contractAddress}`, '_blank');
     } else if (props?.network === "XDC Apothem Testnet") {
       window.open(`https://explorer.apothem.network/address/${address}`, '_blank');
     }
