@@ -493,7 +493,7 @@ function manageContractDetails(props) {
 
   const handleRedirect = (contractAddress) => {
      if (props.deolyedTokenDetails?.network === "XDC Mainnet") {
-      window.open(`https://observer.xdc.org/address-details/${contractAddress}`, '_blank');
+      window.open(`https://observer.xdc.org/token-data/${contractAddress}/${props?.deolyedTokenDetails?.tokenSymbol}`, '_blank');
      } else if (props.deolyedTokenDetails?.network === "XDC Apothem Testnet") {
        let newAddress = contractAddress.replace(/0x/, "xdc")
       window.open(`https://explorer.apothem.network/address/${newAddress}`, '_blank');

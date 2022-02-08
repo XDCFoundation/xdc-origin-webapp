@@ -254,14 +254,23 @@ function MintContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
+          console.log("transactionHash ====", hash);
+          setTimeout(() => {
+            mintXRC20Token();
+            setSteps(3);  
+          }, 30000);
         })
         .on("receipt", function (receipt) {
           // console.log("receipt ====", receipt);
+          // console.log("receipt ====", receipt);
+          // if (receipt !== 0) {
+          //   mintXRC20Token();
+          //   setSteps(3);
+          // }
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
-          // console.log("error error error error ====", error);
+          console.error("error  ====", error);
         });
     } else {
       await window.web3.eth

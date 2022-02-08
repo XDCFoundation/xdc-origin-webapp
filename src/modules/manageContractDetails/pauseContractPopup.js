@@ -204,14 +204,18 @@ function PauseContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
+          console.log("transactionHash ====", hash);
+          setTimeout(() => {
+            pauseXRC20Token();
+            setSteps(3);  
+          }, 15000);
         })
         .on("receipt", function (receipt) {
           // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
-          // console.log("error error error error ====", error);
+          console.error("error error error error ====", error);
         });
     } else {
       await window.web3.eth

@@ -145,11 +145,11 @@ function manageContracts(props) {
     setId(id);
   };
 
-  const handleContractAddress = (contractAddress) => {
+  const handleContractAddress = (contractAddress, tokenSymbol) => {
     let address = contractAddress.replace(/0x/, "xdc");
 
     if (props?.network === "XDC Mainnet") {
-      window.open(`https://observer.xdc.org/address-details/${contractAddress}`, '_blank');
+      window.open(`https://observer.xdc.org/token-data/${contractAddress}/${tokenSymbol}`, '_blank');
     } else if (props?.network === "XDC Apothem Testnet") {
       window.open(`https://explorer.apothem.network/address/${address}`, '_blank');
     }
@@ -192,7 +192,7 @@ function manageContracts(props) {
                     <TableCell align="left">{row.tokenName}</TableCell>
                     <TableCell align="left">{row.tokenSymbol}</TableCell>
                     <TableCell align="left">{row.network}</TableCell>
-                    <TableCell className={classes.address} align="left" onClick={() => handleContractAddress(row.smartContractAddress)}>
+                    <TableCell className={classes.address} align="left" onClick={() => handleContractAddress(row.smartContractAddress, row.tokenSymbol)}>
                         {row.smartContractAddress.slice(0, 26) +
                           "..." +
                         row.smartContractAddress.substr(
