@@ -283,6 +283,21 @@ const PauseButton = styled.div`
   align-items: center;
   justify-content: center;
 `;
+const PauseButtonDisable = styled.div`
+  width: 96px;
+  height: 36px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #1f1f1f;
+  border-radius: 4px;
+  opacity: 0.6;
+  cursor: not-allowed;
+  font: normal normal normal 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #1f1f1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const ResumeButton = styled.div`
   width: 96px;
   height: 36px;
@@ -313,6 +328,21 @@ const BurnButton = styled.div`
   align-items: center;
   justify-content: center;
 `;
+const BurnButtonDisable = styled.div`
+  width: 96px;
+  height: 36px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #ff0000;
+  border-radius: 4px;
+  opacity: 0.6;
+  cursor: not-allowed;
+  font: normal normal normal 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #ff0000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const MintButton = styled.div`
   width: 96px;
   height: 36px;
@@ -321,6 +351,21 @@ const MintButton = styled.div`
   border-radius: 4px;
   opacity: 1;
   cursor: pointer;
+  font: normal normal normal 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #30b52b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const MintButtonDisable = styled.div`
+  width: 96px;
+  height: 36px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #30b52b;
+  border-radius: 4px;
+  opacity: 0.6;
+  cursor: not-allowed;
   font: normal normal normal 16px/20px Inter;
   letter-spacing: 0px;
   color: #30b52b;
@@ -361,12 +406,10 @@ function manageContractDetails(props) {
   const [isTransferOpen, setIsTransferOpen] = useState(false);
 
   const togglePausePopup = (closeOpt) => {
-    console.log("h--", closeOpt);
     setIsPauseOpen(!isPauseOpen);
     setChangeToResume(closeOpt);
   };
   const toggleResumePopup = (opt) => {
-    console.log("pa--", opt);
     setIsResumeOpen(!isResumeOpen);
     setUnpause(true);
     switch(opt) {
@@ -445,7 +488,6 @@ function manageContractDetails(props) {
     "DD MMMM YYYY"
   );
 
-  console.log("p---", props?.deolyedTokenDetails);
 
   return (
     <>
@@ -656,7 +698,11 @@ function manageContractDetails(props) {
                   <ActionText>
                     Pause all transactions on this Contract
                   </ActionText>
-                  <PauseButton onClick={togglePausePopup}>Pause</PauseButton>
+                    {props.deolyedTokenDetails?.pausable ? (
+                      <PauseButton onClick={togglePausePopup}>Pause</PauseButton>
+                    ) : (
+                      <PauseButtonDisable disabled>Pause</PauseButtonDisable>
+                    )}
                 </ActionDiv>
               ) : (
                 <ActionDiv>
@@ -681,9 +727,15 @@ function manageContractDetails(props) {
                 <ActionHeading>Mint Tokens</ActionHeading>
                 <ActionText>Add tokens to increase the supply</ActionText>
                 {props.deolyedTokenDetails?.isPaused !== true ? (
+                  props.deolyedTokenDetails?.mintable ? (
                   <MintButton disabled={false} onClick={toggleMintPopup}>
                     Mint
                   </MintButton>
+                  ) : (
+                  <MintButtonDisable disabled>
+                    Mint
+                  </MintButtonDisable>
+                  )
                 ) : (
                   <MintButton disabled={true}>Mint</MintButton>
                 )}
@@ -694,9 +746,15 @@ function manageContractDetails(props) {
                 <ActionHeading>Burn Tokens</ActionHeading>
                 <ActionText>Burn tokens to reduce the supply</ActionText>
                 {props.deolyedTokenDetails?.isPaused !== true ? (
+                  props.deolyedTokenDetails?.burnable ? (
                   <BurnButton disabled={false} onClick={toggleBurnPopup}>
                     Burn
                   </BurnButton>
+                  ) : (
+                  <BurnButtonDisable disabled>
+                    Burn
+                  </BurnButtonDisable>
+                  )
                 ) : (
                   <BurnButton disabled={true}>Burn</BurnButton>
                 )}
