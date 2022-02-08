@@ -434,6 +434,7 @@ function CommonTab(props) {
     let draftedTokenId = tokenDetails?.id;
     let draftedTokenOwner = tokenDetails?.tokenOwner;
     let byteCode = tokenDetails?.byteCode;
+    let tokenSymbol = tokenDetails?.tokenSymbol;
 
     // let xdce_address = tokenData.tokenOwner;
     // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
@@ -464,7 +465,8 @@ function CommonTab(props) {
                 gasPrice,
                 createdToken,
                 draftedTokenId,
-                draftedTokenOwner
+                draftedTokenOwner,
+                tokenSymbol
               );
             }, 10000);
           }
@@ -483,6 +485,7 @@ function CommonTab(props) {
               parsingSupply,
               gasPrice,
               createdToken,
+              tokenSymbol
             });
           } else if(error.message === "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." ) {
             prevStep();
@@ -552,7 +555,8 @@ function CommonTab(props) {
     gasPrice,
     createdToken,
     tokenId,
-    tokenOwner
+    tokenOwner,
+    tokenSymbol,
   ) => {
     let reqObj = {
       hash: txnHash,
@@ -577,6 +581,7 @@ function CommonTab(props) {
         obtainGasUsed,
         createdToken,
         obtainContractAddress,
+        tokenSymbol
       });
       updateTokenDetails(tokenId, tokenOwner, obtainContractAddress);
     }
