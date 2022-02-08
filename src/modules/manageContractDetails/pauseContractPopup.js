@@ -277,7 +277,7 @@ function PauseContract(props) {
                     <Line />
                     <Header>
                       Do you want to Pause the MetaVerse Contract?
-                      <br /> All transactions will be stopped until you unpause
+                      <br /> All transactions will be stopped until you resume
                       <br /> the contract again.
                     </Header>
                     <ButtonContainer>

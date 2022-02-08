@@ -13,7 +13,7 @@ import BurnContractPopup from "./burnContractPopups";
 import ResumeContractPopup from "./resumeContractPopup";
 import MintContractPopup from "./mintContractPopup";
 import TransferOwnershipPopup from "./transferOwnershipPopup";
-import Web3 from "web3";
+import AddToXDCPayPopup from "../createdToken/addToXDCPayPopup";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -388,12 +388,31 @@ const TransferButton = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
+const TransferButtonDisable = styled.div`
+  width: 96px;
+  height: 36px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #0089ff;
+  border-radius: 4px;
+  opacity: 0.6;
+  cursor: not-allowed;
+  font: normal normal normal 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #0089ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 function manageContractDetails(props) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const classes = useStyles();
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+ 
+  const addToXDCPayPopup = () => {
+    setIsAddPopupOpen(!isAddPopupOpen);
+  }
 
   //pause-popups-flow-states :
   const [isPauseOpen, setIsPauseOpen] = useState(false);
@@ -614,8 +633,8 @@ function manageContractDetails(props) {
                     paper: classes.menu,
                   }}
                 >
-                  <MenuItem className={classes.item}>View on XDC Observer</MenuItem>
-                  <MenuItem className={classes.item}>Add to XDCPay</MenuItem>
+                  <MenuItem className={classes.item} onClick={() => handleRedirect(props.deolyedTokenDetails?.smartContractAddress)}>View on Explorer</MenuItem>
+                  <MenuItem className={classes.item} onClick={addToXDCPayPopup}>Add to XDCPay</MenuItem>
                   <MenuItem
                     className={classes.item}
                     onClick={() => handleOptionClick()}
@@ -708,9 +727,9 @@ function manageContractDetails(props) {
                 <ActionDiv>
                   <BottomImg src="/images/Pause_Contract.png" />
 
-                  <ActionHeading>Unpause Contract</ActionHeading>
+                  <ActionHeading>Resume Contract</ActionHeading>
                   <ActionText>
-                    Unpause Contract to allow transactions
+                    Resume Contract to allow transactions
                   </ActionText>
                   {unpause !== true ? (
                     <ResumeButton onClick={toggleResumePopup}>
@@ -737,7 +756,7 @@ function manageContractDetails(props) {
                   </MintButtonDisable>
                   )
                 ) : (
-                  <MintButton disabled={true}>Mint</MintButton>
+                  <MintButtonDisable disabled={true}>Mint</MintButtonDisable>
                 )}
               </ActionDiv>
 
@@ -756,7 +775,7 @@ function manageContractDetails(props) {
                   </BurnButtonDisable>
                   )
                 ) : (
-                  <BurnButton disabled={true}>Burn</BurnButton>
+                  <BurnButtonDisable disabled>Burn</BurnButtonDisable>
                 )}
               </ActionDiv>
 
@@ -772,13 +791,19 @@ function manageContractDetails(props) {
                     Transfer
                   </TransferButton>
                 ) : (
-                  <TransferButton disabled={true}>Transfer</TransferButton>
+                  <TransferButtonDisable disabled>Transfer</TransferButtonDisable>
                 )}
               </ActionDiv>
             </BottomContainer>
           </ColumnContainer>
         </CommonContainer>
       </Container>
+      {isAddPopupOpen && (
+        <AddToXDCPayPopup
+          isOpen={isAddPopupOpen}
+          handleClose={addToXDCPayPopup}
+        />
+      )}
       {isPauseOpen && (
         <PauseContractPopup
           isOpen={isPauseOpen}

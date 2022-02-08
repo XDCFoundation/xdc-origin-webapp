@@ -22,10 +22,12 @@ class CreateTokenComponent extends BaseComponent {
 
   coinMarketUSDPriceDetails = async () => {
     const [err, res] = await Utils.parseResponse(SaveDraftService.getCoinMarketCap());
-    this.setState({priceValue: res[0]?.price})
-    // if (res !== 0) {
-    //   console.log('d--',res[0]?.price)
-    // }
+    if (err) {
+      console.log('er--',err)
+    }
+    else{
+      this.setState({priceValue: res[0]?.price})
+    }
   }
 
   render() {

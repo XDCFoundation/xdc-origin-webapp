@@ -300,8 +300,8 @@ function CommonTab(props) {
       tokenOwner: userAddress,
       tokenImage: newImage,
       tokenDecimals: initialDecimalValue,
-      burnable: e.target.value === "fromFeature" ? e.checked[0].checked : true,
-      mintable: e.target.value === "fromFeature" ? e.checked[0].checked : true,
+      burnable: e.target.value === "fromFeature" ? e.checked[1].checked : true,
+      mintable: e.target.value === "fromFeature" ? e.checked[2].checked : true,
       [e.target.name]: e.target.value,
     }); //destructuring
   };
