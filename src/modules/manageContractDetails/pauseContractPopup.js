@@ -282,7 +282,7 @@ function PauseContract(props) {
                     </DialogHeader>
                     <Line />
                     <Header>
-                      Do you want to Pause the MetaVerse Contract?
+                      Do you want to Pause the {props.tokenName || ""} Contract?
                       <br /> All transactions will be stopped until you resume
                       <br /> the contract again.
                     </Header>

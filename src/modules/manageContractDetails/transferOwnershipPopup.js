@@ -347,7 +347,7 @@ function TransferOwnershipContract(props) {
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -365,7 +365,7 @@ function TransferOwnershipContract(props) {
                       />
                     </MidSection>
                     <ButtonContainer>
-                      <CancelButton onClick={props.handleClose}>
+                      <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
                       <DeleteButton onClick={handleSteps}>
@@ -382,7 +382,7 @@ function TransferOwnershipContract(props) {
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -409,7 +409,7 @@ function TransferOwnershipContract(props) {
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(true)}
                         src="/images/Cross.svg"
                         alt=""
                       />

@@ -20,6 +20,62 @@ const DialogContainer = styled.div`
   border-radius: 6px;
   opacity: 1;
 `;
+const LoaderSection = styled.div`
+  width: 466px;
+  height: 215px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 6px;
+  opacity: 1;
+`;
+const LoaderSectionThird = styled.div`
+  width: 466px;
+  height: 315px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 6px;
+  opacity: 1;
+`;
+const SecondHeader = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 0 0 35px 0;
+`;
+const TextDiv = styled.span`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+`;
+const PauseText = styled.span`
+  font: normal normal normal 20px/24px Inter;
+  letter-spacing: 0px;
+  color: #101010;
+  opacity: 1;
+`;
+const ConfirmDiv = styled.span`
+  width: 374px;
+  height: 17px;
+`;
+const ConfirmText = styled.span`
+  text-align: center;
+  font: normal normal normal 14px/17px Inter;
+  letter-spacing: 0px;
+  color: #4b4b4b;
+  opacity: 1;
+`;
+const ThirdHeader = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 50px 0 46px 0;
+`;
+const Img = styled.img`
+  width: 78px;
+  height: 78px;
+`;
 const DialogHeader = styled.div`
   display: flex;
   align-items: center;
@@ -103,6 +159,7 @@ const useStyles = makeStyles({
 function ResumeContract(props) {
   const classes = useStyles();
   const [confirmResume, setConfirmResume] = useState(false);
+  const [steps, setSteps] = useState(1);
 
   let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
     /xdc/,
@@ -113,6 +170,7 @@ function ResumeContract(props) {
   let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
+    setSteps(2);
     sendTransaction();
   };
 
@@ -147,6 +205,7 @@ function ResumeContract(props) {
           // console.log("transactionHash ====", hash);
           setTimeout(() => {
             pauseXRC20Token();
+            setSteps(3);
           }, 15000);
         })
         .on("receipt", function (receipt) {
@@ -164,7 +223,8 @@ function ResumeContract(props) {
           //receive the contract address from this object
           // console.log("receipt ====", receipt);
           if (receipt !== 0) {
-            pauseXRC20Token()
+            pauseXRC20Token();
+            setSteps(3);
           }
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
@@ -190,7 +250,7 @@ function ResumeContract(props) {
     if (res !== 0 && res !== undefined) {
       // console.log('res--', res)
       setConfirmResume(true);
-      props.handleClose("pause", true)
+      // props.handleClose("pause", true)
     }
   }
 
@@ -204,29 +264,99 @@ function ResumeContract(props) {
           paper: classes.dialog,
         }}
       >
-        <DialogContainer>
-          <DialogHeader>
-            <DeleteText>Resume Contract</DeleteText>
-            <CrossIcon
-              onClick={() => props.handleClose("resume", confirmResume)}
-              src="/images/Cross.svg"
-              alt=""
-            />
-          </DialogHeader>
-          <Line />
-          <Header>
-            Do you want to resume the MetaVerse
-            <br /> Contract? All transactions will be allowed again.
-          </Header>
-          <ButtonContainer>
-            <CancelButton onClick={() => props.handleClose("resume", confirmResume)}>
-              Cancel
-            </CancelButton>
-            <ResumeButton onClick={handleSteps}>
-              Resume
-            </ResumeButton>
-          </ButtonContainer>
-        </DialogContainer>
+
+        {(() => {
+          switch (steps) {
+            case 1:
+              return (
+                <>
+                  <DialogContainer>
+                    <DialogHeader>
+                      <DeleteText>Resume Contract</DeleteText>
+                      <CrossIcon
+                        onClick={() =>
+                          props.handleClose("resume", confirmResume)
+                        }
+                        src="/images/Cross.svg"
+                        alt=""
+                      />
+                    </DialogHeader>
+                    <Line />
+                    <Header>
+                      Do you want to resume the MetaVerse
+                      <br /> Contract? All transactions will be allowed again.
+                    </Header>
+                    <ButtonContainer>
+                      <CancelButton
+                        onClick={() =>
+                          props.handleClose("resume", confirmResume)
+                        }
+                      >
+                        Cancel
+                      </CancelButton>
+                      <ResumeButton onClick={handleSteps}>Resume</ResumeButton>
+                    </ButtonContainer>
+                  </DialogContainer>
+                </>
+              );
+            case 2:
+              return (
+                <>
+                  <LoaderSection>
+                    <DialogHeader>
+                      <DeleteText>Resume Contract</DeleteText>
+                      <CrossIcon
+                        onClick={props.handleClose}
+                        src="/images/Cross.svg"
+                        alt=""
+                      />
+                    </DialogHeader>
+                    <Line />
+                    <SecondHeader>
+                      <CircularProgress />
+                    </SecondHeader>
+                    <TextDiv>
+                      <PauseText>Resuming Contract</PauseText>
+                      <ConfirmDiv>
+                        <ConfirmText>
+                          Confirm this transaction on XDCPay
+                        </ConfirmText>
+                      </ConfirmDiv>
+                    </TextDiv>
+                  </LoaderSection>
+                </>
+              );
+            case 3:
+              return (
+                <>
+                  <LoaderSectionThird>
+                    <DialogHeader>
+                      <DeleteText>Resume Contract</DeleteText>
+                      <CrossIcon
+                        onClick={() => props.handleClose("pause",confirmResume)}
+                        src="/images/Cross.svg"
+                        alt=""
+                      />
+                    </DialogHeader>
+                    <Line />
+                    <ThirdHeader>
+                      <Img src="/images/Selected-Circle.svg" />
+                    </ThirdHeader>
+                    <TextDiv>
+                      <PauseText>Contract Resume</PauseText>
+                      <ConfirmDiv>
+                        <ConfirmText>
+                          Paused the contract to stop transactions
+                        </ConfirmText>
+                      </ConfirmDiv>
+                    </TextDiv>
+                  </LoaderSectionThird>
+                </>
+              );
+            default:
+              return;
+          }
+        })()}
       </Dialog>
     </>
   );
