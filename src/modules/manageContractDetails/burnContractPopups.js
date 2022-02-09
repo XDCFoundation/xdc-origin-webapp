@@ -194,6 +194,7 @@ function BurnContract(props) {
   const [steps, setSteps] = useState(1);
   const classes = useStyles();
   const [inputToken, setInputToken] = useState('')
+  const [confirmBurn, setConfirmBurn] = useState(false)
 
   let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
     /xdc/,
@@ -237,7 +238,7 @@ function BurnContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          console.log("transactionHash ====", hash);
+          // console.log("transactionHash ====", hash);
           setTimeout(() => {
             burnXRC20Token();
             setSteps(3);  
@@ -258,7 +259,7 @@ function BurnContract(props) {
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          console.log("receipt ====", receipt);
+          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             burnXRC20Token()
             setSteps(3);
@@ -290,7 +291,8 @@ function BurnContract(props) {
       SaveDraftService.mintBurnXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      console.log('res--', res)
+      // console.log('res--', res)
+      setConfirmBurn(true);
     }
   }
 
@@ -313,7 +315,7 @@ function BurnContract(props) {
                     <DialogHeader>
                       <DeleteText>Burn Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -327,7 +329,7 @@ function BurnContract(props) {
                       <InputDiv type="number" onChange={(e) => setInputToken(e.target.value)}/>
                     </MidSection>
                     <ButtonContainer>
-                      <CancelButton onClick={props.handleClose}>
+                      <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
                       <DeleteButton onClick={handleSteps}>Burn</DeleteButton>
@@ -342,7 +344,7 @@ function BurnContract(props) {
                     <DialogHeader>
                       <DeleteText>Burn Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -369,7 +371,7 @@ function BurnContract(props) {
                     <DialogHeader>
                       <DeleteText>Burn Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(confirmBurn)}
                         src="/images/Cross.svg"
                         alt=""
                       />

@@ -14,6 +14,7 @@ import ResumeContractPopup from "./resumeContractPopup";
 import MintContractPopup from "./mintContractPopup";
 import TransferOwnershipPopup from "./transferOwnershipPopup";
 import AddToXDCPayPopup from "../createdToken/addToXDCPayPopup";
+import EditorFormatListNumbered from "material-ui/svg-icons/editor/format-list-numbered";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -424,11 +425,17 @@ function manageContractDetails(props) {
   const [isMintOpen, setIsMintOpen] = useState(false);
   const [isTransferOpen, setIsTransferOpen] = useState(false);
 
-  const togglePausePopup = (closeOpt) => {
+  const togglePausePopup = (closeOpt,confirmPause = false) => {
     setIsPauseOpen(!isPauseOpen);
     setChangeToResume(closeOpt);
+    if (confirmPause) {
+      props.getXrc20TokenById(props.state.id);
+    }
   };
-  const toggleResumePopup = (opt) => {
+  const toggleResumePopup = (opt, confirmResume = false) => {
+    if (confirmResume) {
+      props.getXrc20TokenById(props.state.id);
+    }
     setIsResumeOpen(!isResumeOpen);
     setUnpause(true);
     switch(opt) {
@@ -446,13 +453,22 @@ function manageContractDetails(props) {
     //   setUnpause(false);
     // }
   };
-  const toggleBurnPopup = () => {
+  const toggleBurnPopup = (confirmBurn = false) => {
+    if (confirmBurn === true) {
+      props.getXrc20TokenById(props.state.id);
+    }
     setIsBurnOpen(!isBurnOpen);
   };
-  const toggleMintPopup = () => {
+  const toggleMintPopup = (confirmMint = false) => {
+    if (confirmMint === true) {
+      props.getXrc20TokenById(props.state.id);
+    }
     setIsMintOpen(!isMintOpen);
   };
-  const toggleTransferPopup = () => {
+  const toggleTransferPopup = (confirmTransfer = false) => {
+    if (confirmTransfer === true) {
+      history.push("/manage-contracts")
+    }
     setIsTransferOpen(!isTransferOpen);
   };
 
@@ -809,6 +825,7 @@ function manageContractDetails(props) {
           isOpen={isPauseOpen}
           handleClose={togglePausePopup}
           deployedContract={props.deolyedTokenDetails}
+          tokenName={props.deolyedTokenDetails?.tokenName}
         />
       )}
       {isResumeOpen && (
