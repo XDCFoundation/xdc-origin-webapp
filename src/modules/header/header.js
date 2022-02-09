@@ -48,7 +48,7 @@ function Header(props) {
                 ? "XDC Mainnet"
                 : "XDC Apothem Testnet";
 
-            if ((address || network) && address !== props.userDetails?.accountDetails?.address) {
+            if ((address || network) && (address !== props.userDetails?.accountDetails?.address || network !== props.userDetails?.accountDetails?.network)) {
               let balance = null;
 
               await window.web3.eth.getBalance(address).then((res) => {
@@ -97,6 +97,9 @@ function Header(props) {
             </div>
             <SmartMintLogo src="/images/Origin-Active.svg" />
             <Span onClick={() => history.push("/")}>Origin</Span>
+            <BetaImgContainer>
+              <BetaImg src="/images/beta_tag.svg" alt="" />
+            </BetaImgContainer>
           </div>
           <div className="buttons">
             {/* <UserLogo  src="/images/profile.svg" /> */}
@@ -269,7 +272,7 @@ const UserMenu1 = styled.img`
 const Span = styled.span`
   top: 16px;
   left: 109px;
-  width: 110px;
+  width: 68px;
   margin-top: 8px;
   text-align: left;
   cursor: pointer;
@@ -341,6 +344,19 @@ const AccountIcon = styled.div`
 const WalletDummyImg = styled.img`
   width: 28px;
   height: 28px;
+  opacity: 1;
+  object-fit: contain;
+`;
+const BetaImgContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-top: 4px;
+`;
+const BetaImg = styled.img`
+  width: 31px;
+  height: 15px;
   opacity: 1;
   object-fit: contain;
 `;

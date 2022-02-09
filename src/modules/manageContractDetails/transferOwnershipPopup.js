@@ -275,7 +275,7 @@ function TransferOwnershipContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          console.log("transactionHash ====", hash);
+          // console.log("transactionHash ====", hash);
           setTimeout(() => {
             transferXRC20Token();
             setSteps(3);  
@@ -296,7 +296,7 @@ function TransferOwnershipContract(props) {
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          console.log("receipt ====", receipt);
+          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             transferXRC20Token();
             setSteps(3);
@@ -324,7 +324,7 @@ function TransferOwnershipContract(props) {
       SaveDraftService.transferOwnershipXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      console.log('res--', res)
+      // console.log('res--', res)
     }
   }
 
@@ -347,7 +347,7 @@ function TransferOwnershipContract(props) {
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -365,7 +365,7 @@ function TransferOwnershipContract(props) {
                       />
                     </MidSection>
                     <ButtonContainer>
-                      <CancelButton onClick={props.handleClose}>
+                      <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
                       <DeleteButton onClick={handleSteps}>
@@ -382,7 +382,7 @@ function TransferOwnershipContract(props) {
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -409,7 +409,7 @@ function TransferOwnershipContract(props) {
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(true)}
                         src="/images/Cross.svg"
                         alt=""
                       />

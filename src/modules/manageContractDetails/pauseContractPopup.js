@@ -161,6 +161,7 @@ const useStyles = makeStyles({
 
 function PauseContract(props) {
   const [steps, setSteps] = useState(1);
+  const [confirmPause, setConfirmPause] = useState(false);
   const classes = useStyles();
 
   let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
@@ -204,7 +205,7 @@ function PauseContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          console.log("transactionHash ====", hash);
+          // console.log("transactionHash ====", hash);
           setTimeout(() => {
             pauseXRC20Token();
             setSteps(3);  
@@ -223,7 +224,7 @@ function PauseContract(props) {
         .on("transactionHash", function (hash) {})
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          console.log("receipt ====", receipt);
+          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             pauseXRC20Token()
             setSteps(3);
@@ -250,7 +251,8 @@ function PauseContract(props) {
       SaveDraftService.pauseResumeXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      console.log('res--', res)
+      setConfirmPause(true);
+      // console.log('res--', res)
     }
   }
 
@@ -280,7 +282,7 @@ function PauseContract(props) {
                     </DialogHeader>
                     <Line />
                     <Header>
-                      Do you want to Pause the MetaVerse Contract?
+                      Do you want to Pause the {props.tokenName || ""} Contract?
                       <br /> All transactions will be stopped until you resume
                       <br /> the contract again.
                     </Header>
@@ -327,7 +329,7 @@ function PauseContract(props) {
                     <DialogHeader>
                       <DeleteText>Pause Contract</DeleteText>
                       <CrossIcon
-                        onClick={() => props.handleClose("change")}
+                        onClick={() => props.handleClose("change",confirmPause)}
                         src="/images/Cross.svg"
                         alt=""
                       />

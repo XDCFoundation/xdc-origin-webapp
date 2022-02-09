@@ -217,7 +217,7 @@ function manageContracts(props) {
                       <Button onClick={() => history.push({
                         pathname: "/manage-contract-details",
                         state: {
-                          deolyedTokenDetails: row,
+                          id: row.id,
                         }
                       })}>Manage</Button>
                     </TableCell>

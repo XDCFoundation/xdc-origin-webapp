@@ -20,7 +20,7 @@ class UpdateProfile extends BaseComponent {
   }
 
   componentDidMount() {
-    console.log("details", this.props?.location?.state?.deolyedTokenDetails)
+    
   }
 
   updateDeployedXrc20Token = async (updatedData) => {
@@ -74,15 +74,17 @@ class UpdateProfile extends BaseComponent {
         isUpdating: false,
       })
 
-      toast.success("Details Updated Successfully", {
-        duration: 4000,
-        position: "top-center",
-      });
+      setTimeout(() => {
+        toast.success("Details Updated Successfully", {
+          duration: 4000,
+          position: "top-center",
+        });
+      }, 2000);
 
       history.push({
-        pathname: "/manage-contracts",
+        pathname: "/manage-contract-details",
         state: {
-          deolyedTokenDetails: this.props?.location?.state?.deolyedTokenDetails,
+          id: this.props?.location?.state?.deolyedTokenDetails?.id,
         },
       });
     }
