@@ -48,7 +48,7 @@ function Header(props) {
                 ? "XDC Mainnet"
                 : "XDC Apothem Testnet";
 
-            if ((address || network) && address !== props.userDetails?.accountDetails?.address) {
+            if ((address || network) && (address !== props.userDetails?.accountDetails?.address || network !== props.userDetails?.accountDetails?.network)) {
               let balance = null;
 
               await window.web3.eth.getBalance(address).then((res) => {
