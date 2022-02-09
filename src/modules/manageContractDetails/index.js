@@ -64,7 +64,6 @@ class ManageContracts extends BaseComponent {
     }
 
     if (xrc20TokenResponse) {
-      console.log("xrc20TokenResponse",xrc20TokenResponse)
       if (initialCall) {
         this.setState({
           deolyedTokenDetails: xrc20TokenResponse[0],

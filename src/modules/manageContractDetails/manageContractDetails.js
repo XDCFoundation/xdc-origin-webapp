@@ -14,6 +14,7 @@ import ResumeContractPopup from "./resumeContractPopup";
 import MintContractPopup from "./mintContractPopup";
 import TransferOwnershipPopup from "./transferOwnershipPopup";
 import AddToXDCPayPopup from "../createdToken/addToXDCPayPopup";
+import EditorFormatListNumbered from "material-ui/svg-icons/editor/format-list-numbered";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -464,7 +465,10 @@ function manageContractDetails(props) {
     }
     setIsMintOpen(!isMintOpen);
   };
-  const toggleTransferPopup = () => {
+  const toggleTransferPopup = (confirmTransfer = false) => {
+    if (confirmTransfer === true) {
+      history.push("/manage-contracts")
+    }
     setIsTransferOpen(!isTransferOpen);
   };
 
@@ -821,6 +825,7 @@ function manageContractDetails(props) {
           isOpen={isPauseOpen}
           handleClose={togglePausePopup}
           deployedContract={props.deolyedTokenDetails}
+          tokenName={props.deolyedTokenDetails?.tokenName}
         />
       )}
       {isResumeOpen && (
