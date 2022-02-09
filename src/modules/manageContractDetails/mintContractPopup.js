@@ -199,6 +199,7 @@ function MintContract(props) {
   const [steps, setSteps] = useState(1);
   const classes = useStyles();
   const [inputToken, setInputToken] = useState();
+  const [confirmMint, setConfirmMint] = useState(false);
 
   let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
     /xdc/,
@@ -310,6 +311,7 @@ function MintContract(props) {
     );
     if (res !== 0 && res !== undefined) {
       // console.log("res--", res);
+      setConfirmMint(true);
     }
   };
 
@@ -340,7 +342,7 @@ function MintContract(props) {
                     <DialogHeader>
                       <DeleteText>Mint Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -364,7 +366,7 @@ function MintContract(props) {
                       />
                     </MidSection>
                     <ButtonContainer>
-                      <CancelButton onClick={props.handleClose}>
+                      <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
                       <DeleteButton onClick={handleSteps}>Mint</DeleteButton>
@@ -379,7 +381,7 @@ function MintContract(props) {
                     <DialogHeader>
                       <DeleteText>Mint Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
                         alt=""
                       />
@@ -406,7 +408,7 @@ function MintContract(props) {
                     <DialogHeader>
                       <DeleteText>Mint Contract</DeleteText>
                       <CrossIcon
-                        onClick={props.handleClose}
+                        onClick={() => props.handleClose(confirmMint)}
                         src="/images/Cross.svg"
                         alt=""
                       />

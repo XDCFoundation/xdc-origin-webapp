@@ -424,11 +424,17 @@ function manageContractDetails(props) {
   const [isMintOpen, setIsMintOpen] = useState(false);
   const [isTransferOpen, setIsTransferOpen] = useState(false);
 
-  const togglePausePopup = (closeOpt) => {
+  const togglePausePopup = (closeOpt,confirmPause = false) => {
     setIsPauseOpen(!isPauseOpen);
     setChangeToResume(closeOpt);
+    if (confirmPause) {
+      props.getXrc20TokenById(props.state.id);
+    }
   };
-  const toggleResumePopup = (opt) => {
+  const toggleResumePopup = (opt, confirmResume = false) => {
+    if (confirmResume) {
+      props.getXrc20TokenById(props.state.id);
+    }
     setIsResumeOpen(!isResumeOpen);
     setUnpause(true);
     switch(opt) {
@@ -446,10 +452,16 @@ function manageContractDetails(props) {
     //   setUnpause(false);
     // }
   };
-  const toggleBurnPopup = () => {
+  const toggleBurnPopup = (confirmBurn = false) => {
+    if (confirmBurn === true) {
+      props.getXrc20TokenById(props.state.id);
+    }
     setIsBurnOpen(!isBurnOpen);
   };
-  const toggleMintPopup = () => {
+  const toggleMintPopup = (confirmMint = false) => {
+    if (confirmMint === true) {
+      props.getXrc20TokenById(props.state.id);
+    }
     setIsMintOpen(!isMintOpen);
   };
   const toggleTransferPopup = () => {

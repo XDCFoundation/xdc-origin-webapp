@@ -161,6 +161,7 @@ const useStyles = makeStyles({
 
 function PauseContract(props) {
   const [steps, setSteps] = useState(1);
+  const [confirmPause, setConfirmPause] = useState(false);
   const classes = useStyles();
 
   let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
@@ -250,6 +251,7 @@ function PauseContract(props) {
       SaveDraftService.pauseResumeXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
+      setConfirmPause(true);
       // console.log('res--', res)
     }
   }
@@ -327,7 +329,7 @@ function PauseContract(props) {
                     <DialogHeader>
                       <DeleteText>Pause Contract</DeleteText>
                       <CrossIcon
-                        onClick={() => props.handleClose("change")}
+                        onClick={() => props.handleClose("change",confirmPause)}
                         src="/images/Cross.svg"
                         alt=""
                       />

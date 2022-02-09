@@ -102,6 +102,7 @@ const useStyles = makeStyles({
 
 function ResumeContract(props) {
   const classes = useStyles();
+  const [confirmResume, setConfirmResume] = useState(false);
 
   let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
     /xdc/,
@@ -188,7 +189,8 @@ function ResumeContract(props) {
     );
     if (res !== 0 && res !== undefined) {
       // console.log('res--', res)
-      props.handleClose("pause")
+      setConfirmResume(true);
+      props.handleClose("pause", true)
     }
   }
 
@@ -206,7 +208,7 @@ function ResumeContract(props) {
           <DialogHeader>
             <DeleteText>Resume Contract</DeleteText>
             <CrossIcon
-              onClick={() => props.handleClose("resume")}
+              onClick={() => props.handleClose("resume", confirmResume)}
               src="/images/Cross.svg"
               alt=""
             />
@@ -217,7 +219,7 @@ function ResumeContract(props) {
             <br /> Contract? All transactions will be allowed again.
           </Header>
           <ButtonContainer>
-            <CancelButton onClick={() => props.handleClose("resume")}>
+            <CancelButton onClick={() => props.handleClose("resume", confirmResume)}>
               Cancel
             </CancelButton>
             <ResumeButton onClick={handleSteps}>
