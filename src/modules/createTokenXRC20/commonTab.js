@@ -559,16 +559,17 @@ function CommonTab(props) {
     tokenSymbol,
   ) => {
     let reqObj = {
-      hash: txnHash,
+      filter: "Transaction",
+      data: txnHash,
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.getTxnHashDetails(reqObj)
     );
-    let obtainContractAddress = res?.contractAddress;
-    let obtainTxnHash = res?.hash !== undefined ? res?.hash : obtainHash 
-    let obtainGasUsed = res?.gasUsed;
+    let obtainContractAddress = res?.transaction?.contractAddress;
+    let obtainTxnHash = res?.transaction?.hash !== undefined ? res?.transaction?.hash : obtainHash 
+    let obtainGasUsed = res?.transaction?.gasUsed;
     //-------
-    contractAdd = res?.contractAddress
+    contractAdd = res?.transaction?.contractAddress
 
     if (contractAdd !== "") {
       history.push({

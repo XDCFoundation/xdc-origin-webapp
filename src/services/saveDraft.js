@@ -64,14 +64,16 @@ async function updateDraftedToken(requestdata) {
 }
 
 async function getTxnHashDetails(requestData) {
-  let url =
-    process.env.REACT_APP_TRANSACTION_DETAILS +
-    httpConstants.API_END_POINT.GET_TRANSACTION_DETAILS+ '/' + requestData.hash
+  // let url =
+  //   process.env.REACT_APP_TRANSACTION_DETAILS +
+  //   httpConstants.API_END_POINT.GET_TRANSACTION_DETAILS;
+
+  let url = "https://1lzur2qul1.execute-api.us-east-2.amazonaws.com/prod" + httpConstants.API_END_POINT.GET_TRANSACTION_DETAILS;
 
   return httpService(
-    httpConstants.METHOD_TYPE.GET,
-    { "Content-Type": httpConstants.CONTENT_TYPE.APPLICATION_JSON },
-    {},
+    httpConstants.METHOD_TYPE.POST,
+    { 'X-API-KEY': 'UYIQSLAYpd1i6aOAXL1okajcWJhoDQJr5KX82Zlu', "Content-Type": httpConstants.CONTENT_TYPE.APPLICATION_JSON },
+    requestData,
     url
   )
     .then((response) => {
@@ -82,7 +84,7 @@ async function getTxnHashDetails(requestData) {
         response.responseData.length === 0
       )
         return Promise.reject();
-      return Promise.resolve(response.responseData);
+      return Promise.resolve(response.responseData[0]);
     })
     .catch(function (err) {
       return Promise.reject(err);

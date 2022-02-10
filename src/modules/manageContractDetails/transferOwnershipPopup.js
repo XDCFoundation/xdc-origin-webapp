@@ -268,7 +268,7 @@ function TransferOwnershipContract(props) {
       to: contractAddress, //contractAddress of the concerned token (same in data below)
       gas: 7920000,
       gasPrice: gasPrice,
-      data: contractInstance.methods.transferOwnership(givenAddress).encodeABI()
+      data: contractInstance.methods.transferOwnershipFeatures(givenAddress).encodeABI() //givenAddress should be 0x
     };
 
     if (networkVersion === "XDC Mainnet") {
