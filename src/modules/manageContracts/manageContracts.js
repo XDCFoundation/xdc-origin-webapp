@@ -27,6 +27,7 @@ const Container = styled.div`
 `;
 const MainContainer = styled.div`
   margin: 34px 185px 46px 185px;
+  padding:  0 20px 0 20px;
   height: auto;
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 6px;
@@ -159,7 +160,7 @@ function manageContracts(props) {
     <Container>
       <Heading>Manage Deployed Tokens</Heading>
       <MainContainer>
-        <TableContainer component={Paper} sx={{ boxShadow: 0 }}>
+        <TableContainer sx={{ boxShadow: 0 }}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
