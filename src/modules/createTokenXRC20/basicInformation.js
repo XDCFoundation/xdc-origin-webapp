@@ -409,14 +409,14 @@ function Token(props) {
 
     if (Object.keys(props.tokenData)?.length === 0) {
       formErrorMessage();
-    } else if (props.tokenData?.tokenDescription?.length === undefined) {
-      descriptionErrorMessage();
-    } else if (props.tokenData?.tokenSymbol?.length === undefined) {
-      symbolErrorMessage();
-    } else if (props.tokenData?.tokenName?.length === undefined) {
+    } else if (props.tokenData?.tokenName?.length === undefined || props.tokenData?.tokenName.match(/^\s*$/)) {
       nameErrorMessage();
+    } else if (props.tokenData?.tokenSymbol?.length === undefined || props.tokenData?.tokenSymbol.match(/^\s*$/)) {
+      symbolErrorMessage();
     } else if (props.tokenData?.tokenDecimals === undefined) {
       decimalErrorMessage();
+    } else if (props.tokenData?.tokenDescription?.length === undefined || props.tokenData?.tokenDescription.match(/^\s*$/)) {
+      descriptionErrorMessage();
     }
     // else if (imgData === "") {
     //   imageErrorMessage();
@@ -432,10 +432,13 @@ function Token(props) {
       props.tokenData?.tokenDescription?.length < 500 &&
       props.tokenData?.tokenSymbol !== undefined &&
       props.tokenData?.tokenSymbol !== "" &&
-      props.tokenData?.tokenSymbol?.length < 15 &&
+      props.tokenData?.tokenSymbol?.length <= 15 &&
       props.tokenData?.tokenName !== undefined &&
       props.tokenData?.tokenName !== "" &&
-      props.tokenData?.tokenName?.length < 30
+      props.tokenData?.tokenName?.length <= 30 &&
+      !props.tokenData?.tokenDescription.match(/^\s*$/) &&
+      !props.tokenData?.tokenSymbol.match(/^\s*$/) &&
+      !props.tokenData?.tokenName.match(/^\s*$/)
     ) {
       props.handleChange(e);
       props.nextStep(e);
