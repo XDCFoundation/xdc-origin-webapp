@@ -488,7 +488,6 @@ function AddFeatures(props) {
         <Toaster />
       </div>
       <Parent>
-        {console.log("tokenData",props.tokenData)}
         <Column>
           <RowTwo>
             <SpanOne>Select Feature For Your Token</SpanOne>
