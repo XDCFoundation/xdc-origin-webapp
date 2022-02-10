@@ -343,7 +343,7 @@ function AddFeatures(props) {
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       image: "/images/Pause_Contract.png",
-      checked: props.tokenData ? props.tokenData.pausable : true,
+      checked: props.tokenData.pausable ? props.tokenData.pausable : true,
       content: addFeaturesContent.PAUSABLE_CONTENT,
     },
     {
@@ -352,7 +352,7 @@ function AddFeatures(props) {
       image: "/images/Burnable.svg",
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
-      checked: props.tokenData ? props.tokenData.burnable : true,
+      checked: props.tokenData.burnable ? props.tokenData.burnable : true,
       content: addFeaturesContent.BURNABLE_CONTENT,
     },
     {
@@ -361,7 +361,7 @@ function AddFeatures(props) {
       image: "/images/Mintable.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       checkImage: "/images/Empty-Circle.svg",
-      checked: props.tokenData ? props.tokenData.mintable : true,
+      checked: props.tokenData.mintable ? props.tokenData.mintable : true,
       content: addFeaturesContent.MINTABLE_CONTENT,
     },
   ];
