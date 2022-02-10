@@ -163,22 +163,24 @@ function manageContracts(props) {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell className={classes.tokenIcon} width="8%">
+                <TableCell className={classes.tokenIcon} width={props.deolyedXrc20TokenDetails.length === 0 ? "0%" : "8%"}>
                   Token Icon
                 </TableCell>
-                <TableCell width="10%" align="left">
+                <TableCell width={props.deolyedXrc20TokenDetails.length === 0 ? "0%" : "10%"} align="left">
                   Token Name
                 </TableCell>
-                <TableCell width="12%" align="left">
+                <TableCell width={props.deolyedXrc20TokenDetails.length === 0 ? "0%" : "12%"} align="left">
                   Token Symbol
                 </TableCell>
-                <TableCell width="15%" align="left">
+                <TableCell width={props.deolyedXrc20TokenDetails.length === 0 ? "18%" : "15%"} align="left">
                   Network
                 </TableCell>
-                <TableCell width="25%" align="left">
+                <TableCell width={props.deolyedXrc20TokenDetails.length === 0 ? "0%" : "25%"} align="left">
                   Contract Address
                 </TableCell>
-                <TableCell width="10%" align="left"></TableCell>
+                {props.deolyedXrc20TokenDetails.length === 0 ? "" : (
+                  <TableCell width="10%" align="left"></TableCell>
+                )}
               </TableRow>
             </TableHead>
 

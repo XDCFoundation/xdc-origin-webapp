@@ -235,6 +235,31 @@ function DeployContract(props) {
   return (
     <Container>
       <Heading>Deploy Saved Tokens</Heading>
+      {props?.state?.draftFailedXrc20TokenDetails?.length === 0 ? (
+        <TableContainer>
+          <TableHeaderEmpty>
+            <TitleEmpty>Token Icon</TitleEmpty>
+            <TitleEmpty>Token Name</TitleEmpty>
+            <TitleEmpty>Token Symbol</TitleEmpty>
+            <TitleEmpty>Network</TitleEmpty>
+            <TitleEmpty>Supply</TitleEmpty>
+            <TitleEmpty>Status</TitleEmpty>
+          </TableHeaderEmpty>
+          <Line />
+
+          <DataContainer>
+            {props.state?.isLoading ? (
+              <EmptyRow>
+                <CircularProgress />
+              </EmptyRow>
+            ) : (
+                props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
+                  <EmptyRow>No Contracts Available</EmptyRow>
+                ) : ""
+            )}
+          </DataContainer>
+      </TableContainer>
+      ) : (
       <TableContainer>
         <TableHeader>
           <Title>Token Icon</Title>
@@ -252,9 +277,6 @@ function DeployContract(props) {
               <CircularProgress />
             </EmptyRow>
           ) : (
-              props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
-                <EmptyRow>No Contracts Available</EmptyRow>
-              ) : (
                 props.state.draftFailedXrc20TokenDetails &&
                 props.state.draftFailedXrc20TokenDetails.map((item, index) => (
               <>
@@ -307,11 +329,12 @@ function DeployContract(props) {
                 </TableRow>
                 <DataLine />
               </>
-            ))
+            )
             )
           )}
         </DataContainer>
       </TableContainer>
+      )}
 
       <DeleteContract
         open={open}
@@ -492,7 +515,30 @@ const TableHeader = styled.div`
   align-items: center;
   margin: 15px 0 0 28px;
 `;
+const TableHeaderEmpty = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 0 0 15px;
+`;
 const Title = styled.p`
+  width: 112px;
+  min-width: 112px;
+  max-width: 222px;
+  height: 20px;
+  margin-right: 57px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0px;
+  color: #102c78;
+  opacity: 1;
+  @media screen and (min-width: 375px) and (max-width: 425px) {
+    font-size: 14px;
+  }
+`;
+const TitleEmpty = styled.span`
   width: 112px;
   min-width: 112px;
   max-width: 222px;
