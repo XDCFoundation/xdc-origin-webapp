@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
-import { handleWallet, updateAccountDetails } from "../../action";
+import { handleNavItem, handleWallet, updateAccountDetails } from "../../action";
 import "../../assets/styles/custom.css";
 import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
@@ -79,6 +79,29 @@ function Header(props) {
       }
     };
 
+    const handleWalletSession = () => {
+      window.web3 = new Web3(window.ethereum);
+
+      if (window.web3.currentProvider) {
+        if (!window.web3.currentProvider.chainId) {
+          const state = window.web3.givenProvider.publicConfigStore._state;
+          if (!state.networkVersion || !state.selectedAddress) {
+            let accountDetails = {
+              address: null,
+              network: null,
+              balance: null,
+              isLoggedIn: false,
+            };
+
+            props.updateAccountDetails(accountDetails);
+            props.setActiveNavItem("about");
+            history.push("/");
+          }
+        }
+      }
+    }
+
+    handleWalletSession();
     handleXDCPayWalletChange();
     window.addEventListener("load", handleXDCPayWalletChange);
   }, []);
@@ -162,6 +185,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   updateAccountDetails: (accountDetails) => {
     dispatch(updateAccountDetails(accountDetails));
+  },
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive))
   },
 });
 
