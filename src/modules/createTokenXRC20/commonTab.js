@@ -296,12 +296,12 @@ function CommonTab(props) {
     setTokenData({
       ...tokenData,
       network: networkVersion,
-      pausable: e.target.value === "fromFeature" ? e.checked[0].checked : true,
+      pausable: e.target.value === "fromFeature" ? e.checked[0].checked : props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails.pausable : tokenData.pausable,
       tokenOwner: userAddress,
       tokenImage: newImage,
       tokenDecimals: initialDecimalValue,
-      burnable: e.target.value === "fromFeature" ? e.checked[1].checked : true,
-      mintable: e.target.value === "fromFeature" ? e.checked[2].checked : true,
+      burnable: e.target.value === "fromFeature" ? e.checked[1].checked : props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails.burnable : tokenData.burnable,
+      mintable: e.target.value === "fromFeature" ? e.checked[2].checked : props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails.mintable : tokenData.mintable,
       [e.target.name]: e.target.value,
     }); //destructuring
   };

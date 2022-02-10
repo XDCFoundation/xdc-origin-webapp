@@ -85,7 +85,7 @@ function Header(props) {
       if (window.web3.currentProvider) {
         if (!window.web3.currentProvider.chainId) {
           const state = window.web3.givenProvider.publicConfigStore._state;
-          if (!state.networkVersion || !state.selectedAddress) {
+          if (!state.selectedAddress) {
             let accountDetails = {
               address: null,
               network: null,
@@ -101,7 +101,9 @@ function Header(props) {
       }
     }
 
-    handleWalletSession();
+    setTimeout(() => {
+      handleWalletSession();
+    }, 1000);
     handleXDCPayWalletChange();
     window.addEventListener("load", handleXDCPayWalletChange);
   }, []);
