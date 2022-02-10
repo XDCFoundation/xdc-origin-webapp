@@ -108,6 +108,19 @@ const UploadButton = styled.button`
   opacity: 1;
   margin-left: 3%;
 `;
+const UploadButtonDisable = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 121px;
+  height: 44px;
+  background: #3163f0 0% 0% no-repeat padding-box;
+  border-width: 0px;
+  border-radius: 4px;
+  opacity: 1;
+  margin-left: 3%;
+  cursor: not-allowed;
+`;
 
 const ContentText = styled.div`
   text-align: center;
@@ -407,9 +420,17 @@ export default function UploadTokenImage(props) {
             <Cancel onClick={(e) => props.handleUploadClose(e)}>
               <CancelName>Cancel</CancelName>
             </Cancel>
-            <UploadButton onClick={showCroppedImage}>
-              <UploadName>Upload</UploadName>
-            </UploadButton>
+            {
+              upload ? (
+              <UploadButton onClick={showCroppedImage}>
+                <UploadName>Upload</UploadName>
+              </UploadButton>
+              ) : (
+              <UploadButtonDisable >
+                <UploadName>Upload</UploadName>
+              </UploadButtonDisable>
+              )
+            }
           </Buttons>
         </ContentContainer>
       </Dialog>

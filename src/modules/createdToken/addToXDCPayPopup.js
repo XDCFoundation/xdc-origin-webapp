@@ -111,6 +111,13 @@ const Title = styled.span`
   color: #7b7979;
   opacity: 1;
 `;
+const ImgContainerOne = styled.div`
+  width: 200px;
+  max-width: 200px;
+  margin: 26px 0 42px 0;
+  display: flex;
+  justify-content: center;
+`;
 const ImgContainer = styled.div`
   width: 200px;
   max-width: 200px;
@@ -221,9 +228,9 @@ export default function addToXDCPayPopup(props) {
               <TitleContainer>
                 <Title>Step 1</Title>
               </TitleContainer>
-              <ImgContainer>
+              <ImgContainerOne>
                 <Img src="/images/XDC_sky_blue.svg" alt="" />
-              </ImgContainer>
+              </ImgContainerOne>
               <MainText>Open XDCPay</MainText>
               <SubTextContainer>
                 <SubText>Open XDCPay from your browser</SubText>
