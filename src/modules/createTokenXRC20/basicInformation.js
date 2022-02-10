@@ -432,10 +432,10 @@ function Token(props) {
       props.tokenData?.tokenDescription?.length < 500 &&
       props.tokenData?.tokenSymbol !== undefined &&
       props.tokenData?.tokenSymbol !== "" &&
-      props.tokenData?.tokenSymbol?.length < 15 &&
+      props.tokenData?.tokenSymbol?.length <= 15 &&
       props.tokenData?.tokenName !== undefined &&
       props.tokenData?.tokenName !== "" &&
-      props.tokenData?.tokenName?.length < 30 &&
+      props.tokenData?.tokenName?.length <= 30 &&
       !props.tokenData?.tokenDescription.match(/^\s*$/) &&
       !props.tokenData?.tokenSymbol.match(/^\s*$/) &&
       !props.tokenData?.tokenName.match(/^\s*$/)
