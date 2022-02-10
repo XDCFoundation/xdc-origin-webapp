@@ -343,7 +343,7 @@ function AddFeatures(props) {
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       image: "/images/Pause_Contract.png",
-      checked: true,
+      checked: props.tokenData ? props.tokenData.pausable : true,
       content: addFeaturesContent.PAUSABLE_CONTENT,
     },
     {
@@ -352,7 +352,7 @@ function AddFeatures(props) {
       image: "/images/Burnable.svg",
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
-      checked: true,
+      checked: props.tokenData ? props.tokenData.burnable : true,
       content: addFeaturesContent.BURNABLE_CONTENT,
     },
     {
@@ -361,7 +361,7 @@ function AddFeatures(props) {
       image: "/images/Mintable.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       checkImage: "/images/Empty-Circle.svg",
-      checked: true,
+      checked: props.tokenData ? props.tokenData.mintable : true,
       content: addFeaturesContent.MINTABLE_CONTENT,
     },
   ];
@@ -488,6 +488,7 @@ function AddFeatures(props) {
         <Toaster />
       </div>
       <Parent>
+        {console.log("tokenData",props.tokenData)}
         <Column>
           <RowTwo>
             <SpanOne>Select Feature For Your Token</SpanOne>
