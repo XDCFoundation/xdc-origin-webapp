@@ -11,9 +11,12 @@ export default {
   pauseResumeXRC20Token,
 };
 
+let commonURL = "https://wgpsgpocfa.execute-api.us-east-1.amazonaws.com/mycontract/";
+
 async function saveTokenAsDraft(requestdata) {
   let url =
-    process.env.REACT_APP_SAVE_AS_DRAFT +
+    // process.env.REACT_APP_SAVE_AS_DRAFT +
+    commonURL +
     httpConstants.API_END_POINT.SAVE_TOKEN;
 
   return httpService(
@@ -39,7 +42,8 @@ async function saveTokenAsDraft(requestdata) {
 
 async function updateDraftedToken(requestdata) {
   let url =
-    process.env.REACT_APP_SAVE_AS_DRAFT +
+    // process.env.REACT_APP_SAVE_AS_DRAFT +
+    commonURL +
     httpConstants.API_END_POINT.UPDATE_TOKEN;
 
   return httpService(
@@ -119,7 +123,8 @@ async function getCoinMarketCap(requestData) {
 
 async function mintBurnXRC20Token(requestdata) {
   let url =
-    process.env.REACT_APP_SAVE_AS_DRAFT +
+    // process.env.REACT_APP_SAVE_AS_DRAFT +
+    commonURL +
     httpConstants.API_END_POINT.MINT_BURN_XRC20_TOKEN;
 
   return httpService(
@@ -145,7 +150,8 @@ async function mintBurnXRC20Token(requestdata) {
 
 async function transferOwnershipXRC20Token(requestdata) {
   let url =
-    process.env.REACT_APP_SAVE_AS_DRAFT +
+    // process.env.REACT_APP_SAVE_AS_DRAFT +
+    commonURL +
     httpConstants.API_END_POINT.TRANSFER_OWNERSHIP;
 
   return httpService(
@@ -171,7 +177,8 @@ async function transferOwnershipXRC20Token(requestdata) {
 
 async function pauseResumeXRC20Token(requestdata) {
   let url =
-    process.env.REACT_APP_SAVE_AS_DRAFT +
+    // process.env.REACT_APP_SAVE_AS_DRAFT +
+    commonURL +
     httpConstants.API_END_POINT.PAUSE_RESUME_XRC20_TOKEN;
 
   return httpService(
