@@ -288,7 +288,9 @@ const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 250px;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
   height: 1024px;
   padding-top: 40px;
   position: sticky;
@@ -350,7 +352,7 @@ const Wrapper = styled.div`
   align-items: center;
   flex-wrap: wrap;
   cursor: pointer;
-  width: 250px;
+  width: 100%;
   height: 70px;
   white-space: nowrap;
   padding: 23px;
@@ -367,7 +369,7 @@ const ActiveWrapper = styled.div`
   align-items: center;
   flex-wrap: wrap;
   cursor: pointer;
-  width: 250px;
+  width: 100%;
   height: 70px;
   white-space: nowrap;
   padding: 23px;

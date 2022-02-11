@@ -579,6 +579,12 @@ const VideoBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (min-width: 1354px) and (max-width: 1440px) {
+    width: 93%;
+  }
+  @media (min-width: 1200px) and (max-width: 1354px) {
+    width: 82%;
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 474px;
     height: 288px !important;
