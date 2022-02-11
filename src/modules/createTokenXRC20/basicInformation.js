@@ -514,7 +514,7 @@ function Token(props) {
               placeholder="e.g. XDC Network"
             />
             <BlurTextDiv>Choose a name for your token</BlurTextDiv>
-            {props.tokenData?.tokenName === "" ? (
+            {props.isVisited === "tokenName" && props.tokenData?.tokenName === "" ? (
               <p className="shown-error">
                 {validationsMessages.VALIDATE_TOKEN_NAME_FIELD}
               </p>
@@ -550,7 +550,7 @@ function Token(props) {
             />
 
             <BlurTextDiv>Choose symbol for your token</BlurTextDiv>
-            {props.tokenData?.tokenSymbol === "" ? (
+            {props.isVisited === "tokenSymbol" && props.tokenData?.tokenSymbol === "" ? (
               <p className="shown-error">
                 {validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD}
               </p>
@@ -651,7 +651,7 @@ function Token(props) {
                       Use Custom Image
                     </CustomReplaceButton>
 
-                    {props.tokenData?.tokenImage === "" ? (
+                    {props.isVisited === "tokenImage" && props.tokenData?.tokenImage === "" ? (
                       <p className="shown-error">
                         Token Image/Icon is required
                       </p>
@@ -818,7 +818,7 @@ function Token(props) {
             />
 
             <BlurTextDiv>Add description for your token</BlurTextDiv>
-            {props.tokenData?.tokenDescription === "" ? (
+            {props.isVisited === "tokenDescription" && props.tokenData?.tokenDescription === "" ? (
               <p className="shown-error">
                 {validationsMessages.VALIDATE_DESCRIPTION_FIELD}
               </p>
