@@ -243,6 +243,7 @@ function CommonTab(props) {
 
   const [imgData, setImgData] = useState("");
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isVisited, setIsVisited] = useState("");
 
   const toggleUploadPopup = (imageData) => {
     setIsUploadOpen(!isUploadOpen);
@@ -259,7 +260,7 @@ function CommonTab(props) {
     tokenOwner: userAddress,
     tokenName: "",
     tokenSymbol: "",
-    tokenImage: imgData,
+    tokenImage: imgData ? imgData : DEFAULT_TOKEN_IMAGE_URL,
     tokenDecimals: "18",
     tokenDescription: "",
     tokenInitialSupply: undefined,
@@ -276,7 +277,9 @@ function CommonTab(props) {
   // capturing all fields value:
 
   useEffect(() => {
-    setTokenData(props.state?.xrc20TokenDetails);
+    if (Object.keys(props.state?.xrc20TokenDetails).length !== 0) {
+      setTokenData(props.state?.xrc20TokenDetails);
+    }
   }, [props]);
 
   // let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage;
@@ -286,6 +289,7 @@ function CommonTab(props) {
     : "18";
 
   const handleChange = (e) => {
+    setIsVisited(e.target.name);
     if (e.target.value !== "fromFeature" && e.target.name === "tokenInitialSupply" && e.target.value.length >= 16) {
       toast.error(validationsMessages.INITIAL_SUPPLY_LIMIT_ERROR, {
         duration: 2000,
@@ -296,12 +300,12 @@ function CommonTab(props) {
     setTokenData({
       ...tokenData,
       network: networkVersion,
-      pausable: e.target.value === "fromFeature" ? e.checked[0].checked : props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails.pausable : tokenData.pausable,
+      pausable: e.target.value === "fromFeature" ? e.checked[0].checked : props.state?.xrc20TokenDetails?.pausable ? props.state?.xrc20TokenDetails.pausable : tokenData.pausable,
       tokenOwner: userAddress,
       tokenImage: newImage,
       tokenDecimals: initialDecimalValue,
-      burnable: e.target.value === "fromFeature" ? e.checked[1].checked : props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails.burnable : tokenData.burnable,
-      mintable: e.target.value === "fromFeature" ? e.checked[2].checked : props.state?.xrc20TokenDetails ? props.state?.xrc20TokenDetails.mintable : tokenData.mintable,
+      burnable: e.target.value === "fromFeature" ? e.checked[1].checked : props.state?.xrc20TokenDetails?.burnable ? props.state?.xrc20TokenDetails.burnable : tokenData.burnable,
+      mintable: e.target.value === "fromFeature" ? e.checked[2].checked : props.state?.xrc20TokenDetails?.mintable ? props.state?.xrc20TokenDetails.mintable : tokenData.mintable,
       [e.target.name]: e.target.value,
     }); //destructuring
   };
@@ -637,6 +641,7 @@ function CommonTab(props) {
                       imgData={imgData}
                       toggleUploadPopup={toggleUploadPopup}
                       state={props.state}
+                      isVisited={isVisited}
                     />
                   );
                 case 2:
