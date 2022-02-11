@@ -8,7 +8,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import AddToXDCPayPopup from "./addToXDCPayPopup";
-import { handleNavItem } from "../../action";
+import { handleNavItem, handleSubNavItem, handleSubNavToken } from "../../action";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -398,6 +398,8 @@ const CreateToken = (props) => {
 
   const handleManageRedirect = () => {
     props.setActiveNavItem("manage");
+    props.setSubNavItem(false);
+    props.setSubNavToken("");
     history.push('/manage-contracts')
   }
 
@@ -542,6 +544,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setActiveNavItem: (isActive) => {
     dispatch(handleNavItem(isActive))
+  },
+  setSubNavItem: (subNavItems) => {
+    dispatch(handleSubNavItem(subNavItems))
+  },
+  setSubNavToken: (isSubNavActive) => {
+    dispatch(handleSubNavToken(isSubNavActive))
   },
 });
 
