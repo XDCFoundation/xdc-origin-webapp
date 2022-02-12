@@ -181,8 +181,8 @@ function footer() {
             <ColHeading>Resources</ColHeading>
             <LinkContainerSecond>
               <Link>About XDC</Link>
-              <Link> Documentation </Link>
-              <Link> Privacy Policy</Link>
+              <Link> Documentation <div></div></Link>
+              <Link> Privacy Policy <div></div></Link>
               <Link> Terms and Conditions</Link>
             </LinkContainerSecond>
           </SubColTwo>
