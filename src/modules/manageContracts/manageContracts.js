@@ -133,6 +133,9 @@ const useStyles = makeStyles({
   tokenIcon: {
     minWidth: "94px",
   },
+  tableCell: {
+    borderBottom: "none",
+  }
 });
 
 function manageContracts(props) {
@@ -186,16 +189,16 @@ function manageContracts(props) {
             </TableHead>
 
             {props.deolyedXrc20TokenDetails &&
-              props.deolyedXrc20TokenDetails.map((row) => (
+              props.deolyedXrc20TokenDetails.map((row,index) => (
                 <TableBody>
                   <TableRow key={row.name}>
-                    <TableCell component="th" scope="row">
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} component="th" scope="row">
                       <Img src={row.tokenImage} alt="" />
                     </TableCell>
-                    <TableCell align="left">{row.tokenName}</TableCell>
-                    <TableCell align="left">{row.tokenSymbol}</TableCell>
-                    <TableCell align="left">{row.network}</TableCell>
-                    <TableCell className={classes.address} align="left" onClick={() => handleContractAddress(row.smartContractAddress, row.tokenSymbol)}>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} align="left">{row.tokenName}</TableCell>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} align="left">{row.tokenSymbol}</TableCell>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} align="left">{row.network}</TableCell>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? `${classes.tableCell} ${classes.address}` : classes.address} align="left" onClick={() => handleContractAddress(row.smartContractAddress, row.tokenSymbol)}>
                         {row.smartContractAddress.slice(0, 26) +
                           "..." +
                         row.smartContractAddress.substr(
@@ -216,7 +219,7 @@ function manageContracts(props) {
                         </CopyToClipboard>
                       </Tooltip>
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} align="left">
                       <Button onClick={() => history.push({
                         pathname: "/manage-contract-details",
                         state: {
