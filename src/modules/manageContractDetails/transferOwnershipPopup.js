@@ -107,6 +107,23 @@ const DeleteButton = styled.button`
   outline: none;
   border: none;
 `;
+const DeleteButtonDisable = styled.div`
+  width: 121px;
+  height: 44px;
+  background: #3163f0 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  text-align: center;
+  font: normal normal medium 18px/21px Inter;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 0.7;
+  outline: none;
+  border: none;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const Header = styled.div`
   display: flex;
   align-items: center;
@@ -368,9 +385,15 @@ function TransferOwnershipContract(props) {
                       <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
+                      {inputAddress !== "" ? (
                       <DeleteButton onClick={handleSteps}>
                         Transfer
                       </DeleteButton>
+                      ) : (
+                      <DeleteButtonDisable>
+                        Transfer
+                      </DeleteButtonDisable>
+                      )}
                     </ButtonContainer>
                   </DialogContainer>
                 </>
@@ -421,7 +444,7 @@ function TransferOwnershipContract(props) {
                     <TextDiv>
                       <PauseText>Transaction Completed</PauseText>
                       <SpanText>
-                        Metaverse Contract is removed from your list
+                        {props.tokenName} Contract is removed from your list
                       </SpanText>
                     </TextDiv>
                     <DoneButtonContainer>

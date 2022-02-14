@@ -16,6 +16,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import toast, { Toaster } from "react-hot-toast";
 import { connect } from "react-redux";
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 const Parent = styled.div`
   display: flex;
@@ -325,6 +326,19 @@ const QImg = styled.img`
   padding-left: 10px;
 `;
 
+const BottomContainer = styled.div`
+  width: 783px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 686px;
+  }
+  @media (min-width: 0px) and (max-width: 767px) {
+    width: 322px;
+  }
+`;
+
 const theme = createTheme({
   overrides: {
     MuiTooltip: {
@@ -348,6 +362,42 @@ const useStyles = makeStyles((theme) => ({
     },
     color: theme.palette.common.white,
   },
+  textareaAutosize: {
+    width: "783px",
+    border: "none",
+    background: "#f0f2fc 0% 0% no-repeat padding-box",
+    borderRadius: "4px",
+    opacity: 1,
+    padding: "7px 16px 7px 16px",
+    position: "relative",
+    top: 0,
+    left: 0,
+    resize: "none",
+    "::placeholder": {
+      padding: "0px 0px 0px 7px",
+      font: "normal normal medium 14px/17px Inter",
+      letterSpacing: "0px",
+      color: "#a8acc1",
+      opacity: 1,
+    },
+    "&:focus": {
+      outline: "3px solid #8ca6f0",
+    },
+    "::-webkit-inner-spin-button":{
+      "-webkit-appearance": "none",
+      margin: 0,
+    } ,
+    "::-webkit-outer-spin-button": { 
+      "-webkit-appearance": "none",
+      margin: 0,
+    },
+    "@media (min-width: 768px) and (max-width: 1024px)": {
+      width: "686px",
+    },
+    "@media (min-width: 0px) and (max-width: 767px)": {
+      width: "322px",
+    }
+  }
 }));
 
 function Token(props) {
@@ -429,7 +479,7 @@ function Token(props) {
       // imgData !== undefined &&
       props.tokenData?.tokenDescription !== undefined &&
       props.tokenData?.tokenDescription !== "" &&
-      props.tokenData?.tokenDescription?.length < 500 &&
+      props.tokenData?.tokenDescription?.length <= 500 &&
       props.tokenData?.tokenSymbol !== undefined &&
       props.tokenData?.tokenSymbol !== "" &&
       props.tokenData?.tokenSymbol?.length <= 15 &&
@@ -809,15 +859,22 @@ function Token(props) {
                 </Tooltip>
               </MuiThemeProvider>
             </TextDiv>
-            <InputDiv
+            <TextareaAutosize 
+              className={classes.textareaAutosize}
+              aria-label="minimum height" 
+              minRows={1.1}
               type="text"
               onChange={(e) => props.handleChange(e)}
+              onInput={(e) => (e.target.value = e.target.value.slice(0, 501))}
               name="tokenDescription"
               value={props.tokenData.tokenDescription}
               placeholder="A Dao Token"
             />
 
-            <BlurTextDiv>Add description for your token</BlurTextDiv>
+            <BottomContainer>
+              <BlurTextDiv>Add description for your token</BlurTextDiv>
+              <BlurTextDiv>{props.tokenData?.tokenDescription?.length}/500</BlurTextDiv>
+            </BottomContainer>
             {props.isVisited === "tokenDescription" && props.tokenData?.tokenDescription === "" ? (
               <p className="shown-error">
                 {validationsMessages.VALIDATE_DESCRIPTION_FIELD}
