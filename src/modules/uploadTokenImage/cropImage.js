@@ -22,7 +22,7 @@ export default async function GetCroppedImg(imageSrc, pixelCrop, rotation = 0) {
 
   ctx.translate(safeArea , safeArea )
   ctx.translate(-safeArea , -safeArea )
-
+  ctx.fillStyle = "rgb(200,0,0)";
   ctx.drawImage(
     image,
     safeArea - image.width ,
@@ -40,7 +40,7 @@ export default async function GetCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   )
 
   // As Base64 string
-  const dataUrl = canvas.toDataURL('image/jpeg')
+  const dataUrl = canvas.toDataURL('image/png')
   const fileName = JSON.stringify(new Date().getTime())+".png"
   console.log("datr-name",fileName)
 

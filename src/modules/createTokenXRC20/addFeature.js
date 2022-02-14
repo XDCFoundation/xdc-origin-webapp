@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
-import { addFeaturesContent, apiSuccessConstants } from "../../constants";
+import {
+  addFeaturesContent,
+  apiSuccessConstants,
+  validationsMessages,
+} from "../../constants";
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import { handleNavItem } from "../../action";
@@ -197,8 +201,8 @@ const BackImgDiv = styled.img`
 `;
 
 const DeployImgDiv = styled.img`
-  width: 15px;
-  height: 15px;
+  width: 24px;
+  height: 24px;
   opacity: 1;
 
   @media (min-width: 0px) and (max-width: 767px) {
@@ -218,7 +222,10 @@ const DraftImgDiv = styled.img`
 
 const BackText = styled.div`
   text-align: right;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #4b4b4b;
   opacity: 1;
@@ -266,7 +273,10 @@ const DeployButton = styled.button`
 
 const DeployText = styled.div`
   text-align: left;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
@@ -300,7 +310,10 @@ const SaveDraftButton = styled.button`
 
 const SaveDraftText = styled.div`
   text-align: left;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #4b4b4b;
   opacity: 1;
@@ -330,7 +343,7 @@ function AddFeatures(props) {
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       image: "/images/Pause_Contract.png",
-      checked: true,
+      checked: props.tokenData.pausable ? props.tokenData.pausable : true,
       content: addFeaturesContent.PAUSABLE_CONTENT,
     },
     {
@@ -339,7 +352,7 @@ function AddFeatures(props) {
       image: "/images/Burnable.svg",
       checkImage: "/images/Empty-Circle.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
-      checked: true,
+      checked: props.tokenData.burnable ? props.tokenData.burnable : true,
       content: addFeaturesContent.BURNABLE_CONTENT,
     },
     {
@@ -348,7 +361,7 @@ function AddFeatures(props) {
       image: "/images/Mintable.svg",
       activeCheckImage: "/images/Selected-Circle.svg",
       checkImage: "/images/Empty-Circle.svg",
-      checked: true,
+      checked: props.tokenData.mintable ? props.tokenData.mintable : true,
       content: addFeaturesContent.MINTABLE_CONTENT,
     },
   ];
@@ -360,18 +373,28 @@ function AddFeatures(props) {
       item.id !== id ? item : { ...item, checked: !item.checked }
     );
     setArr(newData);
+
+    let checked = arr.map((item) =>
+    item.id === id ? { checked: !item.checked } : { checked: item.checked }
+    );
+    props.handleChange({
+      target: {
+        value: "fromFeature"
+      },
+      checked
+    })
   };
 
   const notifyNameErrorMessage = () =>
-    toast.error("Token with this name already exists!", {
+    toast.error(validationsMessages.TOKEN_NAME_ERROR_MESSAGE, {
       duration: 4000,
-      position: "top-center",
+      position: validationsMessages.TOASTS_POSITION,
       className: "toast-div-address",
     });
   const notifySymbolErrorMessage = () =>
-    toast.error("Token with this symbol already exists!", {
+    toast.error(validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE, {
       duration: 4000,
-      position: "top-center",
+      position: validationsMessages.TOASTS_POSITION,
       className: "toast-div-address",
     });
 
@@ -401,20 +424,25 @@ function AddFeatures(props) {
       isPausable: props.tokenData.pausable,
       website: props.tokenData.website || "",
       twitter: props.tokenData.twitter || "",
-      telegram: props.tokenData.telegram || ""
+      telegram: props.tokenData.telegram || "",
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
     // console.log('res', res)
-    if (res !== 0 && res !== "Token with this name already exists!" && res !== "Token with this symbol already exists!") {
+    if (
+      res !== 0 &&
+      res !== validationsMessages.TOKEN_NAME_ERROR_MESSAGE &&
+      res !== validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE
+    ) {
       props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res });
-    } else if (res === "Token with this name already exists!") {
-      notifyNameErrorMessage()
-    } else if (res === "Token with this symbol already exists!") {
-      notifySymbolErrorMessage()
     }
+    // else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
+    //   notifyNameErrorMessage();
+    // } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
+    //   notifySymbolErrorMessage();
+    // }
   };
 
   const saveAsDraftbyEdit = async (e) => {
@@ -434,7 +462,7 @@ function AddFeatures(props) {
       isPausable: props.tokenData.pausable,
       website: props.tokenData.website || "",
       twitter: props.tokenData.twitter || "",
-      telegram: props.tokenData.telegram || ""
+      telegram: props.tokenData.telegram || "",
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
@@ -456,14 +484,15 @@ function AddFeatures(props) {
 
   return (
     <>
-      <div><Toaster /></div>
+      <div>
+        <Toaster />
+      </div>
       <Parent>
         <Column>
           <RowTwo>
             <SpanOne>Select Feature For Your Token</SpanOne>
             <SpanTwo>
-              Choose the additional Functionality you want added to your smart
-              contract code
+            Choose the additional functionality you want to be added to your token’s smart contract.
             </SpanTwo>
           </RowTwo>
 
@@ -518,10 +547,9 @@ function AddFeatures(props) {
   );
 }
 
-
 const mapDispatchToProps = (dispatch) => ({
   setActiveNavItem: (isActive) => {
-    dispatch(handleNavItem(isActive))
+    dispatch(handleNavItem(isActive));
   },
 });
 

@@ -9,6 +9,8 @@ import { useDropzone } from "react-dropzone";
 import AWSServices from "../../services/aws-service";
 import Cropper from "react-easy-crop";
 import GetCroppedImg from "./cropImage";
+import { CircularProgress} from "@material-ui/core";
+import { transparent } from "material-ui/styles/colors";
 
 const Header = styled.div`
   display: flex;
@@ -106,6 +108,19 @@ const UploadButton = styled.button`
   opacity: 1;
   margin-left: 3%;
 `;
+const UploadButtonDisable = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 121px;
+  height: 44px;
+  background: #3163f0 0% 0% no-repeat padding-box;
+  border-width: 0px;
+  border-radius: 4px;
+  opacity: 1;
+  margin-left: 3%;
+  cursor: not-allowed;
+`;
 
 const ContentText = styled.div`
   text-align: center;
@@ -138,7 +153,7 @@ const TokenImage = styled.div`
   width: 264px;
   height: 264px;
   position: "relative";
-  background: #000000 0% 0% no-repeat padding-box;
+  background: none;
   overflow: hidden;
   top: 100px;
   left: 200px;
@@ -176,6 +191,18 @@ const FileError = styled.span`
   color: #ff0000;
   opacity: 1;
 `;
+const Loader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 70px;
+  left: 225px;
+`;
+
+const Span = styled.span`
+  color: #1f1f1f;
+`;
 
 const zoomStep = 0.05;
 const maxScale = 5;
@@ -194,6 +221,7 @@ export default function UploadTokenImage(props) {
   const [croppedImage, setCroppedImage] = React.useState("");
   const [crop, setCrop] = React.useState({ x: 1, y: 1 });
   const [zoom, setZoom] = React.useState(1);
+  const [isUploading, setIsUploading] = React.useState(false);
 
   const s3Bucket = process.env.REACT_APP_S3_BUCKET_NAME;
 
@@ -242,10 +270,12 @@ export default function UploadTokenImage(props) {
       "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" +
       awsFile.sourceFileName;
     props.handleUploadClose(obtainUrl);
+    setIsUploading(false);
   };
 
   const showCroppedImage = useCallback(async () => {
     try {
+      setIsUploading(true);
       const croppedImage = await GetCroppedImg(filePreview, croppedAreaPixels);
       setFile({ content: croppedImage });
       setCroppedImage(croppedImage);
@@ -270,7 +300,7 @@ export default function UploadTokenImage(props) {
 
     const { getInputProps, getRootProps, fileRejections } = useDropzone({
       onDrop,
-      accept: "image/jpeg, image/png, image/jpg",
+      accept: "image/png",
     });
 
     const fileRejectionItems = fileRejections.map(({ file, errors }) => (
@@ -291,18 +321,27 @@ export default function UploadTokenImage(props) {
 
     if (!upload) {
       return (
-        <Content>
-          <UploadCircle {...getRootProps()}>
-            <input {...getInputProps()} />
-            <UploadIcon src="/images/Upload.svg"></UploadIcon>
-            <UploadText>Drag and drop your token icon here</UploadText>
-          </UploadCircle>
-          <ContentText>or</ContentText>
-          <UploadPhoto {...getRootProps()}>
-            <input {...getInputProps()} />
-            <ButtonName>Upload a photo</ButtonName>
-          </UploadPhoto>
-        </Content>
+        <>
+          {isUploading ? (
+            <Loader>
+              <CircularProgress />
+            </Loader>
+          ) : (
+            ""
+          )}
+          <Content>
+            <UploadCircle {...getRootProps()}>
+              <input {...getInputProps()} />
+              <UploadIcon src="/images/Upload.svg"></UploadIcon>
+              <UploadText>Drag and drop your token icon here</UploadText>
+            </UploadCircle>
+            <ContentText>or</ContentText>
+            <UploadPhoto {...getRootProps()}>
+              <input {...getInputProps()} />
+              <ButtonName>Upload a photo</ButtonName>
+            </UploadPhoto>
+          </Content>
+        </>
       );
     } else {
       return (
@@ -316,7 +355,7 @@ export default function UploadTokenImage(props) {
           ) : (
             <Content>
               <TokenImage>
-                <Cropper
+                <Cropper 
                   image={filePreview}
                   crop={crop}
                   zoom={scale}
@@ -324,14 +363,15 @@ export default function UploadTokenImage(props) {
                   onCropChange={setCrop}
                   onCropComplete={onCropComplete}
                   onZoomChange={setZoom}
+                  
                   showGrid={false}
-                  cropSize={{ width: 220, height: 220 }}
-                  cropShape="round"
+                  cropSize={{ width: 270, height: 270}}
+                  // cropShape="round"
                   objectFit={"horizontal-cover" || "vertical-cover"}
                   disableAutomaticStylesInjection={true}
                 />
               </TokenImage>
-              <CropImage>
+              {/* <CropImage>
                 <ControlButtons onClick={zoomOut}>
                   <img src="/images/Minus-Icon.svg"></img>
                 </ControlButtons>
@@ -353,7 +393,7 @@ export default function UploadTokenImage(props) {
                 <ControlButtons onClick={zoomIn}>
                   <Plus src="/images/Token_Image.svg"></Plus>
                 </ControlButtons>
-              </CropImage>
+              </CropImage> */}
             </Content>
           )}
         </>
@@ -367,7 +407,7 @@ export default function UploadTokenImage(props) {
         {" "}
         {/**change true to state "open" while integrating */}
         <Header>
-          <DialogTitle>Upload Token Image</DialogTitle>
+          <DialogTitle><Span>Upload Token Image</Span></DialogTitle>
           <Cross
             onClick={(e) => props.handleUploadClose(e)}
             src="/images/Cross.svg"
@@ -380,9 +420,17 @@ export default function UploadTokenImage(props) {
             <Cancel onClick={(e) => props.handleUploadClose(e)}>
               <CancelName>Cancel</CancelName>
             </Cancel>
-            <UploadButton onClick={showCroppedImage}>
-              <UploadName>Upload</UploadName>
-            </UploadButton>
+            {
+              upload ? (
+              <UploadButton onClick={showCroppedImage}>
+                <UploadName>Upload</UploadName>
+              </UploadButton>
+              ) : (
+              <UploadButtonDisable >
+                <UploadName>Upload</UploadName>
+              </UploadButtonDisable>
+              )
+            }
           </Buttons>
         </ContentContainer>
       </Dialog>

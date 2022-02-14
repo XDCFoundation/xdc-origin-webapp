@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { Row, Column } from "simple-flexbox";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -6,6 +7,8 @@ import { Tooltip, Fade,createTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import AddToXDCPayPopup from "./addToXDCPayPopup";
+import { handleNavItem, handleSubNavItem, handleSubNavToken } from "../../action";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -212,6 +215,8 @@ const ButtonManageToken = styled.button`
   border-width: 0px;
   color: #ffffff;
   opacity: 1;
+  width: 211px;
+  height: 50px;
   @media (max-width: 768px) {
     order: 1;
     width: 100%;
@@ -271,7 +276,7 @@ const theme = createTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: "12px",
+        fontSize: "16px",
         color: "#4B4B4B",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 3px 12px #0000001A",
@@ -293,9 +298,15 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateToken = (props) => {
+  const history = useHistory()
   const classes = useStyles();
 
+  let coinMarketPrice = props?.priceValue || ""
+  let tokenMinted = (props.location?.parsingSupply)?.toFixed(2)?.replace(/\d(?=(\d{3})+\.)/g, '$&,')?.split('.')[0];
+  // console.log('h---',tokenMinted)
+
   let gasFee;
+  let usdPriceValue;
   let gweiValue;
   let transactionAddress;
   let contractAddress;
@@ -306,6 +317,7 @@ const CreateToken = (props) => {
   if (props.user.accountDetails.network === "XDC Apothem Testnet") {
     let gasPrice = Number(props.location?.gasPrice);
     gasFee = (gasPrice * props.location.state?.gasUsed) / Math.pow(10, 18);
+    usdPriceValue = gasFee?.toFixed(8) * coinMarketPrice;
     gweiValue = gasPrice / Math.pow(10, 9);
 
     transactionAddress =
@@ -329,6 +341,7 @@ const CreateToken = (props) => {
     // For Mainnet
     let gasPrice = Number(props.location?.gasPrice);
     gasFee = (gasPrice * props.location?.obtainGasUsed) / Math.pow(10, 18);
+    usdPriceValue = gasFee?.toFixed(8) * coinMarketPrice;
     gweiValue = gasPrice / Math.pow(10, 9);
 
     transactionAddress =
@@ -338,12 +351,14 @@ const CreateToken = (props) => {
         props.location?.obtainTxnHash.length - 4
       );
     
-    contractAddress = props.location?.obtainContractAddress;
+    contractAddress = props.location?.obtainContractAddress !== undefined ? props.location?.obtainContractAddress : ""
+    // console.log('h---',contractAddress)
     
     newContractAddress =
       contractAddress?.slice(0, 26) +
       "..." +
       contractAddress?.substr(contractAddress?.length - 4);
+      // console.log('new---',newContractAddress)
   } 
 
   const [open, setOpen] = useState(false);
@@ -361,7 +376,7 @@ const CreateToken = (props) => {
 
   const handleTransactionHash = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/txs/${props.location?.obtainTxnHash}`, '_blank');
+      window.open(`https://observer.xdc.org/transaction-details/${props.location?.obtainTxnHash}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
       window.open(`https://explorer.apothem.network/txs/${props.location?.state?.transactionHash}`, '_blank');
     }
@@ -369,22 +384,35 @@ const CreateToken = (props) => {
 
   const handleContractAddress = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://explorer.xinfin.network/address/${contractAddress}`, '_blank');
+      window.open(`https://observer.xdc.org/token-data/${contractAddress}/${props.location?.tokenSymbol}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
       window.open(`https://explorer.apothem.network/address/${contractAddress}`, '_blank');
     }
   }
 
+  const [isPopUpOpen, setIsPopUPOpen] = useState(false);
+ 
+  const togglePopup = () => {
+    setIsPopUPOpen(!isPopUpOpen);
+  }
+
+  const handleManageRedirect = () => {
+    props.setActiveNavItem("manage");
+    props.setSubNavItem(false);
+    props.setSubNavToken("");
+    history.push('/manage-contracts')
+  }
+
   return (
     <MuiThemeProvider theme={defaultTheme}>
-    <>
+      <>
       <BgContainer>
         <ParentContainer>
           <SuccessTokenIcon>
             <img src="images/Success.svg"></img>
           </SuccessTokenIcon>
           <SuccessTokenText>
-            Successfully Created {props.location?.createdToken || ""} Token
+            Successfully Created {props.location?.createdToken || ""}
           </SuccessTokenText>
           <SuccessTokenDetails>
             <SuccessRows>
@@ -434,7 +462,7 @@ const CreateToken = (props) => {
                 Contract Address:
               </SuccessTokenKey>
               <SuccessTokenValues onClick={() => handleContractAddress()}>
-                {newContractAddress || ""}
+                {newContractAddress}
               </SuccessTokenValues>
               <Tooltip
                 title={openAddress ? "Copied" : "Copy To Clipboard"}
@@ -465,7 +493,7 @@ const CreateToken = (props) => {
               </MuiThemeProvider>
                 Tokens Minted:
               </SuccessTokenKey>
-              <ValueDiv>{props.location?.parsingSupply || ""}</ValueDiv>
+              <ValueDiv>{tokenMinted || ""}</ValueDiv>
             </SuccessRows>
             <LineSeparation></LineSeparation>
             <SuccessRows>
@@ -483,23 +511,24 @@ const CreateToken = (props) => {
                 Gas Fee:
               </SuccessTokenKey>
               <ValueDiv>
-                {gasFee?.toFixed(8)  + " " + "XDC" + "" + "(" + (gweiValue || "") + " " + "Gwei)"}
+                {isNaN(gasFee) ? "N/A" : (gasFee?.toFixed(8)  + " " + "XDC" + " " + "(" + '$' + usdPriceValue?.toFixed(8) + ")")}
               </ValueDiv>
             </SuccessRows>
           </SuccessTokenDetails>
           <Buttons>
-            {/* <ButtonAddToXDCPay>
+            <ButtonAddToXDCPay onClick={togglePopup}>
               <ButtonContent>
                 <ButtonName>Add to XDCPay</ButtonName>
                 <ButtonIcon src="images/XDC-Icon-128X128.svg"></ButtonIcon>
               </ButtonContent>
-            </ButtonAddToXDCPay> */}
-            {/* <ButtonManageToken>
+            </ButtonAddToXDCPay>
+            {isPopUpOpen && <AddToXDCPayPopup isOpen={isPopUpOpen} handleClose={togglePopup}/>}
+            <ButtonManageToken onClick={() => handleManageRedirect()}>
               <ButtonContent>
                 Manage Token
                 <ButtonIcon src="images/Button_Next_Arrow.svg"></ButtonIcon>
               </ButtonContent>
-            </ButtonManageToken> */}
+            </ButtonManageToken>
           </Buttons>
         </ParentContainer>
       </BgContainer>
@@ -512,4 +541,16 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps)(CreateToken);
+const mapDispatchToProps = (dispatch) => ({
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive))
+  },
+  setSubNavItem: (subNavItems) => {
+    dispatch(handleSubNavItem(subNavItems))
+  },
+  setSubNavToken: (isSubNavActive) => {
+    dispatch(handleSubNavToken(isSubNavActive))
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateToken);

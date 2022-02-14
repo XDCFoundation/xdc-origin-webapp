@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import BasicInfoPage from "./basicInformation";
 import numberToWords from "number-to-words";
 import { Tooltip, Fade, createTheme } from "@material-ui/core";
 import Utils from "../../utility";
+import {
+  apiBodyMessages,
+  apiSuccessConstants,
+  validationsMessages,
+  toolTipContentMessages,
+} from "../../constants";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
+import toast, { Toaster } from "react-hot-toast";
 
 const Parent = styled.div`
   display: flex;
@@ -94,6 +101,11 @@ const InputDiv = styled.input`
   :focus {
     outline: 2px solid #8ca6f0;
   }
+  ::-webkit-inner-spin-button, 
+  ::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
   }
@@ -171,7 +183,10 @@ const ImgDiv = styled.img`
 `;
 const BackText = styled.div`
   text-align: right;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #4b4b4b;
   opacity: 1;
@@ -181,7 +196,10 @@ const BackText = styled.div`
 `;
 const ContinueText = styled.div`
   text-align: left;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
@@ -200,7 +218,7 @@ const theme = createTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: "12px",
+        fontSize: "16px",
         color: "#4B4B4B",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 3px 12px #0000001A",
@@ -223,25 +241,41 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Tokenomics(props) {
   const classes = useStyles();
+  const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
 
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
+
+  const supplyErrorMessage = () =>
+  toast.error(validationsMessages.VALIDATE_INITIAL_SUPPY_FIELD, {
+    duration: 4000,
+    position: validationsMessages.TOASTS_POSITION,
+    className: "toast-div-address",
+  });
 
   const saveAndContinue = (e) => {
+    if (props.tokenData?.tokenInitialSupply === undefined) {
+      supplyErrorMessage();
+    }
     props.handleChange(e);
-    if (props.tokenData.tokenInitialSupply > 0 && props.tokenData.tokenInitialSupply !== undefined) {
+    if (
+      props.tokenData.tokenInitialSupply >= 1 &&
+      props.tokenData.tokenInitialSupply !== undefined
+    ) {
       props.nextStep(e);
     }
   };
 
   let convertedNumber = numberToWords?.toWords(
     props?.tokenData?.tokenInitialSupply || 0
-  );
-  // console.log('num-----',convertedNumber)
+  )
+  // let news = convertedNumber?.split(',')[0]
+  // console.log('num-----',news+" "+'Approx')
 
   return (
     <>
+    <div><Toaster/></div>
       <Parent>
         <Column>
           <RowTwo>
@@ -255,7 +289,7 @@ export default function Tokenomics(props) {
               Initial Supply<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Number of tokens available initially."
+                  title={toolTipContentMessages.TOKEN_SUPPLY_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -270,6 +304,8 @@ export default function Tokenomics(props) {
               onChange={(e) => props.handleChange(e)}
               name="tokenInitialSupply"
               value={props.tokenData.tokenInitialSupply}
+              onInput={(e) => (e.target.value = e.target.value.slice(0, 16))}
+              onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()}
             />
             {props.tokenData.tokenInitialSupply > 0 ? (
               <BlurTextDiv>{convertedNumber}</BlurTextDiv>
@@ -279,8 +315,8 @@ export default function Tokenomics(props) {
             <BlurTextDiv>
               Insert the initial numbers of tokens available
             </BlurTextDiv>
-            {props.tokenData.tokenInitialSupply <= 0 ? (
-              <p className="shown-error">Supply should be more than 0</p>
+            {props.tokenData.tokenInitialSupply < 1 ? (
+              <p className="shown-error">Supply should not be less than 1</p>
             ) : (
               ""
             )}
