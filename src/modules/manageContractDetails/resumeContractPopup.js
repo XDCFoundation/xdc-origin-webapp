@@ -283,7 +283,7 @@ function ResumeContract(props) {
                     </DialogHeader>
                     <Line />
                     <Header>
-                      Do you want to resume the MetaVerse
+                      Do you want to resume the {props.tokenName}
                       <br /> Contract? All transactions will be allowed again.
                     </Header>
                     <ButtonContainer>

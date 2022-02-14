@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import BasicInfoPage from "./basicInformation";
 import numberToWords from "number-to-words";
@@ -241,6 +241,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Tokenomics(props) {
   const classes = useStyles();
+  const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -304,6 +305,7 @@ export default function Tokenomics(props) {
               name="tokenInitialSupply"
               value={props.tokenData.tokenInitialSupply}
               onInput={(e) => (e.target.value = e.target.value.slice(0, 16))}
+              onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()}
             />
             {props.tokenData.tokenInitialSupply > 0 ? (
               <BlurTextDiv>{convertedNumber}</BlurTextDiv>

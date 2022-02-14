@@ -13,6 +13,8 @@ import {
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
+import toast, { Toaster } from "react-hot-toast";
+
 
 const DialogContainer = styled.div`
   width: 466px;
@@ -97,6 +99,23 @@ const DeleteButton = styled.button`
   opacity: 1;
   outline: none;
   border: none;
+`;
+const DeleteButtonDisable = styled.div`
+  width: 121px;
+  height: 44px;
+  background: #3163f0 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  text-align: center;
+  font: normal normal medium 18px/21px Inter;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 0.7;
+  outline: none;
+  border: none;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 const Header = styled.div`
   display: flex;
@@ -205,8 +224,16 @@ function BurnContract(props) {
   let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
-    setSteps(2);
-    sendTransaction();
+    if(inputToken > props.tokenInitialSupply){
+      toast.error(validationsMessages.INITIAL_SUPPLY_LIMIT_FOR_BURN_ERROR, {
+        duration: 2000,
+        position: validationsMessages.TOASTS_POSITION,
+        className: "toast-div-address",
+      });
+    } else{
+      setSteps(2);
+      sendTransaction();
+    }
   };
 
   // function to open xdc pay extension:
@@ -298,6 +325,7 @@ function BurnContract(props) {
 
   return (
     <>
+      <div><Toaster /></div>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -332,7 +360,11 @@ function BurnContract(props) {
                       <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
-                      <DeleteButton onClick={handleSteps}>Burn</DeleteButton>
+                      {inputToken !== '' ? (
+                        <DeleteButton onClick={handleSteps}>Burn</DeleteButton>
+                      ) : (
+                        <DeleteButtonDisable>Burn</DeleteButtonDisable>
+                      )}
                     </ButtonContainer>
                   </DialogContainer>
                 </>

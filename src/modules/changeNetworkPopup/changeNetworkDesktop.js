@@ -109,12 +109,12 @@ function FormDialog(props) {
         <Dialog className="display-pop-up" open={true}> {/* given value true is hardcoded. will update while integration */}
           <Header>
             <DialogTitle>Change Network</DialogTitle>
-            <Cross onClick={() => props.handleClose()} src="images/Cross.svg"></Cross>
+            <Cross onClick={() => props.handleClose()} src="/images/Cross.svg"></Cross>
           </Header>
           <Content>
             <NetworkChangeContainer>
               <DropdownContainer>
-                <img src="images/XDC-Icon-128X128.svg"></img>
+                <img src="/images/XDC-Icon-128X128.svg"></img>
                 <NetworksDrop disabled>
                   <option value="XDC Apothem TestNet">
                     {props.userDetails?.accountDetails?.network}
