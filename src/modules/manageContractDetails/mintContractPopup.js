@@ -100,6 +100,23 @@ const DeleteButton = styled.button`
   outline: none;
   border: none;
 `;
+const DeleteButtonDisable = styled.div`
+  width: 121px;
+  height: 44px;
+  background: #3163f0 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  text-align: center;
+  font: normal normal medium 18px/21px Inter;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 0.7;
+  outline: none;
+  border: none;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const Header = styled.div`
   display: flex;
   align-items: center;
@@ -198,14 +215,14 @@ const useStyles = makeStyles({
 function MintContract(props) {
   const [steps, setSteps] = useState(1);
   const classes = useStyles();
-  const [inputToken, setInputToken] = useState();
+  const [inputToken, setInputToken] = useState(null);
   const [confirmMint, setConfirmMint] = useState(false);
 
   let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
     /xdc/,
     "0x"
   );
-  const [inputAddress, setInputAddress] = useState();
+  const [inputAddress, setInputAddress] = useState(null);
 
   // let givenContractAddress;
 
@@ -369,7 +386,11 @@ function MintContract(props) {
                       <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
-                      <DeleteButton onClick={handleSteps}>Mint</DeleteButton>
+                      {inputToken !== null && inputAddress !== null ? (
+                        <DeleteButton onClick={handleSteps}>Mint</DeleteButton>
+                      ) : (
+                        <DeleteButtonDisable>Mint</DeleteButtonDisable>
+                      )}
                     </ButtonContainer>
                   </DialogContainer>
                 </>

@@ -833,6 +833,7 @@ function manageContractDetails(props) {
           isOpen={isResumeOpen}
           handleClose={toggleResumePopup}
           deployedContract={props.deolyedTokenDetails}
+          tokenName={props.deolyedTokenDetails?.tokenName}
         />
       )}
       {isBurnOpen && (
@@ -840,6 +841,7 @@ function manageContractDetails(props) {
           isOpen={isBurnOpen}
           handleClose={toggleBurnPopup}
           deployedContract={props.deolyedTokenDetails}
+          tokenInitialSupply={props.deolyedTokenDetails?.tokenInitialSupply}
         />
       )}
       {isMintOpen && (
@@ -854,6 +856,7 @@ function manageContractDetails(props) {
           isOpen={isTransferOpen}
           handleClose={toggleTransferPopup}
           deployedContract={props.deolyedTokenDetails}
+          tokenName={props.deolyedTokenDetails?.tokenName}
         />
       )}
     </>

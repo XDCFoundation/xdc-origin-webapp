@@ -63,6 +63,7 @@ export const validationsMessages = {
     VALIDATE_BROWSER_LOGIN: "Please Login To XDCPay !",
     VALIDATE_BROWSER_REDIRECTING: "Redirect To Download XDC PAY App !",
     INITIAL_SUPPLY_LIMIT_ERROR: "Initial Supply limit reached",
+    INITIAL_SUPPLY_LIMIT_FOR_BURN_ERROR: "Number of tokens should be less than initial supply",
 }
 
 export const toolTipContentMessages = {

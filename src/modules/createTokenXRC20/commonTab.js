@@ -244,6 +244,7 @@ function CommonTab(props) {
   const [imgData, setImgData] = useState("");
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isVisited, setIsVisited] = useState("");
+  const [limit, setLimit] = useState(false);
 
   const toggleUploadPopup = (imageData) => {
     setIsUploadOpen(!isUploadOpen);
@@ -291,11 +292,14 @@ function CommonTab(props) {
   const handleChange = (e) => {
     setIsVisited(e.target.name);
     if (e.target.value !== "fromFeature" && e.target.name === "tokenInitialSupply" && e.target.value.length >= 16) {
-      toast.error(validationsMessages.INITIAL_SUPPLY_LIMIT_ERROR, {
-        duration: 2000,
-        position: validationsMessages.TOASTS_POSITION,
-        className: "toast-div-address",
-      });
+      if(limit === false){
+        toast.error(validationsMessages.INITIAL_SUPPLY_LIMIT_ERROR, {
+          duration: 2000,
+          position: validationsMessages.TOASTS_POSITION,
+          className: "toast-div-address",
+        });
+        setLimit(true);
+      }
     }
     setTokenData({
       ...tokenData,
