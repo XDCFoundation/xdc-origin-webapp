@@ -12,7 +12,9 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Tooltip, Fade, createTheme } from "@material-ui/core";
+import { Tooltip, Fade } from "@material-ui/core";
+import { history } from "../../managers/history";
+import { CircularProgress } from "@material-ui/core";
 
 const Container = styled.div`
   width: 100vw;
@@ -25,6 +27,7 @@ const Container = styled.div`
 `;
 const MainContainer = styled.div`
   margin: 34px 185px 46px 185px;
+  padding:  0 20px 0 20px;
   height: auto;
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 6px;
@@ -45,6 +48,7 @@ const MainContainer = styled.div`
 const Img = styled.img`
   width: 35px;
   height: 35px;
+  border-radius: 50%;
 `;
 const Button = styled.button`
   width: 90px;
@@ -62,7 +66,7 @@ const Button = styled.button`
 const Heading = styled.span`
   margin-top: 37px;
   margin-left: 185px;
-  width: 250px;
+  /* width: 250px; */
   height: 34px;
   text-align: left;
   font: normal normal 600 28px/34px Inter;
@@ -95,6 +99,16 @@ const CopyIcon = styled.img`
     color: pink;
   }
 `;
+const EmptyRow = styled.div`
+  height: 168px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #808080;
+`;
 
 const useStyles = makeStyles({
   table: {
@@ -114,96 +128,119 @@ const useStyles = makeStyles({
   },
   address: {
     color: "#3163F0 !important",
+    cursor: "pointer",
   },
   tokenIcon: {
     minWidth: "94px",
   },
+  tableCell: {
+    borderBottom: "none",
+  }
 });
 
-const rows = [
-  {
-    tokenIcon: "",
-    tokenName: "MetaVerse",
-    tokenSymbol: "META",
-    network: "XDC Apothem Testnet",
-    contractAddress: "xdc5e6d170445cea1e9bf1bad…a2a1",
-  },
-  {
-    tokenIcon: "",
-    tokenName: "MetaVerse",
-    tokenSymbol: "META",
-    network: "XDC Apothem Testnet",
-    contractAddress: "xdc5e6d170445cea1e9bf1bad…a2a1",
-  },
-];
-
-function manageContracts() {
+function manageContracts(props) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const handleTooltipOpen = () => {
+  const [id, setId] = useState(null);
+  const handleTooltipOpen = (e, id) => {
+    e.stopPropagation();
     setOpen(true);
+    setId(id);
   };
+
+  const handleContractAddress = (contractAddress, tokenSymbol) => {
+    let address = contractAddress.replace(/0x/, "xdc");
+
+    if (props?.network === "XDC Mainnet") {
+      window.open(`https://observer.xdc.org/token-data/${contractAddress}/${tokenSymbol}`, '_blank');
+    } else if (props?.network === "XDC Apothem Testnet") {
+      window.open(`https://explorer.apothem.network/address/${address}`, '_blank');
+    }
+  }
+
   return (
     <Container>
-      <Heading>Manage Contracts</Heading>
+      <Heading>Manage Deployed Tokens</Heading>
       <MainContainer>
-        <TableContainer component={Paper}>
+        <TableContainer sx={{ boxShadow: 0 }}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell className={classes.tokenIcon} width="8%">
+                <TableCell className={classes.tokenIcon} width={props.deolyedXrc20TokenDetails.length === 0 ? "0%" : "8%"}>
                   Token Icon
                 </TableCell>
-                <TableCell width="10%" align="left">
+                <TableCell width={props.deolyedXrc20TokenDetails.length === 0 ? "0%" : "10%"} align="left">
                   Token Name
                 </TableCell>
-                <TableCell width="12%" align="left">
+                <TableCell width={props.deolyedXrc20TokenDetails.length === 0 ? "0%" : "12%"} align="left">
                   Token Symbol
                 </TableCell>
-                <TableCell width="15%" align="left">
+                <TableCell width={props.deolyedXrc20TokenDetails.length === 0 ? "18%" : "15%"} align="left">
                   Network
                 </TableCell>
-                <TableCell width="25%" align="left">
+                <TableCell width={props.deolyedXrc20TokenDetails.length === 0 ? "0%" : "25%"} align="left">
                   Contract Address
                 </TableCell>
-                <TableCell width="10%" align="left"></TableCell>
+                {props.deolyedXrc20TokenDetails.length === 0 ? "" : (
+                  <TableCell width="10%" align="left"></TableCell>
+                )}
               </TableRow>
             </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">
-                    <Img src="/images/XDC_sky_blue.svg" alt="" />
-                  </TableCell>
-                  <TableCell align="left">{row.tokenName}</TableCell>
-                  <TableCell align="left">{row.tokenSymbol}</TableCell>
-                  <TableCell align="left">{row.network}</TableCell>
-                  <TableCell className={classes.address} align="left">
-                    {row.contractAddress}
-                    <Tooltip
-                      title={open ? "Copied" : "Copy To Clipboard"}
-                      placement="top"
-                      arrow
-                      TransitionComponent={Fade}
-                      TransitionProps={{ timeout: 600 }}
-                    >
-                      <CopyToClipboard text={row.contractAddress || ""}>
-                        <CopyIcon
-                          src="/images/Copy.svg"
-                          onClick={handleTooltipOpen}
-                        />
-                      </CopyToClipboard>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Button>Manage</Button>
-                  </TableCell>
-                </TableRow>
+
+            {props.deolyedXrc20TokenDetails &&
+              props.deolyedXrc20TokenDetails.map((row,index) => (
+                <TableBody>
+                  <TableRow key={row.name}>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} component="th" scope="row">
+                      <Img src={row.tokenImage} alt="" />
+                    </TableCell>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} align="left">{row.tokenName}</TableCell>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} align="left">{row.tokenSymbol}</TableCell>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} align="left">{row.network}</TableCell>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? `${classes.tableCell} ${classes.address}` : classes.address} align="left" onClick={() => handleContractAddress(row.smartContractAddress, row.tokenSymbol)}>
+                        {row.smartContractAddress.slice(0, 26) +
+                          "..." +
+                        row.smartContractAddress.substr(
+                          row.smartContractAddress?.length - 4
+                        )}
+                      <Tooltip
+                        title={open && id === row.id ? "Copied" : "Copy To Clipboard"}
+                        placement="top"
+                        arrow
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                      >
+                        <CopyToClipboard text={row.smartContractAddress || ""}>
+                          <CopyIcon
+                            src="/images/Copy.svg"
+                            onClick={(e) => handleTooltipOpen(e,row.id)}
+                          />
+                        </CopyToClipboard>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell className={index === props.deolyedXrc20TokenDetails.length-1 ? classes.tableCell : ""} align="left">
+                      <Button onClick={() => history.push({
+                        pathname: "/manage-contract-details",
+                        state: {
+                          id: row.id,
+                        }
+                      })}>Manage</Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
               ))}
-            </TableBody>
           </Table>
         </TableContainer>
+        {props.state?.isLoading ? (
+          <EmptyRow>
+            <CircularProgress />
+          </EmptyRow>
+        ) : (
+            props.deolyedXrc20TokenDetails.length === 0 ? (
+              <EmptyRow>No Contracts Available</EmptyRow>
+          ) : ""
+        )}
       </MainContainer>
     </Container>
   );

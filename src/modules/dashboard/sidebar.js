@@ -28,6 +28,9 @@ function Sidebar(props) {
       
       if(navItem === "deploy")
         history.push("/deploy-contract")
+      
+      if(navItem === "manage")
+        history.push("/manage-contracts")
     }
   };
 
@@ -37,6 +40,7 @@ function Sidebar(props) {
   };
 
   const handleBtn = () => {
+    props.setActiveNavItem("faq");
     history.push("/FAQ");
   }
   const logout = () => {
@@ -76,7 +80,7 @@ function Sidebar(props) {
               <Icon src="/images/CreateContract_Inactive.svg" />
             )}
             <Heading className={props.userAccountDetails?.activeNavItem === "create" ? "activeText" : ""}>
-              Create Contract
+              Create Token
             </Heading>
           </Wrapper>
           {props.userAccountDetails?.subNavItems ? (
@@ -153,21 +157,21 @@ function Sidebar(props) {
               }
             >
               {" "}
-              Deploy Contracts
+              Deploy Saved Tokens
             </Heading>
           </Wrapper>
           <Wrapper
-            id="manage-contract-hide"
-            className={isActive === "manage" ? "activeNavItem" : ""}
+            className={props.userAccountDetails?.activeNavItem === "manage" ? "activeNavItem" : ""}
             onClick={() => changeBackgound("manage")}
+            id="extraWidth"
           >
-            {isActive === "manage" ? (
-              <Icon src="/images/ManageContract_Active.svg" />
+            {props.userAccountDetails?.activeNavItem === "manage" ? (
+              <Icon id="manageIcon" src="/images/ManageContract_Active.svg" />
             ) : (
-              <Icon src="/images/ManageContract_InActive.svg" />
+              <Icon id="manageIcon" src="/images/Inactive-ManageContract.svg" />
             )}
-            <Heading className={isActive === "manage" ? "activeText" : ""}>
-              Manage Contracts
+            <Heading  className={props.userAccountDetails?.activeNavItem === "manage" ? "activeText" : ""}>
+              Manage Deployed Tokens
             </Heading>
           </Wrapper>
         </>
@@ -176,33 +180,65 @@ function Sidebar(props) {
       )}
 
       {window.innerWidth <= 768 ? (
-        <Wrapper
-        onClick={handleBtn}
-          className={
-            props.userAccountDetails?.subNavItems
-              ? "faq-margin-create"
-              : props.userAccountDetails?.accountDetails?.address
-              ? "faq-margin"
-              : "faq-margin-tab"
-          }
-        >
+        props.userAccountDetails?.activeNavItem === "faq" ? (
+          <ActiveWrapper
+            onClick={handleBtn}
+              className={
+                props.userAccountDetails?.subNavItems
+                  ? "faq-margin-create"
+                  : props.userAccountDetails?.accountDetails?.address
+                  ? "faq-margin"
+                  : "faq-margin-tab"
+              }
+          >
+          <FAQIconActive src="/images/FAQ_Active.png" />
+          <HeadingFAQActive className="activeText">FAQs</HeadingFAQActive>
+        </ActiveWrapper>
+          ): (
+            <Wrapper
+              onClick={handleBtn}
+                className={
+                  props.userAccountDetails?.subNavItems
+                    ? "faq-margin-create"
+                    : props.userAccountDetails?.accountDetails?.address
+                    ? "faq-margin"
+                    : "faq-margin-tab"
+                }
+            >
           <FAQIcon src="/images/Inactive-Faq.svg" />
           <Heading>FAQs</Heading>
         </Wrapper>
+          )
       ) : (
-        <Wrapper
-        onClick={handleBtn}
-          className={
-            props.userAccountDetails?.subNavItems
-              ? "faq-margin-create"
-              : props.userAccountDetails?.accountDetails?.address
-              ? "faq-margin"
-              : "faq-margin-extra"
-          }
-        >
-          <FAQIcon src="/images/Inactive-Faq.svg" />
-          <Heading>FAQs</Heading>
-        </Wrapper>
+            props.userAccountDetails?.activeNavItem === "faq" ? (
+            <ActiveWrapper
+              onClick={handleBtn}
+                className={
+                  props.userAccountDetails?.subNavItems
+                    ? "faq-margin-create"
+                    : props.userAccountDetails?.accountDetails?.address
+                    ? "faq-margin"
+                    : "faq-margin-extra"
+              }
+            >
+              <FAQIconActive src="/images/FAQ_Active.png" />
+              <HeadingFAQActive className="activeText">FAQs</HeadingFAQActive>
+            </ActiveWrapper>
+            ): (
+              <Wrapper
+              onClick={handleBtn}
+                className={
+                  props.userAccountDetails?.subNavItems
+                    ? "faq-margin-create"
+                    : props.userAccountDetails?.accountDetails?.address
+                    ? "faq-margin"
+                    : "faq-margin-extra"
+                }
+              >
+                <FAQIcon src="/images/Inactive-Faq.svg" />
+                <Heading>FAQs</Heading>
+              </Wrapper>
+            )
       )}
       {
       props.userAccountDetails?.accountDetails?.address ? (
@@ -252,22 +288,26 @@ const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 250px;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
   height: 1024px;
   padding-top: 40px;
   position: sticky;
   top: 57px;
   @media (min-width: 425px) and (max-width: 768px) {
-    height: 967px;
+    height: 100%;
     /* margin-top: 56px; */
     position: fixed;
+    overflow-y: scroll;
   }
   @media (min-width: 320px) and (max-width: 425px) {
     width: 100%;
-    height: 967px;
+    height: 100%;
     /* margin-top: 55px; */
     padding-top: 20px;
     position: fixed;
+    overflow-y: scroll;
   }
 `;
 const Icon = styled.img`
@@ -288,6 +328,16 @@ const FAQIcon = styled.img`
   height: 24px;
   border: none;
 `;
+const FAQIconActive = styled.img`
+  cursor: pointer;
+  margin-right: 20px;
+  margin-left: -4px;
+  margin-top: -4px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  object-fit: cover;
+`;
 const LogoutIcon = styled.img`
   cursor: pointer;
   margin-right: 13px;
@@ -302,7 +352,7 @@ const Wrapper = styled.div`
   align-items: center;
   flex-wrap: wrap;
   cursor: pointer;
-  width: 250px;
+  width: 100%;
   height: 70px;
   white-space: nowrap;
   padding: 23px;
@@ -314,13 +364,46 @@ const Wrapper = styled.div`
     margin-left: -20px;
   }
 `;
+const ActiveWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+  width: 100%;
+  height: 70px;
+  white-space: nowrap;
+  padding: 23px;
+  background-color: #1d3c93 !important;
+  &:hover {
+    background: #1d3c93;
+  }
+  @media (min-width: 320px) and (max-width: 425px) {
+    width: 100%;
+    margin-left: -20px;
+    background-color: #1d3c93 !important;
+  }
+`;
 const Heading = styled.span`
   text-align: left;
-  font: normal normal medium 16px/20px Inter;
+  /* font: normal normal medium 16px/20px Inter; */
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
   letter-spacing: 0px;
   
   color: #8ca6f0;
   opacity: 1;
+`;
+const HeadingFAQActive = styled.span`
+  text-align: left;
+  font: normal normal medium 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #8ca6f0;
+  opacity: 1;
+  margin-top: -4px;
+  @media (min-width: 0px) and (max-width: 768px) {
+    margin-top: 0px;
+  }
 `;
 const CenterDiv = styled.div`
   display: flex;
@@ -329,6 +412,12 @@ const CenterDiv = styled.div`
   margin: 2rem 15px 3rem 0;
   width: 230px;
   max-width: 230px;
+  @media (min-width: 0px) and (max-width: 424px) {
+    margin: 30px 0 100px 0;
+  }
+  @media (min-width: 425px) and (max-width: 460px) {
+    margin: 30px 0 100px 0;
+  }
 `;
 const SubHeadingContainer = styled.div`
   width: 180px;
@@ -342,8 +431,8 @@ const SubWrapper = styled.div`
   cursor: pointer;
 `;
 const SubIcon = styled.img`
-  width: 20px;
-  height: 20px;
+  /* width: 20px;
+  height: 20px; */
   /* background: #ffffff 0% 0% no-repeat padding-box; */
   opacity: 1;
   margin-right: 20px;

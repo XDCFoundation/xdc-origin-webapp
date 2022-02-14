@@ -7,7 +7,16 @@ import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import { Tooltip, Fade, createTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "@material-ui/core/styles";
+import {
+  apiBodyMessages,
+  apiSuccessConstants,
+  validationsMessages,
+  toolTipContentMessages,
+} from "../../constants";
 import { makeStyles } from "@material-ui/core/styles";
+import toast, { Toaster } from "react-hot-toast";
+import { connect } from "react-redux";
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 const Parent = styled.div`
   display: flex;
@@ -93,6 +102,7 @@ const SpanTwo = styled.div`
   letter-spacing: 0px;
   color: #4b4b4b;
   opacity: 1;
+  padding-bottom: 43px;
   @media (min-width: 0px) and (max-width: 767px) {
     font: normal normal normal 14px/17px Inter;
     padding: 10px 0px 0px 0px;
@@ -129,6 +139,11 @@ const InputDiv = styled.input`
   }
   :focus {
     outline: 2px solid #8ca6f0;
+  }
+  ::-webkit-inner-spin-button, 
+  ::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
   }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 686px;
@@ -252,16 +267,17 @@ const ContinueText = styled.div`
   }
 `;
 const MainCircle = styled.div`
-  width: 128px;
-  overflow: hidden;
-  height: 128px;
-  background: #f0f2fc 0% 0% no-repeat padding-box;
-  border: 1px dashed #8ca6f0;
-  border-radius: 124px;
+  /* width: 128px; */
+  /* overflow: hidden; */
+  /* height: 128px; */
+  /* background: #f0f2fc 0% 0% no-repeat padding-box;
+  border: 1px dashed #8ca6f0; */
+  /* border-radius: 124px; */
   opacity: 1;
   position: relative;
   top: 0;
   left: 0;
+  margin-top: 17px;
 `;
 
 const Div = styled.div`
@@ -282,15 +298,22 @@ const ReplaceButton = styled.button`
   background: transparent;
   opacity: 1;
   border: none;
-  /* @media (min-width: 0px) and (max-width: 767px) {
-   display: none;
-  } */
+`;
+const CustomReplaceButton = styled.button`
+  padding: 5px 0px 0px 0px;
+  text-align: left;
+  font: normal normal medium 14px/17px Inter;
+  letter-spacing: 0px;
+  color: #3163f0;
+  background: transparent;
+  opacity: 1;
+  border: none;
 `;
 
 const MainImage = styled.img`
   width: 128px;
   height: 128px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   /* position: absolute;
   top: 0px; */
 `;
@@ -303,11 +326,24 @@ const QImg = styled.img`
   padding-left: 10px;
 `;
 
+const BottomContainer = styled.div`
+  width: 783px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 686px;
+  }
+  @media (min-width: 0px) and (max-width: 767px) {
+    width: 322px;
+  }
+`;
+
 const theme = createTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: "12px",
+        fontSize: "16px",
         color: "#4B4B4B",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 3px 12px #0000001A",
@@ -326,14 +362,52 @@ const useStyles = makeStyles((theme) => ({
     },
     color: theme.palette.common.white,
   },
+  textareaAutosize: {
+    width: "783px",
+    border: "none",
+    background: "#f0f2fc 0% 0% no-repeat padding-box",
+    borderRadius: "4px",
+    opacity: 1,
+    padding: "7px 16px 7px 16px",
+    position: "relative",
+    top: 0,
+    left: 0,
+    resize: "none",
+    "::placeholder": {
+      padding: "0px 0px 0px 7px",
+      font: "normal normal medium 14px/17px Inter",
+      letterSpacing: "0px",
+      color: "#a8acc1",
+      opacity: 1,
+    },
+    "&:focus": {
+      outline: "3px solid #8ca6f0",
+    },
+    "::-webkit-inner-spin-button":{
+      "-webkit-appearance": "none",
+      margin: 0,
+    } ,
+    "::-webkit-outer-spin-button": { 
+      "-webkit-appearance": "none",
+      margin: 0,
+    },
+    "@media (min-width: 768px) and (max-width: 1024px)": {
+      width: "686px",
+    },
+    "@media (min-width: 0px) and (max-width: 767px)": {
+      width: "322px",
+    }
+  }
 }));
 
-export default function Token(props) {
+function Token(props) {
   const classes = useStyles();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
-  const [errors, setErrors] = useState()
-  let formErrors = props.formErrors
+
+  let hasTokenId = "id" in props?.tokenData;
+
+  let imgData = hasTokenId === false ? props?.imgData : props.tokenData?.tokenImage;
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -343,16 +417,89 @@ export default function Token(props) {
     setIsOpen(!isOpen);
   };
 
+  const formErrorMessage = () =>
+    toast.error(validationsMessages.FORM_FIELD_ERROR, {
+      duration: 4000,
+      position: validationsMessages.TOASTS_POSITION,
+      className: "toast-div-address",
+    });
+  const descriptionErrorMessage = () =>
+    toast.error(validationsMessages.VALIDATE_DESCRIPTION_FIELD, {
+      duration: 4000,
+      position: validationsMessages.TOASTS_POSITION,
+      className: "toast-div-address",
+    });
+  const symbolErrorMessage = () =>
+    toast.error(validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD, {
+      duration: 4000,
+      position: validationsMessages.TOASTS_POSITION,
+      className: "toast-div-address",
+    });
+  const nameErrorMessage = () =>
+    toast.error(validationsMessages.VALIDATE_TOKEN_NAME_FIELD, {
+      duration: 4000,
+      position: validationsMessages.TOASTS_POSITION,
+      className: "toast-div-address",
+    });
+  const decimalErrorMessage = () =>
+    toast.error(validationsMessages.VALIDATE_DECIMAL_FIELD, {
+      duration: 4000,
+      position: validationsMessages.TOASTS_POSITION,
+      className: "toast-div-address",
+    });
+  const imageErrorMessage = () =>
+    toast.error(validationsMessages.VALIDATE_IMAGE_FIELD, {
+      duration: 4000,
+      position: validationsMessages.TOASTS_POSITION,
+      className: "toast-div-address",
+    });
+
   const saveAndContinue = (e) => {
-    props.handleChange(e);
-    if (Object.keys(formErrors)?.length !== 0) {
-      setErrors(formErrors)
+    // console.log(props?.tokenData?.length, Object.keys(props.tokenData)?.length);
+
+    if (Object.keys(props.tokenData)?.length === 0) {
+      formErrorMessage();
+    } else if (props.tokenData?.tokenName?.length === undefined || props.tokenData?.tokenName.match(/^\s*$/)) {
+      nameErrorMessage();
+    } else if (props.tokenData?.tokenSymbol?.length === undefined || props.tokenData?.tokenSymbol.match(/^\s*$/)) {
+      symbolErrorMessage();
+    } else if (props.tokenData?.tokenDecimals === undefined) {
+      decimalErrorMessage();
+    } else if (props.tokenData?.tokenDescription?.length === undefined || props.tokenData?.tokenDescription.match(/^\s*$/)) {
+      descriptionErrorMessage();
     }
-    props.nextStep(e);
+    // else if (imgData === "") {
+    //   imageErrorMessage();
+    // }
+    if (
+      props.tokenData.tokenDecimals >= 8 &&
+      props.tokenData.tokenDecimals <= 18 &&
+      props.tokenData.tokenDecimals !== undefined &&
+      // imgData !== "" &&
+      // imgData !== undefined &&
+      props.tokenData?.tokenDescription !== undefined &&
+      props.tokenData?.tokenDescription !== "" &&
+      props.tokenData?.tokenDescription?.length <= 500 &&
+      props.tokenData?.tokenSymbol !== undefined &&
+      props.tokenData?.tokenSymbol !== "" &&
+      props.tokenData?.tokenSymbol?.length <= 15 &&
+      props.tokenData?.tokenName !== undefined &&
+      props.tokenData?.tokenName !== "" &&
+      props.tokenData?.tokenName?.length <= 30 &&
+      !props.tokenData?.tokenDescription.match(/^\s*$/) &&
+      !props.tokenData?.tokenSymbol.match(/^\s*$/) &&
+      !props.tokenData?.tokenName.match(/^\s*$/)
+    ) {
+      props.handleChange(e);
+      props.nextStep(e);
+    }
   };
 
   return (
     <>
+      <div>
+        <Toaster />
+      </div>
       <Parent>
         <Column>
           <RowTwo>
@@ -367,7 +514,7 @@ export default function Token(props) {
               Network<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Name of network"
+                  title={toolTipContentMessages.TOKEN_NETWORK_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -381,7 +528,7 @@ export default function Token(props) {
                 type="text"
                 name="network"
                 readOnly
-                value={props.tokenData.network}
+                value={props.userDetails?.accountDetails?.network}
                 placeholder="XDC Mainnet"
               />
               <PopButton onClick={togglePopup}>Change Network</PopButton>
@@ -391,9 +538,7 @@ export default function Token(props) {
               </MobPopupBtn>
             </InsideDiv>
 
-            <BlurTextDiv>Current XDC Network Pay Connected</BlurTextDiv>
-            {errors?.network ? ( <p className="shown-error">{errors?.network}</p>) : ""}
-            {/* <p className="shown-error">{props.formErrors.network}</p> */}
+            <BlurTextDiv>Current XDCPay network connected</BlurTextDiv>
           </CommonRow>
 
           <CommonRow>
@@ -401,7 +546,7 @@ export default function Token(props) {
               Token Name<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Name of the token"
+                  title={toolTipContentMessages.TOKEN_NAME_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -419,8 +564,17 @@ export default function Token(props) {
               placeholder="e.g. XDC Network"
             />
             <BlurTextDiv>Choose a name for your token</BlurTextDiv>
-            {errors?.tokenName ? (<p className="shown-error">{errors?.tokenName}</p>) : ""}
-            {/* <p className="shown-error">{props.formErrors.tokenName}</p> */}
+            {props.isVisited === "tokenName" && props.tokenData?.tokenName === "" ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_TOKEN_NAME_FIELD}
+              </p>
+            ) : props.tokenData?.tokenName?.length > 30 ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_TOKEN_NAME_LIMIT}
+              </p>
+            ) : (
+              ""
+            )}
           </CommonRow>
 
           <CommonRow>
@@ -428,7 +582,7 @@ export default function Token(props) {
               Symbol<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Short name of the token"
+                  title={toolTipContentMessages.TOKEN_SYMBOL_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -446,16 +600,25 @@ export default function Token(props) {
             />
 
             <BlurTextDiv>Choose symbol for your token</BlurTextDiv>
-            {errors?.tokenSymbol ? (<p className="shown-error">{errors?.tokenSymbol}</p>) : ""}
-            {/* <p className="shown-error">{props.formErrors.tokenSymbol}</p> */}
+            {props.isVisited === "tokenSymbol" && props.tokenData?.tokenSymbol === "" ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD}
+              </p>
+            ) : props.tokenData?.tokenSymbol?.length > 15 ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_TOKEN_SYMBOL_LIMIT}
+              </p>
+            ) : (
+              ""
+            )}
           </CommonRow>
 
           <DesktopCommonRow>
             <TextDiv>
-              Token Image (PNG, JPG/JPEG, 32*32 px)<Span>&nbsp;*</Span>
+            Token Image (PNG, 256*256 px)<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Icon of the token"
+                  title={toolTipContentMessages.TOKEN_IMAGE_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -495,6 +658,7 @@ export default function Token(props) {
               <CircleRow>
                 {/* checking condition, whether user has came to edit token or creation of token,
                     1st cond. will work for edit and 2nd for first time creation by default*/}
+
                 {props.tokenData.tokenImage ? (
                   <Div>
                     <MainImage src={props.tokenData.tokenImage} />
@@ -504,9 +668,9 @@ export default function Token(props) {
                       type="text"
                       name="tokenImage"
                     />
-                    <ReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
-                      Replace
-                    </ReplaceButton>
+                    <CustomReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
+                    Use Custom Image
+                    </CustomReplaceButton>
                     {props.isUploadOpen && (
                       <UploadFile
                         handleUploadClose={(e) => props.toggleUploadPopup(e)}
@@ -516,10 +680,11 @@ export default function Token(props) {
                 ) : (
                   <div>
                     <MainCircle>
-                      <PlusImage
+                      {/* <PlusImage
                         onClick={(e) => props.toggleUploadPopup(e)}
                         src="/images/PlusIcon.svg"
-                      />
+                      /> */}
+                      <img src="/images/default_xrc20_img.svg" alt="" />
                       <UrlInput
                         value={props.tokenData.tokenImage}
                         readOnly
@@ -531,8 +696,18 @@ export default function Token(props) {
                           handleUploadClose={(e) => props.toggleUploadPopup(e)}
                         />
                       )}
-                    </MainCircle>
-                    {errors?.tokenImage ? (<p className="shown-error">{errors?.tokenImage}</p>) : ""}
+                      </MainCircle>
+                    <CustomReplaceButton onClick={(e) => props.toggleUploadPopup(e)}>
+                      Use Custom Image
+                    </CustomReplaceButton>
+
+                    {props.isVisited === "tokenImage" && props.tokenData?.tokenImage === "" ? (
+                      <p className="shown-error">
+                        Token Image/Icon is required
+                      </p>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 )}
               </CircleRow>
@@ -543,10 +718,10 @@ export default function Token(props) {
 
           <MobCommonRow>
             <TextDiv>
-              Token Image (PNG, JPG/JPEG, 32*32 px)<Span>&nbsp;*</Span>
+              Token Image (PNG, 256*256 px)<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Icon of the token"
+                  title={toolTipContentMessages.TOKEN_IMAGE_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -622,7 +797,13 @@ export default function Token(props) {
                         src="/images/PlusIcon.svg"
                       />
                     </MainCircle>
-                    {errors?.tokenImage ? (<p className="shown-error">{errors?.tokenImage}</p>) : ""}
+                    {props.tokenData?.tokenImage === "" ? (
+                      <p className="shown-error">
+                        Token Image/Icon is required
+                      </p>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 )}
               </CircleRow>
@@ -634,7 +815,7 @@ export default function Token(props) {
               Decimals<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Number of digits that come after the decimal place when displaying token values on-screen"
+                  title={toolTipContentMessages.TOKEN_DECIMAL_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -654,8 +835,14 @@ export default function Token(props) {
             <BlurTextDiv>
               Insert the decimal precision of your token
             </BlurTextDiv>
-            {/* <p className="shown-error">{props.formErrors.tokenDecimals}</p> */}
-            {errors?.tokenDecimals ? (<p className="shown-error">{errors?.tokenDecimals}</p>) : ""}
+            {props.tokenData?.tokenDecimals < 8 ||
+              props.tokenData?.tokenDecimals > 18 ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_DECIMAL_RANGE}
+              </p>
+            ) : (
+              ""
+            )}
           </CommonRow>
 
           <CommonRow>
@@ -663,7 +850,7 @@ export default function Token(props) {
               Description<Span>&nbsp;*</Span>
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Description of the token"
+                  title={toolTipContentMessages.TOKEN_DESCRIPTION_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -672,17 +859,33 @@ export default function Token(props) {
                 </Tooltip>
               </MuiThemeProvider>
             </TextDiv>
-            <InputDiv
+            <TextareaAutosize 
+              className={classes.textareaAutosize}
+              aria-label="minimum height" 
+              minRows={1.1}
               type="text"
               onChange={(e) => props.handleChange(e)}
+              onInput={(e) => (e.target.value = e.target.value.slice(0, 501))}
               name="tokenDescription"
               value={props.tokenData.tokenDescription}
               placeholder="A Dao Token"
             />
 
-            <BlurTextDiv>Add description for your token</BlurTextDiv>
-            {/* <p className="shown-error">{props.formErrors.tokenDescription}</p> */}
-            {errors?.tokenDescription ? (<p className="shown-error">{errors?.tokenDescription}</p>) : ""}
+            <BottomContainer>
+              <BlurTextDiv>Add description for your token</BlurTextDiv>
+              <BlurTextDiv>{props.tokenData?.tokenDescription?.length}/500</BlurTextDiv>
+            </BottomContainer>
+            {props.isVisited === "tokenDescription" && props.tokenData?.tokenDescription === "" ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_DESCRIPTION_FIELD}
+              </p>
+            ) : props.tokenData?.tokenDescription?.length > 500 ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_DESCRIPTION_LIMIT}
+              </p>
+            ) : (
+              ""
+            )}
           </CommonRow>
 
           <CommonRow>
@@ -690,7 +893,7 @@ export default function Token(props) {
               Website (Optional)
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Official website of the token"
+                  title={toolTipContentMessages.TOKEN_WEBSITE_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -714,7 +917,7 @@ export default function Token(props) {
               Twitter (Optional)
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Twitter handle of the token"
+                  title={toolTipContentMessages.TOKEN_TWITTER_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -738,7 +941,7 @@ export default function Token(props) {
               Telegram (Optional)
               <MuiThemeProvider theme={theme}>
                 <Tooltip
-                  title="Telegram channel of the token"
+                  title={toolTipContentMessages.TOKEN_TELEGRAM_CONTENT}
                   placement="right-end"
                   arrow
                   classes={{ arrow: classes.arrow }}
@@ -768,3 +971,9 @@ export default function Token(props) {
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+export default connect(mapStateToProps)(Token);

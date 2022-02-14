@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
-import { handleWallet, updateAccountDetails } from "../../action";
+import { handleNavItem, handleWallet, updateAccountDetails } from "../../action";
 import "../../assets/styles/custom.css";
 import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
@@ -48,7 +48,7 @@ function Header(props) {
                 ? "XDC Mainnet"
                 : "XDC Apothem Testnet";
 
-            if (address || network) {
+            if ((address || network) && (address !== props.userDetails?.accountDetails?.address || network !== props.userDetails?.accountDetails?.network)) {
               let balance = null;
 
               await window.web3.eth.getBalance(address).then((res) => {
@@ -79,6 +79,31 @@ function Header(props) {
       }
     };
 
+    const handleWalletSession = () => {
+      window.web3 = new Web3(window.ethereum);
+
+      if (window.web3.currentProvider) {
+        if (!window.web3.currentProvider.chainId) {
+          const state = window.web3.givenProvider.publicConfigStore._state;
+          if (!state.selectedAddress) {
+            let accountDetails = {
+              address: null,
+              network: null,
+              balance: null,
+              isLoggedIn: false,
+            };
+
+            props.updateAccountDetails(accountDetails);
+            props.setActiveNavItem("about");
+            history.push("/");
+          }
+        }
+      }
+    }
+
+    setTimeout(() => {
+      handleWalletSession();
+    }, 1000);
     handleXDCPayWalletChange();
     window.addEventListener("load", handleXDCPayWalletChange);
   }, []);
@@ -97,6 +122,9 @@ function Header(props) {
             </div>
             <SmartMintLogo src="/images/Origin-Active.svg" />
             <Span onClick={() => history.push("/")}>Origin</Span>
+            <BetaImgContainer>
+              <BetaImg src="/images/beta_tag.svg" alt="" />
+            </BetaImgContainer>
           </div>
           <div className="buttons">
             {/* <UserLogo  src="/images/profile.svg" /> */}
@@ -118,13 +146,9 @@ function Header(props) {
                       props.userDetails?.accountDetails?.address.length - 5
                     )}
                 </Address>
-                {forceUpdate ? (
+                {forceUpdate ? ( 
                   <AccountIcon>
-                    <Identicon
-                      diameter={20}
-                      address={props.userDetails?.accountDetails?.address}
-                      network={props.userDetails?.accountDetails?.network}
-                    />
+                    <WalletDummyImg src="/images/wallet_dummy_image.svg" alt="" />
                   </AccountIcon>
                 ) : (
                   <AccountIcon>
@@ -134,7 +158,8 @@ function Header(props) {
                       network={props.userDetails?.accountDetails?.network}
                     />
                   </AccountIcon>
-                )}
+                )
+                } 
               </AddressContainer>
             ) : (
               <Button onClick={() => connectWallet()}>Connect Wallet</Button>
@@ -162,6 +187,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   updateAccountDetails: (accountDetails) => {
     dispatch(updateAccountDetails(accountDetails));
+  },
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive))
   },
 });
 
@@ -272,7 +300,7 @@ const UserMenu1 = styled.img`
 const Span = styled.span`
   top: 16px;
   left: 109px;
-  width: 110px;
+  width: 68px;
   margin-top: 8px;
   text-align: left;
   cursor: pointer;
@@ -310,7 +338,10 @@ const Balance = styled.span`
   width: max-content;
   height: 36px;
   text-align: center;
-  font: normal normal medium 15px/19px Inter;
+  /* font: normal normal medium 15px/19px Inter; */
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
@@ -323,7 +354,10 @@ const Address = styled.span`
   width: max-content;
   min-width: 103px;
   text-align: left;
-  font: normal normal medium 15px/19px Inter;
+  /* font: normal normal medium 15px/19px Inter; */
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
   color: #ffffff;
   opacity: 1;
   padding: 10px;
@@ -334,4 +368,23 @@ const AccountIcon = styled.div`
   opacity: 1;
   display: flex;
   align-items: center;
+`;
+const WalletDummyImg = styled.img`
+  width: 28px;
+  height: 28px;
+  opacity: 1;
+  object-fit: contain;
+`;
+const BetaImgContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-top: 4px;
+`;
+const BetaImg = styled.img`
+  width: 31px;
+  height: 15px;
+  opacity: 1;
+  object-fit: contain;
 `;

@@ -109,12 +109,12 @@ function FormDialog(props) {
         <Dialog className="display-pop-up" open={true}> {/* given value true is hardcoded. will update while integration */}
           <Header>
             <DialogTitle>Change Network</DialogTitle>
-            <Cross onClick={() => props.handleClose()} src="images/Cross.svg"></Cross>
+            <Cross onClick={() => props.handleClose()} src="/images/Cross.svg"></Cross>
           </Header>
           <Content>
             <NetworkChangeContainer>
               <DropdownContainer>
-                <img src="images/XDC-Icon-128X128.svg"></img>
+                <img src="/images/XDC-Icon-128X128.svg"></img>
                 <NetworksDrop disabled>
                   <option value="XDC Apothem TestNet">
                     {props.userDetails?.accountDetails?.network}
@@ -123,8 +123,7 @@ function FormDialog(props) {
               </DropdownContainer>
             </NetworkChangeContainer>
             <ContentText>
-              To mint the tokens on new network, open XDCPay and simply change
-              the network. Currently we support only{" "}
+              Open XDCPay and switch the network to create token on a new network. At the moment, we only support the{" "}
               <ContentTextNames>XDC Mainnet</ContentTextNames> and{" "}
               <ContentTextNames>XDC Apothem Testnet</ContentTextNames>.
             </ContentText>

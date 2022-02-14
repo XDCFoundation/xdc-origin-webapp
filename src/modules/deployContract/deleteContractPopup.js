@@ -39,7 +39,7 @@ function deleteContract(props) {
           <CrossIcon onClick={props.handleClose} src="/images/Cross.svg" alt="" />
         </DialogHeader>
         <Line />
-        <DialogText>Do you want to delete {props.tokenName} Contract?</DialogText>
+        <DialogText>Do you want to delete {props.tokenName} Token?</DialogText>
         <ButtonContainer>
           <CancelButton onClick={props.handleClose}>Cancel</CancelButton>
           <DeleteButton onClick={() => handleDeleteClick(props.tokenId)}>Delete</DeleteButton>
@@ -125,7 +125,10 @@ const CancelButton = styled.button`
   border-radius: 4px;
   opacity: 1;
   text-align: center;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #4b4b4b;
   outline: none;
@@ -140,7 +143,10 @@ const DeleteButton = styled.button`
   background: #3163f0 0% 0% no-repeat padding-box;
   border-radius: 4px;
   text-align: center;
-  font: normal normal medium 18px/21px Inter;
+  /* font: normal normal medium 18px/21px Inter; */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;

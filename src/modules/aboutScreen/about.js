@@ -3,10 +3,17 @@ import styled from "styled-components";
 import ReactPlayer from "react-player";
 import { useHistory } from "react-router";
 import Web3 from "web3";
-import { handleAccountDetails, handleNavItem, handleSubNavItem, handleSubNavToken, handleWallet } from "../../action";
+import {
+  handleAccountDetails,
+  handleNavItem,
+  handleSubNavItem,
+  handleSubNavToken,
+  handleWallet,
+} from "../../action";
 import { connect } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Tooltip, Typography, ClickAwayListener } from "@material-ui/core";
+import { DASHBOARD_VIDEO_URL } from "../../constants";
 
 const CustomTooltip = withStyles((theme) => ({
   tooltip: {
@@ -20,7 +27,7 @@ const CustomTooltip = withStyles((theme) => ({
     boxShadow: "0px 3px 12px #0000001A",
     padding: "23.5px",
     borderRadius: "4px",
-    wordSpacing: "2px"
+    wordSpacing: "2px",
   },
 }))(Tooltip);
 
@@ -37,11 +44,11 @@ const MobileTooltip = withStyles((theme) => ({
     padding: "23.5px 15.77px 23.5px 23.5px",
     borderRadius: "4px",
     wordSpacing: "2px",
-    lineHeight: "17px"
+    lineHeight: "17px",
   },
 }))(Tooltip);
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   arrow: {
     "&:before": {
       border: "1px solid #e6e8ed",
@@ -52,15 +59,15 @@ const useStyles = makeStyles(theme => ({
     color: "#1F1F1F",
     fontSize: "18px",
     fontWeight: 600,
-    marginBottom: "13px"
+    marginBottom: "13px",
   },
   typographyMobile: {
     color: "#1F1F1F",
     fontSize: "14px",
     fontWeight: 600,
-    marginBottom: "14px"
+    marginBottom: "14px",
   },
-}))
+}));
 
 function About(props) {
   const classes = useStyles();
@@ -82,7 +89,7 @@ function About(props) {
       props?.currentUser?.accountDetails === null
     ) {
       props.user(connectWallet);
-    } else if(props?.currentUser?.accountDetails?.isLoggedIn){
+    } else if (props?.currentUser?.accountDetails?.isLoggedIn) {
       history.push("/token-XRC20");
       props.setActiveNavItem("create");
       props.setSubNavItem(true);
@@ -97,24 +104,26 @@ function About(props) {
           <LeftContainer>
             <Para>
               <DetailBox>
-                Create your <Span>XRC20</Span>, <Span>XRC223</Span> and{" "}
-                <Span>Stable coin</Span> on XDC Network with no coding required
+                {/* Create your <Span>XRC20</Span>, <Span>XRC223</Span> and{" "}
+                <Span>Stable coin</Span> on XDC Network with no coding required */}
+                Create your own token on XDC Network with no coding 
+                required
               </DetailBox>
               <DataBox>
                 Origin is a Smart Contract Tokenization platform that enables
-                brands and organisations to seamlessly create Non-Fungible
-                Tokens, StableCoins and fixed income instruments with the need
-                for code.
+                brands and organizations to seamlessly create fixed income
+                instruments without the need for code.
               </DataBox>
             </Para>
             <RightContainer>
               <VideoBox>
-                <ReactPlayer
-                  url="https://www.youtube.com/watch?v=K-tHZkV6zAs"
+                {/* <ReactPlayer
+                  url={DASHBOARD_VIDEO_URL}
                   controls
                   width="100%"
                   height="100%"
-                />
+                /> */}
+                <DashboadrdImg src="/images/dashboard_img.svg" alt="" />
               </VideoBox>
             </RightContainer>
           </LeftContainer>
@@ -128,7 +137,10 @@ function About(props) {
                   classes={{ arrow: classes.arrow }}
                   title={
                     <React.Fragment>
-                      <Typography color="inherit" className={classes.typography}>
+                      <Typography
+                        color="inherit"
+                        className={classes.typography}
+                      >
                         What is XRC20 Token?
                       </Typography>
                       {
@@ -140,10 +152,9 @@ function About(props) {
                   <img className="XRC20" alt="" src="/images/Help.svg" />
                 </CustomTooltip>
               </Button>
-              {
-                window.innerWidth < 768 ? (
-                  <ClickAwayListener onClickAway={handleTooltipClose}>
-                <MobileTooltip
+              {window.innerWidth < 768 ? (
+                <ClickAwayListener onClickAway={handleTooltipClose}>
+                  <MobileTooltip
                     arrow
                     placement="bottom-end"
                     classes={{ arrow: classes.arrow }}
@@ -158,7 +169,10 @@ function About(props) {
                     title={
                       <React.Fragment>
                         <TooltipHeader>
-                          <Typography color="inherit" className={classes.typographyMobile}>
+                          <Typography
+                            color="inherit"
+                            className={classes.typographyMobile}
+                          >
                             What is XRC20 Token?
                           </Typography>
                           <CrossImgMobile src="/images/Cross.svg" alt="" />
@@ -169,42 +183,54 @@ function About(props) {
                       </React.Fragment>
                     }
                   >
-                  <Img className="" alt="" src="/images/Info.svg" onClick={handleTooltipOpen}/>
-                </MobileTooltip>
-              </ClickAwayListener>
-                ) : (
-                  <ClickAwayListener onClickAway={handleTooltipClose}>
+                    <Img
+                      className=""
+                      alt=""
+                      src="/images/Info.svg"
+                      onClick={handleTooltipOpen}
+                    />
+                  </MobileTooltip>
+                </ClickAwayListener>
+              ) : (
+                <ClickAwayListener onClickAway={handleTooltipClose}>
                   <CustomTooltip
-                      arrow
-                      placement="bottom-start"
-                      classes={{ arrow: classes.arrow }}
-                      PopperProps={{
-                        disablePortal: true,
-                      }}
-                      onClose={handleTooltipClose}
-                      open={open}
-                      disableFocusListener
-                      disableHoverListener
-                      disableTouchListener
-                      title={
-                        <React.Fragment>
-                          <TooltipHeader>
-                            <Typography color="inherit" className={classes.typography}>
-                              What is XRC20 Token?
-                            </Typography>
-                            <CrossImg src="/images/Cross.svg" alt="" />
-                          </TooltipHeader>
-                          {
-                            "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
-                          }
-                        </React.Fragment>
-                      }
-                    >
-                    <Img className="" alt="" src="/images/Info.svg" onClick={handleTooltipOpen}/>
+                    arrow
+                    placement="bottom-start"
+                    classes={{ arrow: classes.arrow }}
+                    PopperProps={{
+                      disablePortal: true,
+                    }}
+                    onClose={handleTooltipClose}
+                    open={open}
+                    disableFocusListener
+                    disableHoverListener
+                    disableTouchListener
+                    title={
+                      <React.Fragment>
+                        <TooltipHeader>
+                          <Typography
+                            color="inherit"
+                            className={classes.typography}
+                          >
+                            What is XRC20 Token?
+                          </Typography>
+                          <CrossImg src="/images/Cross.svg" alt="" />
+                        </TooltipHeader>
+                        {
+                          "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
+                        }
+                      </React.Fragment>
+                    }
+                  >
+                    <Img
+                      className=""
+                      alt=""
+                      src="/images/Info.svg"
+                      onClick={handleTooltipOpen}
+                    />
                   </CustomTooltip>
                 </ClickAwayListener>
-                )
-              }
+              )}
             </ButtonDiv>
             {/* <ButtonDiv> */}
             {/* <Button className="create-btn">
@@ -279,13 +305,13 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(handleAccountDetails(accountDetails));
   },
   setActiveNavItem: (isActive) => {
-    dispatch(handleNavItem(isActive))
+    dispatch(handleNavItem(isActive));
   },
   setSubNavItem: (subNavItems) => {
-    dispatch(handleSubNavItem(subNavItems))
+    dispatch(handleSubNavItem(subNavItems));
   },
   setSubNavToken: (isSubNavActive) => {
-    dispatch(handleSubNavToken(isSubNavActive))
+    dispatch(handleSubNavToken(isSubNavActive));
   },
 });
 
@@ -336,6 +362,13 @@ const Container = styled.div`
 `;
 const RightContainer = styled.div`
   min-width: 50%;
+  @media (min-width: 0px) and (max-width: 767px) {
+    width: 100%;
+    min-width: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 const LeftContainer = styled.div`
   display: flex;
@@ -418,7 +451,8 @@ const IconRow = styled.div`
 const DataBox = styled.div`
   display: flex;
   width: 100%;
-  font: normal normal normal 21px Inter;
+  font: normal normal normal 21px/28px Inter;
+  color: #4B4B4B;
   @media (min-width: 768px) and (max-width: 1024px) {
     text-align: center;
     font-size: 18px;
@@ -443,6 +477,8 @@ const DataBox = styled.div`
 `;
 const DetailBox = styled.div`
   font: normal normal 600 32px Inter;
+  color: #1F1F1F;
+  line-height: 39px;
   ${"" /* padding-left: 35px; */}
   margin-top: 0px;
   ${"" /* padding-bottom: 0.938rem; */}
@@ -495,7 +531,7 @@ const Button = styled.div`
   background-position: 0.5rem;
   margin-right: 10px;
   padding: 0.875rem;
-  item-align: center;
+  align-items: center;
   background-size: 0.875rem;
   position: relative;
   background-color: #3163f0;
@@ -504,8 +540,10 @@ const Button = styled.div`
   border-radius: 0.25rem;
   height: 3.125rem;
   display: flex;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  /* font: normal normal medium 16px/20px Inter; */
   white-space: nowrap;
   cursor: pointer;
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -533,7 +571,7 @@ const VideoBox = styled.div`
 
   height: 328px !important;
   background: #ffffff 0% 0% no-repeat padding-box;
-  border: 0.125rem solid #d8d8d8;
+  /* border: 0.125rem solid #d8d8d8; */
   border-radius: 0.125rem;
   opacity: 1;
   position: relative;
@@ -541,6 +579,12 @@ const VideoBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (min-width: 1354px) and (max-width: 1440px) {
+    width: 93%;
+  }
+  @media (min-width: 1200px) and (max-width: 1354px) {
+    width: 82%;
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     width: 474px;
     height: 288px !important;
@@ -583,18 +627,20 @@ const GreyContainer = styled.div`
   align-items: center;
 `;
 const Title = styled.div`
+  font: normal normal 600 20px/24px Inter;
   text-align: center;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.375rem;
+  /* font-size: 1.25rem;
+  font-weight: 600; */
+  margin-bottom: 11px;
   color: #1f1f1f;
   opacity: 1;
 `;
 const SubTitle = styled.div`
+  width: 225px;
+  height: 60px;
+  font: normal normal normal 16px/20px Inter;
   text-align: center;
-  font-size: 1rem;
   color: #4b4b4b;
-  margin-top: 0.438rem;
   @media (min-width: 0px) and (max-width: 767px) {
     width: 236px;
   }
@@ -622,11 +668,12 @@ const IconContainer = styled.div`
 `;
 
 const SubHead = styled.div`
-  font-size: 2rem;
-  color: #4b4b4b;
+  font: normal normal 600 32px/39px Inter;
+  /* font-size: 2rem; */
+  color: #1F1F1F;
   text-align: center;
   width: 100%;
-  padding-bottom: 1.25rem;
+  padding-bottom: 9px;
   @media (min-width: 768px) and (max-width: 1024px) {
     font-size: 25px;
   }
@@ -664,4 +711,14 @@ const CrossImgMobile = styled.img`
   cursor: pointer !important;
   width: 13px;
   height: 13px;
+`;
+const DashboadrdImg = styled.img`
+  @media (min-width: 0px) and (max-width: 425px) {
+    width: 320px;
+    object-fit: contain;
+  }
+  @media (min-width: 425px) and (max-width: 767px) {
+    width: 420px;
+    object-fit: contain;
+  }
 `;
