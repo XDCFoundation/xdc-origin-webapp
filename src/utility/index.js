@@ -8,7 +8,7 @@ import aws from "aws-sdk";
 
 const toast = ToastService.new({
     place: 'topRight',
-    duration: 1,
+    duration: 2,
     maxCount: 2
 });
 let moment = require('moment');
@@ -53,6 +53,7 @@ const utility = {
     getTimeDifference,
     getYearsList,
     getTimestampFromDate,
+    parseResponse,
     extractDate,
     secondsToTime,
     getDateFormat,
@@ -176,6 +177,14 @@ function generateGUID() {
     guid += screen.width || '';
     guid += screen.pixelDepth || '';
     return guid;
+}
+
+function parseResponse(promise) {
+    return promise
+      .then((data) => {
+        return [null, data];
+      })
+      .catch((err) => [err]);
 }
 
 function basicAlert(message) {
