@@ -127,11 +127,15 @@ const Header = styled.div`
 const MidSection = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 19px;
+  /* row-gap: 19px; */
   align-items: center;
   text-align: center;
   justify-content: center;
-  padding: 5px 0 26px 0;
+  padding: 5px 0 0 0;
+`;
+const InputContainer = styled.div`
+  margin: 0 0 19px 0;
+  height: 50px;
 `;
 const InputDiv = styled.input`
   width: 341px;
@@ -199,6 +203,16 @@ const Img = styled.img`
   width: 78px;
   height: 78px;
 `;
+const ErrorContainer = styled.p`
+  width: 341px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+const Error = styled.span`
+  color: #ff0000;
+  font: normal normal normal 15px/21px Inter;
+`;
 
 const useStyles = makeStyles({
   dialog: {
@@ -230,8 +244,12 @@ function MintContract(props) {
   let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
-    setSteps(2);
-    sendTransaction(inputAddress);
+    if(inputToken < 1 || !inputAddress.includes("xdc")){
+      return;
+    }else{
+      setSteps(2);
+      sendTransaction(inputAddress);
+    }
   };
 
   // function to open xdc pay extension:
@@ -357,7 +375,7 @@ function MintContract(props) {
                 <>
                   <DialogContainer>
                     <DialogHeader>
-                      <DeleteText>Mint Contract</DeleteText>
+                      <DeleteText>Mint Tokens</DeleteText>
                       <CrossIcon
                         onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
@@ -369,18 +387,36 @@ function MintContract(props) {
                       Enter the number of tokens you want to mint.
                     </Header>
                     <MidSection>
-                      <InputDiv
-                        type="number"
-                        placeholder="Number of Tokens"
-                        onChange={(e) => setInputToken(e.target.value)}
-                      />
-                      <InputDiv
-                        // readOnly
-                        value={inputAddress}
-                        type="text"
-                        placeholder="Address to be added"
-                        onChange={(e) => setInputAddress(e.target.value)}
-                      />
+                      <InputContainer>
+                        <InputDiv
+                          type="number"
+                          placeholder="Number of Tokens"
+                          onChange={(e) => setInputToken(e.target.value)}
+                        />
+                        {inputToken !== null && inputToken < 1 ? (
+                          <ErrorContainer>
+                            <Error>
+                              {validationsMessages.MINT_QUANTITY_ERROR}
+                            </Error>
+                          </ErrorContainer>
+                        ) : ""}
+                      </InputContainer>
+                      <InputContainer>
+                        <InputDiv
+                          // readOnly
+                          value={inputAddress}
+                          type="text"
+                          placeholder="Address to be added"
+                          onChange={(e) => setInputAddress(e.target.value)}
+                        />
+                        {inputAddress !== null && !inputAddress.includes("xdc") ? (
+                          <ErrorContainer>
+                            <Error>
+                              {validationsMessages.INVALID_ADDRESS_ERROR}
+                            </Error>
+                          </ErrorContainer>
+                        ) : ""}
+                      </InputContainer>
                     </MidSection>
                     <ButtonContainer>
                       <CancelButton onClick={() => props.handleClose(false)}>
@@ -400,7 +436,7 @@ function MintContract(props) {
                 <>
                   <LoaderSection>
                     <DialogHeader>
-                      <DeleteText>Mint Contract</DeleteText>
+                      <DeleteText>Mint Tokens</DeleteText>
                       <CrossIcon
                         onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
@@ -427,7 +463,7 @@ function MintContract(props) {
                 <>
                   <LoaderSection>
                     <DialogHeader>
-                      <DeleteText>Mint Contract</DeleteText>
+                      <DeleteText>Mint Tokens</DeleteText>
                       <CrossIcon
                         onClick={() => props.handleClose(confirmMint)}
                         src="/images/Cross.svg"
