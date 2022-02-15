@@ -400,7 +400,11 @@ const CreateToken = (props) => {
     props.setActiveNavItem("manage");
     props.setSubNavItem(false);
     props.setSubNavToken("");
-    history.push('/manage-contracts')
+    history.push({
+      pathname: '/manage-contracts',
+      state: {},
+      fromCreate: true,
+    })
   }
 
   return (
@@ -500,7 +504,7 @@ const CreateToken = (props) => {
               <SuccessTokenKey>
               <MuiThemeProvider theme={theme}>
                   <Tooltip
-                      title="Cost per unit of gas specified for the transaction, in XDC and Gwei."
+                      title="Cost per unit of gas specified for the transaction, in XDC and USD."
                       placement="top-start"
                       arrow
                       classes={{ arrow: classes.arrow }}
