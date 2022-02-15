@@ -224,9 +224,9 @@ function BurnContract(props) {
   let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
-    if(inputToken > props.tokenInitialSupply){
+    if(inputToken > props.tokenInitialSupply || inputToken < 1){
       toast.error(validationsMessages.INITIAL_SUPPLY_LIMIT_FOR_BURN_ERROR, {
-        duration: 2000,
+        duration: 5000,
         position: validationsMessages.TOASTS_POSITION,
         className: "toast-div-address",
       });
@@ -341,7 +341,7 @@ function BurnContract(props) {
                 <>
                   <DialogContainer>
                     <DialogHeader>
-                      <DeleteText>Burn Contract</DeleteText>
+                      <DeleteText>Burn Tokens</DeleteText>
                       <CrossIcon
                         onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
@@ -374,7 +374,7 @@ function BurnContract(props) {
                 <>
                   <LoaderSection>
                     <DialogHeader>
-                      <DeleteText>Burn Contract</DeleteText>
+                      <DeleteText>Burn Tokens</DeleteText>
                       <CrossIcon
                         onClick={() => props.handleClose(false)}
                         src="/images/Cross.svg"
@@ -401,7 +401,7 @@ function BurnContract(props) {
                 <>
                   <LoaderSection>
                     <DialogHeader>
-                      <DeleteText>Burn Contract</DeleteText>
+                      <DeleteText>Burn Tokens</DeleteText>
                       <CrossIcon
                         onClick={() => props.handleClose(confirmBurn)}
                         src="/images/Cross.svg"

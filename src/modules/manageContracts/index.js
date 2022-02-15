@@ -22,9 +22,15 @@ class ManageContracts extends BaseComponent {
 
   componentDidMount() {
     this.handleXDCPayWalletChange();
-    setTimeout(() => {
-      this.getDeployedXrc20Token();
-    }, 1000);
+    if(this.props?.location?.fromCreate){
+      setTimeout(() => {
+        this.getDeployedXrc20Token();
+      }, 5000);
+    }else{
+      setTimeout(() => {
+        this.getDeployedXrc20Token();
+      }, 1000);
+    }
   }
 
   handleXDCPayWalletChange = async () => {
