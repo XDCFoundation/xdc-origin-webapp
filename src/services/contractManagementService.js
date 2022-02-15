@@ -53,7 +53,7 @@ async function deleteContract(requestData) {
     //   process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
     //     httpConstants.API_END_POINT.DELETE_XRC20_TOKEN + "/" + requestData.id;
     
-  let url = "https://origin.xdc.org:3001/delete-xrc20token" + "/" + requestData.id;
+  let url = "https://wgpsgpocfa.execute-api.us-east-1.amazonaws.com/mycontract/delete-xrc20token" + "/" + requestData.id;
 
     return httpService(
       httpConstants.METHOD_TYPE.DELETE,
