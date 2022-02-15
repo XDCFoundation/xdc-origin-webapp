@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+  <g id="Contract_Details_Active" transform="translate(-309 -230)">
+    <rect id="Rectangle_622" data-name="Rectangle 622" width="34" height="34" transform="translate(309 230)" fill="none"/>
+    <g id="note" transform="translate(308.5 224.2)">
+      <g id="Group_767" data-name="Group 767" transform="translate(2.5 10.8)">
+        <path id="Path_807" data-name="Path 807" d="M27.534,25.4H17.87a.67.67,0,1,0,0,1.34h9.664a.665.665,0,0,0,.67-.67A.682.682,0,0,0,27.534,25.4Z" transform="translate(-12.119 -20.88)" fill="#0089ff" stroke="#0089ff" stroke-width="0.4"/>
+        <path id="Path_808" data-name="Path 808" d="M28.2,40.67a.665.665,0,0,0-.67-.67H17.87a.67.67,0,1,0,0,1.34h9.664A.665.665,0,0,0,28.2,40.67Z" transform="translate(-12.119 -30.961)" fill="#0089ff" stroke="#0089ff" stroke-width="0.4"/>
+        <path id="Path_809" data-name="Path 809" d="M25.627,55.37l.67-.67H17.87a.682.682,0,0,0-.67.67.665.665,0,0,0,.67.67h7.293A2.577,2.577,0,0,1,25.627,55.37Z" transform="translate(-12.279 -41.11)" fill="#0089ff" stroke="#0089ff" stroke-width="0.4"/>
+        <path id="Path_810" data-name="Path 810" d="M17.87,69.4a.67.67,0,1,0,0,1.34h7.087a2.066,2.066,0,0,1-.155-.954l.026-.361H17.87Z" transform="translate(-12.37 -51.26)" fill="#0089ff" stroke="#0089ff" stroke-width="0.4"/>
+        <path id="Path_811" data-name="Path 811" d="M24.008,31.341v1.9H4.14V12.361H24.008v6.7l1.64-1.561v-5.48A1.26,1.26,0,0,0,24.362,10.8H3.786A1.26,1.26,0,0,0,2.5,12.024V33.576A1.241,1.241,0,0,0,3.786,34.8H24.394a1.26,1.26,0,0,0,1.286-1.224V29.81L24.2,31.218A1,1,0,0,1,24.008,31.341Z" transform="translate(-2.5 -10.8)" fill="#0089ff" stroke="#0089ff" stroke-width="0.4"/>
+        <path id="Path_812" data-name="Path 812" d="M63.259,31.939l-1.83-1.83a1.032,1.032,0,0,0-.747-.309h0a1.032,1.032,0,0,0-.747.309l-7.706,7.706a1.083,1.083,0,0,0-.309.67l-.129,1.959a1.1,1.1,0,0,0,.309.825,1.032,1.032,0,0,0,.747.309h.077l1.959-.129a1.083,1.083,0,0,0,.67-.309l7.706-7.706a1.058,1.058,0,0,0,0-1.495Zm-8.556,8.2-1.546.1.1-1.546,5.7-5.7,1.469,1.469Zm6.623-6.623-1.469-1.469.825-.825,1.469,1.469Z" transform="translate(-34.486 -22.698)" fill="#0089ff" stroke="#0089ff" stroke-width="0.4"/>
+      </g>
+    </g>
+  </g>
+</svg>
