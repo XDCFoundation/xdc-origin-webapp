@@ -460,13 +460,13 @@ function Token(props) {
     if (Object.keys(props.tokenData)?.length === 0) {
       formErrorMessage();
     } else if (props.tokenData?.tokenName?.length === undefined || props.tokenData?.tokenName.match(/^\s*$/)) {
-      nameErrorMessage();
+      return;
     } else if (props.tokenData?.tokenSymbol?.length === undefined || props.tokenData?.tokenSymbol.match(/^\s*$/)) {
-      symbolErrorMessage();
+      return;
     } else if (props.tokenData?.tokenDecimals === undefined) {
       decimalErrorMessage();
     } else if (props.tokenData?.tokenDescription?.length === undefined || props.tokenData?.tokenDescription.match(/^\s*$/)) {
-      descriptionErrorMessage();
+      return;
     }
     // else if (imgData === "") {
     //   imageErrorMessage();
@@ -573,7 +573,11 @@ function Token(props) {
                 {validationsMessages.VALIDATE_TOKEN_NAME_LIMIT}
               </p>
             ) : (
-              ""
+              props.isVisited === "tokenName" && (props.tokenData?.tokenName?.length === undefined || props.tokenData?.tokenName.match(/^\s*$/)) ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_TOKEN_NAME_FIELD}
+              </p>
+              ) : ""
             )}
           </CommonRow>
 
@@ -609,7 +613,11 @@ function Token(props) {
                 {validationsMessages.VALIDATE_TOKEN_SYMBOL_LIMIT}
               </p>
             ) : (
-              ""
+              props.isVisited === "tokenSymbol" && (props.tokenData?.tokenSymbol?.length === undefined || props.tokenData?.tokenSymbol.match(/^\s*$/)) ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD}
+              </p>
+              ) : ""
             )}
           </CommonRow>
 
@@ -884,7 +892,11 @@ function Token(props) {
                 {validationsMessages.VALIDATE_DESCRIPTION_LIMIT}
               </p>
             ) : (
-              ""
+              props.isVisited === "tokenDescription" && (props.tokenData?.tokenDescription?.length === undefined || props.tokenData?.tokenDescription.match(/^\s*$/)) ? (
+              <p className="shown-error">
+                {validationsMessages.VALIDATE_DESCRIPTION_FIELD}
+              </p>
+              ) : ""
             )}
           </CommonRow>
 

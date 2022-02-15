@@ -136,7 +136,11 @@ const MidSection = styled.div`
   align-items: center;
   text-align: center;
   justify-content: center;
-  padding: 10px 0 50px 0;
+  padding: 10px 0 25px 0;
+`;
+const InputContainer = styled.div`
+  margin: 0 0 19px 0;
+  height: 50px;
 `;
 const InputDiv = styled.input`
   width: 341px;
@@ -234,6 +238,17 @@ const Img = styled.img`
   width: 78px;
   height: 78px;
 `;
+const ErrorContainer = styled.p`
+  width: 341px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+const Error = styled.span`
+  color: #ff0000;
+  font: normal normal normal 15px/21px Inter;
+  padding: 4px 0 0 2px;
+`;
 
 const useStyles = makeStyles({
   dialog: {
@@ -262,8 +277,12 @@ function TransferOwnershipContract(props) {
   let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
-    setSteps(2);
-    sendTransaction(inputAddress);
+    if(!inputAddress.includes("xdc")){
+      return;
+    }else{
+      setSteps(2);
+      sendTransaction(inputAddress);
+    }
   };
 
   const sendTransaction = async (givenContractAddress) => {
@@ -375,11 +394,20 @@ function TransferOwnershipContract(props) {
                       address. This action is not reversible.
                     </Header>
                     <MidSection>
+                    <InputContainer>
                       <InputDiv
                         type="text"
                         placeholder="New owner address"
                         onChange={(e) => setInputAddress(e.target.value)}
                       />
+                      {inputAddress !== "" && !inputAddress.includes("xdc") ? (
+                          <ErrorContainer>
+                            <Error>
+                              {validationsMessages.INVALID_ADDRESS_ERROR}
+                            </Error>
+                          </ErrorContainer>
+                        ) : ""}
+                    </InputContainer>
                     </MidSection>
                     <ButtonContainer>
                       <CancelButton onClick={() => props.handleClose(false)}>
