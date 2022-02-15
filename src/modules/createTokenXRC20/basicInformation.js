@@ -404,6 +404,7 @@ function Token(props) {
   const classes = useStyles();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
+  const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
 
   let hasTokenId = "id" in props?.tokenData;
 
@@ -456,8 +457,8 @@ function Token(props) {
 
   const saveAndContinue = (e) => {
     // console.log(props?.tokenData?.length, Object.keys(props.tokenData)?.length);
-
-    if (Object.keys(props.tokenData)?.length === 0) {
+console.log("data",props?.tokenData)
+    if (props.tokenData?.tokenName?.length === undefined || props.tokenData?.tokenSymbol?.length === undefined || props.tokenData?.tokenDecimals || props.tokenData?.tokenDescription?.length === undefined) {
       formErrorMessage();
     } else if (props.tokenData?.tokenName?.length === undefined || props.tokenData?.tokenName.match(/^\s*$/)) {
       return;
@@ -838,6 +839,7 @@ function Token(props) {
               name="tokenDecimals"
               value={props.tokenData?.tokenDecimals}
               placeholder="8-18"
+              onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()}
             />
 
             <BlurTextDiv>
