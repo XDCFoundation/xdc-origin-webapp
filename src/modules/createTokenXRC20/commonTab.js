@@ -462,7 +462,7 @@ function CommonTab(props) {
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
           // console.log('has---',hash)
-          obtainHash = hash 
+          obtainHash = hash
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             setTimeout(() => {
@@ -496,10 +496,11 @@ function CommonTab(props) {
               tokenSymbol
             });
           } else if(error.message === "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." ) {
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
             prevStep();
-          } 
+          }
           else{
-            console.log('')
+            console.log("");
           }
         });
     } else {
@@ -527,13 +528,15 @@ function CommonTab(props) {
             updateTokenDetails(
               draftedTokenId,
               draftedTokenOwner,
-              newContractAddress
+              newContractAddress,
+              apiBodyMessages.STATUS_DEPLOYED
             );
           }
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
           if (error) {
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
             prevStep();
           }
         });
@@ -543,13 +546,14 @@ function CommonTab(props) {
   const updateTokenDetails = async (
     resultedTokenId,
     resultedTokenOwner,
-    resultAddress
+    resultAddress,
+    status
   ) => {
     let reqObj = {
       tokenId: resultedTokenId,
       tokenOwner: resultedTokenOwner,
       smartContractAddress: resultAddress,
-      status: apiBodyMessages.STATUS_DEPLOYED,
+      status: status, //apiBodyMessages.STATUS_DEPLOYED,
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.updateDraftedToken(reqObj)
@@ -574,7 +578,7 @@ function CommonTab(props) {
       SaveDraftService.getTxnHashDetails(reqObj)
     );
     let obtainContractAddress = res?.transaction?.contractAddress;
-    let obtainTxnHash = res?.transaction?.hash !== undefined ? res?.transaction?.hash : obtainHash 
+    let obtainTxnHash = res?.transaction?.hash !== undefined ? res?.transaction?.hash : obtainHash
     let obtainGasUsed = res?.transaction?.gasUsed;
     //-------
     contractAdd = res?.transaction?.contractAddress
@@ -592,7 +596,7 @@ function CommonTab(props) {
         obtainContractAddress,
         tokenSymbol
       });
-      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress);
+      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress, apiBodyMessages.STATUS_DEPLOYED);
     }
   };
 
