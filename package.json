@@ -58,7 +58,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-development": "env-cmd .env.development react-scripts start",
     "build": "react-scripts build",
+    "development-build": "env-cmd .env.development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
