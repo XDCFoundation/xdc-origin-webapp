@@ -390,7 +390,7 @@ function TransferOwnershipContract(props) {
                     </DialogHeader>
                     <Line />
                     <Header>
-                      Transfer the ownership of the contract to <br /> another
+                      Transfer the ownership of the token to <br /> another
                       address. This action is not reversible.
                     </Header>
                     <MidSection>
@@ -472,7 +472,7 @@ function TransferOwnershipContract(props) {
                     <TextDiv>
                       <PauseText>Transaction Completed</PauseText>
                       <SpanText>
-                        {props.tokenName} Contract is removed from your list
+                        {props.tokenName} token is removed from your list
                       </SpanText>
                     </TextDiv>
                     <DoneButtonContainer>
