@@ -35,6 +35,7 @@ export const httpConstants = {
 };
 export const apiBodyMessages = {
     STATUS_DEPLOYED: "DEPLOYED",
+    STATUS_FAILED: "FAILED",
     STATUS_MINT: "mint",
     STATUS_BURN: "burn"
 };
