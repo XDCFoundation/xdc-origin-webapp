@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
   menu: {
     width: "178px",
     height: "167px",
+    marginLeft: "25px"
   },
   item: {
     color: "#1F1F1F",
