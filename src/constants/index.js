@@ -124,3 +124,7 @@ export const XDCPay_EXTENSION_URL = "https://chrome.google.com/webstore/detail/x
 export const DASHBOARD_VIDEO_URL = "https://www.youtube.com/watch?v=K-tHZkV6zAs";
 
 export const DEFAULT_TOKEN_IMAGE_URL = "https://xdc-mycontract-s3-dev.s3.amazonaws.com/userId/token-image/1644240946932.png";
+
+export const LARGE_NUMBER = 999999999999999;
+
+export const LARGE_NUMBER_ERROR = 9999999999999999;
