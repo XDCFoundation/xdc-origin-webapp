@@ -457,16 +457,35 @@ function Token(props) {
 
   const saveAndContinue = (e) => {
     // console.log(props?.tokenData?.length, Object.keys(props.tokenData)?.length);
-console.log("data",props?.tokenData)
-    if (props.tokenData?.tokenName?.length === undefined || props.tokenData?.tokenSymbol?.length === undefined || props.tokenData?.tokenDecimals || props.tokenData?.tokenDescription?.length === undefined) {
+
+    if (props.tokenData?.tokenName?.length === 0 && props.tokenData?.tokenSymbol?.length === 0  && props.tokenData?.tokenDescription?.length === 0) {
       formErrorMessage();
-    } else if (props.tokenData?.tokenName?.length === undefined || props.tokenData?.tokenName.match(/^\s*$/)) {
+    } 
+    else if (props.tokenData?.tokenName?.length === 0 || props.tokenData?.tokenName?.match(/^\s*$/)) {
+      props.handleChange({
+        target:{
+          name: "tokenName",
+          value: ""
+        }
+      });
       return;
-    } else if (props.tokenData?.tokenSymbol?.length === undefined || props.tokenData?.tokenSymbol.match(/^\s*$/)) {
+    } else if (props.tokenData?.tokenSymbol?.length === 0 || props.tokenData?.tokenSymbol?.match(/^\s*$/)) {
+      props.handleChange({
+        target:{
+          name: "tokenSymbol",
+          value: ""
+        }
+      });
       return;
-    } else if (props.tokenData?.tokenDecimals === undefined) {
-      decimalErrorMessage();
-    } else if (props.tokenData?.tokenDescription?.length === undefined || props.tokenData?.tokenDescription.match(/^\s*$/)) {
+    } else if (props.tokenData?.tokenDecimals?.length === 0) {
+      return;
+    } else if (props.tokenData?.tokenDescription?.length === 0 || props.tokenData?.tokenDescription?.match(/^\s*$/)) {
+      props.handleChange({
+        target:{
+          name: "tokenDescription",
+          value: ""
+        }
+      });
       return;
     }
     // else if (imgData === "") {
