@@ -9,6 +9,8 @@ import {
   apiSuccessConstants,
   validationsMessages,
   toolTipContentMessages,
+  LARGE_NUMBER,
+  LARGE_NUMBER_ERROR
 } from "../../constants";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -267,7 +269,7 @@ export default function Tokenomics(props) {
     }
   };
 
-  let convertedNumber = numberToWords?.toWords(
+  let convertedNumber = props?.tokenData?.tokenInitialSupply < LARGE_NUMBER && numberToWords?.toWords(
     props?.tokenData?.tokenInitialSupply || 0
   )
   // let news = convertedNumber?.split(',')[0]
@@ -308,7 +310,7 @@ export default function Tokenomics(props) {
               onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()}
             />
             {props.tokenData.tokenInitialSupply > 0 ? (
-              <BlurTextDiv>{convertedNumber}</BlurTextDiv>
+              <BlurTextDiv>{props.tokenData.tokenInitialSupply >= LARGE_NUMBER_ERROR ? "Number Too Large" : convertedNumber}</BlurTextDiv>
             ) : (
               ""
             )}

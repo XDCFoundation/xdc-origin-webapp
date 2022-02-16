@@ -26,7 +26,7 @@ export const httpConstants = {
         GET_TRANSACTION_DETAILS: "/searchBlockchainData",
         DELETE_XRC20_TOKEN: "/delete-xrc20token",
         GET_COIN_MARKET_CAP: "/getCoinMarketCap/USD",
-        GET_DEPLOYED_XRC20TOKEN: "/get-deployed-xrc20Token",
+        GET_DEPLOYED_XRC20TOKEN: "/get-deployed-xrc20token",
         UPDATE_CONTRACTS: "/update-social-media-urls",
         MINT_BURN_XRC20_TOKEN: "mint-burn-xrc20Token",
         TRANSFER_OWNERSHIP: "transfer-ownership-xrc20-token",
@@ -125,3 +125,7 @@ export const XDCPay_EXTENSION_URL = "https://chrome.google.com/webstore/detail/x
 export const DASHBOARD_VIDEO_URL = "https://www.youtube.com/watch?v=K-tHZkV6zAs";
 
 export const DEFAULT_TOKEN_IMAGE_URL = "https://xdc-mycontract-s3-dev.s3.amazonaws.com/userId/token-image/1644240946932.png";
+
+export const LARGE_NUMBER = 999999999999999;
+
+export const LARGE_NUMBER_ERROR = 9999999999999999;
