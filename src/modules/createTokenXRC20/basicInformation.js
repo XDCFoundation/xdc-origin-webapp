@@ -17,6 +17,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import toast, { Toaster } from "react-hot-toast";
 import { connect } from "react-redux";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import Web3 from "web3";
+import { updateAccountDetails } from "../../action";
 
 const Parent = styled.div`
   display: flex;
@@ -457,7 +459,7 @@ function Token(props) {
 
   const saveAndContinue = (e) => {
     // console.log(props?.tokenData?.length, Object.keys(props.tokenData)?.length);
-
+    handleXDCPayWalletChange();
     if (props.tokenData?.tokenName?.length === 0 && props.tokenData?.tokenSymbol?.length === 0  && props.tokenData?.tokenDescription?.length === 0) {
       formErrorMessage();
     } 
@@ -514,6 +516,58 @@ function Token(props) {
       props.nextStep(e);
     }
   };
+
+  const handleXDCPayWalletChange = async () => {
+    window.web3 = new Web3(window.ethereum);
+
+    if (
+      window.web3.currentProvider &&
+      props?.userDetails?.accountDetails?.isLoggedIn
+    ) {
+      if (!window.web3.currentProvider.chainId) {
+        //when metamask is disabled
+        const state = window.web3.givenProvider.publicConfigStore._state;
+        if (state.selectedAddress !== undefined) {
+          let address = state.selectedAddress;
+          let network =
+            state.networkVersion === "50"
+              ? "XDC Mainnet"
+              : "XDC Apothem Testnet";
+
+          if ((address || network) && (address !== props?.userDetails?.accountDetails?.address || network !== props?.userDetails?.accountDetails?.network)) {
+            let balance = null;
+
+            await window.web3.eth.getBalance(address).then((res) => {
+              balance = res / Math.pow(10, 18);
+              balance = truncateToDecimals(balance);
+            });
+
+            let accountDetails = {
+              address: address,
+              network: network,
+              balance: balance,
+              isLoggedIn: true,
+            };
+
+            props.updateAccountDetails(accountDetails);
+          }
+        } else {
+          //metamask is also enabled with xdcpay
+          const state = window.web3.givenProvider.publicConfigStore._state;
+          let address = state.selectedAddress;
+          let network =
+            state.networkVersion === "50"
+              ? "XDC Mainnet"
+              : "XDC Apothem Testnet";
+        }
+      }
+    }
+  };
+
+  const truncateToDecimals = (num, dec = 2) => {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
 
   return (
     <>
@@ -1009,4 +1063,10 @@ const mapStateToProps = (state) => ({
   userDetails: state.user,
 });
 
-export default connect(mapStateToProps)(Token);
+const mapDispatchToProps = (dispatch) => ({
+  updateAccountDetails: (accountDetails) => {
+    dispatch(updateAccountDetails(accountDetails));
+  },
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Token);
