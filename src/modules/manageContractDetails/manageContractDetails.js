@@ -411,7 +411,7 @@ function manageContractDetails(props) {
   const [isActive, setIsActive] = useState(false);
   const classes = useStyles();
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
- 
+
   const addToXDCPayPopup = () => {
     setIsAddPopupOpen(!isAddPopupOpen);
   }
@@ -443,7 +443,7 @@ function manageContractDetails(props) {
       case 'pause':
         return setChangeToResume(""), setUnpause(false);
       case "resume":
-        return setUnpause(false);     
+        return setUnpause(false);
       default:
         return;
     }
@@ -507,6 +507,13 @@ function manageContractDetails(props) {
       },
     });
   };
+
+  const getSafeInteger = (unsafeInteger) => {
+    let mini = Math.min(unsafeInteger,Number.MAX_SAFE_INTEGER);
+    let maxi = Math.max(mini,Number.MIN_SAFE_INTEGER);
+    const safeInt = Math.round(maxi);
+    return safeInt;
+  }
 
   const handleRedirect = (contractAddress) => {
      if (props.deolyedTokenDetails?.network === "XDC Mainnet") {
@@ -682,7 +689,8 @@ function manageContractDetails(props) {
               <DetailsContainer>
                 <Title>Minted Tokens</Title>
                 <Amount>
-                  {millify(props.deolyedTokenDetails?.mintedTokens)}
+                  {/*{millify(props.deolyedTokenDetails?.mintedTokens)}*/}
+                  {millify(getSafeInteger(props.deolyedTokenDetails?.mintedTokens))}
                 </Amount>
                 <Description>
                   <SubDes>Last minted:</SubDes>{" "}
@@ -698,7 +706,8 @@ function manageContractDetails(props) {
               <DetailsContainer>
                 <Title>Burnt Tokens</Title>
                 <Amount>
-                  {millify(props.deolyedTokenDetails?.burntTokens)}
+                  {/*{millify(props.deolyedTokenDetails?.burntTokens)}*/}
+                  {millify(getSafeInteger(props.deolyedTokenDetails?.burntTokens))}
                 </Amount>
                 <Description>
                   <SubDes>Last burnt:</SubDes>{" "}
@@ -713,7 +722,8 @@ function manageContractDetails(props) {
               <DetailsContainer>
                 <Title>Current Supply</Title>
                 <Amount>
-                  {millify(props.deolyedTokenDetails?.tokenCurrentSupply)}
+                  {/*{millify(1000001000100010)}*/}
+                  {millify(getSafeInteger(props.deolyedTokenDetails?.tokenCurrentSupply))}
                 </Amount>
                 <Description>
                   <SubDes>Updated:</SubDes>{" "}
