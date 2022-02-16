@@ -21,11 +21,10 @@ export default {
 
 
 async function getDraftFailedXrc20Token(requestData) {
-    // let url =
-    //   process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
-    //     httpConstants.API_END_POINT.GET_DRAFT_FAILD_XRC20_TOKEN;
+    let url =
+      process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
+        httpConstants.API_END_POINT.GET_DRAFT_FAILD_XRC20_TOKEN;
     
-  let url = "https://wgpsgpocfa.execute-api.us-east-1.amazonaws.com/mycontract/get-draft-failed-xrc20token";
 
     return httpService(
       httpConstants.METHOD_TYPE.POST,
@@ -49,11 +48,10 @@ async function getDraftFailedXrc20Token(requestData) {
 }
 
 async function deleteContract(requestData) {
-    // let url =
-    //   process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
-    //     httpConstants.API_END_POINT.DELETE_XRC20_TOKEN + "/" + requestData.id;
+    let url =
+      process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
+        httpConstants.API_END_POINT.DELETE_XRC20_TOKEN + "/" + requestData.id;
     
-  let url = "https://origin.xdc.org:3001/delete-xrc20token" + "/" + requestData.id;
 
     return httpService(
       httpConstants.METHOD_TYPE.DELETE,
@@ -77,11 +75,10 @@ async function deleteContract(requestData) {
 }
 
 async function getXrc20TokenById(requestData) {
-    // let url =
-    //   process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
-    //     httpConstants.API_END_POINT.GET_XRC20TOKEN_BY_ID;
+    let url =
+      process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
+        httpConstants.API_END_POINT.GET_XRC20TOKEN_BY_ID;
     
-  let url = "https://wgpsgpocfa.execute-api.us-east-1.amazonaws.com/mycontract/get-xrc20Token-by-id";
 
     return httpService(
       httpConstants.METHOD_TYPE.POST,
@@ -133,11 +130,10 @@ async function getDeployedXrc20Token(requestData) {
 }
 
 async function updateDeployedXrc20Token(requestData) {
-    // let url =
-    //   process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
-    //     httpConstants.API_END_POINT.UPDATE_CONTRACTS;
+    let url =
+      process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
+        httpConstants.API_END_POINT.UPDATE_CONTRACTS;
     
-    let url = "https://wgpsgpocfa.execute-api.us-east-1.amazonaws.com/mycontract/update-social-media-urls";
 
     return httpService(
       httpConstants.METHOD_TYPE.POST,
