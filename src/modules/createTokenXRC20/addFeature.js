@@ -11,6 +11,7 @@ import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import { handleNavItem } from "../../action";
 import toast, { Toaster } from "react-hot-toast";
+import { CircularProgress } from "@material-ui/core";
 
 const Parent = styled.div`
   display: flex;
@@ -333,9 +334,16 @@ const Check = styled.img`
     margin: 12px 15px 0px 12px;
   }
 `;
+const LoaderContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 function AddFeatures(props) {
   const history = useHistory();
+  const [isClicked, setIsClicked] = useState(false);
   const tab = [
     {
       id: 1,
@@ -437,6 +445,7 @@ function AddFeatures(props) {
     ) {
       props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res });
+      setIsClicked(false);
     }
     // else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
     //   notifyNameErrorMessage();
@@ -470,14 +479,17 @@ function AddFeatures(props) {
     if (res[0] !== 0) {
       props.setActiveNavItem("deploy");
       history.push({ pathname: "/deploy-contract", state: res[0] });
+      setIsClicked(false);
     }
   };
 
   const checkSaveOrEditDraft = (e) => {
     e.preventDefault();
     if (hasTokenId === true) {
+      setIsClicked(true);
       saveAsDraftbyEdit(e);
     } else {
+      setIsClicked(true);
       saveAsDraft(e);
     }
   };
@@ -486,6 +498,11 @@ function AddFeatures(props) {
     <>
       <div>
         <Toaster />
+        {isClicked ? (
+          <LoaderContainer>
+              <CircularProgress />
+          </LoaderContainer>
+        ) : ""}
       </div>
       <Parent>
         <Column>
@@ -530,7 +547,7 @@ function AddFeatures(props) {
               </BackButton>
 
               <RightDiv>
-                <SaveDraftButton onClick={checkSaveOrEditDraft}>
+                <SaveDraftButton onClick={checkSaveOrEditDraft} disabled={isClicked}>
                   <SaveDraftText>Save Draft</SaveDraftText>
                   <DraftImgDiv src="/images/Save-Draft-Image.svg" />
                 </SaveDraftButton>
