@@ -290,23 +290,24 @@ function MintContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
-          setTimeout(() => {
-            mintXRC20Token();
-            setSteps(3);  
-          }, 30000);
-        })
-        .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt);
-          // console.log("receipt ====", receipt);
-          // if (receipt !== 0) {
+          // setTimeout(() => {
           //   mintXRC20Token();
           //   setSteps(3);
-          // }
+          // }, 30000);
+        })
+        .on("receipt", function (receipt) {
+          //Not receiving the receipt event for mainnet currently
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
-          console.error("error  ====", error);
+          // if(error.message === 'Failed to check for transaction receipt:\n' +
+          //     '{}'){
+          //   console.log("Transaction succeeded!!");
+          // }
+          if(error.message.includes("transaction receipt")){ //the transaction is successful
+            mintXRC20Token();
+            setSteps(3);
+          }
         });
     } else {
       await window.web3.eth
