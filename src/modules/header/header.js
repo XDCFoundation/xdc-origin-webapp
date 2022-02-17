@@ -102,6 +102,30 @@ function Header(props) {
             }
           }
         }
+        else{
+          let accountDetails = {
+            address: null,
+            network: null,
+            balance: null,
+            isLoggedIn: false,
+          };
+
+          props.updateAccountDetails(accountDetails);
+          props.setActiveNavItem("about");
+          history.push("/");
+        }
+      }
+      else{
+        let accountDetails = {
+          address: null,
+          network: null,
+          balance: null,
+          isLoggedIn: false,
+        };
+
+        props.updateAccountDetails(accountDetails);
+        props.setActiveNavItem("about");
+        history.push("/");
       }
     }
 
@@ -150,7 +174,7 @@ function Header(props) {
                       props.userDetails?.accountDetails?.address.length - 5
                     )}
                 </Address>
-                {forceUpdate ? ( 
+                {forceUpdate ? (
                   <AccountIcon>
                     <WalletDummyImg src="/images/wallet_dummy_image.svg" alt="" />
                   </AccountIcon>
@@ -163,7 +187,7 @@ function Header(props) {
                     />
                   </AccountIcon>
                 )
-                } 
+                }
               </AddressContainer>
             ) : (
               <Button onClick={() => connectWallet()}>Connect Wallet</Button>

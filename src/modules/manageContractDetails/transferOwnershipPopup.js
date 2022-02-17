@@ -312,18 +312,22 @@ function TransferOwnershipContract(props) {
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
           // console.log("transactionHash ====", hash);
-          setTimeout(() => {
-            transferXRC20Token();
-            setSteps(3);  
-          }, 15000);
+          // setTimeout(() => {
+          //   transferXRC20Token();
+          //   setSteps(3);
+          // }, 15000);
         })
         .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt); 
+          // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {
         })
         .on("error", function (error) {
-          console.error("error error error error ====", error);
+          // console.error("error error error error ====", error);
+          if(error.message.includes("transaction receipt")){ //the transaction is successful
+            transferXRC20Token();
+            setSteps(3);
+          }
         });
     } else {
       await window.web3.eth
