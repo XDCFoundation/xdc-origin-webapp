@@ -35,6 +35,7 @@ export const httpConstants = {
 };
 export const apiBodyMessages = {
     STATUS_DEPLOYED: "DEPLOYED",
+    STATUS_FAILED: "FAILED",
     STATUS_MINT: "mint",
     STATUS_BURN: "burn"
 };
@@ -66,6 +67,7 @@ export const validationsMessages = {
     INITIAL_SUPPLY_LIMIT_FOR_BURN_ERROR: "Burn quantity should be greater than 0 and less than current supply",
     MINT_QUANTITY_ERROR: "Mint quantity should be greater than 0",
     INVALID_ADDRESS_ERROR: "Invalid address",
+    DISABLE_METAMSK_ERROR: "Disable metamask and login to XDCPay",
 }
 
 export const toolTipContentMessages = {

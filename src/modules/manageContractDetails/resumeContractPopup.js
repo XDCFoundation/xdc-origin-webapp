@@ -203,17 +203,21 @@ function ResumeContract(props) {
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
           // console.log("transactionHash ====", hash);
-          setTimeout(() => {
-            pauseXRC20Token();
-            setSteps(3);
-          }, 15000);
+          // setTimeout(() => {
+          //   pauseXRC20Token();
+          //   setSteps(3);
+          // }, 15000);
         })
         .on("receipt", function (receipt) {
           // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
-          console.error("error error error error ====", error);
+          // console.error("error error error error ====", error);
+          if(error.message.includes("transaction receipt")){ //the transaction is successful
+            pauseXRC20Token();
+            setSteps(3);
+          }
         });
     } else {
       await window.web3.eth
@@ -284,7 +288,7 @@ function ResumeContract(props) {
                     <Line />
                     <Header>
                       Do you want to resume the {props.tokenName}
-                      <br /> Contract? All transactions will be allowed again.
+                      <br /> Token? All transactions will be allowed again.
                     </Header>
                     <ButtonContainer>
                       <CancelButton
@@ -346,7 +350,7 @@ function ResumeContract(props) {
                       <PauseText>Contract Resume</PauseText>
                       <ConfirmDiv>
                         <ConfirmText>
-                          Paused the contract to stop transactions
+                          Paused the token to stop transactions
                         </ConfirmText>
                       </ConfirmDiv>
                     </TextDiv>
