@@ -5,6 +5,9 @@ import DesktopSideMenu from "./sidebar";
 import About from "../aboutScreen/about";
 import { Column, Row } from "simple-flexbox";
 import Footer from "../Footer";
+import ScreenSizeDetector from "screen-size-detector";
+
+const screen = new ScreenSizeDetector();
 
 const DashboardContainer = styled.div`
   width: 100%;
@@ -17,12 +20,12 @@ const dashboardComponent = (props) => {
     <DashboardContainer>
       <HeaderComponent />
       <Row>
-        {window.innerWidth >= 1024 ? <DesktopSideMenu /> : ""}
+        {screen.width >= 1024 ? <DesktopSideMenu /> : ""}
 
   
         <About />
       </Row>
-      {window.innerWidth <= 768 ? <Footer /> : ""}
+      {screen.width <= 768 ? <Footer /> : ""}
     </DashboardContainer>
   );
 };
