@@ -162,7 +162,7 @@ function footer() {
             <OriginText>Origin</OriginText>
           </ImgContainer>
           <Text>
-          SmartMint is a Smart Contract Tokenization platform that enables brands to create Non-Fungible Tokens.
+          Origin is a Smart Contract Tokenization platform that enables brands to create Non-Fungible Tokens.
           </Text>
         </Column>
         <SecondColumn>
