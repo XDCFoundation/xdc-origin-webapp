@@ -13,7 +13,6 @@ import {
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
-import toast, { Toaster } from "react-hot-toast";
 
 
 const DialogContainer = styled.div`
@@ -122,14 +121,18 @@ const Header = styled.div`
   align-items: center;
   text-align: center;
   justify-content: center;
-  padding: 0 0 20px 0;
+  padding: 0 0 26px 0;
 `;
 const MidSection = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
   justify-content: center;
-  padding: 36px 0 50px 0;
+  padding: 0 0 31px 0;
+`;
+const InputContainer = styled.div`
+  margin: 0 0 19px 0;
+  height: 50px;
 `;
 const InputDiv = styled.input`
   width: 341px;
@@ -196,6 +199,18 @@ const Img = styled.img`
   width: 78px;
   height: 78px;
 `;
+const ErrorContainer = styled.p`
+  width: 341px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+const Error = styled.span`
+  color: #ff0000;
+  font: normal normal normal 15px/21px Inter;
+  padding: 4px 0 0 2px;
+  text-align: left;
+`;
 
 const useStyles = makeStyles({
   dialog: {
@@ -224,12 +239,8 @@ function BurnContract(props) {
   let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
-    if(inputToken > props.tokenInitialSupply || inputToken < 1){
-      toast.error(validationsMessages.INITIAL_SUPPLY_LIMIT_FOR_BURN_ERROR, {
-        duration: 5000,
-        position: validationsMessages.TOASTS_POSITION,
-        className: "toast-div-address",
-      });
+    if(Number(inputToken) > Number(props.tokenInitialSupply) || inputToken < 1){
+      return;
     } else{
       setSteps(2);
       sendTransaction();
@@ -257,7 +268,7 @@ function BurnContract(props) {
       to: contractAddress, //contractAddress of the concerned token (same in data below)
       gas: 7920000,
       gasPrice: gasPrice,
-      data: contractInstance.methods.burn(BigInt(finalToken)).encodeABI()  
+      data: contractInstance.methods.burn(BigInt(finalToken)).encodeABI()
       //value given by user should be multiplied by 1000
     };
 
@@ -266,18 +277,22 @@ function BurnContract(props) {
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
           // console.log("transactionHash ====", hash);
-          setTimeout(() => {
-            burnXRC20Token();
-            setSteps(3);  
-          }, 15000);
+          // setTimeout(() => {
+          //   burnXRC20Token();
+          //   setSteps(3);
+          // }, 15000);
         })
         .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt); 
+          // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {
         })
         .on("error", function (error) {
-          console.error("error error error error ====", error);
+          // console.error("error error error error ====", error);
+          if(error.message.includes("transaction receipt")){ //the transaction is successful
+            burnXRC20Token();
+            setSteps(3);
+          }
         });
     } else {
       await window.web3.eth
@@ -325,7 +340,6 @@ function BurnContract(props) {
 
   return (
     <>
-      <div><Toaster /></div>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -354,7 +368,16 @@ function BurnContract(props) {
                       This is an irreversible process.
                     </Header>
                     <MidSection>
-                      <InputDiv type="number" onChange={(e) => setInputToken(e.target.value)}/>
+                      <InputContainer>
+                        <InputDiv type="number" onChange={(e) => setInputToken(e.target.value)}/>
+                        {inputToken !== '' && (Number(inputToken) > Number(props.tokenInitialSupply) || inputToken < 1) ? (
+                          <ErrorContainer>
+                            <Error>
+                              {validationsMessages.INITIAL_SUPPLY_LIMIT_FOR_BURN_ERROR}
+                            </Error>
+                          </ErrorContainer>
+                        ) : ""}
+                      </InputContainer>
                     </MidSection>
                     <ButtonContainer>
                       <CancelButton onClick={() => props.handleClose(false)}>

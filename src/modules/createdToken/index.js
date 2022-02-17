@@ -7,6 +7,10 @@ import Sidebar from "../dashboard/sidebar";
 import { Column, Row } from "simple-flexbox";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
+import ScreenSizeDetector from "screen-size-detector";
+
+const screen = new ScreenSizeDetector();
+
 
 class CreateTokenComponent extends BaseComponent {
   constructor(props) {
@@ -35,10 +39,10 @@ class CreateTokenComponent extends BaseComponent {
       <>
         <HeaderComponent />
         <Row>
-          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
+          {screen.width >= 1024 ? <Sidebar /> : ""}
           <CreateToken priceValue={this.state.priceValue} location={this.props.location} state={this.state} />;
         </Row>
-        {window.innerWidth <= 768 ? <Footer /> : ""}
+        {screen.width <= 768 ? <Footer /> : ""}
       </>
     )
   }

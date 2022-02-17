@@ -10,6 +10,9 @@ import { contractManagementService } from "../../services";
 import { connect } from "react-redux";
 import Web3 from "web3";
 import { updateAccountDetails } from "../../action";
+import ScreenSizeDetector from "screen-size-detector";
+
+const screen = new ScreenSizeDetector();
 
 class DeployContract extends BaseComponent {
   constructor(props) {
@@ -134,14 +137,14 @@ class DeployContract extends BaseComponent {
       <div>
         <Header />
         <Row>
-          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
+          {screen.width >= 1024 ? <Sidebar /> : ""}
           <DeployContractComponent
             saveDraftData={this.props.location.state}
             state={this.state}
             deleteContract={this.deleteContract}
           />
         </Row>
-        {window.innerWidth <= 768 ? <Footer /> : ""}
+        {screen.width <= 768 ? <Footer /> : ""}
       </div>
     );
   }

@@ -14,9 +14,9 @@ export default function Faqs(props) {
     {
       id: 1,
       questionText:
-        "Is Origin free to use?",
+        "Is XDC Origin free to use?",
       answerText:
-        "XDC Origin does not charge any additional service or administrational fees to create new tokens. You only pay the transaction gas fees for the actual generation of the tokens, and these fees will not go to XDC Network but to the respective miners or validators.",
+        "XDC Origin does not charge any additional service or administrational fees to create new tokens. You only pay the transaction gas fees for the actual generation of the tokens, and these fees will not go to XDC Network but to the respective validators.",
     },
     {
       id: 2,
