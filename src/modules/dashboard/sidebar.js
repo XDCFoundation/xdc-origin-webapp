@@ -181,7 +181,7 @@ function Sidebar(props) {
       ) : (
         ""
       )}
-{console.log("width",screen.width)}
+
       {screen.width <= 768 ? (
         props.userAccountDetails?.activeNavItem === "faq" ? (
           <ActiveWrapper
