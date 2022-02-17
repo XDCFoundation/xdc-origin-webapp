@@ -8,6 +8,9 @@ import CommonTabs from "./commonTab";
 import Footer from "../Footer";
 import contractManagementService from "../../services/contractManagementService";
 import Utility from "../../utility";
+import ScreenSizeDetector from "screen-size-detector";
+
+const screen = new ScreenSizeDetector();
 
 
 
@@ -53,10 +56,10 @@ class CreateTokenXRC20 extends BaseComponent {
       <>
         <HeaderComponent />
         <Row>
-          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
+          {screen.width >= 1024 ? <Sidebar /> : ""}
           <CommonTabs image={this.props.location.state} state={this.state}/>
         </Row>
-        {window.innerWidth <= 768 ? <Footer /> : ""}
+        {screen.width <= 768 ? <Footer /> : ""}
       </>
     );
   }

@@ -3,13 +3,16 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import "../../assets/styles/custom.css";
-import {handleLogout, handleNavItem, handleSubNavItem, handleSubNavToken, updateAccountDetails} from "../../action"
+import {handleLogout, handleNavItem, handleSubNavItem, handleSubNavToken, updateAccountDetails} from "../../action";
+import ScreenSizeDetector from "screen-size-detector";
 
 function Sidebar(props) {
   const history = useHistory();
   const [isActive, setIsActive] = useState("");
   const [createContract, setCreateContract] = useState(false);
   const [subNavItems, setSubNavItems] = useState(false);
+
+  const screen = new ScreenSizeDetector();
 
   const changeBackgound = (navItem) => {
     if (navItem === "create") {
@@ -178,8 +181,8 @@ function Sidebar(props) {
       ) : (
         ""
       )}
-
-      {window.innerWidth <= 768 ? (
+{console.log("width",screen.width)}
+      {screen.width <= 768 ? (
         props.userAccountDetails?.activeNavItem === "faq" ? (
           <ActiveWrapper
             onClick={handleBtn}

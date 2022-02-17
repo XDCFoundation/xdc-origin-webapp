@@ -10,6 +10,9 @@ import Utility from "../../utility";
 import { contractManagementService } from "../../services";
 import toast, { Toaster } from "react-hot-toast";
 import { history } from "../../managers/history";
+import ScreenSizeDetector from "screen-size-detector";
+
+const screen = new ScreenSizeDetector();
 
 class UpdateProfile extends BaseComponent {
   constructor(props) {
@@ -98,7 +101,7 @@ class UpdateProfile extends BaseComponent {
           <Toaster />
         </div>
         <Row>
-          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
+          {screen.width >= 1024 ? <Sidebar /> : ""}
           <UpdateProfileComponent
             state={this.state}
             setUpdatedValues={this.setUpdatedValues}
@@ -108,7 +111,7 @@ class UpdateProfile extends BaseComponent {
             updateDeployedXrc20Token={this.updateDeployedXrc20Token}
           />
         </Row>
-        {window.innerWidth <= 768 ? <Footer /> : ""}
+        {screen.width <= 768 ? <Footer /> : ""}
       </div>
     );
   }
