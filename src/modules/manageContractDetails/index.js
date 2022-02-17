@@ -10,6 +10,9 @@ import ManageContractDetails from "./manageContractDetails";
 import contractManagementService from "../../services/contractManagementService";
 import Utility from "../../utility";
 import { CircularProgress } from "@material-ui/core";
+import ScreenSizeDetector from "screen-size-detector";
+
+const screen = new ScreenSizeDetector();
 
 
 
@@ -87,7 +90,7 @@ class ManageContracts extends BaseComponent {
         <>
           <Header />
           <Row>
-            {window.innerWidth >= 1024 ? <Sidebar /> : ""}
+            {screen.width >= 1024 ? <Sidebar /> : ""}
             {this.state.isFetched ? (
               <ManageContractDetails
                 state={this.state}
@@ -103,7 +106,7 @@ class ManageContracts extends BaseComponent {
               ""
             )}
           </Row>
-          {window.innerWidth <= 768 ? <Footer /> : ""}
+          {screen.width <= 768 ? <Footer /> : ""}
         </>
       </div>
     );

@@ -217,6 +217,12 @@ function connectWalletPopup(props) {
     position: validationsMessages.TOASTS_POSITION,
     className: "toast-div-address",
   });
+  const disableMetamaskMessage = () =>
+  toast.error(validationsMessages.DISABLE_METAMSK_ERROR, {
+    duration: 4000,
+    position: validationsMessages.TOASTS_POSITION,
+    className: "toast-div-address",
+  });
 
 
   const handleXDCPayWallet = async () => {
@@ -261,10 +267,7 @@ function connectWalletPopup(props) {
         }
       } else {
         //metamask is also enabled with xdcpay
-        const state = window.web3.givenProvider.publicConfigStore._state;
-        let address = state.selectedAddress;
-        let network =
-          state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+        disableMetamaskMessage();
       }
     } else {
       // For mobile and tab - redirect to App Store

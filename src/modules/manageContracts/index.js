@@ -10,6 +10,9 @@ import Utility from "../../utility";
 import { contractManagementService } from "../../services";
 import Web3 from "web3";
 import { updateAccountDetails } from "../../action";
+import ScreenSizeDetector from "screen-size-detector";
+
+const screen = new ScreenSizeDetector();
 
 class ManageContracts extends BaseComponent {
   constructor(props) {
@@ -123,13 +126,13 @@ class ManageContracts extends BaseComponent {
       <div>
         <Header />
         <Row>
-          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
+          {screen.width >= 1024 ? <Sidebar /> : ""}
           <ManageContractsComponent
           state={this.state}
           network={this.props?.user?.accountDetails?.network}  
           deolyedXrc20TokenDetails={this.state.deolyedXrc20TokenDetails} />
         </Row>
-        {window.innerWidth <= 768 ? <Footer /> : ""}
+        {screen.width <= 768 ? <Footer /> : ""}
       </div>
     );
   }
