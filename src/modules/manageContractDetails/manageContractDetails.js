@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Tooltip, Fade, Menu, MenuItem } from "@material-ui/core";
+import { Tooltip, Fade, Menu, MenuItem, createTheme } from "@material-ui/core";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { makeStyles } from "@material-ui/core/styles";
 import millify from "millify";
@@ -15,6 +15,7 @@ import MintContractPopup from "./mintContractPopup";
 import TransferOwnershipPopup from "./transferOwnershipPopup";
 import AddToXDCPayPopup from "../createdToken/addToXDCPayPopup";
 import EditorFormatListNumbered from "material-ui/svg-icons/editor/format-list-numbered";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -28,7 +29,28 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     marginBottom: "3px",
   },
+  arrow: {
+    "&:before": {
+      border: "1px solid #e6e8ed"
+    },
+    color: theme.palette.common.white,
+  },
 }));
+
+const theme = createTheme({
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: "16px",
+        fontweight: 600,
+        color: "#4B4B4B",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0px 3px 12px #0000001A",
+        border: "1px solid #e6e8ed",
+      },
+    }
+  }
+});
 
 const Container = styled.div`
   width: 100vw;
@@ -675,9 +697,20 @@ function manageContractDetails(props) {
             <MiddleContainer>
               <DetailsContainerFirst>
                 <Title>Initial Supply</Title>
-                <Amount>
-                  {millify(props.deolyedTokenDetails?.tokenInitialSupply)}
-                </Amount>
+                <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                    classes={{ arrow: classes.arrow }}
+                    title={props.deolyedTokenDetails?.tokenInitialSupply}
+                    placement="top"
+                    arrow
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
+                  >
+                    <Amount>
+                      {millify(props.deolyedTokenDetails?.tokenInitialSupply)}
+                    </Amount>
+                  </Tooltip>
+                </MuiThemeProvider>
                 <Description>
                   <SubDes>Created on:</SubDes>{" "}
                   <SubContentSupply>
@@ -688,10 +721,21 @@ function manageContractDetails(props) {
               <Divider />
               <DetailsContainer>
                 <Title>Minted Tokens</Title>
-                <Amount>
-                  {/*{millify(props.deolyedTokenDetails?.mintedTokens)}*/}
-                  {millify(getSafeInteger(props.deolyedTokenDetails?.mintedTokens))}
-                </Amount>
+                <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                    classes={{ arrow: classes.arrow }}
+                    title={props.deolyedTokenDetails?.mintedTokens}
+                    placement="top"
+                    arrow
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
+                  >
+                    <Amount>
+                      {/*{millify(props.deolyedTokenDetails?.mintedTokens)}*/}
+                      {millify(getSafeInteger(props.deolyedTokenDetails?.mintedTokens))}
+                    </Amount>
+                  </Tooltip>
+                </MuiThemeProvider>
                 <Description>
                   <SubDes>Last minted:</SubDes>{" "}
                   <SubContent>
@@ -705,10 +749,21 @@ function manageContractDetails(props) {
               <Divider />
               <DetailsContainer>
                 <Title>Burnt Tokens</Title>
-                <Amount>
-                  {/*{millify(props.deolyedTokenDetails?.burntTokens)}*/}
-                  {millify(getSafeInteger(props.deolyedTokenDetails?.burntTokens))}
-                </Amount>
+                <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                    classes={{ arrow: classes.arrow }}
+                    title={props.deolyedTokenDetails?.mintedTokens}
+                    placement="top"
+                    arrow
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
+                  >
+                    <Amount>
+                      {/*{millify(props.deolyedTokenDetails?.burntTokens)}*/}
+                      {millify(getSafeInteger(props.deolyedTokenDetails?.burntTokens))}
+                    </Amount>
+                  </Tooltip>
+                </MuiThemeProvider>
                 <Description>
                   <SubDes>Last burnt:</SubDes>{" "}
                   <SubContent>
@@ -721,10 +776,21 @@ function manageContractDetails(props) {
               <Divider />
               <DetailsContainer>
                 <Title>Current Supply</Title>
-                <Amount>
-                  {/*{millify(1000001000100010)}*/}
-                  {millify(getSafeInteger(props.deolyedTokenDetails?.tokenCurrentSupply))}
-                </Amount>
+                <MuiThemeProvider theme={theme}>
+                  <Tooltip
+                    classes={{ arrow: classes.arrow }}
+                    title={props.deolyedTokenDetails?.tokenCurrentSupply}
+                    placement="top"
+                    arrow
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
+                  >
+                    <Amount>
+                      {/*{millify(1000001000100010)}*/}
+                      {millify(getSafeInteger(props.deolyedTokenDetails?.tokenCurrentSupply))}
+                    </Amount>
+                  </Tooltip>
+                </MuiThemeProvider>
                 <Description>
                   <SubDes>Updated:</SubDes>{" "}
                   <SubContent>

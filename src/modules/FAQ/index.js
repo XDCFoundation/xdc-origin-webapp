@@ -4,6 +4,9 @@ import FaqComponent from "./Faq";
 import Sidebar from "../dashboard/sidebar";
 import Header from "../header/header";
 import { Row } from "simple-flexbox";
+import ScreenSizeDetector from "screen-size-detector";
+
+const screen = new ScreenSizeDetector();
 
 
 class FAQ extends BaseComponent {
@@ -17,7 +20,7 @@ class FAQ extends BaseComponent {
       <div>
         <Header />
         <Row>
-          {window.innerWidth >= 1024 ? <Sidebar /> : ""}
+          {screen.width >= 1024 ? <Sidebar /> : ""}
           <FaqComponent />
         </Row>
         

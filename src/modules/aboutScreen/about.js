@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Tooltip, Typography, ClickAwayListener } from "@material-ui/core";
 import { DASHBOARD_VIDEO_URL } from "../../constants";
+import ScreenSizeDetector from "screen-size-detector";
 
 const CustomTooltip = withStyles((theme) => ({
   tooltip: {
@@ -74,6 +75,8 @@ function About(props) {
   const history = useHistory();
   const [connectWallet, setConnectWallet] = useState(true);
   const [open, setOpen] = useState(false);
+
+  const screen = new ScreenSizeDetector();
 
   const handleTooltipClose = () => {
     setOpen(false);
@@ -152,7 +155,7 @@ function About(props) {
                   <img className="XRC20" alt="" src="/images/Help.svg" />
                 </CustomTooltip>
               </Button>
-              {window.innerWidth < 768 ? (
+              {screen.width < 768 ? (
                 <ClickAwayListener onClickAway={handleTooltipClose}>
                   <MobileTooltip
                     arrow
