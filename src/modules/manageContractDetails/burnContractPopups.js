@@ -257,7 +257,7 @@ function BurnContract(props) {
       to: contractAddress, //contractAddress of the concerned token (same in data below)
       gas: 7920000,
       gasPrice: gasPrice,
-      data: contractInstance.methods.burn(BigInt(finalToken)).encodeABI()  
+      data: contractInstance.methods.burn(BigInt(finalToken)).encodeABI()
       //value given by user should be multiplied by 1000
     };
 
@@ -266,18 +266,22 @@ function BurnContract(props) {
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
           // console.log("transactionHash ====", hash);
-          setTimeout(() => {
-            burnXRC20Token();
-            setSteps(3);  
-          }, 15000);
+          // setTimeout(() => {
+          //   burnXRC20Token();
+          //   setSteps(3);
+          // }, 15000);
         })
         .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt); 
+          // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {
         })
         .on("error", function (error) {
-          console.error("error error error error ====", error);
+          // console.error("error error error error ====", error);
+          if(error.message.includes("transaction receipt")){ //the transaction is successful
+            burnXRC20Token();
+            setSteps(3);
+          }
         });
     } else {
       await window.web3.eth
