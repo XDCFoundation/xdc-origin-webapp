@@ -37,12 +37,12 @@ function DeployContract(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleDeployPopup = (deployTokenName) => {
+  const handleDeployPopup = (deployToken) => {
     // saveDraft data coming from addFeatures
-    let tokenDetails = props?.saveDraftData;
+    // let tokenDetails = props?.saveDraftData;
     setOpenDeployPopup(true);
-    setDeployTokenName(deployTokenName);
-    sendTransaction(tokenDetails);
+    setDeployTokenName(deployToken.tokenName);
+    sendTransaction(deployToken);
   };
 
   const deployPopupClose = () => {
@@ -88,7 +88,6 @@ function DeployContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
           obtainHash = hash;
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
@@ -130,6 +129,7 @@ function DeployContract(props) {
             error.message ===
             "Returned error: Error: XDCPay Tx Signature: User denied transaction signature."
           ) {
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
             setOpenDeployPopup(false);
           }
           else{
@@ -157,7 +157,8 @@ function DeployContract(props) {
             updateTokenDetails(
               draftedTokenId,
               draftedTokenOwner,
-              receipt.contractAddress
+              receipt.contractAddress,
+              apiBodyMessages.STATUS_DEPLOYED
             );
           }
         })
@@ -166,6 +167,7 @@ function DeployContract(props) {
         })
         .on("error", function (error) {
           if (error) {
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
             setOpenDeployPopup(false);
           }
         });
@@ -175,13 +177,14 @@ function DeployContract(props) {
   const updateTokenDetails = async (
     resultedTokenId,
     resultedTokenOwner,
-    resultAddress
+    resultAddress,
+    status
   ) => {
     let reqObj = {
       tokenId: resultedTokenId,
       tokenOwner: resultedTokenOwner,
       smartContractAddress: resultAddress,
-      status: apiBodyMessages.STATUS_DEPLOYED,
+      status: status
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.updateDraftedToken(reqObj)
@@ -206,7 +209,7 @@ function DeployContract(props) {
     );
     let obtainContractAddress = res?.contractAddress;
     // let obtainTxnHash = res?.hash || "";
-    let obtainTxnHash = res?.hash !== undefined ? res?.hash : obtainHash 
+    let obtainTxnHash = res?.hash !== undefined ? res?.hash : obtainHash
     let obtainGasUsed = res?.gasUsed;
      //-------
      contractAdd = res?.contractAddress
@@ -223,7 +226,7 @@ function DeployContract(props) {
         obtainContractAddress,
         tokenSymbol
       });
-      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress);
+      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress, apiBodyMessages.STATUS_DEPLOYED);
     }
   };
 
@@ -309,7 +312,7 @@ function DeployContract(props) {
                   <div className="icons">
                     <div
                       className="deployIcon"
-                      onClick={() => handleDeployPopup(item.tokenName)}
+                      onClick={() => handleDeployPopup(item)}
                     >
                       <img src="/images/deploy_contract.png" alt="" />
                     </div>

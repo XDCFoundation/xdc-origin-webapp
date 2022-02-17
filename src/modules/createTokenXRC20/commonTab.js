@@ -16,6 +16,7 @@ import { SaveDraftService } from "../../services/index";
 import Web3 from "web3";
 import { connect } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
+import {handleNavItem} from "../../action";
 
 const MainContainer = styled.div`
   display: flex;
@@ -462,7 +463,7 @@ function CommonTab(props) {
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
           // console.log('has---',hash)
-          obtainHash = hash 
+          obtainHash = hash
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
             setTimeout(() => {
@@ -496,10 +497,14 @@ function CommonTab(props) {
               tokenSymbol
             });
           } else if(error.message === "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." ) {
-            prevStep();
-          } 
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+            // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
+            props.setActiveNavbarItem("deploy")
+            history.push("/deploy-contract");
+            // prevStep();
+          }
           else{
-            console.log('')
+            console.log("");
           }
         });
     } else {
@@ -527,14 +532,19 @@ function CommonTab(props) {
             updateTokenDetails(
               draftedTokenId,
               draftedTokenOwner,
-              newContractAddress
+              newContractAddress,
+              apiBodyMessages.STATUS_DEPLOYED
             );
           }
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
           if (error) {
-            prevStep();
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+            // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
+            props.setActiveNavbarItem("deploy")
+            history.push("/deploy-contract");
+            // prevStep();
           }
         });
     }
@@ -543,13 +553,14 @@ function CommonTab(props) {
   const updateTokenDetails = async (
     resultedTokenId,
     resultedTokenOwner,
-    resultAddress
+    resultAddress,
+    status
   ) => {
     let reqObj = {
       tokenId: resultedTokenId,
       tokenOwner: resultedTokenOwner,
       smartContractAddress: resultAddress,
-      status: apiBodyMessages.STATUS_DEPLOYED,
+      status: status, //apiBodyMessages.STATUS_DEPLOYED,
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.updateDraftedToken(reqObj)
@@ -574,7 +585,7 @@ function CommonTab(props) {
       SaveDraftService.getTxnHashDetails(reqObj)
     );
     let obtainContractAddress = res?.transaction?.contractAddress;
-    let obtainTxnHash = res?.transaction?.hash !== undefined ? res?.transaction?.hash : obtainHash 
+    let obtainTxnHash = res?.transaction?.hash !== undefined ? res?.transaction?.hash : obtainHash
     let obtainGasUsed = res?.transaction?.gasUsed;
     //-------
     contractAdd = res?.transaction?.contractAddress
@@ -592,7 +603,7 @@ function CommonTab(props) {
         obtainContractAddress,
         tokenSymbol
       });
-      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress);
+      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress, apiBodyMessages.STATUS_DEPLOYED);
     }
   };
 
@@ -696,4 +707,10 @@ const mapStateToProps = (state) => ({
   userDetails: state.user,
 });
 
-export default connect(mapStateToProps)(CommonTab);
+const mapDispatchToProps = (dispatch) => ({
+  setActiveNavbarItem: (activeItem) => {
+    dispatch(handleNavItem(activeItem))
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps )(CommonTab);
