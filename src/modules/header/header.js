@@ -94,8 +94,12 @@ function Header(props) {
             };
 
             props.updateAccountDetails(accountDetails);
-            props.setActiveNavItem("about");
-            history.push("/");
+            if(window.location.pathname === "/FAQ"){
+              props.setActiveNavItem("faq");
+            }else{
+              props.setActiveNavItem("about");
+              history.push("/");
+            }
           }
         }
       }
