@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+/*global chrome*/
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Tooltip, Fade, Menu, MenuItem, createTheme } from "@material-ui/core";
@@ -435,7 +436,37 @@ function manageContractDetails(props) {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
 
   const addToXDCPayPopup = () => {
-    setIsAddPopupOpen(!isAddPopupOpen);
+    // chrome.runtime.sendMessage("bocpokimicclpaiekenaeelehdjllofo", 'version', response => {
+    //   if (!response) {
+    //     console.log('No extension');
+    //     // return;
+    //   }
+    //   console.log('Extension version: ', response.version);
+    // });
+    let tokenAddress = props.deolyedTokenDetails?.smartContractAddress.replace(
+        /xdc/,
+        "0x"
+    );
+    // console.log("window.ethereum. =-=-=-=-=-=-=", window.ethereum);
+    // console.log("tokenSymbol =-=-=-==-=", props.deolyedTokenDetails?.tokenSymbol)
+    // console.log("smartContractAddress =-=-=-=-=-=-=-=-=", tokenAddress);
+    // console.log("tokenDecimals =-=-=-=-=-=-=-=", props.deolyedTokenDetails?.tokenDecimals)
+    window.ethereum.sendAsync({
+      "jsonrpc": "2.0",
+      "method": "metamask_watchAsset",
+      "params": {
+        type: 'ERC20',
+        options: {
+          address: tokenAddress,//'0xb60e8dd61c5d32be8058bb8eb970870f07233155',
+          symbol: props.deolyedTokenDetails?.tokenSymbol,//'FOO',
+          decimals: props.deolyedTokenDetails?.tokenDecimals,//18,
+          image: 'https://foo.io/token-image.svg',
+        },
+      },
+      "id": 1635861619468
+    }, () => {})
+    handleClose();
+    // setIsAddPopupOpen(!isAddPopupOpen);
   }
 
   //pause-popups-flow-states :
