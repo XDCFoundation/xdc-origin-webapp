@@ -95,12 +95,16 @@ const LinkContainerSecond = styled.div`
   height: 134px;
   text-align: left;
 `;
-const Link = styled.span`
+const Link = styled.a`
   font: normal normal normal 16px/38px Inter;
   letter-spacing: 0px;
   color: #8ca6f0;
   opacity: 1;
   cursor: pointer;
+  text-decoration: none !important;
+  :focus{
+    color: #8ca6f0;
+  }
 `;
 const ContactRow = styled.div`
   margin: 116px 0 0 407px;
@@ -181,7 +185,7 @@ function footer() {
             <ColHeading>Resources</ColHeading>
             <LinkContainerSecond>
               <Link>About XDC</Link>
-              <Link> Documentation <div></div></Link>
+              <Link href="https://docs.xdc.org/" target="_blank"> Documentation <div></div></Link>
               <Link> Privacy Policy <div></div></Link>
               <Link> Terms and Conditions</Link>
             </LinkContainerSecond>
@@ -193,7 +197,7 @@ function footer() {
         <LinkContainerThird>
           <ContactContainer>
             <SocialIcon src="/images/Twitter_Footer.svg" />
-            <Link>Twitter</Link>
+            <Link href="https://twitter.com/XDCFoundation" target="_blank">Twitter</Link>
           </ContactContainer>
           <ContactContainer>
             <SocialIcon src="/images/Telegram_Footer.svg" />
