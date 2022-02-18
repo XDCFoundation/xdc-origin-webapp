@@ -68,6 +68,7 @@ export const validationsMessages = {
     MINT_QUANTITY_ERROR: "Mint quantity should be greater than 0",
     INVALID_ADDRESS_ERROR: "Invalid address",
     DISABLE_METAMSK_ERROR: "Disable metamask and login to XDCPay",
+    WALLET_DETAILS_UPDATE_MESSAGE: "XDCPay wallet details has been updated",
 }
 
 export const toolTipContentMessages = {
