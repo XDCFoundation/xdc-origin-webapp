@@ -507,7 +507,7 @@ function AddFeatures(props) {
       <Parent>
         <Column>
           <RowTwo>
-            <SpanOne>Select Feature For Your Token</SpanOne>
+            <SpanOne>Select features for your token</SpanOne>
             <SpanTwo>
             Choose the additional functionality you want to be added to your token’s smart contract.
             </SpanTwo>
