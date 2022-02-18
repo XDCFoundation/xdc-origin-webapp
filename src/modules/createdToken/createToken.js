@@ -311,7 +311,7 @@ const CreateToken = (props) => {
   let transactionAddress;
   let contractAddress;
   let newContractAddress;
-  
+
 
   // For Apothem Test Network
   if (props.user.accountDetails.network === "XDC Apothem Testnet") {
@@ -326,7 +326,7 @@ const CreateToken = (props) => {
       props.location?.state?.transactionHash?.substr(
         props.location?.state?.transactionHash.length - 4
       );
-    
+
     contractAddress = props.location.state?.contractAddress?.replace(
       /0x/,
       "xdc"
@@ -336,7 +336,7 @@ const CreateToken = (props) => {
       contractAddress?.slice(0, 26) +
       "..." +
       contractAddress?.substr(contractAddress?.length - 4);
-    
+
   } else if (props.user.accountDetails.network === "XDC Mainnet") {
     // For Mainnet
     let gasPrice = Number(props.location?.gasPrice);
@@ -350,16 +350,16 @@ const CreateToken = (props) => {
       props.location?.obtainTxnHash?.substr(
         props.location?.obtainTxnHash.length - 4
       );
-    
+
     contractAddress = props.location?.obtainContractAddress !== undefined ? props.location?.obtainContractAddress : ""
     // console.log('h---',contractAddress)
-    
+
     newContractAddress =
       contractAddress?.slice(0, 26) +
       "..." +
       contractAddress?.substr(contractAddress?.length - 4);
       // console.log('new---',newContractAddress)
-  } 
+  }
 
   const [open, setOpen] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
@@ -391,9 +391,32 @@ const CreateToken = (props) => {
   }
 
   const [isPopUpOpen, setIsPopUPOpen] = useState(false);
- 
+
   const togglePopup = () => {
-    setIsPopUPOpen(!isPopUpOpen);
+    // console.log("props =-=-=-=-=-=-=", props);
+    // console.log("tokenDetails =-=-=-=-=-=-=-", props.tokenDetails);
+    // console.log("tokenSymbol =-=-=-==-=", props.tokenDetails.location?.tokenSymbol)
+    // console.log("smartContractAddress =-=-=-=-=-=-=-=-=", props.location?.state?.contractAddress);
+    // console.log("tokenDecimals =-=-=-=-=-=-=-=", props.tokenDetails.location?.parsingDecimal)
+    let tokenAddress = props.tokenDetails.location?.obtainContractAddress?.replace(
+        /xdc/,
+        "0x"
+    );
+    window.ethereum.sendAsync({
+      "jsonrpc": "2.0",
+      "method": "metamask_watchAsset",
+      "params": {
+        type: 'ERC20',
+        options: {
+          address: props.location?.state?.contractAddress ? props.location?.state?.contractAddress : tokenAddress,
+          symbol: props.tokenDetails.location?.tokenSymbol,
+          decimals: props.tokenDetails.location?.parsingDecimal,
+          image: 'https://foo.io/token-image.svg',
+        },
+      },
+      "id": 1635861619468
+    }, () => {})
+    // setIsPopUPOpen(!isPopUpOpen);
   }
 
   const handleManageRedirect = () => {
@@ -430,7 +453,7 @@ const CreateToken = (props) => {
                   >
                     <KeyInfo src="images/Info.svg"></KeyInfo>
                   </Tooltip>
-              </MuiThemeProvider> 
+              </MuiThemeProvider>
                 Transaction Hash:
               </SuccessTokenKey>
               <SuccessTokenValues onClick={() => handleTransactionHash()}>
@@ -443,7 +466,7 @@ const CreateToken = (props) => {
                 TransitionComponent={Fade}
                 TransitionProps={{ timeout: 600 }}
               >
-                <CopyToClipboard 
+                <CopyToClipboard
                   text={props.location?.state?.transactionHash || ""}
                 >
                   <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpen}></CopyIcon>
