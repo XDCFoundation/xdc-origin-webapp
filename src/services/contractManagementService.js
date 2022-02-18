@@ -102,12 +102,10 @@ async function getXrc20TokenById(requestData) {
 }
 
 async function getDeployedXrc20Token(requestData) {
-    // let url =
-    //   process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
-    //     httpConstants.API_END_POINT.GET_DEPLOYED_XRC20TOKEN;
+    let url =
+      process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_URL +
+        httpConstants.API_END_POINT.GET_DEPLOYED_XRC20TOKEN;
     
-  let url = "https://ejt4p6apx3.execute-api.us-east-2.amazonaws.com/prod/get-deployed-xrc20token";
-
     return httpService(
       httpConstants.METHOD_TYPE.POST,
       getHeaders(),

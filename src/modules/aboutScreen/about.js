@@ -668,6 +668,9 @@ const IconContainer = styled.div`
     margin: 2rem 0 0 0 !important;
     ${"" /* max-width: 0rem; */}
   }
+  @media (min-width: 768px) and (max-width: 819px) {
+    margin: 0 0 20px 0;
+  }
 `;
 
 const SubHead = styled.div`

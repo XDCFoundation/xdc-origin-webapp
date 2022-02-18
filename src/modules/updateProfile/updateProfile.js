@@ -244,7 +244,7 @@ function updateProfile(props) {
   }
 
   const toggleUploadPopup = (imageData) => {
-    setImage(imageData);
+    setImage(typeof imageData === "string" ? imageData : image !== "" ? image : props.deolyedTokenDetails?.tokenImage);
     setIsUploadOpen(!isUploadOpen);
   }
 
@@ -277,7 +277,7 @@ function updateProfile(props) {
             <ImageContainer>
               <TokenImg src={image ? image : props.deolyedTokenDetails?.tokenImage} />
             </ImageContainer>
-            <ChangeImg onClick={(e) => toggleUploadPopup(e)}>
+            <ChangeImg onClick={(e) => toggleUploadPopup(props.deolyedTokenDetails?.tokenImage)}>
               Change Image
             </ChangeImg>
           </ImageUploadContainer>
