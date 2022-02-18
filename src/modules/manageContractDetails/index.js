@@ -11,6 +11,8 @@ import contractManagementService from "../../services/contractManagementService"
 import Utility from "../../utility";
 import { CircularProgress } from "@material-ui/core";
 import ScreenSizeDetector from "screen-size-detector";
+import Web3 from "web3";
+import { updateAccountDetails } from "../../action";
 
 const screen = new ScreenSizeDetector();
 
@@ -84,6 +86,35 @@ class ManageContracts extends BaseComponent {
     }
   }
 
+  handleXDCPayWalletChange = () => {
+    window.web3 = new Web3(window.ethereum);
+
+    if (
+      window.web3.currentProvider &&
+      this.props?.user?.accountDetails?.isLoggedIn
+    ) {
+      if (!window.web3.currentProvider.chainId) {
+        //when metamask is disabled
+        const state = window.web3.givenProvider.publicConfigStore._state;
+        if (state.selectedAddress !== undefined) {
+          let address = state.selectedAddress;
+          let network =
+            state.networkVersion === "50"
+              ? "XDC Mainnet"
+              : "XDC Apothem Testnet";
+
+          if ((address || network) && (address !== this.props.user?.accountDetails?.address || network !== this.props.user?.accountDetails?.network)) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          //metamask is also enabled with xdcpay
+        }
+      }
+    }
+  };
+  
   render() {
     return (
       <div>
@@ -97,6 +128,7 @@ class ManageContracts extends BaseComponent {
                 downloadSolFile={this.downloadSolFile}
                 deolyedTokenDetails={this.state.deolyedTokenDetails}
                 getXrc20TokenById={this.getXrc20TokenById}
+                handleXDCPayWalletChange={this.handleXDCPayWalletChange}
               />
             ) : this.state.isLoading ? (
                 <div className="circularProgressManageDetails">
@@ -117,4 +149,10 @@ const mapStateToProps = (state) => {
   return { user: state.user };
 };
 
-export default connect(mapStateToProps)(ManageContracts);
+const mapDispatchToProps = (dispatch) => ({
+  updateAccountDetails: (accountDetails) => {
+    dispatch(updateAccountDetails(accountDetails));
+  },
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(ManageContracts);

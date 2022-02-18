@@ -286,9 +286,9 @@ function PauseContract(props) {
                     </DialogHeader>
                     <Line />
                     <Header>
-                      Do you want to Pause the {props.tokenName || ""} Token?
+                      Do you want to Pause the {props.tokenName || ""} Contract?
                       <br /> All transactions will be stopped until you resume
-                      <br /> the token again.
+                      <br /> the contract again.
                     </Header>
                     <ButtonContainer>
                       <CancelButton onClick={props.handleClose}>
@@ -343,10 +343,10 @@ function PauseContract(props) {
                       <Img src="/images/Selected-Circle.svg" />
                     </ThirdHeader>
                     <TextDiv>
-                      <PauseText>Token Paused</PauseText>
+                      <PauseText>Contract Paused</PauseText>
                       <ConfirmDiv>
                         <ConfirmText>
-                          Resume the token to allow transactions
+                          Resume the contract to allow transactions
                         </ConfirmText>
                       </ConfirmDiv>
                     </TextDiv>

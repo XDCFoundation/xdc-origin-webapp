@@ -288,7 +288,7 @@ function ResumeContract(props) {
                     <Line />
                     <Header>
                       Do you want to resume the {props.tokenName}
-                      <br /> Token? All transactions will be allowed again.
+                      <br /> Contract? All transactions will be allowed again.
                     </Header>
                     <ButtonContainer>
                       <CancelButton
@@ -350,7 +350,7 @@ function ResumeContract(props) {
                       <PauseText>Contract Resume</PauseText>
                       <ConfirmDiv>
                         <ConfirmText>
-                          Paused the token to stop transactions
+                          Paused the contract to stop transactions
                         </ConfirmText>
                       </ConfirmDiv>
                     </TextDiv>
