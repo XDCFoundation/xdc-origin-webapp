@@ -528,6 +528,7 @@ function CommonTab(props) {
               parsingSupply,
               gasPrice,
               createdToken,
+              tokenSymbol
             });
             updateTokenDetails(
               draftedTokenId,
