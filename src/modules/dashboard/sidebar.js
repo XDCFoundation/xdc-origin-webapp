@@ -48,10 +48,14 @@ function Sidebar(props) {
   }
   const logout = () => {
     props.logout();
-    props.setActiveNavItem("about");
+    if (window.location.pathname === "/FAQ"){
+      props.setActiveNavItem("faq");
+    } else{
+      props.setActiveNavItem("about");
+      history.push("/");
+    }
     props.setSubNavItem(false);
     props.updateAccountDetails(null)
-    history.push("/");
   }
 
   return (

@@ -16,6 +16,7 @@ import TransferOwnershipPopup from "./transferOwnershipPopup";
 import AddToXDCPayPopup from "../createdToken/addToXDCPayPopup";
 import EditorFormatListNumbered from "material-ui/svg-icons/editor/format-list-numbered";
 import { MuiThemeProvider } from "@material-ui/core/styles";
+import { validationsMessages } from "../../constants"
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -449,50 +450,102 @@ function manageContractDetails(props) {
   const [isTransferOpen, setIsTransferOpen] = useState(false);
 
   const togglePausePopup = (closeOpt,confirmPause = false) => {
-    setIsPauseOpen(!isPauseOpen);
-    setChangeToResume(closeOpt);
-    if (confirmPause) {
-      props.getXrc20TokenById(props.state.id);
+    let change = props.handleXDCPayWalletChange();
+    if(change === false){
+      setIsPauseOpen(!isPauseOpen);
+      setChangeToResume(closeOpt);
+      if (confirmPause) {
+        props.getXrc20TokenById(props.state.id);
+      } 
+    } else {
+      history.push("/manage-contracts");
+      toast.success(validationsMessages.WALLET_DETAILS_UPDATE_MESSAGE, {
+        duration: 4000,
+        position: "top-center",
+        className: "toast-div-address",
+      });
     }
   };
+
   const toggleResumePopup = (opt, confirmResume = false) => {
     if (confirmResume) {
       props.getXrc20TokenById(props.state.id);
     }
-    setIsResumeOpen(!isResumeOpen);
-    setUnpause(true);
-    switch(opt) {
-      case 'pause':
-        return setChangeToResume(""), setUnpause(false);
-      case "resume":
-        return setUnpause(false);
-      default:
-        return;
+
+    let change = props.handleXDCPayWalletChange();
+    if(change === false){
+      setIsResumeOpen(!isResumeOpen);
+      setUnpause(true);
+      switch(opt) {
+        case 'pause':
+          return setChangeToResume(""), setUnpause(false);
+        case "resume":
+          return setUnpause(false);
+        default:
+          return;
+      }
+    } else {
+      history.push("/manage-contracts");
+      toast.success(validationsMessages.WALLET_DETAILS_UPDATE_MESSAGE, {
+        duration: 4000,
+        position: "top-center",
+        className: "toast-div-address",
+      });
     }
-    // if (opt === "pause") {
-    //   setChangeToResume("");
-    //   setUnpause(false);
-    // } else if (opt === "resume") {
-    //   setUnpause(false);
-    // }
   };
+
   const toggleBurnPopup = (confirmBurn = false) => {
     if (confirmBurn === true) {
       props.getXrc20TokenById(props.state.id);
     }
-    setIsBurnOpen(!isBurnOpen);
+
+    let change = props.handleXDCPayWalletChange();
+    if(change === false){
+      setIsBurnOpen(!isBurnOpen);
+    } else {
+      history.push("/manage-contracts");
+      toast.success(validationsMessages.WALLET_DETAILS_UPDATE_MESSAGE, {
+        duration: 4000,
+        position: "top-center",
+        className: "toast-div-address",
+      });
+    }
   };
+
   const toggleMintPopup = (confirmMint = false) => {
     if (confirmMint === true) {
       props.getXrc20TokenById(props.state.id);
     }
-    setIsMintOpen(!isMintOpen);
+
+    let change = props.handleXDCPayWalletChange();
+    if(change === false){
+      setIsMintOpen(!isMintOpen);
+    } else {
+      history.push("/manage-contracts");
+      toast.success(validationsMessages.WALLET_DETAILS_UPDATE_MESSAGE, {
+        duration: 4000,
+        position: "top-center",
+        className: "toast-div-address",
+      });
+    }
   };
+
   const toggleTransferPopup = (confirmTransfer = false) => {
     if (confirmTransfer === true) {
       history.push("/manage-contracts")
     }
-    setIsTransferOpen(!isTransferOpen);
+
+    let change = props.handleXDCPayWalletChange();
+    if(change === false){
+      setIsTransferOpen(!isTransferOpen);
+    } else {
+      history.push("/manage-contracts");
+      toast.success(validationsMessages.WALLET_DETAILS_UPDATE_MESSAGE, {
+        duration: 4000,
+        position: "top-center",
+        className: "toast-div-address",
+      });
+    }
   };
 
   const handleTooltipOpen = () => {
@@ -752,7 +805,7 @@ function manageContractDetails(props) {
                 <MuiThemeProvider theme={theme}>
                   <Tooltip
                     classes={{ arrow: classes.arrow }}
-                    title={props.deolyedTokenDetails?.mintedTokens}
+                    title={props.deolyedTokenDetails?.burntTokens}
                     placement="top"
                     arrow
                     TransitionComponent={Fade}
@@ -829,7 +882,7 @@ function manageContractDetails(props) {
                       Resume
                     </ResumeButton>
                   ) : (
-                    <ResumeButton>Unpause</ResumeButton>
+                    <ResumeButton>Resume</ResumeButton>
                   )}
                 </ActionDiv>
               )}
