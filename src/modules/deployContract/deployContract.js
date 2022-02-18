@@ -153,6 +153,7 @@ function DeployContract(props) {
               parsingSupply,
               gasPrice,
               createdToken,
+              tokenSymbol
             });
             updateTokenDetails(
               draftedTokenId,
