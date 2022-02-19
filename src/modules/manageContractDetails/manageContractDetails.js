@@ -784,7 +784,7 @@ function manageContractDetails(props) {
                 <MuiThemeProvider theme={theme}>
                   <Tooltip
                     classes={{ arrow: classes.arrow }}
-                    title={props.deolyedTokenDetails?.tokenInitialSupply}
+                    title={Number(props.deolyedTokenDetails?.tokenInitialSupply).toLocaleString()}
                     placement="top"
                     arrow
                     TransitionComponent={Fade}
@@ -808,7 +808,7 @@ function manageContractDetails(props) {
                 <MuiThemeProvider theme={theme}>
                   <Tooltip
                     classes={{ arrow: classes.arrow }}
-                    title={props.deolyedTokenDetails?.mintedTokens}
+                    title={Number(props.deolyedTokenDetails?.mintedTokens).toLocaleString()}
                     placement="top"
                     arrow
                     TransitionComponent={Fade}
@@ -836,7 +836,7 @@ function manageContractDetails(props) {
                 <MuiThemeProvider theme={theme}>
                   <Tooltip
                     classes={{ arrow: classes.arrow }}
-                    title={props.deolyedTokenDetails?.burntTokens}
+                    title={Number(props.deolyedTokenDetails?.burntTokens).toLocaleString()}
                     placement="top"
                     arrow
                     TransitionComponent={Fade}
@@ -863,7 +863,7 @@ function manageContractDetails(props) {
                 <MuiThemeProvider theme={theme}>
                   <Tooltip
                     classes={{ arrow: classes.arrow }}
-                    title={props.deolyedTokenDetails?.tokenCurrentSupply}
+                    title={Number(props.deolyedTokenDetails?.tokenCurrentSupply).toLocaleString()}
                     placement="top"
                     arrow
                     TransitionComponent={Fade}
