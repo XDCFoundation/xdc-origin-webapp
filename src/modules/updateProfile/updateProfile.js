@@ -264,7 +264,7 @@ function updateProfile(props) {
               history.push({
                 pathname: "/manage-contract-details",
                 state: {
-                  deolyedTokenDetails: props.deolyedTokenDetails,
+                  id: props.deolyedTokenDetails?.id,
                 },
               })
             }
@@ -353,7 +353,7 @@ function updateProfile(props) {
                 history.push({
                   pathname: "/manage-contract-details",
                   state: {
-                    deolyedTokenDetails: props?.deolyedTokenDetails,
+                    id: props.deolyedTokenDetails?.id,
                   },
                 })
               }
