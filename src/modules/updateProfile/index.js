@@ -111,7 +111,7 @@ class UpdateProfile extends BaseComponent {
             updateDeployedXrc20Token={this.updateDeployedXrc20Token}
           />
         </Row>
-        {screen.width <= 768 ? <Footer /> : ""}
+        {screen.width <= 1023 ? <Footer /> : ""}
       </div>
     );
   }

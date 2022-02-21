@@ -245,7 +245,7 @@ input:focus {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-left: 12px;
+  /* margin-left: 12px; */
 }
 .buttons {
   display: flex;
@@ -483,13 +483,16 @@ opacity: 1;
     margin: 0px !important;
     margin-left: auto;
     margin-right: auto;
-    height: 100vh;
+    height: 150vh;
 }
 
  }
  @media (min-width: 0px) and (max-width: 767px) {
+  .p-36{
+    padding-bottom: 15px !important;
+  }
   .app-container{
-    height: 100vh;
+    height: 150vh;
   }
   #Heading-section {
     margin-top:50px;
@@ -521,6 +524,7 @@ opacity: 1;
     padding-left: 10px;
     padding-right: 29px;
     padding-top: 7px;
+    padding-bottom: 15px;
   }
   .image{
     margin-bottom: 7px;
@@ -529,6 +533,7 @@ opacity: 1;
       width: 100%;
       padding: 0 15px;
       padding-right: 30px;
+      padding-bottom: 30px;
       
     }
     .faq-item{
@@ -660,4 +665,8 @@ opacity: 1;
   height: 115vh;
   background-color: #ECF0F7 ;
   padding-top: 100px;
+}
+
+.imageNotAvailable{
+  cursor:  not-allowed !important;
 }

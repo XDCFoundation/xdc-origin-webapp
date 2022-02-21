@@ -442,6 +442,7 @@ const IconRow = styled.div`
   width: 100%;
   @media (min-width: 768px) and (max-width: 1024px) {
     padding-bottom: 15px;
+    margin-top: 65.78px;
   }
   @media (min-width: 1025px) and (max-width: 1400px) {
     margin-top: 10px;
@@ -637,6 +638,9 @@ const Title = styled.div`
   margin-bottom: 11px;
   color: #1f1f1f;
   opacity: 1;
+  @media (min-width: 0px) and (max-width: 767px) {
+    font: normal normal 600 18px/21px Inter;
+  }
 `;
 const SubTitle = styled.div`
   width: 225px;
@@ -682,10 +686,12 @@ const SubHead = styled.div`
   padding-bottom: 9px;
   @media (min-width: 768px) and (max-width: 1024px) {
     font-size: 25px;
+    padding-bottom: 22px;
   }
   @media (min-width: 0px) and (max-width: 767px) {
-    font-size: 1rem;
+    font: normal normal 600 18px/21px Inter;
     margin-top: 1.5rem;
+    padding-bottom: 23px;
   }
 `;
 const SubHeadTiny = styled.div`
