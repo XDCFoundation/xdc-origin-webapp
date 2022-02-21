@@ -593,13 +593,15 @@ function manageContractDetails(props) {
     setIsActive(!isActive);
   };
 
-  const handleURL = (link) => {
+  const handleURL = (link, type) => {
     if (link === "") {
       toast.error("Link Not Provided", {
         duration: 4000,
         position: "top-center",
         // className: "toast-div-address",
       });
+    } else if (type !== undefined && type === "email") {
+      window.open(`mailto:${""}?subject=Subject&body=Body%20goes%20here`);
     } else {
       window.open(link, "_blank");
     }
@@ -697,7 +699,7 @@ function manageContractDetails(props) {
                     />
                     <MediaImg
                       onClick={() =>
-                        handleURL(props.deolyedTokenDetails?.email)
+                        handleURL(props.deolyedTokenDetails?.email, "email")
                       }
                       src="/images/Email_Active.svg"
                     />
