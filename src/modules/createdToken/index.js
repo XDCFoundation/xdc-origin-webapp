@@ -42,7 +42,7 @@ class CreateTokenComponent extends BaseComponent {
           {screen.width >= 1024 ? <Sidebar /> : ""}
           <CreateToken priceValue={this.state.priceValue} location={this.props.location} state={this.state} tokenDetails={this.props} />;
         </Row>
-        {screen.width <= 768 ? <Footer /> : ""}
+        {screen.width <= 1023 ? <Footer /> : ""}
       </>
     )
   }

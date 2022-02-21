@@ -132,7 +132,7 @@ class ManageContracts extends BaseComponent {
           network={this.props?.user?.accountDetails?.network}  
           deolyedXrc20TokenDetails={this.state.deolyedXrc20TokenDetails} />
         </Row>
-        {screen.width <= 768 ? <Footer /> : ""}
+        {screen.width <= 1023 ? <Footer /> : ""}
       </div>
     );
   }

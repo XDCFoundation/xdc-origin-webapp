@@ -176,12 +176,17 @@ const MediaImgContainer = styled.div`
   display: flex;
   align-items: center;
 `;
-const MediaImg = styled.img`
-  margin-right: 5px;
-  width: 23px;
-  height: 18px;
+const MediaImgWrapper = styled.div`
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
   cursor: pointer;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
+const MediaImg = styled.img``;
 const MiddleContainer = styled.div`
   width: 983px;
   height: 161px;
@@ -594,15 +599,16 @@ function manageContractDetails(props) {
   };
 
   const handleURL = (link, type) => {
-    if (link === "") {
-      toast.error("Link Not Provided", {
-        duration: 4000,
-        position: "top-center",
-        // className: "toast-div-address",
-      });
-    } else if (type !== undefined && type === "email") {
+    // if (link === "") {
+    //   toast.error("Link Not Provided", {
+    //     duration: 4000,
+    //     position: "top-center",
+    //     // className: "toast-div-address",
+    //   });
+    // } 
+    if (type !== undefined && type === "email") {
       window.open(`mailto:${""}?subject=Subject&body=Body%20goes%20here`);
-    } else {
+    } else if (link !== "") {
       window.open(link, "_blank");
     }
   };
@@ -691,52 +697,76 @@ function manageContractDetails(props) {
                     </Tooltip>
                   </AddressContainer>
                   <MediaImgContainer>
-                    <MediaImg
-                      onClick={() =>
-                        handleURL(props.deolyedTokenDetails?.website)
-                      }
-                      src="/images/Website_active.svg"
-                    />
-                    <MediaImg
-                      onClick={() =>
-                        handleURL(props.deolyedTokenDetails?.email, "email")
-                      }
-                      src="/images/Email_Active.svg"
-                    />
-                    <MediaImg
-                      onClick={() => handleURL("")}
-                      src="/images/Facebook_Active.svg"
-                    />
-                    <MediaImg
-                      onClick={() =>
-                        handleURL(props.deolyedTokenDetails?.twitter)
-                      }
-                      src="/images/Twitter_Active.svg"
-                    />
-                    <MediaImg
-                      onClick={() =>
-                        handleURL(props.deolyedTokenDetails?.telegram)
-                      }
-                      src="/images/Telegram_Active.svg"
-                    />
-                    <MediaImg
-                      onClick={() =>
-                        handleURL(props.deolyedTokenDetails?.linkedIn)
-                      }
-                      src="/images/LinkedIn_Active.svg"
-                    />
-                    <MediaImg
-                      onClick={() =>
-                        handleURL(props.deolyedTokenDetails?.reddit)
-                      }
-                      src="/images/Reditt_Active.svg"
-                    />
-                    <MediaImg
-                      onClick={() =>
-                        handleURL(props.deolyedTokenDetails?.coinGecko)
-                      }
-                      src="/images/CoinDecko_Active.svg"
-                    />
+                    <MediaImgWrapper>
+                      <MediaImg
+                        onClick={() =>
+                          handleURL(props.deolyedTokenDetails?.website)
+                        }
+                        src={props.deolyedTokenDetails?.website === "" ? "/images/Website_Inactive.svg" : "/images/Website_active.svg"}
+                        className={props.deolyedTokenDetails?.website === "" ? "imageNotAvailable" : ""}
+                      />
+                    </MediaImgWrapper>
+                    <MediaImgWrapper>
+                      <MediaImg
+                        onClick={() =>
+                          handleURL(props.deolyedTokenDetails?.email, "email")
+                        }
+                        src={props.deolyedTokenDetails?.email === "" ? "/images/Email_Inactive.svg" : "/images/Email_Active.svg"}
+                        className={props.deolyedTokenDetails?.email === "" ? "imageNotAvailable" : ""}
+                      />
+                    </MediaImgWrapper>
+                    <MediaImgWrapper>
+                      <MediaImg
+                        onClick={() => handleURL("")}
+                        src={props.deolyedTokenDetails?.facebook === "" ? "/images/Facebook_Inactive.svg" : "/images/Facebook_Active.svg"}
+                        className={props.deolyedTokenDetails?.facebook === "" ? "imageNotAvailable" : ""}
+                      />
+                    </MediaImgWrapper>
+                    <MediaImgWrapper>
+                      <MediaImg
+                        onClick={() =>
+                          handleURL(props.deolyedTokenDetails?.twitter)
+                        }
+                        src={props.deolyedTokenDetails?.twitter === "" ? "/images/Twitter_Inactive.svg" : "/images/Twitter_Active.svg"}
+                        className={props.deolyedTokenDetails?.twitter === "" ? "imageNotAvailable" : ""}
+                      />
+                    </MediaImgWrapper>
+                    <MediaImgWrapper>
+                      <MediaImg
+                        onClick={() =>
+                          handleURL(props.deolyedTokenDetails?.telegram)
+                        }
+                        src={props.deolyedTokenDetails?.telegram === "" ? "/images/Telegram_Inactive.svg" : "/images/Telegram_Active.svg"}
+                        className={props.deolyedTokenDetails?.telegram === "" ? "imageNotAvailable" : ""}
+                      />
+                    </MediaImgWrapper>
+                    <MediaImgWrapper>
+                      <MediaImg
+                        onClick={() =>
+                          handleURL(props.deolyedTokenDetails?.linkedIn)
+                        }
+                        src={props.deolyedTokenDetails?.linkedIn === "" ? "/images/LInkedIn_Inactive.svg" : "/images/LinkedIn_Active.svg"}
+                        className={props.deolyedTokenDetails?.linkedIn === "" ? "imageNotAvailable" : ""}
+                      />
+                    </MediaImgWrapper>
+                    <MediaImgWrapper>
+                      <MediaImg
+                        onClick={() =>
+                          handleURL(props.deolyedTokenDetails?.reddit)
+                        }
+                        src={props.deolyedTokenDetails?.reddit === "" ? "/images/Reditt_Inactive.svg" : "/images/Reditt_Active.svg"}
+                        className={props.deolyedTokenDetails?.reddit === "" ? "imageNotAvailable" : ""}
+                      />
+                    </MediaImgWrapper>
+                    <MediaImgWrapper>
+                      <MediaImg
+                        onClick={() =>
+                          handleURL(props.deolyedTokenDetails?.coinGecko)
+                        }
+                        src={props.deolyedTokenDetails?.coinGecko === "" ? "/images/CoinGecko_Inactive.svg" : "/images/CoinDecko_Active.svg"}
+                        className={props.deolyedTokenDetails?.coinGecko === "" ? "imageNotAvailable" : ""}
+                      />
+                    </MediaImgWrapper>
                   </MediaImgContainer>
                 </InfoContainer>
               </LeftDiv>

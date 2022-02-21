@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+  <g id="Email_Inactive" transform="translate(-827 -91)">
+    <g id="Rectangle_574" data-name="Rectangle 574" transform="translate(827 91)" fill="#fff" stroke="#f0f0f0" stroke-width="1">
+      <rect width="26" height="26" rx="2" stroke="none"/>
+      <rect x="0.5" y="0.5" width="25" height="25" rx="1.5" fill="none"/>
+    </g>
+    <g id="mail" transform="translate(830 92.007)">
+      <path id="Path_860" data-name="Path 860" d="M16.956,6H2.51a.432.432,0,0,0-.116,0L2.3,6.036a.36.36,0,0,0-.083.055.371.371,0,0,0-.083.078L2.1,6.2a.2.2,0,0,0,0,.05.6.6,0,0,0-.044.105A.715.715,0,0,0,2,6.5V16.522a.554.554,0,0,0,.554.554h14.4a.554.554,0,0,0,.554-.554V6.551A.554.554,0,0,0,16.956,6Zm-7.2,4.88L4.327,7.1H15.9ZM3.108,15.968V7.609L9.439,11.99h0a.836.836,0,0,0,.1.05h.044a.6.6,0,0,0,.172.05h0a.554.554,0,0,0,.227-.055h.039L16.4,8.1v7.871Z" fill="#a2a2a2"/>
+    </g>
+  </g>
+</svg>

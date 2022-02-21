@@ -69,19 +69,20 @@ export const validationsMessages = {
     INVALID_ADDRESS_ERROR: "Invalid address",
     DISABLE_METAMSK_ERROR: "Disable metamask and login to XDCPay",
     WALLET_DETAILS_UPDATE_MESSAGE: "XDCPay wallet details has been updated",
+    CURRENT_TOKEN_OWNER: "This address is the current token owner"
 }
 
 export const toolTipContentMessages = {
-    TOKEN_NETWORK_CONTENT: "Type of network to which you are connected",
-    TOKEN_NAME_CONTENT: "Name of the token",
-    TOKEN_SYMBOL_CONTENT: "Symbol or short name representing the token",
-    TOKEN_IMAGE_CONTENT: "Icon of the token in the given format",
-    TOKEN_DECIMAL_CONTENT: "Number of digits after the decimal when displaying token values on-screen",
-    TOKEN_DESCRIPTION_CONTENT: "Description of token in 80-100 words",
+    TOKEN_NETWORK_CONTENT: "Type of Network on which you wish to deploy your token",
+    TOKEN_NAME_CONTENT: "Name of the token in 30 characters",
+    TOKEN_SYMBOL_CONTENT: "A short name representing the token in 15 characters",
+    TOKEN_IMAGE_CONTENT: "Icon of the token in the given format. You can also use the given default icon if you do not have the custom image.",
+    TOKEN_DECIMAL_CONTENT: "Number of digits after the decimal when displaying token values on-screen. It ranges from 8 to 18, with 18 being the default value.",
+    TOKEN_DESCRIPTION_CONTENT: "Description of token in 500 characters",
     TOKEN_WEBSITE_CONTENT: "Link of the official website of the token being deployed; if applicable",
     TOKEN_TWITTER_CONTENT: "Link of the official Twitter handle of the token; if applicable",
     TOKEN_TELEGRAM_CONTENT: "Link of the official Telegram channel of the token; if applicable",
-    TOKEN_SUPPLY_CONTENT: "Number of tokens in circulation when the token starts to be traded on exchanges",
+    TOKEN_SUPPLY_CONTENT: "Number of tokens in circulation when the token starts to be traded on exchanges. The minimum value should be greater than one and the highest limit can be up to one hundred trillion dollars.",
 }
 
 export const addFeaturesContent = {

@@ -25,7 +25,7 @@ const dashboardComponent = (props) => {
   
         <About />
       </Row>
-      {screen.width <= 768 ? <Footer /> : ""}
+      {screen.width <= 1023 ? <Footer /> : ""}
     </DashboardContainer>
   );
 };
