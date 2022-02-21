@@ -350,6 +350,7 @@ const theme = createTheme({
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 3px 12px #0000001A",
         border: "1px solid #e6e8ed",
+        padding: "10px"
       },
     },
   },
