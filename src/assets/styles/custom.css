@@ -661,3 +661,7 @@ opacity: 1;
   background-color: #ECF0F7 ;
   padding-top: 100px;
 }
+
+.imageNotAvailable{
+  cursor:  not-allowed !important;
+}
