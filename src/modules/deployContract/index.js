@@ -144,7 +144,7 @@ class DeployContract extends BaseComponent {
             deleteContract={this.deleteContract}
           />
         </Row>
-        {screen.width <= 768 ? <Footer /> : ""}
+        {screen.width <= 1023 ? <Footer /> : ""}
       </div>
     );
   }

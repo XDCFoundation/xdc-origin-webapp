@@ -59,7 +59,7 @@ class CreateTokenXRC20 extends BaseComponent {
           {screen.width >= 1024 ? <Sidebar /> : ""}
           <CommonTabs image={this.props.location.state} state={this.state}/>
         </Row>
-        {screen.width <= 768 ? <Footer /> : ""}
+        {screen.width <= 1023 ? <Footer /> : ""}
       </>
     );
   }
