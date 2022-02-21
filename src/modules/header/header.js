@@ -149,7 +149,7 @@ function Header(props) {
       <HeaderContainer>
         <SpaceBetween>
           <div className="Space-between">
-            <GridLogo src="/images/ShowApps.svg" />
+            {/* <GridLogo src="/images/ShowApps.svg" /> */}
             <div>
               <UserMenu1
                 onClick={() => toggleSidebar()}
