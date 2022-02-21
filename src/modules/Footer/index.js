@@ -1,6 +1,6 @@
 import React from "react";
 import BaseComponent from "../baseComponent";
-import FooterComponent from "./footer";
+import FooterComponent from "./temporaryFooter";
 
 class Footer extends BaseComponent {
   constructor(props) {

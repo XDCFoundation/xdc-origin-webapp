@@ -277,7 +277,7 @@ function TransferOwnershipContract(props) {
   let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
-    if(!inputAddress.includes("xdc")){
+    if(!inputAddress.includes("xdc") || inputAddress.includes === userAddress){
       return;
     }else{
       setSteps(2);
@@ -411,6 +411,13 @@ function TransferOwnershipContract(props) {
                             </Error>
                           </ErrorContainer>
                         ) : ""}
+                      {inputAddress === userAddress.replace(/0x/, "xdc") ? (
+                          <ErrorContainer>
+                            <Error>
+                              {validationsMessages.CURRENT_TOKEN_OWNER}
+                            </Error>
+                          </ErrorContainer>
+                      ) : ""}
                     </InputContainer>
                     </MidSection>
                     <ButtonContainer>

@@ -138,7 +138,7 @@ class ManageContracts extends BaseComponent {
               ""
             )}
           </Row>
-          {screen.width <= 768 ? <Footer /> : ""}
+          {screen.width <= 1023 ? <Footer /> : ""}
         </>
       </div>
     );
