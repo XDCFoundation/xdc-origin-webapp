@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BasicInfoPage from "./basicInformation";
 import numberToWords from "number-to-words";
-import { Tooltip, Fade, createTheme } from "@material-ui/core";
-import Utils from "../../utility";
+import { Tooltip, createTheme } from "@material-ui/core";
 import {
-  apiBodyMessages,
-  apiSuccessConstants,
   validationsMessages,
   toolTipContentMessages,
   LARGE_NUMBER,
@@ -273,7 +269,6 @@ export default function Tokenomics(props) {
   let convertedNumber = props?.tokenData?.tokenInitialSupply < LARGE_NUMBER && numberToWords?.toWords(
     props?.tokenData?.tokenInitialSupply || 0
   )
-  // let news = convertedNumber?.split(',')[0]
 
   return (
     <>

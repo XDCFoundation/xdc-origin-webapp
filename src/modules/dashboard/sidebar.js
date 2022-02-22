@@ -8,7 +8,6 @@ import ScreenSizeDetector from "screen-size-detector";
 
 function Sidebar(props) {
   const history = useHistory();
-  const [isActive, setIsActive] = useState("");
   const [createContract, setCreateContract] = useState(false);
   const [subNavItems, setSubNavItems] = useState(false);
 

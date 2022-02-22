@@ -7,11 +7,7 @@ import DeleteContract from "./deleteContractPopup";
 import DeployPopup from "./deployPopup";
 import Web3 from "web3";
 import { connect } from "react-redux";
-import {
-  apiBodyMessages,
-  apiSuccessConstants,
-  validationsMessages,
-} from "../../constants";
+import { apiBodyMessages } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import { handleNavItem } from "../../action";
@@ -39,7 +35,6 @@ function DeployContract(props) {
   };
   const handleDeployPopup = (deployToken) => {
     // saveDraft data coming from addFeatures
-    // let tokenDetails = props?.saveDraftData;
     setOpenDeployPopup(true);
     setDeployTokenName(deployToken.tokenName);
     sendTransaction(deployToken);
@@ -71,10 +66,7 @@ function DeployContract(props) {
     let parsingSupply = tokenDetails?.tokenInitialSupply;
     let tokenSymbol = tokenDetails?.tokenSymbol;
 
-    // let xdce_address = tokenDetails.tokenOwner;
-    // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
 
-    const priceXdc = 1;
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
@@ -355,7 +347,6 @@ function DeployContract(props) {
   );
 }
 
-// export default DeployContract;
 const mapStateToProps = (state) => ({
   userDetails: state.user,
 });

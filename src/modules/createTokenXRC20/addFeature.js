@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import {
   addFeaturesContent,
-  apiSuccessConstants,
   validationsMessages,
 } from "../../constants";
 import { useHistory } from "react-router";
@@ -223,7 +222,6 @@ const DraftImgDiv = styled.img`
 
 const BackText = styled.div`
   text-align: right;
-  /* font: normal normal medium 18px/21px Inter; */
   font-size: 18px;
   font-weight: 500;
   line-height: 21px;
@@ -274,7 +272,6 @@ const DeployButton = styled.button`
 
 const DeployText = styled.div`
   text-align: left;
-  /* font: normal normal medium 18px/21px Inter; */
   font-size: 18px;
   font-weight: 500;
   line-height: 21px;
@@ -311,7 +308,6 @@ const SaveDraftButton = styled.button`
 
 const SaveDraftText = styled.div`
   text-align: left;
-  /* font: normal normal medium 18px/21px Inter; */
   font-size: 18px;
   font-weight: 500;
   line-height: 21px;

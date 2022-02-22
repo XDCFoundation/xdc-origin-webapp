@@ -39,7 +39,6 @@ class ManageContracts extends BaseComponent {
   }
 
   downloadSolFile = () => {
-    // let tokenCode = this.props?.location?.state?.deolyedTokenDetails?.tokenContractCode;
 
     let tokenCode = this.state.deolyedTokenDetails?.tokenContractCode;
 

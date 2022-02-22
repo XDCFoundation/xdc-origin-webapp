@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
-import SeekBar from "react-seekbar-component";
 import "react-seekbar-component/dist/index.css";
 import Cropper from "react-easy-crop";
 import GetCroppedImg from "./cropImage";
@@ -113,7 +112,6 @@ const defaultScale = minScale;
 
 export default function UploadTokenImage(props) {
   const [upload, setUpload] = React.useState(false);
-  const [value, setValue] = React.useState(0);
   const [scale, setScale] = React.useState(defaultScale);
   const [file, setFile] = React.useState({});
   const [filePreview, setFilePreview] = React.useState({});

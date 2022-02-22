@@ -6,15 +6,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 import { connect } from "react-redux";
 import Web3 from "web3";
-import { typeOf } from "simple-flexbox";
 import {
   apiBodyMessages,
-  apiSuccessConstants,
   validationsMessages,
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
-import { BigNumber } from "ethers";
 
 const DialogContainer = styled.div`
   width: 466px;
@@ -238,7 +235,6 @@ function MintContract(props) {
   );
   const [inputAddress, setInputAddress] = useState(null);
 
-  // let givenContractAddress;
 
   let networkVersion = props.userDetails?.accountDetails?.network || "";
   let userAddress = props.userDetails?.accountDetails?.address || "";

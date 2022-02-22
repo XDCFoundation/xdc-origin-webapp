@@ -6,12 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { handleAccountDetails, handleWallet } from "../../action";
 import Web3 from "web3";
-import { useHistory } from "react-router";
-import {
-  addFeaturesContent,
-  apiSuccessConstants,
-  validationsMessages,
-} from "../../constants";
+import { validationsMessages } from "../../constants";
 import { detect } from "detect-browser";
 import toast, { Toaster } from "react-hot-toast";
 import { XDCPay_EXTENSION_URL } from "../../constants"
@@ -276,8 +271,7 @@ function connectWalletPopup(props) {
   };
 
   const browser = detect();
-  // if (browser) {
-  // }
+  
   return (
     <>
     <div><Toaster /></div>

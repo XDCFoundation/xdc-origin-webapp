@@ -43,21 +43,7 @@ export default async function GetCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   const dataUrl = canvas.toDataURL('image/png')
   const fileName = JSON.stringify(new Date().getTime())+".png"
 
-//   return canvas.toBlob(function(blob) {
-//     canvas.saveAs(blob, "pretty image.png");
-// });
-  // As a blob
-  // return new Promise(resolve => {
-  //   canvas.toBlob(file => {
-  //     resolve(URL.createObjectURL(file))
-  //   }, 'image/jpeg')
-  // })
 
-  /**
- 2 * convert dataurl to file
- 3 * @ param {string} dataurl - dataurl address
- 4 * @ param {string} file name - file name
- 5 */
 
   const DataURLtoFile = async(dataUrl, fileName) =>{
          var arr = dataUrl.split(',');
