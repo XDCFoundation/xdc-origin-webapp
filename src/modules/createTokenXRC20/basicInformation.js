@@ -390,7 +390,7 @@ const useStyles = makeStyles((theme) => ({
       "-webkit-appearance": "none",
       margin: 0,
     } ,
-    "::-webkit-outer-spin-button": { 
+    "::-webkit-outer-spin-button": {
       "-webkit-appearance": "none",
       margin: 0,
     },
@@ -463,7 +463,7 @@ function Token(props) {
     handleXDCPayWalletChange();
     if (props.tokenData?.tokenName?.length === 0 && props.tokenData?.tokenSymbol?.length === 0  && props.tokenData?.tokenDescription?.length === 0) {
       formErrorMessage();
-    } 
+    }
     else if (props.tokenData?.tokenName?.length === 0 || props.tokenData?.tokenName?.match(/^\s*$/)) {
       props.handleChange({
         target:{
@@ -519,8 +519,8 @@ function Token(props) {
   };
 
   const handleXDCPayWalletChange = async () => {
-    window.web3 = new Web3(window.ethereum);
-
+    // window.web3 = new Web3(window.ethereum);
+    window.web3 = new Web3(window.xdc);
     if (
       window.web3.currentProvider &&
       props?.userDetails?.accountDetails?.isLoggedIn
@@ -943,9 +943,9 @@ function Token(props) {
                 </Tooltip>
               </MuiThemeProvider>
             </TextDiv>
-            <TextareaAutosize 
+            <TextareaAutosize
               className={classes.textareaAutosize}
-              aria-label="minimum height" 
+              aria-label="minimum height"
               minRows={1.1}
               type="text"
               onChange={(e) => props.handleChange(e)}
