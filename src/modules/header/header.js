@@ -8,6 +8,7 @@ import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 import Web3 from "web3";
 import Identicon from "./identIcon";
+import { NETWORKS } from "../../constants"
 
 function Header(props) {
   const history = useHistory();
@@ -45,8 +46,8 @@ function Header(props) {
             let address = state.selectedAddress;
             let network =
               state.networkVersion === "50"
-                ? "XDC Mainnet"
-                : "XDC Apothem Testnet";
+                ? NETWORKS.XDC_MAINNET
+                : NETWORKS.XDC_APOTHEM_TESTNET;
 
             if ((address || network) && (address !== props.userDetails?.accountDetails?.address || network !== props.userDetails?.accountDetails?.network)) {
               let balance = null;
@@ -72,8 +73,8 @@ function Header(props) {
             let address = state.selectedAddress;
             let network =
               state.networkVersion === "50"
-                ? "XDC Mainnet"
-                : "XDC Apothem Testnet";
+                ? NETWORKS.XDC_MAINNET
+                : NETWORKS.XDC_APOTHEM_TESTNET;
           }
         }
       }

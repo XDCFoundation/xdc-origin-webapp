@@ -9,6 +9,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import {
   validationsMessages,
   toolTipContentMessages,
+  NETWORKS
 } from "../../constants";
 import { makeStyles } from "@material-ui/core/styles";
 import toast, { Toaster } from "react-hot-toast";
@@ -523,8 +524,8 @@ function Token(props) {
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
-              ? "XDC Mainnet"
-              : "XDC Apothem Testnet";
+              ? NETWORKS.XDC_MAINNET
+              : NETWORKS.XDC_APOTHEM_TESTNET;
 
           if ((address || network) && (address !== props?.userDetails?.accountDetails?.address || network !== props?.userDetails?.accountDetails?.network)) {
             let balance = null;
@@ -549,8 +550,8 @@ function Token(props) {
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
-              ? "XDC Mainnet"
-              : "XDC Apothem Testnet";
+              ? NETWORKS.XDC_MAINNET
+              : NETWORKS.XDC_APOTHEM_TESTNET;
         }
       }
     }

@@ -13,6 +13,7 @@ import { CircularProgress } from "@material-ui/core";
 import ScreenSizeDetector from "screen-size-detector";
 import Web3 from "web3";
 import { updateAccountDetails } from "../../action";
+import { NETWORKS } from "../../constants"
 
 const screen = new ScreenSizeDetector();
 
@@ -99,8 +100,8 @@ class ManageContracts extends BaseComponent {
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
-              ? "XDC Mainnet"
-              : "XDC Apothem Testnet";
+              ? NETWORKS.XDC_MAINNET
+              : NETWORKS.XDC_APOTHEM_TESTNET;
 
           if ((address || network) && (address !== this.props.user?.accountDetails?.address || network !== this.props.user?.accountDetails?.network)) {
             return true;
