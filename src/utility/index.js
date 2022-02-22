@@ -74,13 +74,11 @@ function trackEvent(event, eventData) {
     //     else
     //         mixpanel.track(event, eventData);
     // } catch (err) {
-    //     console.log(err)
     // }
 }
 
 function getDateFormat() {
     var my_date = new Date(2019, 0, 31);
-    console.log(my_date.toLocaleDateString());
     // Initialize variables
     var separator = "";
     var first = "";
@@ -305,7 +303,6 @@ function getActivityDateEpochRange(activityDate) {
             start.setMonth(start.getMonth() - 3);
             return {start: start.getTime(), end: startDayEpochOfCurrentQuarter};
         case "Last Year":
-            console.log(startDayEpochOfCurrentYear)
             start = new Date(startDayEpochOfCurrentYear);
             start.setFullYear(start.getFullYear() - 1);
             return {start: start.getTime(), end: startDayEpochOfCurrentYear};
@@ -458,8 +455,6 @@ function uploadFileToS3(fileObject, fileName, mimeType, isPublic = false) {
         secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY
     }
     aws.config.update(config);
-    console.log("config", config);
-    console.log("fileObject", fileObject);
     const S3 = new aws.S3();
     const params = {
         Body: fileObject,
@@ -509,7 +504,6 @@ function getCompanyObject(propsOfComponent) {
 
 function isCompanyBalanceLow(company) {
     if (!company || !company.tokenEconomy || !company.tokenEconomy) {
-        console.log('return false')
         return false;
     }
     let remainingMonth = (new Date(company.tokenEconomy.endDate)).getMonth() - (new Date()).getMonth() +
@@ -689,7 +683,6 @@ function getTimestampFromDate(year, month, date = 0) {
 }
 
 function extractDate(date, getType) {
-    console.log("date", typeof date, "getType", getType);
     switch (getType) {
         case "DAY":
             return new Date(date.toString()).getDate();
@@ -712,7 +705,6 @@ function changeDateFormat(date, newFormat) {
 }
 
 function getAggregatedPercWercQueryObject(start, end, skip, id) {
-    console.log(start, end, skip, id);
     return [
         {
             "$match": {

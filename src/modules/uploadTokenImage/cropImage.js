@@ -42,7 +42,6 @@ export default async function GetCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   // As Base64 string
   const dataUrl = canvas.toDataURL('image/png')
   const fileName = JSON.stringify(new Date().getTime())+".png"
-  console.log("datr-name",fileName)
 
 //   return canvas.toBlob(function(blob) {
 //     canvas.saveAs(blob, "pretty image.png");

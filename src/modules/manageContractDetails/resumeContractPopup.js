@@ -202,14 +202,12 @@ function ResumeContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
           // setTimeout(() => {
           //   pauseXRC20Token();
           //   setSteps(3);
           // }, 15000);
         })
         .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
@@ -225,7 +223,6 @@ function ResumeContract(props) {
         .on("transactionHash", function (hash) {})
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             pauseXRC20Token();
             setSteps(3);
@@ -252,7 +249,6 @@ function ResumeContract(props) {
       SaveDraftService.pauseResumeXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      // console.log('res--', res)
       setConfirmResume(true);
       // props.handleClose("pause", true)
     }

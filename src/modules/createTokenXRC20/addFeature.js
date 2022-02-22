@@ -437,7 +437,6 @@ function AddFeatures(props) {
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.saveTokenAsDraft(reqObj)
     );
-    // console.log('res', res)
     if (
       res !== 0 &&
       res !== validationsMessages.TOKEN_NAME_ERROR_MESSAGE &&

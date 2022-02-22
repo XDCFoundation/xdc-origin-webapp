@@ -202,7 +202,6 @@ export default function addToXDCPayPopup(props) {
 
   const browser = detect();
   // if (browser) {
-  //   console.log('bro---',browser.name)
   // }
   return (
     <>

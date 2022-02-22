@@ -133,18 +133,15 @@ function DeployContract(props) {
             setOpenDeployPopup(false);
           }
           else{
-            console.log('')
           }
         });
     } else {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             history.push({
               pathname: "/created-token",
@@ -164,7 +161,6 @@ function DeployContract(props) {
           }
         })
         .on("confirmation", function (confirmationNumber, receipt) {
-          // console.log("confirmation ====", confirmationNumber, receipt);
         })
         .on("error", function (error) {
           if (error) {

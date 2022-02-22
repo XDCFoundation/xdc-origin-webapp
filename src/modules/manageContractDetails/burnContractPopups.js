@@ -258,9 +258,6 @@ function BurnContract(props) {
     let contractInstance = new window.web3.eth.Contract(jsonAbi, contractAddress);
     let finalToken = Number(inputToken) * Math.pow(10, props?.deployedContract?.tokenDecimals);
 
-    // console.log('j--',finalToken, typeof finalToken)
-    // console.log('t---',BigInt(finalToken))
-
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
@@ -276,14 +273,12 @@ function BurnContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
           // setTimeout(() => {
           //   burnXRC20Token();
           //   setSteps(3);
           // }, 15000);
         })
         .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {
         })
@@ -301,7 +296,6 @@ function BurnContract(props) {
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             burnXRC20Token()
             setSteps(3);
@@ -333,7 +327,6 @@ function BurnContract(props) {
       SaveDraftService.mintBurnXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      // console.log('res--', res)
       setConfirmBurn(true);
     }
   }
