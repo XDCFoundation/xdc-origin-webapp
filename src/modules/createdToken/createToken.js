@@ -295,8 +295,8 @@ const CreateToken = (props) => {
   const history = useHistory()
   const classes = useStyles();
 
-  let coinMarketPrice = props?.priceValue || ""
-  let tokenMinted = (props.location?.parsingSupply)?.toFixed(2)?.replace(/\d(?=(\d{3})+\.)/g, '$&,')?.split('.')[0];
+  let coinMarketPrice = props?.priceValue || "";
+  let tokenMinted = Number(props.location?.parsingSupply).toLocaleString();
 
   let gasFee;
   let usdPriceValue;
