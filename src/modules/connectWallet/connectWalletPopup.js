@@ -9,7 +9,7 @@ import Web3 from "web3";
 import { validationsMessages } from "../../constants";
 import { detect } from "detect-browser";
 import toast, { Toaster } from "react-hot-toast";
-import { XDCPay_EXTENSION_URL } from "../../constants"
+import { XDCPay_EXTENSION_URL, NETWORKS } from "../../constants"
 
 const useStyles = makeStyles({
   dialog: {
@@ -229,7 +229,7 @@ function connectWalletPopup(props) {
         const state = window.web3.givenProvider.publicConfigStore._state;
         let address = state.selectedAddress;
         let network =
-          state.networkVersion === "50" ? "XDC Mainnet" : "XDC Apothem Testnet";
+          state.networkVersion === "50" ? NETWORKS.XDC_MAINNET : NETWORKS.XDC_APOTHEM_TESTNET;
         let account = false;
 
         await window.web3.eth.getAccounts((err, accounts) => {

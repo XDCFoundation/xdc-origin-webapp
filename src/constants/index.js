@@ -134,3 +134,8 @@ export const LARGE_NUMBER = 999999999999999;
 export const LARGE_NUMBER_ERROR = 9999999999999999;
 
 export const GAS_VALUE = 7920000;
+
+export const NETWORKS = {
+    XDC_MAINNET: "XDC Mainnet",
+    XDC_APOTHEM_TESTNET: "XDC Apothem Testnet",
+};
