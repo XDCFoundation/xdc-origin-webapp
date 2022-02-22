@@ -67,253 +67,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function About(props) {
-  const classes = useStyles();
-  const history = useHistory();
-  const [connectWallet, setConnectWallet] = useState(true);
-  const [open, setOpen] = useState(false);
-
-  const screen = new ScreenSizeDetector();
-
-  const handleTooltipClose = () => {
-    setOpen(false);
-  };
-
-  const handleTooltipOpen = () => {
-    setOpen(true);
-  };
-
-  const handleXDCPayWallet = async () => {
-    if (
-      !props?.currentUser?.accountDetails?.isLoggedIn ||
-      props?.currentUser?.accountDetails === null
-    ) {
-      props.user(connectWallet);
-    } else if (props?.currentUser?.accountDetails?.isLoggedIn) {
-      history.push("/token-XRC20");
-      props.setActiveNavItem("create");
-      props.setSubNavItem(true);
-      props.setSubNavToken("XRC20");
-    }
-  };
-
-  return (
-    <MainContainer>
-      <MainBoxContainer>
-        <Container>
-          <LeftContainer>
-            <Para>
-              <DetailBox>
-                Create your own token on XDC Network with no coding 
-                required
-              </DetailBox>
-              <DataBox>
-                Origin is a Smart Contract Tokenization platform that enables
-                brands and organizations to seamlessly create fixed income
-                instruments without the need for code.
-              </DataBox>
-            </Para>
-            <RightContainer>
-              <VideoBox>
-                {/* <ReactPlayer
-                  url={DASHBOARD_VIDEO_URL}
-                  controls
-                  width="100%"
-                  height="100%"
-                /> */}
-                <DashboadrdImg src="/images/dashboard_img.svg" alt="" />
-              </VideoBox>
-            </RightContainer>
-          </LeftContainer>
-          <ButtonContainer>
-            <ButtonDiv>
-              <Button onClick={() => handleXDCPayWallet()}>
-                Create XRC20
-                <CustomTooltip
-                  arrow
-                  placement="bottom-start"
-                  classes={{ arrow: classes.arrow }}
-                  title={
-                    <React.Fragment>
-                      <Typography
-                        color="inherit"
-                        className={classes.typography}
-                      >
-                        What is XRC20 Token?
-                      </Typography>
-                      {
-                        "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
-                      }
-                    </React.Fragment>
-                  }
-                >
-                  <img className="XRC20" alt="" src="/images/Help.svg" />
-                </CustomTooltip>
-              </Button>
-              {screen.width < 768 ? (
-                <ClickAwayListener onClickAway={handleTooltipClose}>
-                  <MobileTooltip
-                    arrow
-                    placement="bottom-end"
-                    classes={{ arrow: classes.arrow }}
-                    PopperProps={{
-                      disablePortal: true,
-                    }}
-                    onClose={handleTooltipClose}
-                    open={open}
-                    disableFocusListener
-                    disableHoverListener
-                    disableTouchListener
-                    title={
-                      <React.Fragment>
-                        <TooltipHeader>
-                          <Typography
-                            color="inherit"
-                            className={classes.typographyMobile}
-                          >
-                            What is XRC20 Token?
-                          </Typography>
-                          <CrossImgMobile src="/images/Cross.svg" alt="" />
-                        </TooltipHeader>
-                        {
-                          "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
-                        }
-                      </React.Fragment>
-                    }
-                  >
-                    <Img
-                      className=""
-                      alt=""
-                      src="/images/Info.svg"
-                      onClick={handleTooltipOpen}
-                    />
-                  </MobileTooltip>
-                </ClickAwayListener>
-              ) : (
-                <ClickAwayListener onClickAway={handleTooltipClose}>
-                  <CustomTooltip
-                    arrow
-                    placement="bottom-start"
-                    classes={{ arrow: classes.arrow }}
-                    PopperProps={{
-                      disablePortal: true,
-                    }}
-                    onClose={handleTooltipClose}
-                    open={open}
-                    disableFocusListener
-                    disableHoverListener
-                    disableTouchListener
-                    title={
-                      <React.Fragment>
-                        <TooltipHeader>
-                          <Typography
-                            color="inherit"
-                            className={classes.typography}
-                          >
-                            What is XRC20 Token?
-                          </Typography>
-                          <CrossImg src="/images/Cross.svg" alt="" />
-                        </TooltipHeader>
-                        {
-                          "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
-                        }
-                      </React.Fragment>
-                    }
-                  >
-                    <Img
-                      className=""
-                      alt=""
-                      src="/images/Info.svg"
-                      onClick={handleTooltipOpen}
-                    />
-                  </CustomTooltip>
-                </ClickAwayListener>
-              )}
-            </ButtonDiv>
-            {/* <ButtonDiv> */}
-            {/* <Button className="create-btn">
-                Create XRC223
-                <img className="XRC220" alt="" src="/images/Help.svg" />
-              </Button>
-              <Img className="" alt="" src="/images/Info.svg" />
-            </ButtonDiv>
-            <ButtonDiv>
-              <Button className="create-btn">
-                Create Stable coin
-                <img className="stable-coin" alt="" src="/images/Help.svg" />
-              </Button>
-              <Img className="" alt="" src="/images/Info.svg" /> */}
-            {/* </ButtonDiv> */}
-          </ButtonContainer>
-        </Container>
-        <GreyContainer>
-          <HeadingContainer>
-            <SubHead>
-              Introducing the most advanced token creator - by XDC
-            </SubHead>
-            <SubHeadTiny>
-              Create a token for your next crypto project without any knowledge
-              of coding.
-            </SubHeadTiny>
-          </HeadingContainer>
-          <IconRow>
-            <IconContainer>
-              <img className="p-36" alt="" src="/images/VerifiedContract.svg" />
-              <Title>Verified Contracts</Title>
-              <SubTitle>
-                Deploy your verified token contract on XDC Network without any
-                coding
-              </SubTitle>
-            </IconContainer>
-            <IconContainer>
-              <img className="p-36" alt="" src="/images/AddToWallet.svg" />
-              <Title>Add To Wallet</Title>
-              <SubTitle>
-                Add minted tokens directly to your XDCPay wallet by a click of
-                button.
-              </SubTitle>
-            </IconContainer>
-            <IconContainer>
-              <img
-                className="p-36"
-                alt=""
-                src="/images/ModularComponents.svg"
-              />
-              <Title>Modular Components</Title>
-              <SubTitle>
-                Add features like minting, burning and pausing to your tokens
-              </SubTitle>
-            </IconContainer>
-          </IconRow>
-        </GreyContainer>
-      </MainBoxContainer>
-    </MainContainer>
-  );
-}
-
-const mapStateToProps = (state) => ({
-  currentUser: state.user,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  user: (connectWallet) => {
-    dispatch(handleWallet(connectWallet));
-  },
-  login: (accountDetails) => {
-    dispatch(handleAccountDetails(accountDetails));
-  },
-  setActiveNavItem: (isActive) => {
-    dispatch(handleNavItem(isActive));
-  },
-  setSubNavItem: (subNavItems) => {
-    dispatch(handleSubNavItem(subNavItems));
-  },
-  setSubNavToken: (isSubNavActive) => {
-    dispatch(handleSubNavToken(isSubNavActive));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(About);
 
 const MainContainer = styled.div`
   width: 100%;
@@ -729,3 +482,251 @@ const DashboadrdImg = styled.img`
     object-fit: contain;
   }
 `;
+
+function About(props) {
+  const classes = useStyles();
+  const history = useHistory();
+  const [connectWallet, setConnectWallet] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  const screen = new ScreenSizeDetector();
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
+  };
+
+  const handleXDCPayWallet = async () => {
+    if (
+      !props?.currentUser?.accountDetails?.isLoggedIn ||
+      props?.currentUser?.accountDetails === null
+    ) {
+      props.user(connectWallet);
+    } else if (props?.currentUser?.accountDetails?.isLoggedIn) {
+      history.push("/token-XRC20");
+      props.setActiveNavItem("create");
+      props.setSubNavItem(true);
+      props.setSubNavToken("XRC20");
+    }
+  };
+
+  return (
+    <MainContainer>
+      <MainBoxContainer>
+        <Container>
+          <LeftContainer>
+            <Para>
+              <DetailBox>
+                Create your own token on XDC Network with no coding 
+                required
+              </DetailBox>
+              <DataBox>
+                Origin is a Smart Contract Tokenization platform that enables
+                brands and organizations to seamlessly create fixed income
+                instruments without the need for code.
+              </DataBox>
+            </Para>
+            <RightContainer>
+              <VideoBox>
+                {/* <ReactPlayer
+                  url={DASHBOARD_VIDEO_URL}
+                  controls
+                  width="100%"
+                  height="100%"
+                /> */}
+                <DashboadrdImg src="/images/dashboard_img.svg" alt="" />
+              </VideoBox>
+            </RightContainer>
+          </LeftContainer>
+          <ButtonContainer>
+            <ButtonDiv>
+              <Button onClick={() => handleXDCPayWallet()}>
+                Create XRC20
+                <CustomTooltip
+                  arrow
+                  placement="bottom-start"
+                  classes={{ arrow: classes.arrow }}
+                  title={
+                    <React.Fragment>
+                      <Typography
+                        color="inherit"
+                        className={classes.typography}
+                      >
+                        What is XRC20 Token?
+                      </Typography>
+                      {
+                        "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
+                      }
+                    </React.Fragment>
+                  }
+                >
+                  <img className="XRC20" alt="" src="/images/Help.svg" />
+                </CustomTooltip>
+              </Button>
+              {screen.width < 768 ? (
+                <ClickAwayListener onClickAway={handleTooltipClose}>
+                  <MobileTooltip
+                    arrow
+                    placement="bottom-end"
+                    classes={{ arrow: classes.arrow }}
+                    PopperProps={{
+                      disablePortal: true,
+                    }}
+                    onClose={handleTooltipClose}
+                    open={open}
+                    disableFocusListener
+                    disableHoverListener
+                    disableTouchListener
+                    title={
+                      <React.Fragment>
+                        <TooltipHeader>
+                          <Typography
+                            color="inherit"
+                            className={classes.typographyMobile}
+                          >
+                            What is XRC20 Token?
+                          </Typography>
+                          <CrossImgMobile src="/images/Cross.svg" alt="" />
+                        </TooltipHeader>
+                        {
+                          "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
+                        }
+                      </React.Fragment>
+                    }
+                  >
+                    <Img
+                      className=""
+                      alt=""
+                      src="/images/Info.svg"
+                      onClick={handleTooltipOpen}
+                    />
+                  </MobileTooltip>
+                </ClickAwayListener>
+              ) : (
+                <ClickAwayListener onClickAway={handleTooltipClose}>
+                  <CustomTooltip
+                    arrow
+                    placement="bottom-start"
+                    classes={{ arrow: classes.arrow }}
+                    PopperProps={{
+                      disablePortal: true,
+                    }}
+                    onClose={handleTooltipClose}
+                    open={open}
+                    disableFocusListener
+                    disableHoverListener
+                    disableTouchListener
+                    title={
+                      <React.Fragment>
+                        <TooltipHeader>
+                          <Typography
+                            color="inherit"
+                            className={classes.typography}
+                          >
+                            What is XRC20 Token?
+                          </Typography>
+                          <CrossImg src="/images/Cross.svg" alt="" />
+                        </TooltipHeader>
+                        {
+                          "XRC20 is a standard for fungible tokens, in other words, XRC20 tokens have a property that makes each token exactly the same in type and value as any other token. XRC20 has emerged as the technical standard for token creation on the XDC Network."
+                        }
+                      </React.Fragment>
+                    }
+                  >
+                    <Img
+                      className=""
+                      alt=""
+                      src="/images/Info.svg"
+                      onClick={handleTooltipOpen}
+                    />
+                  </CustomTooltip>
+                </ClickAwayListener>
+              )}
+            </ButtonDiv>
+            {/* <ButtonDiv> */}
+            {/* <Button className="create-btn">
+                Create XRC223
+                <img className="XRC220" alt="" src="/images/Help.svg" />
+              </Button>
+              <Img className="" alt="" src="/images/Info.svg" />
+            </ButtonDiv>
+            <ButtonDiv>
+              <Button className="create-btn">
+                Create Stable coin
+                <img className="stable-coin" alt="" src="/images/Help.svg" />
+              </Button>
+              <Img className="" alt="" src="/images/Info.svg" /> */}
+            {/* </ButtonDiv> */}
+          </ButtonContainer>
+        </Container>
+        <GreyContainer>
+          <HeadingContainer>
+            <SubHead>
+              Introducing the most advanced token creator - by XDC
+            </SubHead>
+            <SubHeadTiny>
+              Create a token for your next crypto project without any knowledge
+              of coding.
+            </SubHeadTiny>
+          </HeadingContainer>
+          <IconRow>
+            <IconContainer>
+              <img className="p-36" alt="" src="/images/VerifiedContract.svg" />
+              <Title>Verified Contracts</Title>
+              <SubTitle>
+                Deploy your verified token contract on XDC Network without any
+                coding
+              </SubTitle>
+            </IconContainer>
+            <IconContainer>
+              <img className="p-36" alt="" src="/images/AddToWallet.svg" />
+              <Title>Add To Wallet</Title>
+              <SubTitle>
+                Add minted tokens directly to your XDCPay wallet by a click of
+                button.
+              </SubTitle>
+            </IconContainer>
+            <IconContainer>
+              <img
+                className="p-36"
+                alt=""
+                src="/images/ModularComponents.svg"
+              />
+              <Title>Modular Components</Title>
+              <SubTitle>
+                Add features like minting, burning and pausing to your tokens
+              </SubTitle>
+            </IconContainer>
+          </IconRow>
+        </GreyContainer>
+      </MainBoxContainer>
+    </MainContainer>
+  );
+}
+
+const mapStateToProps = (state) => ({
+  currentUser: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  user: (connectWallet) => {
+    dispatch(handleWallet(connectWallet));
+  },
+  login: (accountDetails) => {
+    dispatch(handleAccountDetails(accountDetails));
+  },
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive));
+  },
+  setSubNavItem: (subNavItems) => {
+    dispatch(handleSubNavItem(subNavItems));
+  },
+  setSubNavToken: (isSubNavActive) => {
+    dispatch(handleSubNavToken(isSubNavActive));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(About);

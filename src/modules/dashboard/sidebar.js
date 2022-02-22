@@ -6,6 +6,180 @@ import "../../assets/styles/custom.css";
 import {handleLogout, handleNavItem, handleSubNavItem, handleSubNavToken, updateAccountDetails} from "../../action";
 import ScreenSizeDetector from "screen-size-detector";
 
+
+const SidebarContainer = styled.div`
+  z-index: 999;
+  background: #102c78 0% 0% no-repeat padding-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+  height: 1024px;
+  padding-top: 40px;
+  position: sticky;
+  top: 57px;
+  @media (min-width: 425px) and (max-width: 1023px) {
+    height: 100%;
+    /* margin-top: 56px; */
+    position: fixed;
+    overflow-y: scroll;
+  }
+  @media (min-width: 320px) and (max-width: 425px) {
+    width: 100%;
+    height: 100%;
+    /* margin-top: 55px; */
+    padding-top: 20px;
+    position: fixed;
+    overflow-y: scroll;
+  }
+`;
+const Icon = styled.img`
+  cursor: pointer;
+  margin-right: 13px;
+  top: 153px;
+  left: 24px;
+  width: 30px;
+  height: 30px;
+  border: none;
+`;
+const FAQIcon = styled.img`
+  cursor: pointer;
+  margin-right: 24px;
+  top: 153px;
+  left: 24px;
+  width: 24px;
+  height: 24px;
+  border: none;
+`;
+const FAQIconActive = styled.img`
+  cursor: pointer;
+  margin-right: 20px;
+  margin-left: -4px;
+  margin-top: -4px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  object-fit: cover;
+`;
+const LogoutIcon = styled.img`
+  cursor: pointer;
+  margin-right: 13px;
+  top: 153px;
+  left: 24px;
+  width: 32px;
+  height: 32px;
+  border: none;
+`;
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+  width: 100%;
+  height: 70px;
+  white-space: nowrap;
+  padding: 23px;
+  &:hover {
+    background: #1d3c93;
+  }
+  @media (min-width: 320px) and (max-width: 425px) {
+    width: 100%;
+    margin-left: -20px;
+  }
+`;
+const ActiveWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+  width: 100%;
+  height: 70px;
+  white-space: nowrap;
+  padding: 23px;
+  background-color: #1d3c93 !important;
+  &:hover {
+    background: #1d3c93;
+  }
+  @media (min-width: 320px) and (max-width: 425px) {
+    width: 100%;
+    margin-left: -20px;
+    background-color: #1d3c93 !important;
+  }
+`;
+const Heading = styled.span`
+  text-align: left;
+  /* font: normal normal medium 16px/20px Inter; */
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  
+  color: #8ca6f0;
+  opacity: 1;
+`;
+const HeadingFAQActive = styled.span`
+  text-align: left;
+  font: normal normal medium 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #8ca6f0;
+  opacity: 1;
+  margin-top: -4px;
+  @media (min-width: 0px) and (max-width: 768px) {
+    margin-top: 0px;
+  }
+`;
+const CenterDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 15px 3rem 0;
+  width: 230px;
+  max-width: 230px;
+  @media (min-width: 0px) and (max-width: 424px) {
+    margin: 30px 0 100px 0;
+  }
+  @media (min-width: 425px) and (max-width: 460px) {
+    margin: 30px 0 100px 0;
+  }
+`;
+const SubHeadingContainer = styled.div`
+  width: 180px;
+  height: 40px;
+  margin: 20px 0 25px 0;
+`;
+const SubWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  cursor: pointer;
+`;
+const SubIcon = styled.img`
+  /* width: 20px;
+  height: 20px; */
+  /* background: #ffffff 0% 0% no-repeat padding-box; */
+  opacity: 1;
+  margin-right: 20px;
+`;
+const SubText = styled.span`
+  width: 113px;
+  min-width: 113px;
+  height: 20px;
+  margin: -5px 25px 0 0;
+  text-align: left;
+  font: normal normal medium 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #8ca6f0;
+  opacity: 1;
+`;
+const RightArrow = styled.img`
+  width: 13px;
+  height: 13px;
+  opacity: 1;
+`;
+
+
 function Sidebar(props) {
   const history = useHistory();
   const [createContract, setCreateContract] = useState(false);
@@ -287,175 +461,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Sidebar);
-
-const SidebarContainer = styled.div`
-  z-index: 999;
-  background: #102c78 0% 0% no-repeat padding-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 280px;
-  min-width: 280px;
-  max-width: 280px;
-  height: 1024px;
-  padding-top: 40px;
-  position: sticky;
-  top: 57px;
-  @media (min-width: 425px) and (max-width: 1023px) {
-    height: 100%;
-    /* margin-top: 56px; */
-    position: fixed;
-    overflow-y: scroll;
-  }
-  @media (min-width: 320px) and (max-width: 425px) {
-    width: 100%;
-    height: 100%;
-    /* margin-top: 55px; */
-    padding-top: 20px;
-    position: fixed;
-    overflow-y: scroll;
-  }
-`;
-const Icon = styled.img`
-  cursor: pointer;
-  margin-right: 13px;
-  top: 153px;
-  left: 24px;
-  width: 30px;
-  height: 30px;
-  border: none;
-`;
-const FAQIcon = styled.img`
-  cursor: pointer;
-  margin-right: 24px;
-  top: 153px;
-  left: 24px;
-  width: 24px;
-  height: 24px;
-  border: none;
-`;
-const FAQIconActive = styled.img`
-  cursor: pointer;
-  margin-right: 20px;
-  margin-left: -4px;
-  margin-top: -4px;
-  width: 32px;
-  height: 32px;
-  border: none;
-  object-fit: cover;
-`;
-const LogoutIcon = styled.img`
-  cursor: pointer;
-  margin-right: 13px;
-  top: 153px;
-  left: 24px;
-  width: 32px;
-  height: 32px;
-  border: none;
-`;
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  cursor: pointer;
-  width: 100%;
-  height: 70px;
-  white-space: nowrap;
-  padding: 23px;
-  &:hover {
-    background: #1d3c93;
-  }
-  @media (min-width: 320px) and (max-width: 425px) {
-    width: 100%;
-    margin-left: -20px;
-  }
-`;
-const ActiveWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  cursor: pointer;
-  width: 100%;
-  height: 70px;
-  white-space: nowrap;
-  padding: 23px;
-  background-color: #1d3c93 !important;
-  &:hover {
-    background: #1d3c93;
-  }
-  @media (min-width: 320px) and (max-width: 425px) {
-    width: 100%;
-    margin-left: -20px;
-    background-color: #1d3c93 !important;
-  }
-`;
-const Heading = styled.span`
-  text-align: left;
-  /* font: normal normal medium 16px/20px Inter; */
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
-  letter-spacing: 0px;
-  
-  color: #8ca6f0;
-  opacity: 1;
-`;
-const HeadingFAQActive = styled.span`
-  text-align: left;
-  font: normal normal medium 16px/20px Inter;
-  letter-spacing: 0px;
-  color: #8ca6f0;
-  opacity: 1;
-  margin-top: -4px;
-  @media (min-width: 0px) and (max-width: 768px) {
-    margin-top: 0px;
-  }
-`;
-const CenterDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 2rem 15px 3rem 0;
-  width: 230px;
-  max-width: 230px;
-  @media (min-width: 0px) and (max-width: 424px) {
-    margin: 30px 0 100px 0;
-  }
-  @media (min-width: 425px) and (max-width: 460px) {
-    margin: 30px 0 100px 0;
-  }
-`;
-const SubHeadingContainer = styled.div`
-  width: 180px;
-  height: 40px;
-  margin: 20px 0 25px 0;
-`;
-const SubWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-  cursor: pointer;
-`;
-const SubIcon = styled.img`
-  /* width: 20px;
-  height: 20px; */
-  /* background: #ffffff 0% 0% no-repeat padding-box; */
-  opacity: 1;
-  margin-right: 20px;
-`;
-const SubText = styled.span`
-  width: 113px;
-  min-width: 113px;
-  height: 20px;
-  margin: -5px 25px 0 0;
-  text-align: left;
-  font: normal normal medium 16px/20px Inter;
-  letter-spacing: 0px;
-  color: #8ca6f0;
-  opacity: 1;
-`;
-const RightArrow = styled.img`
-  width: 13px;
-  height: 13px;
-  opacity: 1;
-`;
