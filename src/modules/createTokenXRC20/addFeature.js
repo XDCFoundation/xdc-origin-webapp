@@ -511,7 +511,6 @@ function AddFeatures(props) {
           <CommonRow>
             {arr.map((item, index) => {
               return (
-                <>
                   <RowDiv key={index}>
                     <ImageDiv>
                       <Img alt="" src={item.image} />
@@ -531,7 +530,6 @@ function AddFeatures(props) {
                       />
                     </DescriptionDiv>
                   </RowDiv>
-                </>
               );
             })}
 

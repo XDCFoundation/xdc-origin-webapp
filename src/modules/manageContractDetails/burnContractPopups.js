@@ -331,7 +331,6 @@ function BurnContract(props) {
   }
 
   return (
-    <>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -344,7 +343,6 @@ function BurnContract(props) {
           switch (steps) {
             case 1:
               return (
-                <>
                   <DialogContainer>
                     <DialogHeader>
                       <DeleteText>Burn Tokens</DeleteText>
@@ -382,11 +380,9 @@ function BurnContract(props) {
                       )}
                     </ButtonContainer>
                   </DialogContainer>
-                </>
               );
             case 2:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Burn Tokens</DeleteText>
@@ -409,11 +405,9 @@ function BurnContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             case 3:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Burn Tokens</DeleteText>
@@ -431,14 +425,12 @@ function BurnContract(props) {
                       <PauseText>Transaction Completed</PauseText>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             default:
               return;
           }
         })()}
       </Dialog>
-    </>
   );
 }
 const mapStateToProps = (state) => ({

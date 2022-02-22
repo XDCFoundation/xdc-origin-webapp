@@ -190,7 +190,6 @@ export default function addToXDCPayPopup(props) {
 
   
   return (
-    <>
       <Dialog
         aria-labelledby="simple-dialog-title"
         open={props.isOpen}
@@ -252,6 +251,5 @@ export default function addToXDCPayPopup(props) {
           </BoxContainer>
         </Container>
       </Dialog>
-    </>
   );
 }

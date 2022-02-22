@@ -351,7 +351,6 @@ function MintContract(props) {
       props?.deployedContract?.smartContractAddress?.length - 4
     );
   return (
-    <>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -364,7 +363,6 @@ function MintContract(props) {
           switch (steps) {
             case 1:
               return (
-                <>
                   <DialogContainer>
                     <DialogHeader>
                       <DeleteText>Mint Tokens</DeleteText>
@@ -421,11 +419,9 @@ function MintContract(props) {
                       )}
                     </ButtonContainer>
                   </DialogContainer>
-                </>
               );
             case 2:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Mint Tokens</DeleteText>
@@ -448,11 +444,9 @@ function MintContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             case 3:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Mint Tokens</DeleteText>
@@ -470,14 +464,12 @@ function MintContract(props) {
                       <PauseText>Transaction Completed</PauseText>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             default:
               return;
           }
         })()}
       </Dialog>
-    </>
   );
 }
 
