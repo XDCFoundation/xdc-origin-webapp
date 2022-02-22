@@ -8,7 +8,8 @@ import DeployContractPage from "./deployContract";
 import {
   apiBodyMessages,
   validationsMessages,
-  DEFAULT_TOKEN_IMAGE_URL
+  DEFAULT_TOKEN_IMAGE_URL,
+  GAS_VALUE
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
@@ -439,7 +440,7 @@ function CommonTab(props) {
 
     let transaction = {
       from: userAddress,
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: byteCode,
     };

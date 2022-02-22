@@ -132,3 +132,5 @@ export const DEFAULT_TOKEN_IMAGE_URL = "https://xdc-mycontract-s3-dev.s3.amazona
 export const LARGE_NUMBER = 999999999999999;
 
 export const LARGE_NUMBER_ERROR = 9999999999999999;
+
+export const GAS_VALUE = 7920000;
