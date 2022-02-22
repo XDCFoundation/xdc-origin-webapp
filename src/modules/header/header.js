@@ -227,6 +227,15 @@ function Header(props) {
     return Math.trunc(num * calcDec) / calcDec;
   }
 
+  const getBalance = async(address) => {
+    let balance = null;
+    await window.web3.eth.getBalance(address).then((res) => {
+      balance = res / Math.pow(10, 18);
+      balance = truncateToDecimals(balance);
+    });
+    return balance;
+  }
+
   useEffect(() => {
     const handleXDCPayWalletChange = async () => {
       window.web3 = new Web3(window.ethereum);
@@ -245,7 +254,9 @@ function Header(props) {
                 ? NETWORKS.XDC_MAINNET
                 : NETWORKS.XDC_APOTHEM_TESTNET;
 
-            if ((address || network) && (address !== props.userDetails?.accountDetails?.address || network !== props.userDetails?.accountDetails?.network)) {
+            let newBalance = await getBalance(address);
+
+            if ((address || network) && (address !== props.userDetails?.accountDetails?.address || network !== props.userDetails?.accountDetails?.network || newBalance !== props.userDetails?.accountDetails?.balance)) {
               let balance = null;
 
               await window.web3.eth.getBalance(address).then((res) => {
