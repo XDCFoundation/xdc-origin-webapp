@@ -15,42 +15,6 @@ const useStyles = makeStyles({
   },
 });
 
-function deleteContract(props) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const classes = useStyles();
-
-  const handleDeleteClick = (tokenId) => {
-    props.deleteContract(tokenId);
-    props.handleClose()
-  }
-
-  return (
-    <Dialog
-      onClose={props.handleClose}
-      aria-labelledby="simple-dialog-title"
-      open={props.open}
-      classes={{
-        paper: classes.dialog,
-      }}
-    >
-      <DialogContainer>
-        <DialogHeader>
-          <DeleteText>Delete</DeleteText>
-          <CrossIcon onClick={props.handleClose} src="/images/Cross.svg" alt="" />
-        </DialogHeader>
-        <Line />
-        <DialogText>Do you want to delete {props.tokenName} Token?</DialogText>
-        <ButtonContainer>
-          <CancelButton onClick={props.handleClose}>Cancel</CancelButton>
-          <DeleteButton onClick={() => handleDeleteClick(props.tokenId)}>Delete</DeleteButton>
-        </ButtonContainer>
-      </DialogContainer>
-    </Dialog>
-  );
-}
-
-export default deleteContract;
-
 const DialogContainer = styled.div`
   width: 466px;
   height: 186px;
@@ -156,3 +120,39 @@ const DeleteButton = styled.button`
     height: 44px;
   }
 `;
+
+function deleteContract(props) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const classes = useStyles();
+
+  const handleDeleteClick = (tokenId) => {
+    props.deleteContract(tokenId);
+    props.handleClose()
+  }
+
+  return (
+    <Dialog
+      onClose={props.handleClose}
+      aria-labelledby="simple-dialog-title"
+      open={props.open}
+      classes={{
+        paper: classes.dialog,
+      }}
+    >
+      <DialogContainer>
+        <DialogHeader>
+          <DeleteText>Delete</DeleteText>
+          <CrossIcon onClick={props.handleClose} src="/images/Cross.svg" alt="" />
+        </DialogHeader>
+        <Line />
+        <DialogText>Do you want to delete {props.tokenName} Token?</DialogText>
+        <ButtonContainer>
+          <CancelButton onClick={props.handleClose}>Cancel</CancelButton>
+          <DeleteButton onClick={() => handleDeleteClick(props.tokenId)}>Delete</DeleteButton>
+        </ButtonContainer>
+      </DialogContainer>
+    </Dialog>
+  );
+}
+
+export default deleteContract;

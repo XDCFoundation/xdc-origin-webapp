@@ -8,7 +8,203 @@ import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 import Web3 from "web3";
 import Identicon from "./identIcon";
-import { NETWORKS } from "../../constants"
+import { NETWORKS } from "../../constants";
+
+
+const HeaderContainer = styled.div`
+  background: #091f5c 0% 0% no-repeat padding-box;
+  opacity: 1;
+  padding: 11px;
+  height: 57px;
+  position: sticky;
+  top: 0;
+  z-index: 1300;
+  @media (min-width: 0px) and (max-width: 1080px) {
+    width: 100%;
+    padding-bottom: 20px;
+    position: fixed;
+    top: 0;
+  }
+`;
+const SmartMintLogo = styled.img`
+  width: 30px;
+  opacity: 1;
+  border-radius: 5px;
+`;
+const GridLogo = styled.img`
+  margin-right: 10px;
+  top: 17px;
+  left: 22px;
+  width: 24px;
+`;
+const SpaceBetween = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+`;
+const Button = styled.button`
+  border: 1px solid #ffffff;
+  background: transparent;
+  margin-left: 7%;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #ffffff;
+  font: normal normal medium 15px/19px Inter;
+  top: 10px;
+  left: 1764px;
+  width: 142px;
+  height: 36px;
+  @media (max-width: 425px) {
+    display: none;
+  }
+`;
+const MobBtn = styled.button`
+  background: transparent;
+  border: 1px solid #ffffff;
+  margin-left: 5%;
+  margin-top: 2px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #ffffff;
+  font: normal normal medium 15px/19px Inter;
+  top: 10px;
+  left: 1764px;
+  white-space: nowrap;
+  width: 130px;
+  height: 30px;
+  @media (min-width: 767px) {
+    display: none;
+  }
+`;
+const UserLogo = styled.img`
+  display: none;
+  @media (max-width: 767px) {
+    border-radius: 50%;
+    margin-right: 6px;
+    ${"" /* margin-left: 109px; */}
+    width: 22px;
+    height: 22px;
+    display: flex;
+    margin-top: 5px;
+  }
+`;
+const UserMenu = styled.img`
+  display: none;
+  @media (min-width: 320px) and (max-width: 425px) {
+    display: flex;
+    margin-top: 6px;
+    margin-right: 10px;
+    margin-left: 5%;
+    width: 23px;
+    height: 20px;
+    opacity: 1;
+    cursor: pointer;
+  }
+`;
+const UserMenu1 = styled.img`
+  display: none;
+  @media (min-width: 425px) and (max-width: 1024px) {
+    display: flex;
+    margin-top: 7px;
+    margin-right: 10px;
+    margin-left: 6px;
+    width: 26px;
+    height: 22px;
+    cursor: pointer;
+  }
+`;
+const Span = styled.span`
+  top: 16px;
+  left: 109px;
+  width: 68px;
+  margin-top: 8px;
+  text-align: left;
+  cursor: pointer;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+  @media (min-width: 0px) and (max-width: 767px) {
+    margin-top: 10px;
+    margin-left: 3px;
+  }
+`;
+const AddressContainer = styled.div`
+  width: max-content;
+  min-width: 262px;
+  height: 36px;
+  background: #324988 0% 0% no-repeat padding-box;
+  border-radius: 6px;
+  opacity: 1;
+  margin: auto 14px auto 0;
+  padding: 10px 10px 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  @media (min-width: 0px) and (max-width: 767px) {
+    display: none;
+  }
+`;
+const Balance = styled.span`
+  width: max-content;
+  height: 36px;
+  text-align: center;
+  /* font: normal normal medium 15px/19px Inter; */
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  background-color: #3e579a;
+  padding: 10px;
+`;
+const Address = styled.span`
+  width: max-content;
+  min-width: 103px;
+  text-align: left;
+  /* font: normal normal medium 15px/19px Inter; */
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  opacity: 1;
+  padding: 10px;
+`;
+const AccountIcon = styled.div`
+  width: 22px;
+  height: 28px;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+`;
+const WalletDummyImg = styled.img`
+  width: 28px;
+  height: 28px;
+  opacity: 1;
+  object-fit: contain;
+`;
+const BetaImgContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-top: 4px;
+`;
+const BetaImg = styled.img`
+  width: 31px;
+  height: 15px;
+  opacity: 1;
+  object-fit: contain;
+`;
+
 
 function Header(props) {
   const history = useHistory();
@@ -231,197 +427,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
-
-const HeaderContainer = styled.div`
-  background: #091f5c 0% 0% no-repeat padding-box;
-  opacity: 1;
-  padding: 11px;
-  height: 57px;
-  position: sticky;
-  top: 0;
-  z-index: 1300;
-  @media (min-width: 0px) and (max-width: 1080px) {
-    width: 100%;
-    padding-bottom: 20px;
-    position: fixed;
-    top: 0;
-  }
-`;
-const SmartMintLogo = styled.img`
-  width: 30px;
-  opacity: 1;
-  border-radius: 5px;
-`;
-const GridLogo = styled.img`
-  margin-right: 10px;
-  top: 17px;
-  left: 22px;
-  width: 24px;
-`;
-const SpaceBetween = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-`;
-const Button = styled.button`
-  border: 1px solid #ffffff;
-  background: transparent;
-  margin-left: 7%;
-  border-radius: 5px;
-  font-size: 14px;
-  color: #ffffff;
-  font: normal normal medium 15px/19px Inter;
-  top: 10px;
-  left: 1764px;
-  width: 142px;
-  height: 36px;
-  @media (max-width: 425px) {
-    display: none;
-  }
-`;
-const MobBtn = styled.button`
-  background: transparent;
-  border: 1px solid #ffffff;
-  margin-left: 5%;
-  margin-top: 2px;
-  border-radius: 5px;
-  font-size: 14px;
-  color: #ffffff;
-  font: normal normal medium 15px/19px Inter;
-  top: 10px;
-  left: 1764px;
-  white-space: nowrap;
-  width: 130px;
-  height: 30px;
-  @media (min-width: 767px) {
-    display: none;
-  }
-`;
-const UserLogo = styled.img`
-  display: none;
-  @media (max-width: 767px) {
-    border-radius: 50%;
-    margin-right: 6px;
-    ${"" /* margin-left: 109px; */}
-    width: 22px;
-    height: 22px;
-    display: flex;
-    margin-top: 5px;
-  }
-`;
-const UserMenu = styled.img`
-  display: none;
-  @media (min-width: 320px) and (max-width: 425px) {
-    display: flex;
-    margin-top: 6px;
-    margin-right: 10px;
-    margin-left: 5%;
-    width: 23px;
-    height: 20px;
-    opacity: 1;
-    cursor: pointer;
-  }
-`;
-const UserMenu1 = styled.img`
-  display: none;
-  @media (min-width: 425px) and (max-width: 1024px) {
-    display: flex;
-    margin-top: 7px;
-    margin-right: 10px;
-    margin-left: 6px;
-    width: 26px;
-    height: 22px;
-    cursor: pointer;
-  }
-`;
-const Span = styled.span`
-  top: 16px;
-  left: 109px;
-  width: 68px;
-  margin-top: 8px;
-  text-align: left;
-  cursor: pointer;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: 500;
-  font-size: 22px;
-  line-height: 26px;
-  letter-spacing: 0px;
-  color: #ffffff;
-  opacity: 1;
-  @media (min-width: 0px) and (max-width: 767px) {
-    margin-top: 10px;
-    margin-left: 3px;
-  }
-`;
-const AddressContainer = styled.div`
-  width: max-content;
-  min-width: 262px;
-  height: 36px;
-  background: #324988 0% 0% no-repeat padding-box;
-  border-radius: 6px;
-  opacity: 1;
-  margin: auto 14px auto 0;
-  padding: 10px 10px 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  overflow: hidden;
-  @media (min-width: 0px) and (max-width: 767px) {
-    display: none;
-  }
-`;
-const Balance = styled.span`
-  width: max-content;
-  height: 36px;
-  text-align: center;
-  /* font: normal normal medium 15px/19px Inter; */
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 19px;
-  letter-spacing: 0px;
-  color: #ffffff;
-  opacity: 1;
-  display: flex;
-  align-items: center;
-  background-color: #3e579a;
-  padding: 10px;
-`;
-const Address = styled.span`
-  width: max-content;
-  min-width: 103px;
-  text-align: left;
-  /* font: normal normal medium 15px/19px Inter; */
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 19px;
-  color: #ffffff;
-  opacity: 1;
-  padding: 10px;
-`;
-const AccountIcon = styled.div`
-  width: 22px;
-  height: 28px;
-  opacity: 1;
-  display: flex;
-  align-items: center;
-`;
-const WalletDummyImg = styled.img`
-  width: 28px;
-  height: 28px;
-  opacity: 1;
-  object-fit: contain;
-`;
-const BetaImgContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  margin-top: 4px;
-`;
-const BetaImg = styled.img`
-  width: 31px;
-  height: 15px;
-  opacity: 1;
-  object-fit: contain;
-`;
