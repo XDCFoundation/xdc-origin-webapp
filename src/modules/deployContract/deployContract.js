@@ -7,7 +7,7 @@ import DeleteContract from "./deleteContractPopup";
 import DeployPopup from "./deployPopup";
 import Web3 from "web3";
 import { connect } from "react-redux";
-import { apiBodyMessages } from "../../constants";
+import { apiBodyMessages, GAS_VALUE } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import { handleNavItem } from "../../action";
@@ -71,7 +71,7 @@ function DeployContract(props) {
 
     let transaction = {
       from: userAddress,
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: byteCode,
     };

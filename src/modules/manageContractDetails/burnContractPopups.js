@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import {
   apiBodyMessages,
   validationsMessages,
+  GAS_VALUE
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
@@ -262,7 +263,7 @@ function BurnContract(props) {
     let transaction = {
       from: userAddress,
       to: contractAddress, //contractAddress of the concerned token (same in data below)
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: contractInstance.methods.burn(BigInt(finalToken)).encodeABI()
       //value given by user should be multiplied by 1000

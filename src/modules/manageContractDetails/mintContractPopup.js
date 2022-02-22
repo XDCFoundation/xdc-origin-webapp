@@ -9,6 +9,7 @@ import Web3 from "web3";
 import {
   apiBodyMessages,
   validationsMessages,
+  GAS_VALUE
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
@@ -272,7 +273,7 @@ function MintContract(props) {
     let transaction = {
       from: userAddress,
       to: contractAddress, //contractAddress of the concerned token (same in data below)
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: contractInstance.methods
         .mint(givenAddress, BigInt(finalToken))

@@ -7,6 +7,7 @@ import Web3 from "web3";
 import { connect } from "react-redux";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
+import { GAS_VALUE } from "../../constants"
 
 const DialogContainer = styled.div`
   width: 466px;
@@ -187,7 +188,7 @@ function ResumeContract(props) {
     let transaction = {
       from: userAddress,
       to: contractAddress, //contractAddress of the concerned token (same in data below)
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: contractInstance.methods.unpause().encodeABI(),
       //value given by user should be multiplied by 1000
