@@ -139,3 +139,10 @@ export const NETWORKS = {
     XDC_MAINNET: "XDC Mainnet",
     XDC_APOTHEM_TESTNET: "XDC Apothem Testnet",
 };
+
+export const REDIRECT_URL = {
+    OBSERVER_TRANSACTION_HASH_URL: "https://observer.xdc.org/transaction-details/",
+    OBSERVER_CONTRACT_ADDRESS_URL: "https://observer.xdc.org/token-data/",
+    EXPLORER_TRANSACTION_HASH_URL: "https://explorer.apothem.network/txs/",
+    EXPLORER_CONTRACT_ADDRESS_URL: "https://explorer.apothem.network/address/",
+};

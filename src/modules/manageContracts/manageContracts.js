@@ -14,6 +14,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip, Fade } from "@material-ui/core";
 import { history } from "../../managers/history";
 import { CircularProgress } from "@material-ui/core";
+import { REDIRECT_URL } from "../../constants";
 
 const Container = styled.div`
   width: 100vw;
@@ -152,9 +153,9 @@ function manageContracts(props) {
     let address = contractAddress.replace(/0x/, "xdc");
 
     if (props?.network === "XDC Mainnet") {
-      window.open(`https://observer.xdc.org/token-data/${contractAddress}/${tokenSymbol}`, '_blank');
+      window.open(`${REDIRECT_URL.OBSERVER_CONTRACT_ADDRESS_URL}${contractAddress}/${tokenSymbol}`, '_blank');
     } else if (props?.network === "XDC Apothem Testnet") {
-      window.open(`https://explorer.apothem.network/address/${address}`, '_blank');
+      window.open(`${REDIRECT_URL.EXPLORER_CONTRACT_ADDRESS_URL}${address}`, '_blank');
     }
   }
 
