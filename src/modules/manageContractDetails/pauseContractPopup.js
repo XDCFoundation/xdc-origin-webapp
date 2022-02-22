@@ -5,11 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 import Web3 from "web3";
 import { connect } from "react-redux";
-import {
-  apiBodyMessages,
-  apiSuccessConstants,
-  validationsMessages,
-} from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 

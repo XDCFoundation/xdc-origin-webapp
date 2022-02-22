@@ -8,7 +8,6 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";

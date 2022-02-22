@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
-import { Row, Column } from "simple-flexbox";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip, Fade,createTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -82,7 +81,6 @@ const SuccessTokenDetails = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 8% !important;
-  /* margin: auto; */
   @media (max-width: 768px) {
     text-align: center;
     font-weight: 600;
@@ -91,14 +89,12 @@ const SuccessTokenDetails = styled.div`
     color: #1f1f1f;
     opacity: 1;
     margin-bottom: 8% !important;
-    /* margin: auto; */
   } ;
 `;
 
 const SuccessRows = styled.div`
   width: 100%;
   display: flex;
-  /* padding: 4px 0px 10px 17px; */
 `;
 
 const SuccessTokenKey = styled.span`
@@ -150,9 +146,6 @@ const SuccessTokenValues = styled.div`
   margin-top: 3.5px;
   margin-left: 15px;
   cursor: pointer;
-  /* text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden; */
   @media (max-width: 768px) {
     text-align: left;
     font: normal normal normal 14px/17px Inter;

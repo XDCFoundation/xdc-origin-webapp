@@ -7,7 +7,6 @@ import AddFeaturesPage from "./addFeature";
 import DeployContractPage from "./deployContract";
 import {
   apiBodyMessages,
-  apiSuccessConstants,
   validationsMessages,
   DEFAULT_TOKEN_IMAGE_URL
 } from "../../constants";
@@ -23,7 +22,6 @@ const MainContainer = styled.div`
   justify-content: center;
   flex-grow: 1;
   background: #ecf0f7 0% 0% no-repeat padding-box;
-  /* height: 1080px; */
   @media (min-width: 768px) and (max-width: 1024px) {
     margin-top: 63px;
   }
@@ -66,7 +64,6 @@ const Column = styled.div`
 const RowOne = styled.div`
   display: flex;
   flex-direction: row;
-  /* padding: 0 10px; */
 `;
 
 const Div = styled.div`
@@ -75,7 +72,6 @@ const Div = styled.div`
   cursor: pointer;
   width: 224.5px;
   border: none;
-  /* border-bottom: 1px solid red; */
   @media (min-width: 767px) and (max-width: 1024px) {
     width: 180.5px;
   }
@@ -284,7 +280,6 @@ function CommonTab(props) {
     }
   }, [props]);
 
-  // let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage;
   let newImage = imgData?.length >= 1 ? imgData : (tokenData.tokenImage === undefined ? DEFAULT_TOKEN_IMAGE_URL : tokenData.tokenImage);
   let initialDecimalValue = tokenData.tokenDecimals
     ? tokenData.tokenDecimals
@@ -398,13 +393,7 @@ function CommonTab(props) {
       notifySuccessMsg();
       sendTransaction(res);
     }
-    // else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
-    //   notifyNameErrorMessage();
-    //   prevStep();
-    // } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
-    //   notifySymbolErrorMessage();
-    //   prevStep();
-    // }
+    
   };
 
   const saveAsDraftbyEdit = async (e) => {
@@ -444,8 +433,6 @@ function CommonTab(props) {
     let byteCode = tokenDetails?.byteCode;
     let tokenSymbol = tokenDetails?.tokenSymbol;
 
-    // let xdce_address = tokenData.tokenOwner;
-    // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
 
     const priceXdc = 1;
     const gasPrice = await window.web3.eth.getGasPrice();

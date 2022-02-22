@@ -5,11 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 import Web3 from "web3";
 import { connect } from "react-redux";
-import {
-  apiBodyMessages,
-  apiSuccessConstants,
-  validationsMessages,
-} from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 
@@ -211,7 +206,6 @@ function ResumeContract(props) {
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
-          // console.error("error error error error ====", error);
           if(error.message.includes("transaction receipt")){ //the transaction is successful
             pauseXRC20Token();
             setSteps(3);

@@ -4,7 +4,7 @@ import CreateToken from "./createToken";
 import Footer from "../Footer";
 import HeaderComponent from "../header/header";
 import Sidebar from "../dashboard/sidebar";
-import { Column, Row } from "simple-flexbox";
+import { Row } from "simple-flexbox";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import ScreenSizeDetector from "screen-size-detector";

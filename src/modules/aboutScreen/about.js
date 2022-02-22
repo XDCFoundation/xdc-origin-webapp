@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ReactPlayer from "react-player";
 import { useHistory } from "react-router";
-import Web3 from "web3";
 import {
   handleAccountDetails,
   handleNavItem,
@@ -13,7 +11,6 @@ import {
 import { connect } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Tooltip, Typography, ClickAwayListener } from "@material-ui/core";
-import { DASHBOARD_VIDEO_URL } from "../../constants";
 import ScreenSizeDetector from "screen-size-detector";
 
 const CustomTooltip = withStyles((theme) => ({
@@ -107,8 +104,6 @@ function About(props) {
           <LeftContainer>
             <Para>
               <DetailBox>
-                {/* Create your <Span>XRC20</Span>, <Span>XRC223</Span> and{" "}
-                <Span>Stable coin</Span> on XDC Network with no coding required */}
                 Create your own token on XDC Network with no coding 
                 required
               </DetailBox>

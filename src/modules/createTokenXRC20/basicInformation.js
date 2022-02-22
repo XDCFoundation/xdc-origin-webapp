@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ChangeNetworkPopup from "../changeNetworkPopup/changeNetworkDesktop";
 import UploadFile from "../uploadTokenImage/uploadImage";
 import UploadTokenImage from "../uploadTokenImage/uploadImageMobile";
 import { useHistory } from "react-router";
-import { useParams } from "react-router-dom";
-import { Tooltip, Fade, createTheme } from "@material-ui/core";
+import { Tooltip, createTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import {
-  apiBodyMessages,
-  apiSuccessConstants,
   validationsMessages,
   toolTipContentMessages,
 } from "../../constants";
@@ -490,15 +487,10 @@ function Token(props) {
       });
       return;
     }
-    // else if (imgData === "") {
-    //   imageErrorMessage();
-    // }
     if (
       props.tokenData.tokenDecimals >= 8 &&
       props.tokenData.tokenDecimals <= 18 &&
       props.tokenData.tokenDecimals !== undefined &&
-      // imgData !== "" &&
-      // imgData !== undefined &&
       props.tokenData?.tokenDescription !== undefined &&
       props.tokenData?.tokenDescription !== "" &&
       props.tokenData?.tokenDescription?.length <= 500 &&
