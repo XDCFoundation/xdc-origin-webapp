@@ -362,7 +362,6 @@ function TransferOwnershipContract(props) {
   }
 
   return (
-    <>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -375,7 +374,6 @@ function TransferOwnershipContract(props) {
           switch (steps) {
             case 1:
               return (
-                <>
                   <DialogContainer>
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
@@ -428,11 +426,9 @@ function TransferOwnershipContract(props) {
                       )}
                     </ButtonContainer>
                   </DialogContainer>
-                </>
               );
             case 2:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
@@ -455,11 +451,9 @@ function TransferOwnershipContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             case 3:
               return (
-                <>
                   <ThirdContainer>
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
@@ -487,14 +481,12 @@ function TransferOwnershipContract(props) {
                       </DoneButton>
                     </DoneButtonContainer>
                   </ThirdContainer>
-                </>
               );
             default:
               return;
           }
         })()}
       </Dialog>
-    </>
   );
 }
 const mapStateToProps = (state) => ({

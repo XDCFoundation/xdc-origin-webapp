@@ -253,7 +253,6 @@ function PauseContract(props) {
   }
 
   return (
-    <>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -266,7 +265,6 @@ function PauseContract(props) {
           switch (steps) {
             case 1:
               return (
-                <>
                   <DialogContainer>
                     <DialogHeader>
                       <DeleteText>Pause Contract</DeleteText>
@@ -289,11 +287,9 @@ function PauseContract(props) {
                       <DeleteButton onClick={handleSteps}>Pause</DeleteButton>
                     </ButtonContainer>
                   </DialogContainer>
-                </>
               );
             case 2:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Pause Contract</DeleteText>
@@ -316,11 +312,9 @@ function PauseContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             case 3:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Pause Contract</DeleteText>
@@ -343,14 +337,12 @@ function PauseContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             default:
               return;
           }
         })()}
       </Dialog>
-    </>
   );
 }
 const mapStateToProps = (state) => ({

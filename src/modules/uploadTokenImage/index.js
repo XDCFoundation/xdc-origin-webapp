@@ -9,9 +9,7 @@ class UploadTokenImage extends BaseComponent {
   }
   render() {
     return (
-      <>
         <UploadTokenImageMobile />
-      </>
     );
   }
 }

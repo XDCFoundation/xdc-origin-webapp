@@ -250,7 +250,6 @@ function ResumeContract(props) {
   }
 
   return (
-    <>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -264,7 +263,6 @@ function ResumeContract(props) {
           switch (steps) {
             case 1:
               return (
-                <>
                   <DialogContainer>
                     <DialogHeader>
                       <DeleteText>Resume Contract</DeleteText>
@@ -292,11 +290,9 @@ function ResumeContract(props) {
                       <ResumeButton onClick={handleSteps}>Resume</ResumeButton>
                     </ButtonContainer>
                   </DialogContainer>
-                </>
               );
             case 2:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Resume Contract</DeleteText>
@@ -319,11 +315,9 @@ function ResumeContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             case 3:
               return (
-                <>
                   <LoaderSectionThird>
                     <DialogHeader>
                       <DeleteText>Resume Contract</DeleteText>
@@ -346,14 +340,12 @@ function ResumeContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSectionThird>
-                </>
               );
             default:
               return;
           }
         })()}
       </Dialog>
-    </>
   );
 }
 const mapStateToProps = (state) => ({
