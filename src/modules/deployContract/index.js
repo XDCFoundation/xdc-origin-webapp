@@ -108,8 +108,12 @@ class DeployContract extends BaseComponent {
       return;
     }
     if (contractServiceResponse) {
+      let sortedData = contractServiceResponse.sort((a,b) => {
+        return new Date(b.createdAt)-new Date(a.createdAt);
+      })
+      
       this.setState({
-        draftFailedXrc20TokenDetails: contractServiceResponse,
+        draftFailedXrc20TokenDetails: sortedData,
         isLoading: false,
       });
     }
