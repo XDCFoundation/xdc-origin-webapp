@@ -444,19 +444,13 @@ function manageContractDetails(props) {
   const addToXDCPayPopup = () => {
     // chrome.runtime.sendMessage("bocpokimicclpaiekenaeelehdjllofo", 'version', response => {
     //   if (!response) {
-    //     console.log('No extension');
     //     // return;
     //   }
-    //   console.log('Extension version: ', response.version);
     // });
     let tokenAddress = props.deolyedTokenDetails?.smartContractAddress.replace(
         /xdc/,
         "0x"
     );
-    // console.log("window.ethereum. =-=-=-=-=-=-=", window.ethereum);
-    // console.log("tokenSymbol =-=-=-==-=", props.deolyedTokenDetails?.tokenSymbol)
-    // console.log("smartContractAddress =-=-=-=-=-=-=-=-=", tokenAddress);
-    // console.log("tokenDecimals =-=-=-=-=-=-=-=", props.deolyedTokenDetails?.tokenDecimals)
     window.ethereum.sendAsync({
       "jsonrpc": "2.0",
       "method": "metamask_watchAsset",

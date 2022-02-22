@@ -438,7 +438,6 @@ function CommonTab(props) {
 
   const sendTransaction = async (tokenDetails) => {
     window.web3 = new Web3(window.ethereum);
-    // console.log('token---',tokenDetails)
     let checkNetwork = tokenDetails?.network;
     let draftedTokenId = tokenDetails?.id;
     let draftedTokenOwner = tokenDetails?.tokenOwner;
@@ -462,7 +461,6 @@ function CommonTab(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log('has---',hash)
           obtainHash = hash
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
@@ -504,14 +502,12 @@ function CommonTab(props) {
             // prevStep();
           }
           else{
-            console.log("");
           }
         });
     } else {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object

@@ -303,7 +303,6 @@ const CreateToken = (props) => {
 
   let coinMarketPrice = props?.priceValue || ""
   let tokenMinted = (props.location?.parsingSupply)?.toFixed(2)?.replace(/\d(?=(\d{3})+\.)/g, '$&,')?.split('.')[0];
-  // console.log('h---',tokenMinted)
 
   let gasFee;
   let usdPriceValue;
@@ -352,13 +351,11 @@ const CreateToken = (props) => {
       );
 
     contractAddress = props.location?.obtainContractAddress !== undefined ? props.location?.obtainContractAddress : ""
-    // console.log('h---',contractAddress)
 
     newContractAddress =
       contractAddress?.slice(0, 26) +
       "..." +
       contractAddress?.substr(contractAddress?.length - 4);
-      // console.log('new---',newContractAddress)
   }
 
   const [open, setOpen] = useState(false);
@@ -393,11 +390,6 @@ const CreateToken = (props) => {
   const [isPopUpOpen, setIsPopUPOpen] = useState(false);
 
   const togglePopup = () => {
-    // console.log("props =-=-=-=-=-=-=", props);
-    // console.log("tokenDetails =-=-=-=-=-=-=-", props.tokenDetails);
-    // console.log("tokenSymbol =-=-=-==-=", props.tokenDetails.location?.tokenSymbol)
-    // console.log("smartContractAddress =-=-=-=-=-=-=-=-=", props.location?.state?.contractAddress);
-    // console.log("tokenDecimals =-=-=-=-=-=-=-=", props.tokenDetails.location?.parsingDecimal)
     let tokenAddress = props.tokenDetails.location?.obtainContractAddress?.replace(
         /xdc/,
         "0x"

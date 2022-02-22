@@ -274,7 +274,6 @@ export default function Tokenomics(props) {
     props?.tokenData?.tokenInitialSupply || 0
   )
   // let news = convertedNumber?.split(',')[0]
-  // console.log('num-----',news+" "+'Approx')
 
   return (
     <>
@@ -284,7 +283,7 @@ export default function Tokenomics(props) {
           <RowTwo>
             <SpanOne>Set up your Tokenomics</SpanOne>
             <SpanTwo>
-              Create the rules around supply and limits of your token
+              Create the rules around supply and limits of your token.
             </SpanTwo>
           </RowTwo>
           <CommonRow>

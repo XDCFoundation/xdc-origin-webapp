@@ -459,7 +459,6 @@ function Token(props) {
     });
 
   const saveAndContinue = (e) => {
-    // console.log(props?.tokenData?.length, Object.keys(props.tokenData)?.length);
     handleXDCPayWalletChange();
     if (props.tokenData?.tokenName?.length === 0 && props.tokenData?.tokenSymbol?.length === 0  && props.tokenData?.tokenDescription?.length === 0) {
       formErrorMessage();
