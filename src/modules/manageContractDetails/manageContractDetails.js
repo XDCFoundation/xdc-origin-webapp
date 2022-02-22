@@ -16,7 +16,7 @@ import MintContractPopup from "./mintContractPopup";
 import TransferOwnershipPopup from "./transferOwnershipPopup";
 import AddToXDCPayPopup from "../createdToken/addToXDCPayPopup";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import { validationsMessages } from "../../constants"
+import { validationsMessages, REDIRECT_URL } from "../../constants"
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -612,10 +612,10 @@ function manageContractDetails(props) {
 
   const handleRedirect = (contractAddress) => {
      if (props.deolyedTokenDetails?.network === "XDC Mainnet") {
-      window.open(`https://observer.xdc.org/token-data/${contractAddress}/${props?.deolyedTokenDetails?.tokenSymbol}`, '_blank');
+      window.open(`${REDIRECT_URL.OBSERVER_CONTRACT_ADDRESS_URL}${contractAddress}/${props?.deolyedTokenDetails?.tokenSymbol}`, '_blank');
      } else if (props.deolyedTokenDetails?.network === "XDC Apothem Testnet") {
        let newAddress = contractAddress.replace(/0x/, "xdc")
-      window.open(`https://explorer.apothem.network/address/${newAddress}`, '_blank');
+      window.open(`${REDIRECT_URL.EXPLORER_CONTRACT_ADDRESS_URL}${newAddress}`, '_blank');
     }
   };
 
