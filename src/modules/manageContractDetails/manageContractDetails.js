@@ -457,7 +457,7 @@ function manageContractDetails(props) {
     // console.log("tokenSymbol =-=-=-==-=", props.deolyedTokenDetails?.tokenSymbol)
     // console.log("smartContractAddress =-=-=-=-=-=-=-=-=", tokenAddress);
     // console.log("tokenDecimals =-=-=-=-=-=-=-=", props.deolyedTokenDetails?.tokenDecimals)
-    window.ethereum.sendAsync({
+    window.xdc.sendAsync({
       "jsonrpc": "2.0",
       "method": "metamask_watchAsset",
       "params": {
@@ -466,6 +466,7 @@ function manageContractDetails(props) {
           address: tokenAddress,//'0xb60e8dd61c5d32be8058bb8eb970870f07233155',
           symbol: props.deolyedTokenDetails?.tokenSymbol,//'FOO',
           decimals: props.deolyedTokenDetails?.tokenDecimals,//18,
+
           image: 'https://foo.io/token-image.svg',
         },
       },
@@ -492,7 +493,7 @@ function manageContractDetails(props) {
       setChangeToResume(closeOpt);
       if (confirmPause) {
         props.getXrc20TokenById(props.state.id);
-      } 
+      }
     } else {
       history.push("/manage-contracts");
       toast.success(validationsMessages.WALLET_DETAILS_UPDATE_MESSAGE, {
@@ -605,7 +606,7 @@ function manageContractDetails(props) {
     //     position: "top-center",
     //     // className: "toast-div-address",
     //   });
-    // } 
+    // }
     if (type !== undefined && type === "email") {
       window.open(`mailto:${""}?subject=Subject&body=Body%20goes%20here`);
     } else if (link !== "") {
