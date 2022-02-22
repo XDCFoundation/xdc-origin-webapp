@@ -115,8 +115,12 @@ class ManageContracts extends BaseComponent {
       return;
     }
     if (contractServiceResponse) {
+      let sortedData = contractServiceResponse.sort((a,b) => {
+        return new Date(b.createdAt)-new Date(a.createdAt);
+      })
+      
       this.setState({
-        deolyedXrc20TokenDetails: contractServiceResponse,
+        deolyedXrc20TokenDetails: sortedData,
         isLoading: false,
       });
     }
