@@ -587,7 +587,7 @@ function manageContractDetails(props) {
   };
 
   const handleURL = (link, type) => {
-    if (type !== undefined && type === "email") {
+    if (type !== undefined && type === "email" && props.deolyedTokenDetails?.email !== "") {
       window.open(`mailto:${""}?subject=Subject&body=Body%20goes%20here`);
     } else if (link !== "") {
       window.open(link, "_blank");
