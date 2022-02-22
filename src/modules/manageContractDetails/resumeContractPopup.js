@@ -177,7 +177,8 @@ function ResumeContract(props) {
   // function to open xdc pay extension:
 
   const sendTransaction = async () => {
-    window.web3 = new Web3(window.ethereum);
+    // window.web3 = new Web3(window.ethereum);
+    window.web3 = new Web3(window.xdc);
 
     let newAbi = props?.deployedContract?.contractAbiString;
     let jsonAbi = JSON.parse(newAbi);
