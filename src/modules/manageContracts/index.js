@@ -42,7 +42,8 @@ class ManageContracts extends BaseComponent {
       isLoading: true,
     })
 
-    window.web3 = new Web3(window.ethereum);
+    // window.web3 = new Web3(window.ethereum);
+    window.web3 = new Web3(window.xdc);
 
     if (
       window.web3.currentProvider &&
@@ -94,7 +95,7 @@ class ManageContracts extends BaseComponent {
   }
 
   getDeployedXrc20Token = async () => {
-    
+
     let requestData = {
       tokenOwner: this.props?.user?.accountDetails?.address,
       network: this.props?.user?.accountDetails?.network
@@ -134,7 +135,7 @@ class ManageContracts extends BaseComponent {
           {screen.width >= 1024 ? <Sidebar /> : ""}
           <ManageContractsComponent
           state={this.state}
-          network={this.props?.user?.accountDetails?.network}  
+          network={this.props?.user?.accountDetails?.network}
           deolyedXrc20TokenDetails={this.state.deolyedXrc20TokenDetails} />
         </Row>
         {screen.width <= 1023 ? <Footer /> : ""}

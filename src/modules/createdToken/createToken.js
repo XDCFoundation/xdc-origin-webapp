@@ -388,7 +388,7 @@ const CreateToken = (props) => {
         /xdc/,
         "0x"
     );
-    window.ethereum.sendAsync({
+    window.xdc.sendAsync({
       "jsonrpc": "2.0",
       "method": "metamask_watchAsset",
       "params": {

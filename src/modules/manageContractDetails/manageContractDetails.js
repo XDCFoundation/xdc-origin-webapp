@@ -445,7 +445,11 @@ function manageContractDetails(props) {
         /xdc/,
         "0x"
     );
-    window.ethereum.sendAsync({
+    // console.log("window.ethereum. =-=-=-=-=-=-=", window.ethereum);
+    // console.log("tokenSymbol =-=-=-==-=", props.deolyedTokenDetails?.tokenSymbol)
+    // console.log("smartContractAddress =-=-=-=-=-=-=-=-=", tokenAddress);
+    // console.log("tokenDecimals =-=-=-=-=-=-=-=", props.deolyedTokenDetails?.tokenDecimals)
+    window.xdc.sendAsync({
       "jsonrpc": "2.0",
       "method": "metamask_watchAsset",
       "params": {
@@ -480,7 +484,7 @@ function manageContractDetails(props) {
       setChangeToResume(closeOpt);
       if (confirmPause) {
         props.getXrc20TokenById(props.state.id);
-      } 
+      }
     } else {
       history.push("/manage-contracts");
       toast.success(validationsMessages.WALLET_DETAILS_UPDATE_MESSAGE, {

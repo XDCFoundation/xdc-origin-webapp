@@ -285,7 +285,8 @@ function TransferOwnershipContract(props) {
   };
 
   const sendTransaction = async (givenContractAddress) => {
-    window.web3 = new Web3(window.ethereum);
+    // window.web3 = new Web3(window.ethereum);
+    window.web3 = new Web3(window.xdc);
 
     let newAbi = props?.deployedContract?.contractAbiString;
     let jsonAbi = JSON.parse(newAbi);
@@ -415,7 +416,7 @@ function TransferOwnershipContract(props) {
                       <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
-                      {inputAddress !== "" ? (
+                      {(inputAddress !== "" && inputAddress !== userAddress.replace(/0x/, "xdc")) ? (
                       <DeleteButton onClick={handleSteps}>
                         Transfer
                       </DeleteButton>
