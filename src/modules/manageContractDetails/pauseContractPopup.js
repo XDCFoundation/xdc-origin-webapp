@@ -5,13 +5,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 import Web3 from "web3";
 import { connect } from "react-redux";
-import {
-  apiBodyMessages,
-  apiSuccessConstants,
-  validationsMessages,
-} from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
+import { GAS_VALUE } from "../../constants"
 
 const DialogContainer = styled.div`
   width: 466px;
@@ -196,7 +192,7 @@ function PauseContract(props) {
     let transaction = {
       from: userAddress,
       to: contractAddress, //contractAddress of the concerned token (same in data below)
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: contractInstance.methods.pause().encodeABI(),
       //value given by user should be multiplied by 1000
@@ -206,14 +202,12 @@ function PauseContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
           // setTimeout(() => {
           //   pauseXRC20Token();
           //   setSteps(3);
           // }, 15000);
         })
         .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
@@ -229,7 +223,6 @@ function PauseContract(props) {
         .on("transactionHash", function (hash) {})
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             pauseXRC20Token()
             setSteps(3);
@@ -257,12 +250,10 @@ function PauseContract(props) {
     );
     if (res !== 0 && res !== undefined) {
       setConfirmPause(true);
-      // console.log('res--', res)
     }
   }
 
   return (
-    <>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -275,7 +266,6 @@ function PauseContract(props) {
           switch (steps) {
             case 1:
               return (
-                <>
                   <DialogContainer>
                     <DialogHeader>
                       <DeleteText>Pause Contract</DeleteText>
@@ -298,11 +288,9 @@ function PauseContract(props) {
                       <DeleteButton onClick={handleSteps}>Pause</DeleteButton>
                     </ButtonContainer>
                   </DialogContainer>
-                </>
               );
             case 2:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Pause Contract</DeleteText>
@@ -325,11 +313,9 @@ function PauseContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             case 3:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Pause Contract</DeleteText>
@@ -352,14 +338,12 @@ function PauseContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             default:
               return;
           }
         })()}
       </Dialog>
-    </>
   );
 }
 const mapStateToProps = (state) => ({

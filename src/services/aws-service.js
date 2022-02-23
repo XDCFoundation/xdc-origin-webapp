@@ -19,7 +19,6 @@ class AWSServices {
         return new Promise(function (resolve, reject) {
             s3.upload(params, (err, res) => {
                 if (err) {
-                    console.log("uploadFileToS3 error", err);
                     reject(err);
                 } else {
                     let responseObj = {

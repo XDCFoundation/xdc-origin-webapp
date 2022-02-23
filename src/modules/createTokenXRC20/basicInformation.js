@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ChangeNetworkPopup from "../changeNetworkPopup/changeNetworkDesktop";
 import UploadFile from "../uploadTokenImage/uploadImage";
 import UploadTokenImage from "../uploadTokenImage/uploadImageMobile";
 import { useHistory } from "react-router";
-import { useParams } from "react-router-dom";
-import { Tooltip, Fade, createTheme } from "@material-ui/core";
+import { Tooltip, createTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import {
-  apiBodyMessages,
-  apiSuccessConstants,
   validationsMessages,
   toolTipContentMessages,
+  NETWORKS
 } from "../../constants";
 import { makeStyles } from "@material-ui/core/styles";
 import toast, { Toaster } from "react-hot-toast";
@@ -459,7 +457,6 @@ function Token(props) {
     });
 
   const saveAndContinue = (e) => {
-    // console.log(props?.tokenData?.length, Object.keys(props.tokenData)?.length);
     handleXDCPayWalletChange();
     if (props.tokenData?.tokenName?.length === 0 && props.tokenData?.tokenSymbol?.length === 0  && props.tokenData?.tokenDescription?.length === 0) {
       formErrorMessage();
@@ -491,15 +488,10 @@ function Token(props) {
       });
       return;
     }
-    // else if (imgData === "") {
-    //   imageErrorMessage();
-    // }
     if (
       props.tokenData.tokenDecimals >= 8 &&
       props.tokenData.tokenDecimals <= 18 &&
       props.tokenData.tokenDecimals !== undefined &&
-      // imgData !== "" &&
-      // imgData !== undefined &&
       props.tokenData?.tokenDescription !== undefined &&
       props.tokenData?.tokenDescription !== "" &&
       props.tokenData?.tokenDescription?.length <= 500 &&
@@ -532,8 +524,8 @@ function Token(props) {
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
-              ? "XDC Mainnet"
-              : "XDC Apothem Testnet";
+              ? NETWORKS.XDC_MAINNET
+              : NETWORKS.XDC_APOTHEM_TESTNET;
 
           if ((address || network) && (address !== props?.userDetails?.accountDetails?.address || network !== props?.userDetails?.accountDetails?.network)) {
             let balance = null;
@@ -558,8 +550,8 @@ function Token(props) {
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
-              ? "XDC Mainnet"
-              : "XDC Apothem Testnet";
+              ? NETWORKS.XDC_MAINNET
+              : NETWORKS.XDC_APOTHEM_TESTNET;
         }
       }
     }

@@ -4,7 +4,7 @@ import CreateToken from "./createToken";
 import Footer from "../Footer";
 import HeaderComponent from "../header/header";
 import Sidebar from "../dashboard/sidebar";
-import { Column, Row } from "simple-flexbox";
+import { Row } from "simple-flexbox";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import ScreenSizeDetector from "screen-size-detector";
@@ -27,7 +27,7 @@ class CreateTokenComponent extends BaseComponent {
   coinMarketUSDPriceDetails = async () => {
     const [err, res] = await Utils.parseResponse(SaveDraftService.getCoinMarketCap());
     if (err) {
-      console.log('er--',err)
+      console.error('er--',err)
     }
     else{
       this.setState({priceValue: res[0]?.price})

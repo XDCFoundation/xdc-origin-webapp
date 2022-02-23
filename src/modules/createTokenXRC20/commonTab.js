@@ -7,9 +7,9 @@ import AddFeaturesPage from "./addFeature";
 import DeployContractPage from "./deployContract";
 import {
   apiBodyMessages,
-  apiSuccessConstants,
   validationsMessages,
-  DEFAULT_TOKEN_IMAGE_URL
+  DEFAULT_TOKEN_IMAGE_URL,
+  GAS_VALUE
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
@@ -23,7 +23,6 @@ const MainContainer = styled.div`
   justify-content: center;
   flex-grow: 1;
   background: #ecf0f7 0% 0% no-repeat padding-box;
-  /* height: 1080px; */
   @media (min-width: 768px) and (max-width: 1024px) {
     margin-top: 63px;
   }
@@ -66,7 +65,6 @@ const Column = styled.div`
 const RowOne = styled.div`
   display: flex;
   flex-direction: row;
-  /* padding: 0 10px; */
 `;
 
 const Div = styled.div`
@@ -75,7 +73,6 @@ const Div = styled.div`
   cursor: pointer;
   width: 224.5px;
   border: none;
-  /* border-bottom: 1px solid red; */
   @media (min-width: 767px) and (max-width: 1024px) {
     width: 180.5px;
   }
@@ -284,7 +281,6 @@ function CommonTab(props) {
     }
   }, [props]);
 
-  // let newImage = imgData?.length >= 1 ? imgData : tokenData.tokenImage;
   let newImage = imgData?.length >= 1 ? imgData : (tokenData.tokenImage === undefined ? DEFAULT_TOKEN_IMAGE_URL : tokenData.tokenImage);
   let initialDecimalValue = tokenData.tokenDecimals
     ? tokenData.tokenDecimals
@@ -398,13 +394,7 @@ function CommonTab(props) {
       notifySuccessMsg();
       sendTransaction(res);
     }
-    // else if (res === validationsMessages.TOKEN_NAME_ERROR_MESSAGE) {
-    //   notifyNameErrorMessage();
-    //   prevStep();
-    // } else if (res === validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE) {
-    //   notifySymbolErrorMessage();
-    //   prevStep();
-    // }
+    
   };
 
   const saveAsDraftbyEdit = async (e) => {
@@ -446,15 +436,13 @@ function CommonTab(props) {
     let byteCode = tokenDetails?.byteCode;
     let tokenSymbol = tokenDetails?.tokenSymbol;
 
-    // let xdce_address = tokenData.tokenOwner;
-    // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
 
     const priceXdc = 1;
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
       from: userAddress,
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: byteCode,
     };
@@ -463,7 +451,6 @@ function CommonTab(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log('has---',hash)
           obtainHash = hash
           if (hash !== 0) {
             // recieve mainnet contractAddress from this function
@@ -505,14 +492,12 @@ function CommonTab(props) {
             // prevStep();
           }
           else{
-            console.log("");
           }
         });
     } else {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object

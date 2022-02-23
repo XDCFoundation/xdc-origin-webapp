@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /*global chrome*/
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Tooltip, Fade, Menu, MenuItem, createTheme } from "@material-ui/core";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -15,9 +15,8 @@ import ResumeContractPopup from "./resumeContractPopup";
 import MintContractPopup from "./mintContractPopup";
 import TransferOwnershipPopup from "./transferOwnershipPopup";
 import AddToXDCPayPopup from "../createdToken/addToXDCPayPopup";
-import EditorFormatListNumbered from "material-ui/svg-icons/editor/format-list-numbered";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import { validationsMessages } from "../../constants"
+import { validationsMessages, REDIRECT_URL } from "../../constants"
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -442,13 +441,6 @@ function manageContractDetails(props) {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
 
   const addToXDCPayPopup = () => {
-    // chrome.runtime.sendMessage("bocpokimicclpaiekenaeelehdjllofo", 'version', response => {
-    //   if (!response) {
-    //     console.log('No extension');
-    //     // return;
-    //   }
-    //   console.log('Extension version: ', response.version);
-    // });
     let tokenAddress = props.deolyedTokenDetails?.smartContractAddress.replace(
         /xdc/,
         "0x"
@@ -463,10 +455,9 @@ function manageContractDetails(props) {
       "params": {
         type: 'ERC20',
         options: {
-          address: tokenAddress,//'0xb60e8dd61c5d32be8058bb8eb970870f07233155',
-          symbol: props.deolyedTokenDetails?.tokenSymbol,//'FOO',
-          decimals: props.deolyedTokenDetails?.tokenDecimals,//18,
-
+          address: tokenAddress,
+          symbol: props.deolyedTokenDetails?.tokenSymbol,
+          decimals: props.deolyedTokenDetails?.tokenDecimals,
           image: 'https://foo.io/token-image.svg',
         },
       },
@@ -600,14 +591,7 @@ function manageContractDetails(props) {
   };
 
   const handleURL = (link, type) => {
-    // if (link === "") {
-    //   toast.error("Link Not Provided", {
-    //     duration: 4000,
-    //     position: "top-center",
-    //     // className: "toast-div-address",
-    //   });
-    // }
-    if (type !== undefined && type === "email") {
+    if (type !== undefined && type === "email" && props.deolyedTokenDetails?.email !== "") {
       window.open(`mailto:${""}?subject=Subject&body=Body%20goes%20here`);
     } else if (link !== "") {
       window.open(link, "_blank");
@@ -632,10 +616,10 @@ function manageContractDetails(props) {
 
   const handleRedirect = (contractAddress) => {
      if (props.deolyedTokenDetails?.network === "XDC Mainnet") {
-      window.open(`https://observer.xdc.org/token-data/${contractAddress}/${props?.deolyedTokenDetails?.tokenSymbol}`, '_blank');
+      window.open(`${REDIRECT_URL.OBSERVER_CONTRACT_ADDRESS_URL}${contractAddress}/${props?.deolyedTokenDetails?.tokenSymbol}`, '_blank');
      } else if (props.deolyedTokenDetails?.network === "XDC Apothem Testnet") {
        let newAddress = contractAddress.replace(/0x/, "xdc")
-      window.open(`https://explorer.apothem.network/address/${newAddress}`, '_blank');
+      window.open(`${REDIRECT_URL.EXPLORER_CONTRACT_ADDRESS_URL}${newAddress}`, '_blank');
     }
   };
 

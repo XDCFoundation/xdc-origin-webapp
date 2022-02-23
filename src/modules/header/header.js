@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
@@ -8,230 +8,8 @@ import ConnectWallet from "../connectWallet/connectWalletPopup";
 import Sidebar from "../dashboard/sidebar";
 import Web3 from "web3";
 import Identicon from "./identIcon";
+import { NETWORKS } from "../../constants";
 
-function Header(props) {
-  const history = useHistory();
-  const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isconnectWallet, setIsConnectWallet] = useState(true);
-  const [forceUpdate, setForceUpdate] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const connectWallet = () => {
-    setConnectWalletDialoag(!connectWalletDialoag);
-    props.user(isconnectWallet);
-  };
-
-  function truncateToDecimals(num, dec = 2) {
-    const calcDec = Math.pow(10, dec);
-    return Math.trunc(num * calcDec) / calcDec;
-  }
-
-  useEffect(() => {
-    const handleXDCPayWalletChange = async () => {
-      // window.web3 = new Web3(window.ethereum);
-      window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
-
-      if (
-        window.web3.currentProvider &&
-        props?.userDetails?.accountDetails?.isLoggedIn
-      ) {
-        if (!window.web3.currentProvider.chainId) {
-          //when metamask is disabled
-          const state = window.web3.givenProvider.publicConfigStore._state;
-          if (state.selectedAddress !== undefined) {
-            let address = state.selectedAddress;
-            let network =
-              state.networkVersion === "50"
-                ? "XDC Mainnet"
-                : "XDC Apothem Testnet";
-
-            if ((address || network) && (address !== props.userDetails?.accountDetails?.address || network !== props.userDetails?.accountDetails?.network)) {
-              let balance = null;
-
-              await window.web3.eth.getBalance(address).then((res) => {
-                balance = res / Math.pow(10, 18);
-                balance = truncateToDecimals(balance);
-              });
-
-              let accountDetails = {
-                address: address,
-                network: network,
-                balance: balance,
-                isLoggedIn: true,
-              };
-
-              props.updateAccountDetails(accountDetails);
-              setForceUpdate(true);
-            }
-          } else {
-            //metamask is also enabled with xdcpay
-            const state = window.web3.givenProvider.publicConfigStore._state;
-            let address = state.selectedAddress;
-            let network =
-              state.networkVersion === "50"
-                ? "XDC Mainnet"
-                : "XDC Apothem Testnet";
-          }
-        }
-      }
-    };
-
-    const handleWalletSession = () => {
-      // window.web3 = new Web3(window.ethereum);
-      window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
-
-      if (window.web3.currentProvider) {
-        if (!window.web3.currentProvider.chainId) {
-          const state = window.web3.givenProvider.publicConfigStore._state;
-          if (!state.selectedAddress) {
-            let accountDetails = {
-              address: null,
-              network: null,
-              balance: null,
-              isLoggedIn: false,
-            };
-
-            props.updateAccountDetails(accountDetails);
-            if(window.location.pathname === "/FAQ"){
-              props.setActiveNavItem("faq");
-            }else{
-              props.setActiveNavItem("about");
-              history.push("/");
-            }
-          }
-        }
-        else{
-          let accountDetails = {
-            address: null,
-            network: null,
-            balance: null,
-            isLoggedIn: false,
-          };
-
-          props.updateAccountDetails(accountDetails);
-          if (window.location.pathname === "/FAQ"){
-            props.setActiveNavItem("faq");
-          } else{
-            props.setActiveNavItem("about");
-            history.push("/");
-          }
-        }
-      }
-      else{
-        let accountDetails = {
-          address: null,
-          network: null,
-          balance: null,
-          isLoggedIn: false,
-        };
-
-        props.updateAccountDetails(accountDetails);
-        if (window.location.pathname === "/FAQ"){
-          props.setActiveNavItem("faq");
-        } else{
-          props.setActiveNavItem("about");
-          history.push("/");
-        }
-      }
-    }
-
-    setTimeout(() => {
-      handleWalletSession();
-    }, 1000);
-    handleXDCPayWalletChange();
-    window.addEventListener("load", handleXDCPayWalletChange);
-  }, []);
-
-  return (
-    <>
-      <HeaderContainer>
-        <SpaceBetween>
-          <div className="Space-between">
-            {/* <GridLogo src="/images/ShowApps.svg" /> */}
-            <div>
-              <UserMenu1
-                onClick={() => toggleSidebar()}
-                src="images/menu.svg"
-              />{" "}
-            </div>
-            <SmartMintLogo src="/images/Origin-Active.svg" />
-            <Span onClick={() => history.push("/")}>Origin</Span>
-            <BetaImgContainer>
-              <BetaImg src="/images/beta_tag.svg" alt="" />
-            </BetaImgContainer>
-          </div>
-          <div className="buttons">
-            {/* <UserLogo  src="/images/profile.svg" /> */}
-            <MobBtn onClick={() => history.push("/connect-wallet-mobile")}>
-              Connect Wallet
-            </MobBtn>
-            <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
-            {props.userDetails?.accountDetails?.address ? (
-              <AddressContainer>
-                <Balance>
-                  {props.userDetails?.accountDetails?.balance} XDC
-                </Balance>
-                <Address>
-                  {props.userDetails?.accountDetails?.address
-                    .slice(0, 5)
-                    .replace(/0x/, "xdc") +
-                    "..." +
-                    props.userDetails?.accountDetails?.address.substr(
-                      props.userDetails?.accountDetails?.address.length - 5
-                    )}
-                </Address>
-                {forceUpdate ? (
-                  <AccountIcon>
-                    <WalletDummyImg src="/images/wallet_dummy_image.svg" alt="" />
-                  </AccountIcon>
-                ) : (
-                  <AccountIcon>
-                    <Identicon
-                      diameter={20}
-                      address={props.userDetails?.accountDetails?.address}
-                      network={props.userDetails?.accountDetails?.network}
-                    />
-                  </AccountIcon>
-                )
-                }
-              </AddressContainer>
-            ) : (
-              <Button onClick={() => connectWallet()}>Connect Wallet</Button>
-            )}
-          </div>
-        </SpaceBetween>
-      </HeaderContainer>
-      {isOpen ? <Sidebar /> : ""}
-      <ConnectWallet
-        open={connectWalletDialoag}
-        onClose={connectWallet}
-        handleClose={connectWallet}
-      />
-    </>
-  );
-}
-
-const mapStateToProps = (state) => ({
-  userDetails: state.user,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  user: (isconnectWallet) => {
-    dispatch(handleWallet(isconnectWallet));
-  },
-  updateAccountDetails: (accountDetails) => {
-    dispatch(updateAccountDetails(accountDetails));
-  },
-  setActiveNavItem: (isActive) => {
-    dispatch(handleNavItem(isActive))
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
 const HeaderContainer = styled.div`
   background: #091f5c 0% 0% no-repeat padding-box;
@@ -426,3 +204,237 @@ const BetaImg = styled.img`
   opacity: 1;
   object-fit: contain;
 `;
+
+
+function Header(props) {
+  const history = useHistory();
+  const [connectWalletDialoag, setConnectWalletDialoag] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isconnectWallet, setIsConnectWallet] = useState(true);
+  const [forceUpdate, setForceUpdate] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const connectWallet = () => {
+    setConnectWalletDialoag(!connectWalletDialoag);
+    props.user(isconnectWallet);
+  };
+
+  function truncateToDecimals(num, dec = 2) {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
+
+  const getBalance = async(address) => {
+    let balance = null;
+    await window.web3.eth.getBalance(address).then((res) => {
+      balance = res / Math.pow(10, 18);
+      balance = truncateToDecimals(balance);
+    });
+    return balance;
+  }
+
+  useEffect(() => {
+    const handleXDCPayWalletChange = async () => {
+      window.web3 = new Web3(window.ethereum);
+
+      if (
+        window.web3.currentProvider &&
+        props?.userDetails?.accountDetails?.isLoggedIn
+      ) {
+        if (!window.web3.currentProvider.chainId) {
+          //when metamask is disabled
+          const state = window.web3.givenProvider.publicConfigStore._state;
+          if (state.selectedAddress !== undefined) {
+            let address = state.selectedAddress;
+            let network =
+              state.networkVersion === "50"
+                ? NETWORKS.XDC_MAINNET
+                : NETWORKS.XDC_APOTHEM_TESTNET;
+
+            let newBalance = await getBalance(address);
+
+            if ((address || network) && (address !== props.userDetails?.accountDetails?.address || network !== props.userDetails?.accountDetails?.network || newBalance !== props.userDetails?.accountDetails?.balance)) {
+              let balance = null;
+
+              await window.web3.eth.getBalance(address).then((res) => {
+                balance = res / Math.pow(10, 18);
+                balance = truncateToDecimals(balance);
+              });
+
+              let accountDetails = {
+                address: address,
+                network: network,
+                balance: balance,
+                isLoggedIn: true,
+              };
+
+              props.updateAccountDetails(accountDetails);
+              setForceUpdate(true);
+            }
+          } else {
+            //metamask is also enabled with xdcpay
+            const state = window.web3.givenProvider.publicConfigStore._state;
+            let address = state.selectedAddress;
+            let network =
+              state.networkVersion === "50"
+                ? NETWORKS.XDC_MAINNET
+                : NETWORKS.XDC_APOTHEM_TESTNET;
+          }
+        }
+      }
+    };
+
+    const handleWalletSession = () => {
+      window.web3 = new Web3(window.ethereum);
+
+      if (window.web3.currentProvider) {
+        if (!window.web3.currentProvider.chainId) {
+          const state = window.web3.givenProvider.publicConfigStore._state;
+          if (!state.selectedAddress) {
+            let accountDetails = {
+              address: null,
+              network: null,
+              balance: null,
+              isLoggedIn: false,
+            };
+
+            props.updateAccountDetails(accountDetails);
+            if(window.location.pathname === "/FAQ"){
+              props.setActiveNavItem("faq");
+            }else{
+              props.setActiveNavItem("about");
+              history.push("/");
+            }
+          }
+        }
+        else{
+          let accountDetails = {
+            address: null,
+            network: null,
+            balance: null,
+            isLoggedIn: false,
+          };
+
+          props.updateAccountDetails(accountDetails);
+          if (window.location.pathname === "/FAQ"){
+            props.setActiveNavItem("faq");
+          } else{
+            props.setActiveNavItem("about");
+            history.push("/");
+          }
+        }
+      }
+      else{
+        let accountDetails = {
+          address: null,
+          network: null,
+          balance: null,
+          isLoggedIn: false,
+        };
+
+        props.updateAccountDetails(accountDetails);
+        if (window.location.pathname === "/FAQ"){
+          props.setActiveNavItem("faq");
+        } else{
+          props.setActiveNavItem("about");
+          history.push("/");
+        }
+      }
+    }
+
+    setTimeout(() => {
+      handleWalletSession();
+    }, 1000);
+    handleXDCPayWalletChange();
+    window.addEventListener("load", handleXDCPayWalletChange);
+  }, []);
+
+  return (
+    <>
+      <HeaderContainer>
+        <SpaceBetween>
+          <div className="Space-between">
+            {/* <GridLogo src="/images/ShowApps.svg" /> */}
+            <div>
+              <UserMenu1
+                onClick={() => toggleSidebar()}
+                src="images/menu.svg"
+              />{" "}
+            </div>
+            <SmartMintLogo src="/images/Origin-Active.svg" />
+            <Span onClick={() => history.push("/")}>Origin</Span>
+            <BetaImgContainer>
+              <BetaImg src="/images/beta_tag.svg" alt="" />
+            </BetaImgContainer>
+          </div>
+          <div className="buttons">
+            {/* <UserLogo  src="/images/profile.svg" /> */}
+            <MobBtn onClick={() => history.push("/connect-wallet-mobile")}>
+              Connect Wallet
+            </MobBtn>
+            <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
+            {props.userDetails?.accountDetails?.address ? (
+              <AddressContainer>
+                <Balance>
+                  {props.userDetails?.accountDetails?.balance} XDC
+                </Balance>
+                <Address>
+                  {props.userDetails?.accountDetails?.address
+                    .slice(0, 5)
+                    .replace(/0x/, "xdc") +
+                    "..." +
+                    props.userDetails?.accountDetails?.address.substr(
+                      props.userDetails?.accountDetails?.address.length - 5
+                    )}
+                </Address>
+                {forceUpdate ? (
+                  <AccountIcon>
+                    <WalletDummyImg src="/images/wallet_dummy_image.svg" alt="" />
+                  </AccountIcon>
+                ) : (
+                  <AccountIcon>
+                    <Identicon
+                      diameter={20}
+                      address={props.userDetails?.accountDetails?.address}
+                      network={props.userDetails?.accountDetails?.network}
+                    />
+                  </AccountIcon>
+                )
+                }
+              </AddressContainer>
+            ) : (
+              <Button onClick={() => connectWallet()}>Connect Wallet</Button>
+            )}
+          </div>
+        </SpaceBetween>
+      </HeaderContainer>
+      {isOpen ? <Sidebar /> : ""}
+      <ConnectWallet
+        open={connectWalletDialoag}
+        onClose={connectWallet}
+        handleClose={connectWallet}
+      />
+    </>
+  );
+}
+
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  user: (isconnectWallet) => {
+    dispatch(handleWallet(isconnectWallet));
+  },
+  updateAccountDetails: (accountDetails) => {
+    dispatch(updateAccountDetails(accountDetails));
+  },
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive))
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

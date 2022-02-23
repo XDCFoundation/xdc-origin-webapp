@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import Web3 from "web3";
 import { updateAccountDetails } from "../../action";
 import ScreenSizeDetector from "screen-size-detector";
+import { NETWORKS } from "../../constants"
 
 const screen = new ScreenSizeDetector();
 
@@ -49,8 +50,8 @@ class DeployContract extends BaseComponent {
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
-              ? "XDC Mainnet"
-              : "XDC Apothem Testnet";
+              ? NETWORKS.XDC_MAINNET
+              : NETWORKS.XDC_APOTHEM_TESTNET;
 
           if (address || network) {
             let balance = null;
@@ -75,8 +76,8 @@ class DeployContract extends BaseComponent {
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
-              ? "XDC Mainnet"
-              : "XDC Apothem Testnet";
+              ? NETWORKS.XDC_MAINNET
+              : NETWORKS.XDC_APOTHEM_TESTNET;
         }
       }
     }
@@ -108,8 +109,12 @@ class DeployContract extends BaseComponent {
       return;
     }
     if (contractServiceResponse) {
+      let sortedData = contractServiceResponse.sort((a,b) => {
+        return new Date(b.createdAt)-new Date(a.createdAt);
+      })
+      
       this.setState({
-        draftFailedXrc20TokenDetails: contractServiceResponse,
+        draftFailedXrc20TokenDetails: sortedData,
         isLoading: false,
       });
     }
