@@ -717,7 +717,7 @@ function manageContractDetails(props) {
                     </MediaImgWrapper>
                     <MediaImgWrapper>
                       <MediaImg
-                        onClick={() => handleURL("")}
+                        onClick={() => handleURL(props.deolyedTokenDetails?.facebook)}
                         src={props.deolyedTokenDetails?.facebook === "" ? "/images/Facebook_Inactive.svg" : "/images/Facebook_Active.svg"}
                         className={props.deolyedTokenDetails?.facebook === "" ? "imageNotAvailable" : ""}
                       />
