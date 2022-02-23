@@ -425,7 +425,7 @@ function TransferOwnershipContract(props) {
                       <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
-                      {inputAddress !== "" ? (
+                      {(inputAddress !== "" && inputAddress !== userAddress.replace(/0x/, "xdc")) ? (
                       <DeleteButton onClick={handleSteps}>
                         Transfer
                       </DeleteButton>
