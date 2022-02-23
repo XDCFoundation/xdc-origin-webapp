@@ -16,7 +16,8 @@ import MintContractPopup from "./mintContractPopup";
 import TransferOwnershipPopup from "./transferOwnershipPopup";
 import AddToXDCPayPopup from "../createdToken/addToXDCPayPopup";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import { validationsMessages, REDIRECT_URL } from "../../constants"
+import { validationsMessages, REDIRECT_URL } from "../../constants";
+import { sessionManager } from "../../managers/sessionManager"
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -462,7 +463,21 @@ function manageContractDetails(props) {
         },
       },
       "id": 1635861619468
-    }, () => {})
+    },(error, result ) => {
+      if(result.result === true){
+        toast.success(validationsMessages.TOKEN_ADDED_SUCCESS, {
+          duration: 4000,
+          position: "top-center",
+          className: "toast-div-address",
+        });
+      } else if(result.result === false){
+        toast.error(validationsMessages.TOKEN_ADDED_FAILURE, {
+          duration: 4000,
+          position: "top-center",
+          className: "toast-div-address",
+        });
+      }
+    })
     handleClose();
     // setIsAddPopupOpen(!isAddPopupOpen);
   }

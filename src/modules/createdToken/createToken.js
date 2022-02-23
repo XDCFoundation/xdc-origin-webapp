@@ -8,7 +8,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import AddToXDCPayPopup from "./addToXDCPayPopup";
 import { handleNavItem, handleSubNavItem, handleSubNavToken } from "../../action";
-import { REDIRECT_URL } from "../../constants";
+import { REDIRECT_URL, validationsMessages } from "../../constants";
+import toast, { Toaster } from "react-hot-toast";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -401,7 +402,21 @@ const CreateToken = (props) => {
         },
       },
       "id": 1635861619468
-    }, () => {})
+    }, (error, result ) => {
+      if(result.result === true){
+        toast.success(validationsMessages.TOKEN_ADDED_SUCCESS, {
+          duration: 4000,
+          position: "top-center",
+          className: "toast-div-address",
+        });
+      } else if(result.result === false){
+        toast.error(validationsMessages.TOKEN_ADDED_FAILURE, {
+          duration: 4000,
+          position: "top-center",
+          className: "toast-div-address",
+        });
+      }
+    })
     // setIsPopUPOpen(!isPopUpOpen);
   }
 
@@ -419,6 +434,7 @@ const CreateToken = (props) => {
   return (
     <MuiThemeProvider theme={defaultTheme}>
       <>
+      <Toaster />
       <BgContainer>
         <ParentContainer>
           <SuccessTokenIcon>
