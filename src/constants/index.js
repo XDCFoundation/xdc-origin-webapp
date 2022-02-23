@@ -69,7 +69,10 @@ export const validationsMessages = {
     INVALID_ADDRESS_ERROR: "Invalid Address",
     DISABLE_METAMSK_ERROR: "Disable Metamask and Login To XDCPay",
     WALLET_DETAILS_UPDATE_MESSAGE: "XDCPay Wallet Details Has Been Updated",
-    CURRENT_TOKEN_OWNER: "This Address Is The Current Token Owner"
+    CURRENT_TOKEN_OWNER: "This Address Is The Current Token Owner",
+    TOKEN_ADDED_SUCCESS: "Token Added To XDCPay Wallet",
+    TOKEN_ADDED_FAILURE: "Unable To Add Token To XDCPay Wallet",
+    TOKEN_ALREADY_ADDED_SUCCESS: "Token Already Added To XDCPay Wallet",
 }
 
 export const toolTipContentMessages = {
@@ -108,6 +111,7 @@ export const cookiesConstants = {
   SIDE_NAV: "sideNav",
   SUBNAV_ITEM: "subNavItem",
   SUBNAV_TOKEN: "subNavToken",
+  WALLET_TOKEN_ID: "walletTokenId"
 };
 
 export const colors = [
