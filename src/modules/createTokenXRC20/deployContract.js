@@ -76,7 +76,6 @@ export default function DeployContract(props) {
   };
 
   return (
-    <>
       <Parent>
         <Column>
           <Div>
@@ -88,6 +87,5 @@ export default function DeployContract(props) {
           </Div>
         </Column>
       </Parent>
-    </>
   );
 }

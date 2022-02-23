@@ -7,370 +7,12 @@ import DeleteContract from "./deleteContractPopup";
 import DeployPopup from "./deployPopup";
 import Web3 from "web3";
 import { connect } from "react-redux";
-import {
-  apiBodyMessages,
-  apiSuccessConstants,
-  validationsMessages,
-} from "../../constants";
+import { apiBodyMessages, GAS_VALUE } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
 import { handleNavItem } from "../../action";
 import { CircularProgress } from "@material-ui/core";
 
-function DeployContract(props) {
-  const history = useHistory();
-  let obtainHash;
-  let contractAdd = "";
-
-  const [open, setOpen] = useState(false);
-  const [openDeployPopup, setOpenDeployPopup] = useState(false);
-  const [tokenId, setTokenId] = useState("");
-  const [tokenName, setTokenName] = useState("");
-  const [deployTokenName, setDeployTokenName] = useState("");
-
-  const handleClickOpen = (id, tokenName) => {
-    setOpen(true);
-    setTokenId(id);
-    setTokenName(tokenName);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleDeployPopup = (deployToken) => {
-    // saveDraft data coming from addFeatures
-    // let tokenDetails = props?.saveDraftData;
-    setOpenDeployPopup(true);
-    setDeployTokenName(deployToken.tokenName);
-    sendTransaction(deployToken);
-  };
-
-  const deployPopupClose = () => {
-    setOpenDeployPopup(false);
-  };
-  const capitalize = (str) => {
-    let lowerStr = str.toLowerCase();
-    let newtr = lowerStr.charAt(0).toUpperCase() + lowerStr.slice(1);
-    return newtr;
-  };
-
-  // deploy Token Function :
-
-  let networkVersion = props.userDetails?.accountDetails?.network || "";
-  let userAddress = props.userDetails?.accountDetails?.address || "";
-
-  const sendTransaction = async (tokenDetails) => {
-    // window.web3 = new Web3(window.ethereum);
-    window.web3 = new Web3(window.xdc);
-
-    let checkNetwork = tokenDetails?.network;
-    let draftedTokenId = tokenDetails?.id;
-    let draftedTokenOwner = tokenDetails?.tokenOwner;
-    let byteCode = tokenDetails?.byteCode;
-    let createdToken = tokenDetails?.tokenName;
-    let parsingDecimal = tokenDetails?.tokenDecimals;
-    let parsingSupply = tokenDetails?.tokenInitialSupply;
-    let tokenSymbol = tokenDetails?.tokenSymbol;
-
-    // let xdce_address = tokenDetails.tokenOwner;
-    // let contractInstance = new window.web3.eth.Contract(newAbi.abi, xdce_address);
-
-    const priceXdc = 1;
-    const gasPrice = await window.web3.eth.getGasPrice();
-
-    let transaction = {
-      from: userAddress,
-      gas: 7920000,
-      gasPrice: gasPrice,
-      data: byteCode,
-    };
-
-    if (checkNetwork === "XDC Mainnet") {
-      await window.web3.eth
-        .sendTransaction(transaction)
-        .on("transactionHash", function (hash) {
-          obtainHash = hash;
-          if (hash !== 0) {
-            // recieve mainnet contractAddress from this function
-            setTimeout(() => {
-              contractDetailsFromTxnHash(
-                hash,
-                parsingDecimal,
-                parsingSupply,
-                gasPrice,
-                createdToken,
-                draftedTokenId,
-                draftedTokenOwner,
-                tokenSymbol
-              );
-            }, 10000);
-          }
-        })
-
-        .on("error", function (error) {
-          let obtainTxnHash = obtainHash;
-          let obtainContractAddress = contractAdd;
-          if (
-            error.message !==
-              "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." &&
-            contractAdd === ""
-          ) {
-            history.push({
-              pathname: "/created-token",
-              state: {},
-              parsingDecimal,
-              obtainTxnHash,
-              obtainContractAddress,
-              parsingSupply,
-              gasPrice,
-              createdToken,
-              tokenSymbol
-            });
-          } else if (
-            error.message ===
-            "Returned error: Error: XDCPay Tx Signature: User denied transaction signature."
-          ) {
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
-            setOpenDeployPopup(false);
-          }
-          else{
-            console.log('')
-          }
-        });
-    } else {
-      await window.web3.eth
-        .sendTransaction(transaction)
-        .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
-        })
-        .on("receipt", function (receipt) {
-          //receive the contract address from this object
-          // console.log("receipt ====", receipt);
-          if (receipt !== 0) {
-            history.push({
-              pathname: "/created-token",
-              state: receipt,
-              parsingDecimal,
-              parsingSupply,
-              gasPrice,
-              createdToken,
-              tokenSymbol
-            });
-            updateTokenDetails(
-              draftedTokenId,
-              draftedTokenOwner,
-              receipt.contractAddress,
-              apiBodyMessages.STATUS_DEPLOYED
-            );
-          }
-        })
-        .on("confirmation", function (confirmationNumber, receipt) {
-          // console.log("confirmation ====", confirmationNumber, receipt);
-        })
-        .on("error", function (error) {
-          if (error) {
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
-            setOpenDeployPopup(false);
-          }
-        });
-    }
-  };
-
-  const updateTokenDetails = async (
-    resultedTokenId,
-    resultedTokenOwner,
-    resultAddress,
-    status
-  ) => {
-    let reqObj = {
-      tokenId: resultedTokenId,
-      tokenOwner: resultedTokenOwner,
-      smartContractAddress: resultAddress,
-      status: status
-    };
-    const [err, res] = await Utils.parseResponse(
-      SaveDraftService.updateDraftedToken(reqObj)
-    );
-  };
-
-  const contractDetailsFromTxnHash = async (
-    txnHash,
-    parsingDecimal,
-    parsingSupply,
-    gasPrice,
-    createdToken,
-    tokenId,
-    tokenOwner,
-    tokenSymbol
-  ) => {
-    let reqObj = {
-      hash: txnHash,
-    };
-    const [err, res] = await Utils.parseResponse(
-      SaveDraftService.getTxnHashDetails(reqObj)
-    );
-    let obtainContractAddress = res?.contractAddress;
-    // let obtainTxnHash = res?.hash || "";
-    let obtainTxnHash = res?.hash !== undefined ? res?.hash : obtainHash
-    let obtainGasUsed = res?.gasUsed;
-     //-------
-     contractAdd = res?.contractAddress
-    if (contractAdd !== "") {
-      history.push({
-        pathname: "/created-token",
-        state: {},
-        obtainTxnHash,
-        parsingDecimal,
-        parsingSupply,
-        gasPrice,
-        obtainGasUsed,
-        createdToken,
-        obtainContractAddress,
-        tokenSymbol
-      });
-      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress, apiBodyMessages.STATUS_DEPLOYED);
-    }
-  };
-
-  const handleEdit = (id) => {
-    props.setActiveNavItem("create");
-    history.push(`/token-XRC20/${id}`);
-  };
-
-  return (
-    <Container>
-      <Heading>Deploy Saved Tokens</Heading>
-      {props?.state?.draftFailedXrc20TokenDetails?.length === 0 ? (
-        <TableContainer>
-          <TableHeaderEmpty>
-            <TitleEmpty>Token Icon</TitleEmpty>
-            <TitleEmpty>Token Name</TitleEmpty>
-            <TitleEmpty>Token Symbol</TitleEmpty>
-            <TitleEmpty>Network</TitleEmpty>
-            <TitleEmpty>Supply</TitleEmpty>
-            <TitleEmpty>Status</TitleEmpty>
-          </TableHeaderEmpty>
-          <Line />
-
-          <DataContainer>
-            {props.state?.isLoading ? (
-              <EmptyRow>
-                <CircularProgress />
-              </EmptyRow>
-            ) : (
-                props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
-                  <EmptyRow>No Contracts Available</EmptyRow>
-                ) : ""
-            )}
-          </DataContainer>
-      </TableContainer>
-      ) : (
-      <TableContainer>
-        <TableHeader>
-          <Title>Token Icon</Title>
-          <Title>Token Name</Title>
-          <Title>Token Symbol</Title>
-          <TitleNetwork>Network</TitleNetwork>
-          <Title>Supply</Title>
-          <Title>Status</Title>
-        </TableHeader>
-        <Line />
-
-        <DataContainer>
-          {props.state?.isLoading ? (
-            <EmptyRow>
-              <CircularProgress />
-            </EmptyRow>
-          ) : (
-                props.state.draftFailedXrc20TokenDetails &&
-                props.state.draftFailedXrc20TokenDetails.map((item, index) => (
-              <>
-                <TableRow key={index}>
-                  <div className="tokenIcon">
-                    <TableContentImg
-                      alt=""
-                      src={
-                        item.tokenImage
-                          ? item.tokenImage
-                          : "/images/XDC_sky_blue.svg"
-                      }
-                    />
-                  </div>
-                  <div className="tokenName">
-                    <TableContent>{item.tokenName}</TableContent>
-                  </div>
-                  <div className="tokenSymbol">
-                    <TableContent>{item.tokenSymbol}</TableContent>
-                  </div>
-                  <div className="network">
-                    <TableContent>{item.network}</TableContent>
-                  </div>
-                  <div className="supply">
-                    <TableContent>{item.tokenInitialSupply}</TableContent>
-                  </div>
-                  <div className="status">
-                    <TableContent>{capitalize(item.status)}</TableContent>
-                  </div>
-                  <div className="icons">
-                    <div
-                      className="deployIcon"
-                      onClick={() => handleDeployPopup(item)}
-                    >
-                      <img src="/images/deploy_contract.png" alt="" />
-                    </div>
-                    <div
-                      className="deleteIcon"
-                      onClick={() => handleClickOpen(item.id, item.tokenName)}
-                    >
-                      <Delete />
-                    </div>
-                    <div
-                      onClick={() => handleEdit(item.id)}
-                      className="editIcon"
-                    >
-                      <Edit />
-                    </div>
-                  </div>
-                </TableRow>
-                <DataLine />
-              </>
-            )
-            )
-          )}
-        </DataContainer>
-      </TableContainer>
-      )}
-
-      <DeleteContract
-        open={open}
-        onClose={handleClose}
-        handleClose={handleClose}
-        deleteContract={props.deleteContract}
-        tokenId={tokenId}
-        tokenName={tokenName}
-      />
-      <DeployPopup
-        networkVersion={networkVersion}
-        open={openDeployPopup}
-        onClose={deployPopupClose}
-        deployPopupClose={deployPopupClose}
-        deployTokenName={deployTokenName}
-      />
-    </Container>
-  );
-}
-
-// export default DeployContract;
-const mapStateToProps = (state) => ({
-  userDetails: state.user,
-});
-const mapDispatchToProps = (dispatch) => ({
-  setActiveNavItem: (isActive) => {
-    dispatch(handleNavItem(isActive));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(DeployContract);
 
 const Container = styled.div`
   width: 100vw;
@@ -625,3 +267,349 @@ const EmptyRow = styled.div`
   font-weight: 600;
   color: #808080;
 `;
+
+
+function DeployContract(props) {
+  const history = useHistory();
+  let obtainHash;
+  let contractAdd = "";
+
+  const [open, setOpen] = useState(false);
+  const [openDeployPopup, setOpenDeployPopup] = useState(false);
+  const [tokenId, setTokenId] = useState("");
+  const [tokenName, setTokenName] = useState("");
+  const [deployTokenName, setDeployTokenName] = useState("");
+
+  const handleClickOpen = (id, tokenName) => {
+    setOpen(true);
+    setTokenId(id);
+    setTokenName(tokenName);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleDeployPopup = (deployToken) => {
+    // saveDraft data coming from addFeatures
+    setOpenDeployPopup(true);
+    setDeployTokenName(deployToken.tokenName);
+    sendTransaction(deployToken);
+  };
+
+  const deployPopupClose = () => {
+    setOpenDeployPopup(false);
+  };
+  const capitalize = (str) => {
+    let lowerStr = str.toLowerCase();
+    let newtr = lowerStr.charAt(0).toUpperCase() + lowerStr.slice(1);
+    return newtr;
+  };
+
+  // deploy Token Function :
+
+  let networkVersion = props.userDetails?.accountDetails?.network || "";
+  let userAddress = props.userDetails?.accountDetails?.address || "";
+
+  const sendTransaction = async (tokenDetails) => {
+    window.web3 = new Web3(window.ethereum);
+
+    let checkNetwork = tokenDetails?.network;
+    let draftedTokenId = tokenDetails?.id;
+    let draftedTokenOwner = tokenDetails?.tokenOwner;
+    let byteCode = tokenDetails?.byteCode;
+    let createdToken = tokenDetails?.tokenName;
+    let parsingDecimal = tokenDetails?.tokenDecimals;
+    let parsingSupply = tokenDetails?.tokenInitialSupply;
+    let tokenSymbol = tokenDetails?.tokenSymbol;
+
+
+    const gasPrice = await window.web3.eth.getGasPrice();
+
+    let transaction = {
+      from: userAddress,
+      gas: GAS_VALUE,
+      gasPrice: gasPrice,
+      data: byteCode,
+    };
+
+    if (checkNetwork === "XDC Mainnet") {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {
+          obtainHash = hash;
+          if (hash !== 0) {
+            // recieve mainnet contractAddress from this function
+            setTimeout(() => {
+              contractDetailsFromTxnHash(
+                hash,
+                parsingDecimal,
+                parsingSupply,
+                gasPrice,
+                createdToken,
+                draftedTokenId,
+                draftedTokenOwner,
+                tokenSymbol
+              );
+            }, 10000);
+          }
+        })
+
+        .on("error", function (error) {
+          let obtainTxnHash = obtainHash;
+          let obtainContractAddress = contractAdd;
+          if (
+            error.message !==
+              "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." &&
+            contractAdd === ""
+          ) {
+            history.push({
+              pathname: "/created-token",
+              state: {},
+              parsingDecimal,
+              obtainTxnHash,
+              obtainContractAddress,
+              parsingSupply,
+              gasPrice,
+              createdToken,
+              tokenSymbol
+            });
+          } else if (
+            error.message ===
+            "Returned error: Error: XDCPay Tx Signature: User denied transaction signature."
+          ) {
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+            setOpenDeployPopup(false);
+          }
+          else{
+          }
+        });
+    } else {
+      await window.web3.eth
+        .sendTransaction(transaction)
+        .on("transactionHash", function (hash) {
+        })
+        .on("receipt", function (receipt) {
+          //receive the contract address from this object
+          if (receipt !== 0) {
+            history.push({
+              pathname: "/created-token",
+              state: receipt,
+              parsingDecimal,
+              parsingSupply,
+              gasPrice,
+              createdToken,
+              tokenSymbol
+            });
+            updateTokenDetails(
+              draftedTokenId,
+              draftedTokenOwner,
+              receipt.contractAddress,
+              apiBodyMessages.STATUS_DEPLOYED
+            );
+          }
+        })
+        .on("confirmation", function (confirmationNumber, receipt) {
+        })
+        .on("error", function (error) {
+          if (error) {
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+            setOpenDeployPopup(false);
+          }
+        });
+    }
+  };
+
+  const updateTokenDetails = async (
+    resultedTokenId,
+    resultedTokenOwner,
+    resultAddress,
+    status
+  ) => {
+    let reqObj = {
+      tokenId: resultedTokenId,
+      tokenOwner: resultedTokenOwner,
+      smartContractAddress: resultAddress,
+      status: status
+    };
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.updateDraftedToken(reqObj)
+    );
+  };
+
+  const contractDetailsFromTxnHash = async (
+    txnHash,
+    parsingDecimal,
+    parsingSupply,
+    gasPrice,
+    createdToken,
+    tokenId,
+    tokenOwner,
+    tokenSymbol
+  ) => {
+    let reqObj = {
+      hash: txnHash,
+    };
+    const [err, res] = await Utils.parseResponse(
+      SaveDraftService.getTxnHashDetails(reqObj)
+    );
+    let obtainContractAddress = res?.contractAddress;
+    // let obtainTxnHash = res?.hash || "";
+    let obtainTxnHash = res?.hash !== undefined ? res?.hash : obtainHash
+    let obtainGasUsed = res?.gasUsed;
+     //-------
+     contractAdd = res?.contractAddress
+    if (contractAdd !== "") {
+      history.push({
+        pathname: "/created-token",
+        state: {},
+        obtainTxnHash,
+        parsingDecimal,
+        parsingSupply,
+        gasPrice,
+        obtainGasUsed,
+        createdToken,
+        obtainContractAddress,
+        tokenSymbol
+      });
+      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress, apiBodyMessages.STATUS_DEPLOYED);
+    }
+  };
+
+  const handleEdit = (id) => {
+    props.setActiveNavItem("create");
+    history.push(`/token-XRC20/${id}`);
+  };
+
+  return (
+    <Container>
+      <Heading>Deploy Saved Tokens</Heading>
+      {props?.state?.draftFailedXrc20TokenDetails?.length === 0 ? (
+        <TableContainer>
+          <TableHeaderEmpty>
+            <TitleEmpty>Token Icon</TitleEmpty>
+            <TitleEmpty>Token Name</TitleEmpty>
+            <TitleEmpty>Token Symbol</TitleEmpty>
+            <TitleEmpty>Network</TitleEmpty>
+            <TitleEmpty>Supply</TitleEmpty>
+            <TitleEmpty>Status</TitleEmpty>
+          </TableHeaderEmpty>
+          <Line />
+
+          <DataContainer>
+            {props.state?.isLoading ? (
+              <EmptyRow>
+                <CircularProgress />
+              </EmptyRow>
+            ) : (
+                props.state.draftFailedXrc20TokenDetails?.length === 0 ? (
+                  <EmptyRow>No Contracts Available</EmptyRow>
+                ) : ""
+            )}
+          </DataContainer>
+      </TableContainer>
+      ) : (
+      <TableContainer>
+        <TableHeader>
+          <Title>Token Icon</Title>
+          <Title>Token Name</Title>
+          <Title>Token Symbol</Title>
+          <TitleNetwork>Network</TitleNetwork>
+          <Title>Supply</Title>
+          <Title>Status</Title>
+        </TableHeader>
+        <Line />
+
+        <DataContainer>
+          {props.state?.isLoading ? (
+            <EmptyRow>
+              <CircularProgress />
+            </EmptyRow>
+          ) : (
+                props.state.draftFailedXrc20TokenDetails &&
+                props.state.draftFailedXrc20TokenDetails.map((item, index) => (
+              <>
+                <TableRow key={index}>
+                  <div className="tokenIcon">
+                    <TableContentImg
+                      alt=""
+                      src={
+                        item.tokenImage
+                          ? item.tokenImage
+                          : "/images/XDC_sky_blue.svg"
+                      }
+                    />
+                  </div>
+                  <div className="tokenName">
+                    <TableContent>{item.tokenName}</TableContent>
+                  </div>
+                  <div className="tokenSymbol">
+                    <TableContent>{item.tokenSymbol}</TableContent>
+                  </div>
+                  <div className="network">
+                    <TableContent>{item.network}</TableContent>
+                  </div>
+                  <div className="supply">
+                    <TableContent>{item.tokenInitialSupply}</TableContent>
+                  </div>
+                  <div className="status">
+                    <TableContent>{capitalize(item.status)}</TableContent>
+                  </div>
+                  <div className="icons">
+                    <div
+                      className="deployIcon"
+                      onClick={() => handleDeployPopup(item)}
+                    >
+                      <img src="/images/deploy_contract.png" alt="" />
+                    </div>
+                    <div
+                      className="deleteIcon"
+                      onClick={() => handleClickOpen(item.id, item.tokenName)}
+                    >
+                      <Delete />
+                    </div>
+                    <div
+                      onClick={() => handleEdit(item.id)}
+                      className="editIcon"
+                    >
+                      <Edit />
+                    </div>
+                  </div>
+                </TableRow>
+                <DataLine />
+              </>
+            )
+            )
+          )}
+        </DataContainer>
+      </TableContainer>
+      )}
+
+      <DeleteContract
+        open={open}
+        onClose={handleClose}
+        handleClose={handleClose}
+        deleteContract={props.deleteContract}
+        tokenId={tokenId}
+        tokenName={tokenName}
+      />
+      <DeployPopup
+        networkVersion={networkVersion}
+        open={openDeployPopup}
+        onClose={deployPopupClose}
+        deployPopupClose={deployPopupClose}
+        deployTokenName={deployTokenName}
+      />
+    </Container>
+  );
+}
+
+const mapStateToProps = (state) => ({
+  userDetails: state.user,
+});
+const mapDispatchToProps = (dispatch) => ({
+  setActiveNavItem: (isActive) => {
+    dispatch(handleNavItem(isActive));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeployContract);

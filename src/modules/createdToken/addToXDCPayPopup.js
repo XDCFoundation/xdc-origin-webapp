@@ -1,20 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Dialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import { handleAccountDetails, handleWallet } from "../../action";
-import Web3 from "web3";
-import { useHistory } from "react-router";
-import {
-  addFeaturesContent,
-  apiSuccessConstants,
-  validationsMessages,
-} from "../../constants";
-import { detect } from "detect-browser";
-import toast, { Toaster } from "react-hot-toast";
-import { XDCPay_EXTENSION_URL } from "../../constants";
 
 const useStyles = makeStyles({
   dialog: {
@@ -200,12 +188,8 @@ export default function addToXDCPayPopup(props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const classes = useStyles();
 
-  const browser = detect();
-  // if (browser) {
-  //   console.log('bro---',browser.name)
-  // }
+  
   return (
-    <>
       <Dialog
         aria-labelledby="simple-dialog-title"
         open={props.isOpen}
@@ -267,6 +251,5 @@ export default function addToXDCPayPopup(props) {
           </BoxContainer>
         </Container>
       </Dialog>
-    </>
   );
 }

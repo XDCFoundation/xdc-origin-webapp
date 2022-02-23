@@ -1,6 +1,5 @@
 import React from "react";
 import BaseComponent from "../baseComponent";
-import UploadTokenImageDesktop from "./uploadImage";
 import UploadTokenImageMobile from "./uploadImageMobile";
 
 class UploadTokenImage extends BaseComponent {
@@ -10,9 +9,7 @@ class UploadTokenImage extends BaseComponent {
   }
   render() {
     return (
-      <>
         <UploadTokenImageMobile />
-      </>
     );
   }
 }

@@ -28,35 +28,6 @@ const useStyles = makeStyles({
   },
 });
 
-function deployPopup({ open, deployPopupClose,deployTokenName,networkVersion }) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const classes = useStyles();
-  return (
-    <Dialog
-      onClose={deployPopupClose}
-      aria-labelledby="simple-dialog-title"
-      open={open}
-      classes={{
-        paper: classes.dialog,
-      }}
-      disableBackdropClick
-    >
-      <DialogContainer>
-        <HeaderContainer>
-          <DialogHeader>{deployTokenName} Token</DialogHeader>
-        </HeaderContainer>
-        <LoaderContainer>
-          <div className="loader" />
-        </LoaderContainer>
-        <XDCImg src="/images/XDC_Blue_Logo.svg" alt="" />
-        <DialogFooter>Deploying to {networkVersion}…</DialogFooter>
-      </DialogContainer>
-    </Dialog>
-  );
-}
-
-export default deployPopup;
-
 const DialogContainer = styled.div`
   width: 522px;
   height: 473px;
@@ -130,3 +101,33 @@ const DialogFooter = styled.div`
     font: normal normal normal 14px/17px Inter;
   }
 `;
+
+
+function deployPopup({ open, deployPopupClose,deployTokenName,networkVersion }) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const classes = useStyles();
+  return (
+    <Dialog
+      onClose={deployPopupClose}
+      aria-labelledby="simple-dialog-title"
+      open={open}
+      classes={{
+        paper: classes.dialog,
+      }}
+      disableBackdropClick
+    >
+      <DialogContainer>
+        <HeaderContainer>
+          <DialogHeader>{deployTokenName} Token</DialogHeader>
+        </HeaderContainer>
+        <LoaderContainer>
+          <div className="loader" />
+        </LoaderContainer>
+        <XDCImg src="/images/XDC_Blue_Logo.svg" alt="" />
+        <DialogFooter>Deploying to {networkVersion}…</DialogFooter>
+      </DialogContainer>
+    </Dialog>
+  );
+}
+
+export default deployPopup;
