@@ -53,6 +53,17 @@ const DialogHeader = styled.div`
   justify-content: space-between;
   margin: 19px 0 0 23px;
 `;
+const SubHeadingText = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 18px 0 0 0;
+  text-align: center;
+  font: normal normal normal 16px/20px Inter;
+  letter-spacing: 0px;
+  color: #4b4b4b;
+  opacity: 1;
+`;
 const DialogTitle = styled.div`
   width: 148px;
   height: 24px;
@@ -353,6 +364,9 @@ function connectWalletPopup(props) {
             </ButtonContainer>
           )}
         </div>
+        {browser?.name === "chrome" ? (
+          <SubHeadingText>XDCPay compatible versions: 6.2.5 and above</SubHeadingText>
+        ) : ""}
       </Container>
     </Dialog>
     </>
