@@ -1,16 +1,13 @@
 import React, { useCallback } from "react";
-import { useHistory } from "react-router";
 import styled from "styled-components";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import SeekBar from "react-seekbar-component";
 import "react-seekbar-component/dist/index.css";
 import { useDropzone } from "react-dropzone";
 import AWSServices from "../../services/aws-service";
 import Cropper from "react-easy-crop";
 import GetCroppedImg from "./cropImage";
 import { CircularProgress} from "@material-ui/core";
-import { transparent } from "material-ui/styles/colors";
 
 const Header = styled.div`
   display: flex;
@@ -210,7 +207,6 @@ const minScale = 1;
 const defaultScale = minScale;
 
 export default function UploadTokenImage(props) {
-  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const [upload, setUpload] = React.useState(false);
 

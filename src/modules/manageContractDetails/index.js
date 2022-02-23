@@ -13,6 +13,7 @@ import { CircularProgress } from "@material-ui/core";
 import ScreenSizeDetector from "screen-size-detector";
 import Web3 from "web3";
 import { updateAccountDetails } from "../../action";
+import { NETWORKS } from "../../constants"
 
 const screen = new ScreenSizeDetector();
 
@@ -39,7 +40,6 @@ class ManageContracts extends BaseComponent {
   }
 
   downloadSolFile = () => {
-    // let tokenCode = this.props?.location?.state?.deolyedTokenDetails?.tokenContractCode;
 
     let tokenCode = this.state.deolyedTokenDetails?.tokenContractCode;
 
@@ -88,7 +88,7 @@ class ManageContracts extends BaseComponent {
 
   handleXDCPayWalletChange = () => {
     // window.web3 = new Web3(window.ethereum);
-    window.web3 = new Web3(window.xdc);
+    window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
 
     if (
       window.web3.currentProvider &&
@@ -101,8 +101,8 @@ class ManageContracts extends BaseComponent {
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
-              ? "XDC Mainnet"
-              : "XDC Apothem Testnet";
+              ? NETWORKS.XDC_MAINNET
+              : NETWORKS.XDC_APOTHEM_TESTNET;
 
           if ((address || network) && (address !== this.props.user?.accountDetails?.address || network !== this.props.user?.accountDetails?.network)) {
             return true;

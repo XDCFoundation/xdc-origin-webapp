@@ -8,8 +8,8 @@ import Web3 from "web3";
 import { connect } from "react-redux";
 import {
   apiBodyMessages,
-  apiSuccessConstants,
   validationsMessages,
+  GAS_VALUE
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
@@ -251,7 +251,7 @@ function BurnContract(props) {
 
   const sendTransaction = async () => {
     // window.web3 = new Web3(window.ethereum);
-    window.web3 = new Web3(window.xdc);
+    window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
 
     let newAbi = props?.deployedContract?.contractAbiString;
     let jsonAbi = JSON.parse(newAbi);
@@ -259,15 +259,12 @@ function BurnContract(props) {
     let contractInstance = new window.web3.eth.Contract(jsonAbi, contractAddress);
     let finalToken = Number(inputToken) * Math.pow(10, props?.deployedContract?.tokenDecimals);
 
-    // console.log('j--',finalToken, typeof finalToken)
-    // console.log('t---',BigInt(finalToken))
-
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
       from: userAddress,
       to: contractAddress, //contractAddress of the concerned token (same in data below)
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: contractInstance.methods.burn(BigInt(finalToken)).encodeABI()
       //value given by user should be multiplied by 1000
@@ -277,19 +274,16 @@ function BurnContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
           // setTimeout(() => {
           //   burnXRC20Token();
           //   setSteps(3);
           // }, 15000);
         })
         .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {
         })
         .on("error", function (error) {
-          // console.error("error error error error ====", error);
           if(error.message.includes("transaction receipt")){ //the transaction is successful
             burnXRC20Token();
             setSteps(3);
@@ -302,7 +296,6 @@ function BurnContract(props) {
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             burnXRC20Token()
             setSteps(3);
@@ -334,13 +327,11 @@ function BurnContract(props) {
       SaveDraftService.mintBurnXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      // console.log('res--', res)
       setConfirmBurn(true);
     }
   }
 
   return (
-    <>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -353,7 +344,6 @@ function BurnContract(props) {
           switch (steps) {
             case 1:
               return (
-                <>
                   <DialogContainer>
                     <DialogHeader>
                       <DeleteText>Burn Tokens</DeleteText>
@@ -391,11 +381,9 @@ function BurnContract(props) {
                       )}
                     </ButtonContainer>
                   </DialogContainer>
-                </>
               );
             case 2:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Burn Tokens</DeleteText>
@@ -418,11 +406,9 @@ function BurnContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             case 3:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Burn Tokens</DeleteText>
@@ -440,14 +426,12 @@ function BurnContract(props) {
                       <PauseText>Transaction Completed</PauseText>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             default:
               return;
           }
         })()}
       </Dialog>
-    </>
   );
 }
 const mapStateToProps = (state) => ({

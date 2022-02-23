@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import styled from "styled-components";
+import React from "react";
 import FaqItem from "./FaqItem";
 
 export default function Faqs(props) {
