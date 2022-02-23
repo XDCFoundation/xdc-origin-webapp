@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import HeaderComponent from "../header/header";
 import DesktopSideMenu from "./sidebar";
 import About from "../aboutScreen/about";
-import { Column, Row } from "simple-flexbox";
+import { Row } from "simple-flexbox";
 import Footer from "../Footer";
 import ScreenSizeDetector from "screen-size-detector";
 

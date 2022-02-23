@@ -5,9 +5,8 @@ import { Dialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 import {
-  apiBodyMessages,
-  apiSuccessConstants,
   validationsMessages,
+  GAS_VALUE
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
@@ -297,13 +296,12 @@ function TransferOwnershipContract(props) {
       /xdc/,
       "0x"
     );
-    // console.log("inside", givenAddress);
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
       from: userAddress,
       to: contractAddress, //contractAddress of the concerned token (same in data below)
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: contractInstance.methods.transferOwnershipFeatures(givenAddress).encodeABI() //givenAddress should be 0x
     };
@@ -312,19 +310,16 @@ function TransferOwnershipContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // console.log("transactionHash ====", hash);
           // setTimeout(() => {
           //   transferXRC20Token();
           //   setSteps(3);
           // }, 15000);
         })
         .on("receipt", function (receipt) {
-          // console.log("receipt ====", receipt);
         })
         .on("confirmation", function (confirmationNumber, receipt) {
         })
         .on("error", function (error) {
-          // console.error("error error error error ====", error);
           if(error.message.includes("transaction receipt")){ //the transaction is successful
             transferXRC20Token();
             setSteps(3);
@@ -337,7 +332,6 @@ function TransferOwnershipContract(props) {
         })
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             transferXRC20Token();
             setSteps(3);
@@ -365,12 +359,10 @@ function TransferOwnershipContract(props) {
       SaveDraftService.transferOwnershipXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      // console.log('res--', res)
     }
   }
 
   return (
-    <>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -383,7 +375,6 @@ function TransferOwnershipContract(props) {
           switch (steps) {
             case 1:
               return (
-                <>
                   <DialogContainer>
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
@@ -436,11 +427,9 @@ function TransferOwnershipContract(props) {
                       )}
                     </ButtonContainer>
                   </DialogContainer>
-                </>
               );
             case 2:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
@@ -463,11 +452,9 @@ function TransferOwnershipContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             case 3:
               return (
-                <>
                   <ThirdContainer>
                     <DialogHeader>
                       <DeleteText>Transfer Contract</DeleteText>
@@ -495,14 +482,12 @@ function TransferOwnershipContract(props) {
                       </DoneButton>
                     </DoneButtonContainer>
                   </ThirdContainer>
-                </>
               );
             default:
               return;
           }
         })()}
       </Dialog>
-    </>
   );
 }
 const mapStateToProps = (state) => ({

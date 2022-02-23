@@ -6,15 +6,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 import { connect } from "react-redux";
 import Web3 from "web3";
-import { typeOf } from "simple-flexbox";
 import {
   apiBodyMessages,
-  apiSuccessConstants,
   validationsMessages,
+  GAS_VALUE
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
-import { BigNumber } from "ethers";
 
 const DialogContainer = styled.div`
   width: 466px;
@@ -238,7 +236,6 @@ function MintContract(props) {
   );
   const [inputAddress, setInputAddress] = useState(null);
 
-  // let givenContractAddress;
 
   let networkVersion = props.userDetails?.accountDetails?.network || "";
   let userAddress = props.userDetails?.accountDetails?.address || "";
@@ -271,16 +268,13 @@ function MintContract(props) {
     );
     let finalToken = Number(inputToken) * Math.pow(10, props?.deployedContract?.tokenDecimals);
 
-    // console.log('j--',finalToken, typeof finalToken)
-    // console.log('t---',BigInt(finalToken))
-    // console.log("inside", givenAddress);
 
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
       from: userAddress,
       to: contractAddress, //contractAddress of the concerned token (same in data below)
-      gas: 7920000,
+      gas: GAS_VALUE,
       gasPrice: gasPrice,
       data: contractInstance.methods
         .mint(givenAddress, BigInt(finalToken))
@@ -303,7 +297,6 @@ function MintContract(props) {
         .on("error", function (error) {
           // if(error.message === 'Failed to check for transaction receipt:\n' +
           //     '{}'){
-          //   console.log("Transaction succeeded!!");
           // }
           if(error.message.includes("transaction receipt")){ //the transaction is successful
             mintXRC20Token();
@@ -316,7 +309,6 @@ function MintContract(props) {
         .on("transactionHash", function (hash) {})
         .on("receipt", function (receipt) {
           //receive the contract address from this object
-          // console.log("receipt ====", receipt);
           if (receipt !== 0) {
             mintXRC20Token();
             setSteps(3);
@@ -347,7 +339,6 @@ function MintContract(props) {
       SaveDraftService.mintBurnXRC20Token(reqObj)
     );
     if (res !== 0 && res !== undefined) {
-      // console.log("res--", res);
       setConfirmMint(true);
     }
   };
@@ -361,7 +352,6 @@ function MintContract(props) {
       props?.deployedContract?.smartContractAddress?.length - 4
     );
   return (
-    <>
       <Dialog
         onClose={props.handleClose}
         aria-labelledby="simple-dialog-title"
@@ -374,7 +364,6 @@ function MintContract(props) {
           switch (steps) {
             case 1:
               return (
-                <>
                   <DialogContainer>
                     <DialogHeader>
                       <DeleteText>Mint Tokens</DeleteText>
@@ -431,11 +420,9 @@ function MintContract(props) {
                       )}
                     </ButtonContainer>
                   </DialogContainer>
-                </>
               );
             case 2:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Mint Tokens</DeleteText>
@@ -458,11 +445,9 @@ function MintContract(props) {
                       </ConfirmDiv>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             case 3:
               return (
-                <>
                   <LoaderSection>
                     <DialogHeader>
                       <DeleteText>Mint Tokens</DeleteText>
@@ -480,14 +465,12 @@ function MintContract(props) {
                       <PauseText>Transaction Completed</PauseText>
                     </TextDiv>
                   </LoaderSection>
-                </>
               );
             default:
               return;
           }
         })()}
       </Dialog>
-    </>
   );
 }
 

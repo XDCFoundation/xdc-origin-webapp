@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
-import { Row, Column } from "simple-flexbox";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip, Fade,createTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -9,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import AddToXDCPayPopup from "./addToXDCPayPopup";
 import { handleNavItem, handleSubNavItem, handleSubNavToken } from "../../action";
+import { REDIRECT_URL } from "../../constants";
 
 const BgContainer = styled.div`
   background-color: #ecf0f7;
@@ -82,7 +82,6 @@ const SuccessTokenDetails = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 8% !important;
-  /* margin: auto; */
   @media (max-width: 768px) {
     text-align: center;
     font-weight: 600;
@@ -91,14 +90,12 @@ const SuccessTokenDetails = styled.div`
     color: #1f1f1f;
     opacity: 1;
     margin-bottom: 8% !important;
-    /* margin: auto; */
   } ;
 `;
 
 const SuccessRows = styled.div`
   width: 100%;
   display: flex;
-  /* padding: 4px 0px 10px 17px; */
 `;
 
 const SuccessTokenKey = styled.span`
@@ -150,9 +147,6 @@ const SuccessTokenValues = styled.div`
   margin-top: 3.5px;
   margin-left: 15px;
   cursor: pointer;
-  /* text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden; */
   @media (max-width: 768px) {
     text-align: left;
     font: normal normal normal 14px/17px Inter;
@@ -301,9 +295,8 @@ const CreateToken = (props) => {
   const history = useHistory()
   const classes = useStyles();
 
-  let coinMarketPrice = props?.priceValue || ""
-  let tokenMinted = (props.location?.parsingSupply)?.toFixed(2)?.replace(/\d(?=(\d{3})+\.)/g, '$&,')?.split('.')[0];
-  // console.log('h---',tokenMinted)
+  let coinMarketPrice = props?.priceValue || "";
+  let tokenMinted = Number(props.location?.parsingSupply).toLocaleString();
 
   let gasFee;
   let usdPriceValue;
@@ -352,13 +345,11 @@ const CreateToken = (props) => {
       );
 
     contractAddress = props.location?.obtainContractAddress !== undefined ? props.location?.obtainContractAddress : ""
-    // console.log('h---',contractAddress)
 
     newContractAddress =
       contractAddress?.slice(0, 26) +
       "..." +
       contractAddress?.substr(contractAddress?.length - 4);
-      // console.log('new---',newContractAddress)
   }
 
   const [open, setOpen] = useState(false);
@@ -376,28 +367,23 @@ const CreateToken = (props) => {
 
   const handleTransactionHash = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://observer.xdc.org/transaction-details/${props.location?.obtainTxnHash}`, '_blank');
+      window.open(`${REDIRECT_URL.OBSERVER_TRANSACTION_HASH_URL}${props.location?.obtainTxnHash}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
-      window.open(`https://explorer.apothem.network/txs/${props.location?.state?.transactionHash}`, '_blank');
+      window.open(`${REDIRECT_URL.EXPLORER_TRANSACTION_HASH_URL}${props.location?.state?.transactionHash}`, '_blank');
     }
   }
 
   const handleContractAddress = () => {
     if (props?.user?.accountDetails?.network === "XDC Mainnet") {
-      window.open(`https://observer.xdc.org/token-data/${contractAddress}/${props.location?.tokenSymbol}`, '_blank');
+      window.open(`${REDIRECT_URL.OBSERVER_CONTRACT_ADDRESS_URL}${contractAddress}/${props.location?.tokenSymbol}`, '_blank');
     } else if (props?.user?.accountDetails?.network === "XDC Apothem Testnet") {
-      window.open(`https://explorer.apothem.network/address/${contractAddress}`, '_blank');
+      window.open(`${REDIRECT_URL.EXPLORER_CONTRACT_ADDRESS_URL}${contractAddress}`, '_blank');
     }
   }
 
   const [isPopUpOpen, setIsPopUPOpen] = useState(false);
 
   const togglePopup = () => {
-    // console.log("props =-=-=-=-=-=-=", props);
-    // console.log("tokenDetails =-=-=-=-=-=-=-", props.tokenDetails);
-    // console.log("tokenSymbol =-=-=-==-=", props.tokenDetails.location?.tokenSymbol)
-    // console.log("smartContractAddress =-=-=-=-=-=-=-=-=", props.location?.state?.contractAddress);
-    // console.log("tokenDecimals =-=-=-=-=-=-=-=", props.tokenDetails.location?.parsingDecimal)
     let tokenAddress = props.tokenDetails.location?.obtainContractAddress?.replace(
         /xdc/,
         "0x"
