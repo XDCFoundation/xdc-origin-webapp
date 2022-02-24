@@ -302,6 +302,9 @@ function MintContract(props) {
             mintXRC20Token();
             setSteps(3);
           }
+          else{
+            setSteps(1);
+          }
         });
     } else {
       await window.web3.eth
