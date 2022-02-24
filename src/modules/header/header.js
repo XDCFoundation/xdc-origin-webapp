@@ -238,7 +238,7 @@ function Header(props) {
 
   useEffect(() => {
     const handleXDCPayWalletChange = async () => {
-      window.web3 = new Web3(window.ethereum);
+      window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
 
       if (
         window.web3.currentProvider &&
@@ -246,7 +246,7 @@ function Header(props) {
       ) {
         if (!window.web3.currentProvider.chainId) {
           //when metamask is disabled
-          const state = window.web3.givenProvider.publicConfigStore._state;
+          const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
           if (state.selectedAddress !== undefined) {
             let address = state.selectedAddress;
             let network =
@@ -276,7 +276,7 @@ function Header(props) {
             }
           } else {
             //metamask is also enabled with xdcpay
-            const state = window.web3.givenProvider.publicConfigStore._state;
+            const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
             let address = state.selectedAddress;
             let network =
               state.networkVersion === "50"
@@ -288,11 +288,11 @@ function Header(props) {
     };
 
     const handleWalletSession = () => {
-      window.web3 = new Web3(window.ethereum);
+      window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
 
       if (window.web3.currentProvider) {
         if (!window.web3.currentProvider.chainId) {
-          const state = window.web3.givenProvider.publicConfigStore._state;
+          const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
           if (!state.selectedAddress) {
             let accountDetails = {
               address: null,
