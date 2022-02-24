@@ -69,7 +69,8 @@ export const validationsMessages = {
     INVALID_ADDRESS_ERROR: "Invalid Address",
     DISABLE_METAMSK_ERROR: "Disable Metamask and Login To XDCPay",
     WALLET_DETAILS_UPDATE_MESSAGE: "XDCPay Wallet Details Has Been Updated",
-    CURRENT_TOKEN_OWNER: "This Address Is The Current Token Owner"
+    CURRENT_TOKEN_OWNER: "This Address Is The Current Token Owner",
+    COULD_NOT_BURN_TOKENS: "Could not burn the tokens"
 }
 
 export const toolTipContentMessages = {
