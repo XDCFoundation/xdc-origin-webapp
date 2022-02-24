@@ -212,6 +212,9 @@ function ResumeContract(props) {
             pauseXRC20Token();
             setSteps(3);
           }
+          else{
+            props.handleClose("resume")
+          }
         });
     } else {
       await window.web3.eth

@@ -73,6 +73,7 @@ export const validationsMessages = {
     TOKEN_ADDED_SUCCESS: "Token Added To XDCPay Wallet",
     TOKEN_ADDED_FAILURE: "Unable To Add Token To XDCPay Wallet",
     TOKEN_ALREADY_ADDED_SUCCESS: "Token Already Added To XDCPay Wallet",
+    COULD_NOT_BURN_TOKENS: "Could not burn the tokens"
 }
 
 export const toolTipContentMessages = {
