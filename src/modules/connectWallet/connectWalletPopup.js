@@ -224,10 +224,13 @@ function connectWalletPopup(props) {
     // window.web3 = new Web3(window.ethereum);
     window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
 
+    console.log("window.xdc =========> ", window.xdc);
+    console.log("window.web3 =========> ", window.web3);
+
     if (window.web3.currentProvider) {
       if (!window.web3.currentProvider.chainId) {
         //when metamask is disabled
-        const state = window.web3.givenProvider.publicConfigStore._state;
+        const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
         let address = state.selectedAddress;
         let network =
           state.networkVersion === "50" ? NETWORKS.XDC_MAINNET : NETWORKS.XDC_APOTHEM_TESTNET;
@@ -272,7 +275,7 @@ function connectWalletPopup(props) {
   };
 
   const browser = detect();
-  
+
   return (
     <>
     <div><Toaster /></div>
