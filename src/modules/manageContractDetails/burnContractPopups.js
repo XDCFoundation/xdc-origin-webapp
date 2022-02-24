@@ -13,6 +13,7 @@ import {
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
+import toast from "react-hot-toast";
 
 
 const DialogContainer = styled.div`
@@ -25,6 +26,13 @@ const DialogContainer = styled.div`
 const LoaderSection = styled.div`
   width: 466px;
   height: 325px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 6px;
+  opacity: 1;
+`;
+const ErrorPopup = styled.div`
+  width: 466px;
+  min-height: 100px;
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 6px;
   opacity: 1;
@@ -230,6 +238,13 @@ function BurnContract(props) {
   const [inputToken, setInputToken] = useState('')
   const [confirmBurn, setConfirmBurn] = useState(false)
 
+  const showBurnFailureMessage = () =>
+      toast.error(validationsMessages.COULD_NOT_BURN_TOKENS, {
+        duration: 5000,
+        position: validationsMessages.TOASTS_POSITION,
+        className: "toast-div-address",
+      });
+
   let contractAddress = props?.deployedContract?.smartContractAddress?.replace(
     /xdc/,
     "0x"
@@ -288,6 +303,16 @@ function BurnContract(props) {
             burnXRC20Token();
             setSteps(3);
           }
+          else{
+            if(error.message.includes("User denied transaction signature")){
+              setSteps(1);
+              showBurnFailureMessage();
+            }
+            else{
+              setSteps(1);
+              showBurnFailureMessage();
+            }
+          }
         });
     } else {
       await window.web3.eth
@@ -305,7 +330,14 @@ function BurnContract(props) {
         })
         .on("error", function (error) {
           if (error) {
-            setSteps(1);
+            if(error.message.includes("User denied transaction signature")){
+              setSteps(1);
+              showBurnFailureMessage();
+            }
+            else{
+              setSteps(1);
+              showBurnFailureMessage();
+            }
           }
         });
     }
@@ -427,6 +459,29 @@ function BurnContract(props) {
                     </TextDiv>
                   </LoaderSection>
               );
+            // case 4:
+            //   return (
+            //       <ErrorPopup>
+            //         <DialogHeader>
+            //           <DeleteText>Burn Tokens</DeleteText>
+            //           <CrossIcon
+            //               onClick={() => props.handleClose(false)}
+            //               src="/images/Cross.svg"
+            //               alt=""
+            //           />
+            //         </DialogHeader>
+            //         <Line />
+            //
+            //         <TextDiv>
+            //           <PauseText>Burning {inputToken} Tokens Failed!</PauseText>
+            //           <ConfirmDiv>
+            //             <ConfirmText>
+            //               Check the token balance in your XDCPay wallet
+            //             </ConfirmText>
+            //           </ConfirmDiv>
+            //         </TextDiv>
+            //       </ErrorPopup>
+            //   )
             default:
               return;
           }

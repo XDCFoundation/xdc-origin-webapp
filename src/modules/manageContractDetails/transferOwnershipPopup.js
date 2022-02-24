@@ -324,6 +324,9 @@ function TransferOwnershipContract(props) {
             transferXRC20Token();
             setSteps(3);
           }
+          else{
+            setSteps(1);
+          }
         });
     } else {
       await window.web3.eth
