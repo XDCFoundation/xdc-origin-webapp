@@ -51,7 +51,7 @@ class ManageContracts extends BaseComponent {
     ) {
       if (!window.web3.currentProvider.chainId) {
         //when metamask is disabled
-        const state = window.web3.givenProvider.publicConfigStore._state;
+        const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
         if (state.selectedAddress !== undefined) {
           let address = state.selectedAddress;
           let network =
@@ -78,7 +78,7 @@ class ManageContracts extends BaseComponent {
           }
         } else {
           //metamask is also enabled with xdcpay
-          const state = window.web3.givenProvider.publicConfigStore._state;
+          const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
@@ -119,7 +119,7 @@ class ManageContracts extends BaseComponent {
       let sortedData = contractServiceResponse.sort((a,b) => {
         return new Date(b.createdAt)-new Date(a.createdAt);
       })
-      
+
       this.setState({
         deolyedXrc20TokenDetails: sortedData,
         isLoading: false,

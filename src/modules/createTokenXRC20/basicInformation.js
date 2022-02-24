@@ -519,7 +519,7 @@ function Token(props) {
     ) {
       if (!window.web3.currentProvider.chainId) {
         //when metamask is disabled
-        const state = window.web3.givenProvider.publicConfigStore._state;
+        const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
         if (state.selectedAddress !== undefined) {
           let address = state.selectedAddress;
           let network =
@@ -546,7 +546,7 @@ function Token(props) {
           }
         } else {
           //metamask is also enabled with xdcpay
-          const state = window.web3.givenProvider.publicConfigStore._state;
+          const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
           let address = state.selectedAddress;
           let network =
             state.networkVersion === "50"
