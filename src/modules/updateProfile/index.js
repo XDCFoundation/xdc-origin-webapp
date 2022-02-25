@@ -48,14 +48,15 @@ class UpdateProfile extends BaseComponent {
       smartContractAddress: contractAddress,
       network: this.props?.user?.accountDetails?.network,
 
-      website: updatedData.website ? updatedData.website : this.props?.location?.state?.deolyedTokenDetails.website,
-      twitter: updatedData.twitter ? updatedData.twitter : this.props?.location?.state?.deolyedTokenDetails.twitter,
-      telegram: updatedData.telegram ? updatedData.telegram : this.props?.location?.state?.deolyedTokenDetails.telegram,
+      website: updatedData.website ? updatedData.website : updatedData.website === "" ? "" : this.props?.location?.state?.deolyedTokenDetails.website,
+      twitter: updatedData.twitter ? updatedData.twitter : updatedData.twitter === "" ? "" : this.props?.location?.state?.deolyedTokenDetails.twitter,
+      telegram: updatedData.telegram ? updatedData.telegram : updatedData.telegram === "" ? "" : this.props?.location?.state?.deolyedTokenDetails.telegram,
       symbolUrl: updatedData.image ? updatedData.image : this.props?.location?.state?.deolyedTokenDetails.tokenImage,
-      email: updatedData.email ? updatedData.email : this.props?.location?.state?.deolyedTokenDetails.email,
-      linkedIn: updatedData.linkedIn ? updatedData.linkedIn : this.props?.location?.state?.deolyedTokenDetails.linkedIn,
-      reddit: updatedData.reddit ? updatedData.reddit : this.props?.location?.state?.deolyedTokenDetails.reddit,
-      coinGecko: updatedData.coinGecko ? updatedData.coinGecko : this.props?.location?.state?.deolyedTokenDetails.coinGecko,
+      email: updatedData.email ? updatedData.email : updatedData.email === "" ? "" : this.props?.location?.state?.deolyedTokenDetails.email,
+      facebook: updatedData.facebook ? updatedData.facebook : updatedData.facebook === "" ? "" : this.props?.location?.state?.deolyedTokenDetails.facebook,
+      linkedIn: updatedData.linkedIn ? updatedData.linkedIn : updatedData.linkedIn === "" ? "" : this.props?.location?.state?.deolyedTokenDetails.linkedIn,
+      reddit: updatedData.reddit ? updatedData.reddit : updatedData.reddit === "" ? "" : this.props?.location?.state?.deolyedTokenDetails.reddit,
+      coinGecko: updatedData.coinGecko ? updatedData.coinGecko : updatedData.coinGecko === "" ? "" : this.props?.location?.state?.deolyedTokenDetails.coinGecko,
     };
 
     let [error, contractServiceResponse] = await Utility.parseResponse(
