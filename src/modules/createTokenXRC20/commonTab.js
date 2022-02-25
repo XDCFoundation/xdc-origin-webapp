@@ -16,7 +16,7 @@ import { SaveDraftService } from "../../services/index";
 import Web3 from "web3";
 import { connect } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
-import {handleNavItem} from "../../action";
+import {handleNavItem, handleSubNavItem, handleSubNavToken} from "../../action";
 
 const MainContainer = styled.div`
   display: flex;
@@ -487,7 +487,9 @@ function CommonTab(props) {
           } else if(error.message === "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." ) {
             updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
-            props.setActiveNavbarItem("deploy")
+            props.setActiveNavbarItem("deploy");
+            props.setSubNavItem(false);
+            props.setSubNavToken("");
             history.push("/deploy-contract");
             // prevStep();
           }
@@ -529,7 +531,9 @@ function CommonTab(props) {
           if (error) {
             updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
-            props.setActiveNavbarItem("deploy")
+            props.setActiveNavbarItem("deploy");
+            props.setSubNavItem(false);
+            props.setSubNavToken("");
             history.push("/deploy-contract");
             // prevStep();
           }
@@ -697,6 +701,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setActiveNavbarItem: (activeItem) => {
     dispatch(handleNavItem(activeItem))
+  },
+  setSubNavItem: (subNavItems) => {
+    dispatch(handleSubNavItem(subNavItems))
+  },
+  setSubNavToken: (isSubNavActive) => {
+    dispatch(handleSubNavToken(isSubNavActive))
   },
 });
 
