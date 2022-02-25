@@ -446,10 +446,6 @@ function manageContractDetails(props) {
         /xdc/,
         "0x"
     );
-    // console.log("window.ethereum. =-=-=-=-=-=-=", window.ethereum);
-    // console.log("tokenSymbol =-=-=-==-=", props.deolyedTokenDetails?.tokenSymbol)
-    // console.log("smartContractAddress =-=-=-=-=-=-=-=-=", tokenAddress);
-    // console.log("tokenDecimals =-=-=-=-=-=-=-=", props.deolyedTokenDetails?.tokenDecimals)
     window.xdc.sendAsync({
       "jsonrpc": "2.0",
       "method": "metamask_watchAsset",

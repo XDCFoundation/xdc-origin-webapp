@@ -139,7 +139,7 @@ export default class ChangeNetworkMobile extends Component {
             <Content>
               <NetworkChangeContainer>
                 <DropdownContainer>
-                  <img src="images/XDC-Icon-128X128.svg"></img>
+                  <img src="images/XDC-Icon-128X128.svg" alt="XDC Icon"></img>
                   <NetworksDrop>
                     <option value="XDC Apothem TestNet">
                       XDC Apothem TestNet

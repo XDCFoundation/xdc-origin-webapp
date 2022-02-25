@@ -347,19 +347,19 @@ function CommonTab(props) {
       className: "toast-div-address",
     });
 
-  const notifyNameErrorMessage = () =>
-    toast.error(validationsMessages.TOKEN_NAME_ERROR_MESSAGE, {
-      duration: 4000,
-      position: validationsMessages.TOASTS_POSITION,
-      className: "toast-div-address",
-    });
+  // const notifyNameErrorMessage = () =>
+  //   toast.error(validationsMessages.TOKEN_NAME_ERROR_MESSAGE, {
+  //     duration: 4000,
+  //     position: validationsMessages.TOASTS_POSITION,
+  //     className: "toast-div-address",
+  //   });
 
-  const notifySymbolErrorMessage = () =>
-    toast.error(validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE, {
-      duration: 4000,
-      position: validationsMessages.TOASTS_POSITION,
-      className: "toast-div-address",
-    });
+  // const notifySymbolErrorMessage = () =>
+  //   toast.error(validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE, {
+  //     duration: 4000,
+  //     position: validationsMessages.TOASTS_POSITION,
+  //     className: "toast-div-address",
+  //   });
 
   let createdToken = tokenData.tokenName;
   let parsingDecimal = Number(tokenData.tokenDecimals);
@@ -429,7 +429,6 @@ function CommonTab(props) {
   const sendTransaction = async (tokenDetails) => {
     // window.web3 = new Web3(window.ethereum);
     window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
-    // console.log('token---',tokenDetails)
     let checkNetwork = tokenDetails?.network;
     let draftedTokenId = tokenDetails?.id;
     let draftedTokenOwner = tokenDetails?.tokenOwner;
@@ -437,7 +436,6 @@ function CommonTab(props) {
     let tokenSymbol = tokenDetails?.tokenSymbol;
 
 
-    const priceXdc = 1;
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
