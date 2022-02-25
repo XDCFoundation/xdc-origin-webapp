@@ -6,7 +6,7 @@ import {
   validationsMessages,
   toolTipContentMessages,
   LARGE_NUMBER,
-  LARGE_NUMBER_ERROR
+  LARGE_NUMBER_ERROR, INITIAL_SUPPLY_LARGE_NUMBER_ERROR
 } from "../../constants";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -305,7 +305,7 @@ export default function Tokenomics(props) {
               onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()}
             />
             {props.tokenData.tokenInitialSupply > 0 ? (
-              <BlurTextDiv>{props.tokenData.tokenInitialSupply >= LARGE_NUMBER_ERROR ? "Number Too Large" : convertedNumber}</BlurTextDiv>
+              <BlurTextDiv>{props.tokenData.tokenInitialSupply >= INITIAL_SUPPLY_LARGE_NUMBER_ERROR ? "Number Too Large" : convertedNumber}</BlurTextDiv>
             ) : (
               ""
             )}
