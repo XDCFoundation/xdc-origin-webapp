@@ -348,12 +348,12 @@ function MintContract(props) {
 
   // contract to display in field:
 
-  let updatedContractAddress =
-    props?.deployedContract?.smartContractAddress?.slice(0, 26) +
-    "..." +
-    props?.deployedContract?.smartContractAddress?.substr(
-      props?.deployedContract?.smartContractAddress?.length - 4
-    );
+  // let updatedContractAddress =
+  //   props?.deployedContract?.smartContractAddress?.slice(0, 26) +
+  //   "..." +
+  //   props?.deployedContract?.smartContractAddress?.substr(
+  //     props?.deployedContract?.smartContractAddress?.length - 4
+  //   );
   return (
       <Dialog
         onClose={props.handleClose}
