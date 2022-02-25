@@ -31,6 +31,7 @@ class ManageContracts extends BaseComponent {
   }
 
   async componentDidMount() {
+    window.scrollTo(0, 0);
     if (this.props?.location?.state?.id) {
       this.setState({
         id: this.props?.location?.state?.id,

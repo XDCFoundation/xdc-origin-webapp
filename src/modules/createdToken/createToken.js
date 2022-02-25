@@ -438,7 +438,7 @@ const CreateToken = (props) => {
       <BgContainer>
         <ParentContainer>
           <SuccessTokenIcon>
-            <img src="images/Success.svg"></img>
+            <img src="images/Success.svg" alt="success_image" />
           </SuccessTokenIcon>
           <SuccessTokenText>
             Successfully Created {props.location?.createdToken || ""}

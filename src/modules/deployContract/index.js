@@ -72,12 +72,6 @@ class DeployContract extends BaseComponent {
           }
         } else {
           //metamask is also enabled with xdcpay
-          const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
-          let address = state.selectedAddress;
-          let network =
-            state.networkVersion === "50"
-              ? NETWORKS.XDC_MAINNET
-              : NETWORKS.XDC_APOTHEM_TESTNET;
         }
       }
     }
