@@ -447,15 +447,16 @@ function DeployContract(props) {
     tokenSymbol
   ) => {
     let reqObj = {
-      hash: txnHash,
+      data: txnHash,
+      filter: "All filters"
     };
     const [err, res] = await Utils.parseResponse(
       SaveDraftService.getTxnHashDetails(reqObj)
     );
-    let obtainContractAddress = res?.contractAddress;
+    let obtainContractAddress = res?.transaction?.contractAddress;
     // let obtainTxnHash = res?.hash || "";
-    let obtainTxnHash = res?.hash !== undefined ? res?.hash : obtainHash
-    let obtainGasUsed = res?.gasUsed;
+    let obtainTxnHash = res?.transaction?.hash !== undefined ? res?.transaction?.hash : obtainHash
+    let obtainGasUsed = res?.transaction?.gasUsed;
      //-------
      contractAdd = res?.contractAddress
     if (contractAdd !== "") {
