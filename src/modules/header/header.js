@@ -282,12 +282,46 @@ function Header(props) {
     };
 
     const handleWalletSession = () => {
-      window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
+      if(!window.xdc){
+        let accountDetails = {
+          address: null,
+          network: null,
+          balance: null,
+          isLoggedIn: false,
+        };
 
-      if (window.web3.currentProvider) {
-        if (!window.web3.currentProvider.chainId) {
-          const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
-          if (!state.selectedAddress) {
+        props.updateAccountDetails(accountDetails);
+        if (window.location.pathname === "/FAQ"){
+          props.setActiveNavItem("faq");
+        } else{
+          props.setActiveNavItem("about");
+          history.push("/");
+        }
+      }
+      else{
+        window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
+
+        if (window.web3.currentProvider) {
+          if (!window.web3.currentProvider.chainId) {
+            const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
+            if (!state.selectedAddress) {
+              let accountDetails = {
+                address: null,
+                network: null,
+                balance: null,
+                isLoggedIn: false,
+              };
+
+              props.updateAccountDetails(accountDetails);
+              if(window.location.pathname === "/FAQ"){
+                props.setActiveNavItem("faq");
+              }else{
+                props.setActiveNavItem("about");
+                history.push("/");
+              }
+            }
+          }
+          else{
             let accountDetails = {
               address: null,
               network: null,
@@ -296,9 +330,9 @@ function Header(props) {
             };
 
             props.updateAccountDetails(accountDetails);
-            if(window.location.pathname === "/FAQ"){
+            if (window.location.pathname === "/FAQ"){
               props.setActiveNavItem("faq");
-            }else{
+            } else{
               props.setActiveNavItem("about");
               history.push("/");
             }
@@ -321,22 +355,7 @@ function Header(props) {
           }
         }
       }
-      else{
-        let accountDetails = {
-          address: null,
-          network: null,
-          balance: null,
-          isLoggedIn: false,
-        };
 
-        props.updateAccountDetails(accountDetails);
-        if (window.location.pathname === "/FAQ"){
-          props.setActiveNavItem("faq");
-        } else{
-          props.setActiveNavItem("about");
-          history.push("/");
-        }
-      }
     }
 
     setTimeout(() => {
