@@ -334,10 +334,23 @@ function BurnContract(props) {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
-          // setTimeout(() => {
-          //   burnXRC20Token();
-          //   setSteps(3);
-          // }, 15000);
+
+          setTimeout(async () => {
+            // burnXRC20Token();
+            // setSteps(3);
+              let reqObj = {
+                filter: "Transaction",
+                data: hash,
+              };
+
+              const [err, res] = await Utils.parseResponse(
+                  SaveDraftService.getTxnHashDetails(reqObj)
+              );
+
+              if(res?.transaction?.status === false){
+                setSteps(4);
+              }
+          }, 20000);
         })
         .on("receipt", function (receipt) {
         })
