@@ -16,7 +16,7 @@ import { SaveDraftService } from "../../services/index";
 import Web3 from "web3";
 import { connect } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
-import {handleNavItem} from "../../action";
+import {handleNavItem, handleSubNavItem, handleSubNavToken} from "../../action";
 
 const MainContainer = styled.div`
   display: flex;
@@ -347,19 +347,19 @@ function CommonTab(props) {
       className: "toast-div-address",
     });
 
-  const notifyNameErrorMessage = () =>
-    toast.error(validationsMessages.TOKEN_NAME_ERROR_MESSAGE, {
-      duration: 4000,
-      position: validationsMessages.TOASTS_POSITION,
-      className: "toast-div-address",
-    });
+  // const notifyNameErrorMessage = () =>
+  //   toast.error(validationsMessages.TOKEN_NAME_ERROR_MESSAGE, {
+  //     duration: 4000,
+  //     position: validationsMessages.TOASTS_POSITION,
+  //     className: "toast-div-address",
+  //   });
 
-  const notifySymbolErrorMessage = () =>
-    toast.error(validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE, {
-      duration: 4000,
-      position: validationsMessages.TOASTS_POSITION,
-      className: "toast-div-address",
-    });
+  // const notifySymbolErrorMessage = () =>
+  //   toast.error(validationsMessages.TOKEN_SYMBOL_ERROR_MESSAGE, {
+  //     duration: 4000,
+  //     position: validationsMessages.TOASTS_POSITION,
+  //     className: "toast-div-address",
+  //   });
 
   let createdToken = tokenData.tokenName;
   let parsingDecimal = Number(tokenData.tokenDecimals);
@@ -429,7 +429,6 @@ function CommonTab(props) {
   const sendTransaction = async (tokenDetails) => {
     // window.web3 = new Web3(window.ethereum);
     window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
-    // console.log('token---',tokenDetails)
     let checkNetwork = tokenDetails?.network;
     let draftedTokenId = tokenDetails?.id;
     let draftedTokenOwner = tokenDetails?.tokenOwner;
@@ -437,7 +436,6 @@ function CommonTab(props) {
     let tokenSymbol = tokenDetails?.tokenSymbol;
 
 
-    const priceXdc = 1;
     const gasPrice = await window.web3.eth.getGasPrice();
 
     let transaction = {
@@ -487,7 +485,9 @@ function CommonTab(props) {
           } else if(error.message === "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." ) {
             updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
-            props.setActiveNavbarItem("deploy")
+            props.setActiveNavbarItem("deploy");
+            props.setSubNavItem(false);
+            props.setSubNavToken("");
             history.push("/deploy-contract");
             // prevStep();
           }
@@ -529,7 +529,9 @@ function CommonTab(props) {
           if (error) {
             updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
-            props.setActiveNavbarItem("deploy")
+            props.setActiveNavbarItem("deploy");
+            props.setSubNavItem(false);
+            props.setSubNavToken("");
             history.push("/deploy-contract");
             // prevStep();
           }
@@ -697,6 +699,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setActiveNavbarItem: (activeItem) => {
     dispatch(handleNavItem(activeItem))
+  },
+  setSubNavItem: (subNavItems) => {
+    dispatch(handleSubNavItem(subNavItems))
+  },
+  setSubNavToken: (isSubNavActive) => {
+    dispatch(handleSubNavToken(isSubNavActive))
   },
 });
 

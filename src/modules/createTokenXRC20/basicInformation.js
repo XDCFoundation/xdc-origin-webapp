@@ -407,9 +407,9 @@ function Token(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
 
-  let hasTokenId = "id" in props?.tokenData;
+  // let hasTokenId = "id" in props?.tokenData;
 
-  let imgData = hasTokenId === false ? props?.imgData : props.tokenData?.tokenImage;
+  // let imgData = hasTokenId === false ? props?.imgData : props.tokenData?.tokenImage;
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -425,36 +425,36 @@ function Token(props) {
       position: validationsMessages.TOASTS_POSITION,
       className: "toast-div-address",
     });
-  const descriptionErrorMessage = () =>
-    toast.error(validationsMessages.VALIDATE_DESCRIPTION_FIELD, {
-      duration: 4000,
-      position: validationsMessages.TOASTS_POSITION,
-      className: "toast-div-address",
-    });
-  const symbolErrorMessage = () =>
-    toast.error(validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD, {
-      duration: 4000,
-      position: validationsMessages.TOASTS_POSITION,
-      className: "toast-div-address",
-    });
-  const nameErrorMessage = () =>
-    toast.error(validationsMessages.VALIDATE_TOKEN_NAME_FIELD, {
-      duration: 4000,
-      position: validationsMessages.TOASTS_POSITION,
-      className: "toast-div-address",
-    });
-  const decimalErrorMessage = () =>
-    toast.error(validationsMessages.VALIDATE_DECIMAL_FIELD, {
-      duration: 4000,
-      position: validationsMessages.TOASTS_POSITION,
-      className: "toast-div-address",
-    });
-  const imageErrorMessage = () =>
-    toast.error(validationsMessages.VALIDATE_IMAGE_FIELD, {
-      duration: 4000,
-      position: validationsMessages.TOASTS_POSITION,
-      className: "toast-div-address",
-    });
+  // const descriptionErrorMessage = () =>
+  //   toast.error(validationsMessages.VALIDATE_DESCRIPTION_FIELD, {
+  //     duration: 4000,
+  //     position: validationsMessages.TOASTS_POSITION,
+  //     className: "toast-div-address",
+  //   });
+  // const symbolErrorMessage = () =>
+  //   toast.error(validationsMessages.VALIDATE_TOKEN_SYMBOL_FIELD, {
+  //     duration: 4000,
+  //     position: validationsMessages.TOASTS_POSITION,
+  //     className: "toast-div-address",
+  //   });
+  // const nameErrorMessage = () =>
+  //   toast.error(validationsMessages.VALIDATE_TOKEN_NAME_FIELD, {
+  //     duration: 4000,
+  //     position: validationsMessages.TOASTS_POSITION,
+  //     className: "toast-div-address",
+  //   });
+  // const decimalErrorMessage = () =>
+  //   toast.error(validationsMessages.VALIDATE_DECIMAL_FIELD, {
+  //     duration: 4000,
+  //     position: validationsMessages.TOASTS_POSITION,
+  //     className: "toast-div-address",
+  //   });
+  // const imageErrorMessage = () =>
+  //   toast.error(validationsMessages.VALIDATE_IMAGE_FIELD, {
+  //     duration: 4000,
+  //     position: validationsMessages.TOASTS_POSITION,
+  //     className: "toast-div-address",
+  //   });
 
   const saveAndContinue = (e) => {
     handleXDCPayWalletChange();
@@ -546,12 +546,6 @@ function Token(props) {
           }
         } else {
           //metamask is also enabled with xdcpay
-          const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
-          let address = state.selectedAddress;
-          let network =
-            state.networkVersion === "50"
-              ? NETWORKS.XDC_MAINNET
-              : NETWORKS.XDC_APOTHEM_TESTNET;
         }
       }
     }

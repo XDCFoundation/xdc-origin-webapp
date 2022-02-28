@@ -222,6 +222,7 @@ function updateProfile(props) {
   const [twitter, setTwitter] = useState(null);
   const [telegram, setTelegram] = useState(null);
   const [email, setEmail] = useState(null);
+  const [facebook, setFacebook] = useState(null);
   const [linkedIn, setLinkedIn] = useState(null);
   const [reddit, setReddit] = useState(null);
   const [coinGecko, setCoinGecko] = useState(null);
@@ -235,6 +236,7 @@ function updateProfile(props) {
       telegram,
       image,
       email,
+      facebook,
       linkedIn,
       reddit,
       coinGecko,
@@ -307,6 +309,7 @@ function updateProfile(props) {
             <Input
               type="text"
               placeholder="https://www.facebook.com/metaversespace"
+              onChange={(e) => setFacebook(e.target.value)} defaultValue={props.deolyedTokenDetails.facebook}
             />
           </InputElementContainer>
 
