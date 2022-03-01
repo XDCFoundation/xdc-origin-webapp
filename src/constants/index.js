@@ -73,7 +73,8 @@ export const validationsMessages = {
     TOKEN_ADDED_SUCCESS: "Token Added To XDCPay Wallet",
     TOKEN_ADDED_FAILURE: "Unable To Add Token To XDCPay Wallet",
     TOKEN_ALREADY_ADDED_SUCCESS: "Token Already Added To XDCPay Wallet",
-    COULD_NOT_BURN_TOKENS: "Could not burn the tokens"
+    COULD_NOT_BURN_TOKENS: "Could not burn the tokens",
+    INITIAL_SUPPLY_MAX_LIMIT_ERROR: "Initial Supply Should be Less Than One Hundred Trillion",
 }
 
 export const toolTipContentMessages = {
@@ -139,6 +140,8 @@ export const LARGE_NUMBER = 999999999999999;
 export const LARGE_NUMBER_ERROR = 9999999999999999;
 
 export const INITIAL_SUPPLY_LARGE_NUMBER_ERROR = 999999999999999;
+
+export const INITIAL_SUPPLY_MAX_LIMIT_NUMBER = 100000000000000;
 
 export const GAS_VALUE = 7920000;
 
