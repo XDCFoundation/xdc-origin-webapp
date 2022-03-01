@@ -6,7 +6,6 @@ import {
   validationsMessages,
   toolTipContentMessages,
   LARGE_NUMBER,
-  LARGE_NUMBER_ERROR, 
   INITIAL_SUPPLY_LARGE_NUMBER_ERROR,
   INITIAL_SUPPLY_MAX_LIMIT_NUMBER
 } from "../../constants";
@@ -336,7 +335,7 @@ export default function Tokenomics(props) {
             {props.tokenData.tokenInitialSupply < 1 ? (
               <p className="shown-error">Supply should not be less than 1</p>
             ) : (
-              props.tokenData.tokenInitialSupply > INITIAL_SUPPLY_MAX_LIMIT_NUMBER ? (
+              Number(props.tokenData.tokenInitialSupply) > INITIAL_SUPPLY_MAX_LIMIT_NUMBER ? (
                 <p className="shown-error">{validationsMessages.INITIAL_SUPPLY_MAX_LIMIT_ERROR}</p>
               ) : ""
             )}
@@ -346,7 +345,7 @@ export default function Tokenomics(props) {
               <ImgDiv src="/images/Button-Back-Arrow.svg" />
               <BackText>Back</BackText>
             </BackButton>
-            {props.tokenData.tokenInitialSupply > INITIAL_SUPPLY_MAX_LIMIT_NUMBER ? (
+            {props.tokenData.tokenInitialSupply > INITIAL_SUPPLY_MAX_LIMIT_NUMBER || props.tokenData.tokenInitialSupply === undefined || props.tokenData.tokenInitialSupply === '' ? (
               <ContinueButtonDisable>
                 <ContinueText>Continue</ContinueText>
                 <ImgDiv src="/images/Button_Next_Arrow.svg" />
