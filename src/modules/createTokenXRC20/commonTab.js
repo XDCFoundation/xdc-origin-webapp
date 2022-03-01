@@ -9,7 +9,8 @@ import {
   apiBodyMessages,
   validationsMessages,
   DEFAULT_TOKEN_IMAGE_URL,
-  GAS_VALUE
+  GAS_VALUE,
+  INITIAL_SUPPLY_MAX_LIMIT_NUMBER
 } from "../../constants";
 import Utils from "../../utility";
 import { SaveDraftService } from "../../services/index";
@@ -288,7 +289,7 @@ function CommonTab(props) {
 
   const handleChange = (e) => {
     setIsVisited(e.target.name);
-    if (e.target.value !== "fromFeature" && e.target.name === "tokenInitialSupply" && e.target.value.length >= 16) {
+    if ((e.target.value !== "fromFeature" && e.target.name === "tokenInitialSupply") && (e.target.value.length >= 15 || e.target.value > INITIAL_SUPPLY_MAX_LIMIT_NUMBER)) {
       if(limit === false){
         toast.error(validationsMessages.INITIAL_SUPPLY_LIMIT_ERROR, {
           duration: 2000,
