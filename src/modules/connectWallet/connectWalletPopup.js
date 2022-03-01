@@ -443,7 +443,8 @@ function connectWalletPopup(props) {
                   </DialogHeader>
                   <VersionPopupLine />
                   <VersionPopupTextContainer>
-                    <VersionPopupText>Your XDC Pay wallet is not updated, Please update XDC Pay wallet to <VersionNumberText>v6.2.5</VersionNumberText> and connect your wallet</VersionPopupText>
+                    {/* <VersionPopupText>Your XDC Pay wallet is not updated, Please update XDC Pay wallet to <VersionNumberText>v6.2.5</VersionNumberText> and connect your wallet</VersionPopupText> */}
+                    <VersionPopupText>Update your XDCPay wallet to the latest version and connect again.</VersionPopupText>
                   </VersionPopupTextContainer>
                 </VersionContainer>
             );
