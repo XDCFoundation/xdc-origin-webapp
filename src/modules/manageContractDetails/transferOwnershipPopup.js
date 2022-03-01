@@ -249,6 +249,59 @@ const Error = styled.span`
   padding: 4px 0 0 2px;
 `;
 
+const ErrorPopupContainer = styled.div`
+  width: 466px;
+  height: 274px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 6px;
+  opacity: 1;
+`;
+
+const ErrorPopupText = styled.div`
+  max-width: 352px;
+  font-size: 16px;
+  color: #4B4B4B;
+  letter-spacing: 0px;
+  font: normal normal normal 16px/20px Inter;
+  text-align: center;
+`;
+
+const ErrorIconsContainer = styled.div`
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding-top: 24px;
+`;
+
+const ErrorPopupIcons = styled.img`
+  width: 34px;
+  height: 34px;
+`;
+
+const ErrorPopupIconText2 = styled.div`
+  max-width: 122px;
+  font-size: 16px;
+  color: #4B4B4B;
+  letter-spacing: 0px;
+  font: normal normal normal 16px/20px Inter;
+  text-align: center;
+  padding-top: 6px;
+`;
+
+const ErrorPopupIconText = styled.div`
+  max-width: 108px;
+  font-size: 16px;
+  color: #4B4B4B;
+  letter-spacing: 0px;
+  font: normal normal normal 16px/20px Inter;
+  text-align: center;
+  padding-top: 6px;
+`;
+
+const ErrorPopupMiddleIconContainer = styled.div`
+  padding: 0 28px 0 29px;
+`;
+
+
 const useStyles = makeStyles({
   dialog: {
     position: "absolute",
@@ -325,7 +378,12 @@ function TransferOwnershipContract(props) {
             setSteps(3);
           }
           else{
-            setSteps(1);
+            if(error.message.includes("User denied transaction signature")){
+              setSteps(1);
+            }
+            else{
+              setSteps(4);
+            }
           }
         });
     } else {
@@ -344,7 +402,12 @@ function TransferOwnershipContract(props) {
         })
         .on("error", function (error) {
           if (error) {
-            setSteps(1);
+            if(error.message.includes("User denied transaction signature")){
+              setSteps(1);
+            }
+            else{
+              setSteps(4);
+            }
           }
         });
     }
@@ -485,6 +548,37 @@ function TransferOwnershipContract(props) {
                       </DoneButton>
                     </DoneButtonContainer>
                   </ThirdContainer>
+              );
+            case 4:
+              return (
+                  <ErrorPopupContainer>
+                    <DialogHeader>
+                      <DeleteText>Transaction Failed</DeleteText>
+                      <CrossIcon
+                          onClick={() => props.handleClose(false)}
+                          src="/images/Cross.svg"
+                          alt=""
+                      />
+                    </DialogHeader>
+                    <Line />
+                    <TextDiv>
+                      <ErrorPopupText>Your transaction has been failed please check the following possible cause:</ErrorPopupText>
+                      <ErrorIconsContainer>
+                        <div>
+                          <ErrorPopupIcons src="/images/red_wallet.svg"></ErrorPopupIcons>
+                          <ErrorPopupIconText>Insufficient wallet balance</ErrorPopupIconText>
+                        </div>
+                        <ErrorPopupMiddleIconContainer>
+                          <ErrorPopupIcons src="/images/paused_contract.svg"></ErrorPopupIcons>
+                          <ErrorPopupIconText>Paused Contract</ErrorPopupIconText>
+                        </ErrorPopupMiddleIconContainer>
+                        <div>
+                          <ErrorPopupIcons src="/images/wrong_network_selected.svg"></ErrorPopupIcons>
+                          <ErrorPopupIconText2>Wrong Network Selected</ErrorPopupIconText2>
+                        </div>
+                      </ErrorIconsContainer>
+                    </TextDiv>
+                  </ErrorPopupContainer>
               );
             default:
               return;
