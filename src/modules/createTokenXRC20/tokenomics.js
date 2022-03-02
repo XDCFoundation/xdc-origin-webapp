@@ -6,7 +6,8 @@ import {
   validationsMessages,
   toolTipContentMessages,
   LARGE_NUMBER,
-  LARGE_NUMBER_ERROR, INITIAL_SUPPLY_LARGE_NUMBER_ERROR
+  INITIAL_SUPPLY_LARGE_NUMBER_ERROR,
+  INITIAL_SUPPLY_MAX_LIMIT_NUMBER
 } from "../../constants";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -171,6 +172,25 @@ const ContinueButton = styled.button`
     margin-top: 12px;
   }
 `;
+const ContinueButtonDisable = styled.div`
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  cursor: not-allowed;
+  width: 150px;
+  height: 50px;
+  background: #3163f0 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  opacity: 0.8;
+  border: none;
+  @media (min-width: 0px) and (max-width: 767px) {
+    justify-content: center;
+    width: 322px;
+    height: 42px;
+    margin-top: 12px;
+  }
+`;
 const ImgDiv = styled.img`
   width: 15px;
   height: 13px;
@@ -301,7 +321,7 @@ export default function Tokenomics(props) {
               onChange={(e) => props.handleChange(e)}
               name="tokenInitialSupply"
               value={props.tokenData.tokenInitialSupply}
-              onInput={(e) => (e.target.value = e.target.value.slice(0, 16))}
+              onInput={(e) => (e.target.value = e.target.value.slice(0, 15))}
               onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()}
             />
             {props.tokenData.tokenInitialSupply > 0 ? (
@@ -315,7 +335,9 @@ export default function Tokenomics(props) {
             {props.tokenData.tokenInitialSupply < 1 ? (
               <p className="shown-error">Supply should not be less than 1</p>
             ) : (
-              ""
+              Number(props.tokenData.tokenInitialSupply) > INITIAL_SUPPLY_MAX_LIMIT_NUMBER ? (
+                <p className="shown-error">{validationsMessages.INITIAL_SUPPLY_MAX_LIMIT_ERROR}</p>
+              ) : ""
             )}
           </CommonRow>
           <ButtonsRow>
@@ -323,10 +345,17 @@ export default function Tokenomics(props) {
               <ImgDiv src="/images/Button-Back-Arrow.svg" />
               <BackText>Back</BackText>
             </BackButton>
-            <ContinueButton onClick={saveAndContinue}>
-              <ContinueText>Continue</ContinueText>
-              <ImgDiv src="/images/Button_Next_Arrow.svg" />
-            </ContinueButton>
+            {props.tokenData.tokenInitialSupply > INITIAL_SUPPLY_MAX_LIMIT_NUMBER || props.tokenData.tokenInitialSupply === undefined || props.tokenData.tokenInitialSupply === '' ? (
+              <ContinueButtonDisable>
+                <ContinueText>Continue</ContinueText>
+                <ImgDiv src="/images/Button_Next_Arrow.svg" />
+              </ContinueButtonDisable>
+            ) : (
+              <ContinueButton onClick={saveAndContinue}>
+                <ContinueText>Continue</ContinueText>
+                <ImgDiv src="/images/Button_Next_Arrow.svg" />
+              </ContinueButton>
+            )}
           </ButtonsRow>
         </Column>
       </Parent>
