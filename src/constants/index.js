@@ -75,6 +75,7 @@ export const validationsMessages = {
     TOKEN_ALREADY_ADDED_SUCCESS: "Token Already Added To XDCPay Wallet",
     COULD_NOT_BURN_TOKENS: "Could not burn the tokens",
     INITIAL_SUPPLY_MAX_LIMIT_ERROR: "Initial Supply Should be Less Than One Hundred Trillion",
+    INVALID_URL: "Invalid URL"
 }
 
 export const toolTipContentMessages = {
