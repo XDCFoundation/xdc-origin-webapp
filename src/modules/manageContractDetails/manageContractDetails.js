@@ -602,10 +602,23 @@ function manageContractDetails(props) {
   };
 
   const handleURL = (link, type) => {
+    let pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+        '(\\#[-a-z\\d_]*)?$','i');
     if (type !== undefined && type === "email" && props.deolyedTokenDetails?.email !== "") {
       window.open(`mailto:${""}?subject=Subject&body=Body%20goes%20here`);
-    } else if (link !== "") {
+    } else if (link !== "" && pattern.test(link)) {
       window.open(link, "_blank");
+    }
+    else{
+      toast.error(validationsMessages.INVALID_URL, {
+        duration: 4000,
+        position: "top-center",
+        className: "toast-div-address",
+      });
     }
   };
 
