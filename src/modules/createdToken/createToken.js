@@ -469,7 +469,7 @@ const CreateToken = (props) => {
                 TransitionProps={{ timeout: 600 }}
               >
                 <CopyToClipboard
-                  text={props.location?.state?.transactionHash || ""}
+                  text={props.location?.state?.transactionHash || props.location?.obtainTxnHash || ""}
                 >
                   <CopyIcon src="/images/Copy.svg" onClick={handleTooltipOpen}></CopyIcon>
                 </CopyToClipboard>
