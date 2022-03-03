@@ -37,11 +37,11 @@ class Routes extends BaseComponent {
             {/*<Route exact path={"/sign-up"} component={SignUp} />*/}
             <Route exact path={"/faq"} component={Faq} />
 
-            {
+            {/* {
               !this.props?.user?.accountDetails?.address
                 ? <Route exact path={"/"} component={Dashboard} />
                 : ""
-            }
+            } */}
             <Route exact path={"/"} component={Dashboard} />
             <Route exact path={"/about"} component={About} />
             <Route exact path={"/created-token"} component={CreatedToken} />
