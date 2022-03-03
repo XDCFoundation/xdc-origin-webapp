@@ -279,7 +279,7 @@ function connectWalletPopup(props) {
     className: "toast-div-address",
   });
   const disableMetamaskMessage = () =>
-  toast.error(validationsMessages.DISABLE_METAMSK_ERROR, {
+  toast.error(validationsMessages.VALIDATE_BROWSER_REDIRECTING, {
     duration: 4000,
     position: validationsMessages.TOASTS_POSITION,
     className: "toast-div-address",
@@ -288,52 +288,56 @@ function connectWalletPopup(props) {
 
   const handleXDCPayWallet = async () => {
     // window.web3 = new Web3(window.ethereum);
-    if(!window.xdc){
-      setPopup(2);
-    }
-    else{
+    // if(!window.xdc){
+    //   setPopup(2);
+    // }
+    // else{
       window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
 
-      console.log("window.xdc =========> ", window.xdc);
-      console.log("window.web3 =========> ", window.web3);
 
       if (window.web3.currentProvider) {
-        if (!window.web3.currentProvider.chainId) {
-          //when metamask is disabled
-          const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
-          let address = state.selectedAddress;
-          let network =
-              state.networkVersion === "50" ? NETWORKS.XDC_MAINNET : NETWORKS.XDC_APOTHEM_TESTNET;
-          let account = false;
+        if (!window.web3.currentProvider.hasOwnProperty("chainId")) {
+          if(!window.xdc){
+            setPopup(2);
+          }
+          else{
+            //when metamask is not in effect
+            const state = window.web3.givenProvider.publicConfigStore ? window.web3.givenProvider.publicConfigStore._state : window.web3.currentProvider.publicConfigStore._state;
+            let address = state.selectedAddress;
+            let network =
+                state.networkVersion === "50" ? NETWORKS.XDC_MAINNET : NETWORKS.XDC_APOTHEM_TESTNET;
+            let account = false;
 
-          await window.web3.eth.getAccounts((err, accounts) => {
-            if (err !== null) console.error("An error occurred: " + err);
-            else if (accounts.length === 0) {
-              account = false;
-            } else {
-              account = true;
-            }
-          });
-
-          if (!account) {
-            loginErrorMessage();
-          } else if (address || network) {
-            let balance = null;
-
-            await window.web3.eth.getBalance(address).then((res) => {
-              balance = res / Math.pow(10, 18);
-              balance = truncateToDecimals(balance);
+            await window.web3.eth.getAccounts((err, accounts) => {
+              if (err !== null) console.error("");
+              else if (accounts.length === 0) {
+                account = false;
+              } else {
+                account = true;
+              }
             });
 
-            let accountDetails = {
-              address: address,
-              network: network,
-              balance: balance,
-              isLoggedIn: true,
-            };
-            props.login(accountDetails);
-            handleDialogClose();
+            if (!account) {
+              loginErrorMessage();
+            } else if (address || network) {
+              let balance = null;
+
+              await window.web3.eth.getBalance(address).then((res) => {
+                balance = res / Math.pow(10, 18);
+                balance = truncateToDecimals(balance);
+              });
+
+              let accountDetails = {
+                address: address,
+                network: network,
+                balance: balance,
+                isLoggedIn: true,
+              };
+              props.login(accountDetails);
+              handleDialogClose();
+            }
           }
+
         } else {
           //metamask is also enabled with xdcpay
           disableMetamaskMessage();
@@ -342,7 +346,7 @@ function connectWalletPopup(props) {
         // For mobile and tab - redirect to App Store
         redirectErrorMessage();
       }
-    }
+    //}
 
   };
 
