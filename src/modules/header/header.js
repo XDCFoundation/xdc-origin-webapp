@@ -223,7 +223,11 @@ function Header(props) {
   };
 
   function truncateToDecimals(num, dec = 2) {
-    const calcDec = Math.pow(10, dec);
+    let decimal = dec;
+    if(num != 0 && num.toString().split('.')[0] == 0 && num.toString().split('.')[1].charAt(0) == 0 && num.toString().split('.')[1].charAt(1) == 0){
+      decimal = 4;
+    }
+    const calcDec = Math.pow(10, decimal);
     return Math.trunc(num * calcDec) / calcDec;
   }
 
