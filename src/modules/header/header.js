@@ -9,6 +9,8 @@ import Sidebar from "../dashboard/sidebar";
 import Web3 from "web3";
 import Identicon from "./identIcon";
 import { NETWORKS } from "../../constants";
+import ConnectWalletAlert from "../connectWallet/connectWalletAlert";
+import ScreenSizeDetector from "screen-size-detector";
 
 
 const HeaderContainer = styled.div`
@@ -212,14 +214,25 @@ function Header(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isconnectWallet, setIsConnectWallet] = useState(true);
   const [forceUpdate, setForceUpdate] = useState(false);
+  const [alert, setAlert] = useState(false);
+
+  const screen = new ScreenSizeDetector();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
   const connectWallet = () => {
-    setConnectWalletDialoag(!connectWalletDialoag);
-    props.user(isconnectWallet);
+    if(screen.width < 1024){
+      setAlert(!alert);
+    } else{
+      setConnectWalletDialoag(!connectWalletDialoag);
+      props.user(isconnectWallet);
+    }
+  };
+
+  const connectWalletAlert = () => {
+    setAlert(!alert);
   };
 
   function truncateToDecimals(num, dec = 2) {
@@ -241,6 +254,11 @@ function Header(props) {
   }
 
   useEffect(() => {
+
+    if(screen.width < 1024){
+      connectWalletAlert()
+    }
+
     const handleXDCPayWalletChange = async () => {
       window.web3 = new Web3(window.xdc ? window.xdc : window.ethereum);
 
@@ -389,7 +407,7 @@ function Header(props) {
           </div>
           <div className="buttons">
             {/* <UserLogo  src="/images/profile.svg" /> */}
-            <MobBtn onClick={() => history.push("/connect-wallet-mobile")}>
+            <MobBtn onClick={() => connectWalletAlert()}>
               Connect Wallet
             </MobBtn>
             <UserMenu onClick={() => toggleSidebar()} src="images/menu.svg" />
@@ -434,6 +452,12 @@ function Header(props) {
         onClose={connectWallet}
         handleClose={connectWallet}
       />
+      {alert ? (
+        <ConnectWalletAlert
+          open={alert}
+          onClose={connectWalletAlert}
+      />
+      ) : ""}
     </>
   );
 }

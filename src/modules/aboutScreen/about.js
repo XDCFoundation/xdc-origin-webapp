@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Tooltip, Typography, ClickAwayListener } from "@material-ui/core";
 import ScreenSizeDetector from "screen-size-detector";
+import ConnectWalletAlert from "../connectWallet/connectWalletAlert";
 
 const CustomTooltip = withStyles((theme) => ({
   tooltip: {
@@ -488,6 +489,7 @@ function About(props) {
   const history = useHistory();
   const [connectWallet, setConnectWallet] = useState(true);
   const [open, setOpen] = useState(false);
+  const [alert, setAlert] = useState(false);
 
   const screen = new ScreenSizeDetector();
 
@@ -499,12 +501,16 @@ function About(props) {
     setOpen(true);
   };
 
+  const handleAlert = () => {
+    setAlert(!alert);
+  };
+
   const handleXDCPayWallet = async () => {
     if (
       !props?.currentUser?.accountDetails?.isLoggedIn ||
       props?.currentUser?.accountDetails === null
     ) {
-        screen.width < 768 ? history.push("/connect-wallet-mobile") : props.user(connectWallet);
+        screen.width < 1024 ? handleAlert() : props.user(connectWallet);
     } else if (props?.currentUser?.accountDetails?.isLoggedIn) {
       history.push("/token-XRC20");
       props.setActiveNavItem("create");
@@ -514,6 +520,7 @@ function About(props) {
   };
 
   return (
+    <>
     <MainContainer>
       <MainBoxContainer>
         <Container>
@@ -704,6 +711,13 @@ function About(props) {
         </GreyContainer>
       </MainBoxContainer>
     </MainContainer>
+    {alert ? (
+      <ConnectWalletAlert
+        open={alert}
+        onClose={handleAlert}
+      />
+      ) : ""}
+    </>
   );
 }
 
