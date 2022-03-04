@@ -255,6 +255,20 @@ function ResumeContract(props) {
           //   pauseXRC20Token();
           //   setSteps(3);
           // }, 15000);
+          setTimeout(async () => {
+            let reqObj = {
+              filter: "Transaction",
+              data: hash,
+            };
+
+            const [err, res] = await Utils.parseResponse(
+                SaveDraftService.getTxnHashDetails(reqObj)
+            );
+
+            if(res?.transaction?.status === false){
+              setSteps(4);
+            }
+          }, 20000);
         })
         .on("receipt", function (receipt) {
         })
