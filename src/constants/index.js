@@ -179,7 +179,7 @@ export const faqsList = [
       questionText:
         "Do I need technical or programming language expertise to create my token?",
       answerText:
-        "No. Simply follow the steps in the token generator and create!",
+        "No. Simply follow the steps in the token generator and create.",
     },
     {
       id: 3,
