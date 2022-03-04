@@ -33,7 +33,7 @@ const Column = styled.div`
   @media screen and (min-width: 0px) and (max-width: 767px) {
     flex-direction: column;
     width: 94%;
-    margin: 55.66px 0 0 22.75px;
+    margin: 40.66px 0 0 22.75px;
   }
 `;
 const FooterImg = styled.img`
