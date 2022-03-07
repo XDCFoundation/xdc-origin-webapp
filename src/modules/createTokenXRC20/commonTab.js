@@ -467,7 +467,7 @@ function CommonTab(props) {
             }, 10000);
           }
         })
-        .on("error", function (error) {
+        .on("error", async function (error) {
           let obtainTxnHash = obtainHash
           let obtainContractAddress = contractAdd
 
@@ -487,7 +487,7 @@ function CommonTab(props) {
             // }, 2000)
           } else{
             let tokenStatus = error.message.includes("User denied transaction signature") ? apiBodyMessages.STATUS_DRAFT : apiBodyMessages.STATUS_FAILED;
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
+            await updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
             props.setActiveNavbarItem("deploy");
             props.setSubNavItem(false);
@@ -501,7 +501,7 @@ function CommonTab(props) {
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
         })
-        .on("receipt", function (receipt) {
+        .on("receipt", async function (receipt) {
           //receive the contract address from this object
           let newContractAddress = receipt.contractAddress?.replace(
             /0x/,
@@ -518,7 +518,7 @@ function CommonTab(props) {
               createdToken,
               tokenSymbol
             });
-            updateTokenDetails(
+            await updateTokenDetails(
               draftedTokenId,
               draftedTokenOwner,
               newContractAddress,
@@ -527,10 +527,10 @@ function CommonTab(props) {
           }
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
-        .on("error", function (error) {
+        .on("error", async function (error) {
           if (error) {
             let tokenStatus = error.message.includes("User denied transaction signature") ? apiBodyMessages.STATUS_DRAFT : apiBodyMessages.STATUS_FAILED;
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
+            await updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
             props.setActiveNavbarItem("deploy");
             props.setSubNavItem(false);
@@ -595,7 +595,7 @@ function CommonTab(props) {
         obtainContractAddress,
         tokenSymbol
       });
-      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress, apiBodyMessages.STATUS_DEPLOYED);
+      await updateTokenDetails(tokenId, tokenOwner, obtainContractAddress, apiBodyMessages.STATUS_DEPLOYED);
     }
   };
 
