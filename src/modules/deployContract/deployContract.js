@@ -357,30 +357,23 @@ function DeployContract(props) {
         .on("error", function (error) {
           let obtainTxnHash = obtainHash;
           let obtainContractAddress = contractAdd;
-          if (
-            error.message !==
-              "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." &&
-            contractAdd === ""
-          ) {
-            history.push({
-              pathname: "/created-token",
-              state: {},
-              parsingDecimal,
-              obtainTxnHash,
-              obtainContractAddress,
-              parsingSupply,
-              gasPrice,
-              createdToken,
-              tokenSymbol
-            });
-          } else if (
-            error.message ===
-            "Returned error: Error: XDCPay Tx Signature: User denied transaction signature."
-          ) {
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+
+          if (error.message.includes("transaction receipt")) {
+            // history.push({
+            //   pathname: "/created-token",
+            //   state: {},
+            //   parsingDecimal,
+            //   obtainTxnHash,
+            //   obtainContractAddress,
+            //   parsingSupply,
+            //   gasPrice,
+            //   createdToken,
+            //   tokenSymbol
+            // });
+          } else{
+            let tokenStatus = error.message.includes("User denied transaction signature") ? apiBodyMessages.STATUS_DRAFT : apiBodyMessages.STATUS_FAILED;
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
             setOpenDeployPopup(false);
-          }
-          else{
           }
         });
     } else {
@@ -412,7 +405,8 @@ function DeployContract(props) {
         })
         .on("error", function (error) {
           if (error) {
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+            let tokenStatus = error.message.includes("User denied transaction signature") ? apiBodyMessages.STATUS_DRAFT : apiBodyMessages.STATUS_FAILED;
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
             setOpenDeployPopup(false);
           }
         });
