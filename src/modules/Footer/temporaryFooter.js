@@ -191,8 +191,8 @@ function footer() {
                     <Link href="https://twitter.com/XDCFoundation" target="_blank">Twitter</Link>
                 </ContactContainer>
                 <ContactContainer>
-                    <SocialIcon src="/images/Telegram_Footer.svg" />
-                    <Link> Telegram </Link>
+                    <SocialIcon src="/images/reddit_footer.svg" />
+                    <Link href="https://www.reddit.com/r/XDC_Foundation/" target="_blank">Reddit</Link>
                 </ContactContainer>
             </LinkContainerThird>
       </ContactRow>
