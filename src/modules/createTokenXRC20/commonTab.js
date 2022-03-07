@@ -395,7 +395,7 @@ function CommonTab(props) {
       notifySuccessMsg();
       sendTransaction(res);
     }
-    
+
   };
 
   const saveAsDraftbyEdit = async (e) => {
@@ -467,24 +467,27 @@ function CommonTab(props) {
             }, 10000);
           }
         })
-        .on("error", function (error) {
+        .on("error", async function (error) {
           let obtainTxnHash = obtainHash
           let obtainContractAddress = contractAdd
 
-          if (error.message !== 'Returned error: Error: XDCPay Tx Signature: User denied transaction signature.' && contractAdd === "") {
-            history.push({
-              pathname: "/created-token",
-              state: {},
-              obtainTxnHash,
-              obtainContractAddress,
-              parsingDecimal,
-              parsingSupply,
-              gasPrice,
-              createdToken,
-              tokenSymbol
-            });
-          } else if(error.message === "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." ) {
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+          if (error.message.includes("transaction receipt")) {
+            // setTimeout(() => {
+            //   history.push({
+            //     pathname: "/created-token",
+            //     state: {},
+            //     obtainTxnHash,
+            //     obtainContractAddress,
+            //     parsingDecimal,
+            //     parsingSupply,
+            //     gasPrice,
+            //     createdToken,
+            //     tokenSymbol
+            //   });
+            // }, 2000)
+          } else{
+            let tokenStatus = error.message.includes("User denied transaction signature") ? apiBodyMessages.STATUS_DRAFT : apiBodyMessages.STATUS_FAILED;
+            await updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
             props.setActiveNavbarItem("deploy");
             props.setSubNavItem(false);
@@ -492,15 +495,13 @@ function CommonTab(props) {
             history.push("/deploy-contract");
             // prevStep();
           }
-          else{
-          }
         });
     } else {
       await window.web3.eth
         .sendTransaction(transaction)
         .on("transactionHash", function (hash) {
         })
-        .on("receipt", function (receipt) {
+        .on("receipt", async function (receipt) {
           //receive the contract address from this object
           let newContractAddress = receipt.contractAddress?.replace(
             /0x/,
@@ -517,7 +518,7 @@ function CommonTab(props) {
               createdToken,
               tokenSymbol
             });
-            updateTokenDetails(
+            await updateTokenDetails(
               draftedTokenId,
               draftedTokenOwner,
               newContractAddress,
@@ -526,9 +527,10 @@ function CommonTab(props) {
           }
         })
         .on("confirmation", function (confirmationNumber, receipt) {})
-        .on("error", function (error) {
+        .on("error", async function (error) {
           if (error) {
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+            let tokenStatus = error.message.includes("User denied transaction signature") ? apiBodyMessages.STATUS_DRAFT : apiBodyMessages.STATUS_FAILED;
+            await updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
             props.setActiveNavbarItem("deploy");
             props.setSubNavItem(false);
@@ -593,7 +595,7 @@ function CommonTab(props) {
         obtainContractAddress,
         tokenSymbol
       });
-      updateTokenDetails(tokenId, tokenOwner, obtainContractAddress, apiBodyMessages.STATUS_DEPLOYED);
+      await updateTokenDetails(tokenId, tokenOwner, obtainContractAddress, apiBodyMessages.STATUS_DEPLOYED);
     }
   };
 
