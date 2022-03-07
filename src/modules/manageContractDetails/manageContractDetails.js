@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   menu: {
     width: "178px",
     height: "167px",
-    marginLeft: "25px"
+    marginLeft: "25px",
   },
   item: {
     color: "#1F1F1F",
@@ -33,20 +33,21 @@ const useStyles = makeStyles((theme) => ({
   },
   arrow: {
     "&:before": {
-      border: "1px solid #e6e8ed"
+      border: "1px solid #e6e8ed",
     },
     color: theme.palette.common.white,
   },
+  customTooltip:{
+    fontSize: "12px !important"
+  }
 }));
 
 const theme = createTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: "16px",
+        fontSize: "14px",
         fontweight: 600,
-        color: "#4B4B4B",
-        backgroundColor: "#FFFFFF",
         boxShadow: "0px 3px 12px #0000001A",
         border: "1px solid #e6e8ed",
       },
@@ -824,7 +825,6 @@ function manageContractDetails(props) {
                 <Title>Initial Supply</Title>
                 <MuiThemeProvider theme={theme}>
                   <Tooltip
-                    classes={{ arrow: classes.arrow }}
                     title={Number(props.deolyedTokenDetails?.tokenInitialSupply).toLocaleString()}
                     placement="top"
                     arrow
@@ -848,7 +848,6 @@ function manageContractDetails(props) {
                 <Title>Minted Tokens</Title>
                 <MuiThemeProvider theme={theme}>
                   <Tooltip
-                    classes={{ arrow: classes.arrow }}
                     title={Number(props.deolyedTokenDetails?.mintedTokens).toLocaleString()}
                     placement="top"
                     arrow
@@ -876,7 +875,6 @@ function manageContractDetails(props) {
                 <Title>Burnt Tokens</Title>
                 <MuiThemeProvider theme={theme}>
                   <Tooltip
-                    classes={{ arrow: classes.arrow }}
                     title={Number(props.deolyedTokenDetails?.burntTokens).toLocaleString()}
                     placement="top"
                     arrow
@@ -903,7 +901,6 @@ function manageContractDetails(props) {
                 <Title>Current Supply</Title>
                 <MuiThemeProvider theme={theme}>
                   <Tooltip
-                    classes={{ arrow: classes.arrow }}
                     title={Number(props.deolyedTokenDetails?.tokenCurrentSupply).toLocaleString()}
                     placement="top"
                     arrow
