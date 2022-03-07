@@ -395,7 +395,7 @@ function CommonTab(props) {
       notifySuccessMsg();
       sendTransaction(res);
     }
-    
+
   };
 
   const saveAsDraftbyEdit = async (e) => {
@@ -471,28 +471,29 @@ function CommonTab(props) {
           let obtainTxnHash = obtainHash
           let obtainContractAddress = contractAdd
 
-          if (error.message !== 'Returned error: Error: XDCPay Tx Signature: User denied transaction signature.' && contractAdd === "") {
-            history.push({
-              pathname: "/created-token",
-              state: {},
-              obtainTxnHash,
-              obtainContractAddress,
-              parsingDecimal,
-              parsingSupply,
-              gasPrice,
-              createdToken,
-              tokenSymbol
-            });
-          } else if(error.message === "Returned error: Error: XDCPay Tx Signature: User denied transaction signature." ) {
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+          if (error.message.includes("transaction receipt")) {
+            // setTimeout(() => {
+            //   history.push({
+            //     pathname: "/created-token",
+            //     state: {},
+            //     obtainTxnHash,
+            //     obtainContractAddress,
+            //     parsingDecimal,
+            //     parsingSupply,
+            //     gasPrice,
+            //     createdToken,
+            //     tokenSymbol
+            //   });
+            // }, 2000)
+          } else{
+            let tokenStatus = error.message.includes("User denied transaction signature") ? apiBodyMessages.STATUS_DRAFT : apiBodyMessages.STATUS_FAILED;
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
             props.setActiveNavbarItem("deploy");
             props.setSubNavItem(false);
             props.setSubNavToken("");
             history.push("/deploy-contract");
             // prevStep();
-          }
-          else{
           }
         });
     } else {
@@ -528,7 +529,8 @@ function CommonTab(props) {
         .on("confirmation", function (confirmationNumber, receipt) {})
         .on("error", function (error) {
           if (error) {
-            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", apiBodyMessages.STATUS_FAILED);
+            let tokenStatus = error.message.includes("User denied transaction signature") ? apiBodyMessages.STATUS_DRAFT : apiBodyMessages.STATUS_FAILED;
+            updateTokenDetails(draftedTokenId, draftedTokenOwner, "", tokenStatus);
             // props.dispatchAction(eventConstants.SET_NAV_ITEM, "deploy")
             props.setActiveNavbarItem("deploy");
             props.setSubNavItem(false);
