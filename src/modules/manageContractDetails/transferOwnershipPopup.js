@@ -385,11 +385,15 @@ function TransferOwnershipContract(props) {
         .on("receipt", function (receipt) {
         })
         .on("confirmation", function (confirmationNumber, receipt) {
+          if(receipt && confirmationNumber === 1){
+            transferXRC20Token();
+            setSteps(3);
+          }
         })
         .on("error", function (error) {
           if(error.message.includes("transaction receipt")){ //the transaction is successful
-            transferXRC20Token();
-            setSteps(3);
+            // transferXRC20Token();
+            // setSteps(3);
           }
           else{
             if(error.message.includes("User denied transaction signature")){
