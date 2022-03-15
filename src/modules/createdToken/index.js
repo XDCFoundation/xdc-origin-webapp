@@ -27,7 +27,7 @@ class CreateTokenComponent extends BaseComponent {
   coinMarketUSDPriceDetails = async () => {
     const [err, res] = await Utils.parseResponse(SaveDraftService.getCoinMarketCap());
     if (err) {
-      console.error('er--',err)
+
     }
     else{
       this.setState({priceValue: res[0]?.price})

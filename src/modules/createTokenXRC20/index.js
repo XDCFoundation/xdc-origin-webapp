@@ -38,7 +38,6 @@ class CreateTokenXRC20 extends BaseComponent {
     );
 
     if (error || !xrc20TokenResponse) {
-      console.error("getXrc20TokenById error -> ", error)
       Utility.apiFailureToast("Failed To Fetch Token Details!");
       return;
     }
