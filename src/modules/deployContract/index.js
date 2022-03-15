@@ -97,7 +97,6 @@ class DeployContract extends BaseComponent {
     );
 
     if (error || !contractServiceResponse) {
-      console.error("getDraftFailedXrc20Token error -> ", error);
       if (error?.responseData?.length === 0) {
         this.setState({
           draftFailedXrc20TokenDetails: [],
@@ -127,7 +126,6 @@ class DeployContract extends BaseComponent {
     );
 
     if (error || !deleteContractResponse) {
-      console.error("deleteContract error -> ", error);
       return;
     }
 

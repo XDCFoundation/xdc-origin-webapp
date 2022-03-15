@@ -104,7 +104,6 @@ class ManageContracts extends BaseComponent {
     );
 
     if (error || !contractServiceResponse) {
-      console.error("getDeployedXrc20Token error -> ", error);
       if (error?.responseData?.length === 0) {
         this.setState({
           deolyedXrc20TokenDetails: [],
