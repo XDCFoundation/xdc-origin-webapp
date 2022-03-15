@@ -166,7 +166,7 @@ export default function UploadTokenImage(props) {
       setCroppedImage(croppedImage);
       uploadFileToAWS(croppedImage);
     } catch (e) {
-      console.error(e);
+
     }
   });
 

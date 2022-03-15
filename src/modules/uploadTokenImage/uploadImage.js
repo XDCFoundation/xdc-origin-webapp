@@ -277,7 +277,7 @@ export default function UploadTokenImage(props) {
       setCroppedImage(croppedImage);
       uploadFileToAWS(croppedImage);
     } catch (e) {
-      console.error(e);
+
     }
   });
 
@@ -351,7 +351,7 @@ export default function UploadTokenImage(props) {
           ) : (
             <Content>
               <TokenImage>
-                <Cropper 
+                <Cropper
                   image={filePreview}
                   crop={crop}
                   zoom={scale}
@@ -359,7 +359,7 @@ export default function UploadTokenImage(props) {
                   onCropChange={setCrop}
                   onCropComplete={onCropComplete}
                   onZoomChange={setZoom}
-                  
+
                   showGrid={false}
                   cropSize={{ width: 270, height: 270}}
                   // cropShape="round"
