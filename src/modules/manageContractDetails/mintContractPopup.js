@@ -353,18 +353,18 @@ function MintContract(props) {
           //Not receiving the receipt event for mainnet currently
         })
         .on("confirmation", function (confirmationNumber, receipt) {
-          if(receipt && confirmationNumber === 1){
-            mintXRC20Token();
-            setSteps(3);
-          }
+          // if(receipt && confirmationNumber === 1){
+          //   mintXRC20Token();
+          //   setSteps(3);
+          // }
         })
         .on("error", function (error) {
           // if(error.message === 'Failed to check for transaction receipt:\n' +
           //     '{}'){
           // }
           if(error.message.includes("transaction receipt")){ //the transaction is successful
-            // mintXRC20Token();
-            // setSteps(3);
+            mintXRC20Token();
+            setSteps(3);
           }
           else if(error.message.includes("User denied transaction signature")){
             setSteps(1);
