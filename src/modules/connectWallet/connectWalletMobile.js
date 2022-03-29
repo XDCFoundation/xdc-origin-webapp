@@ -146,7 +146,7 @@ function ConnectWalletMobile() {
           <LeftArrow onClick={() => history.push('/')} src="/images/Button_Back_Arrow.svg" alt="" />
           <Heading>Connect Wallet</Heading>
         </HeadingContainer>
-      <div>{browser?.name !== "chrome" ? (<p className="shown-browser-error">XDCPay wallet only supports Chrome browser !!</p>) : ("")}</div>
+      <div>{(browser?.name !== "chrome" && browser?.name !== "edge") ? (<p className="shown-browser-error">XDCPay wallet only supports Chrome and Edge browsers !!</p>) : ("")}</div>
       <BoxContainer>
         <Box>
           <BoxContent>
@@ -194,7 +194,7 @@ function ConnectWalletMobile() {
             <BtnText>Connect Wallet</BtnText>
           </Button>
         </ButtonContainer> */}
-      </BoxContainer> 
+      </BoxContainer>
       </CommonContainer>
       <Footer />
     </Container>
