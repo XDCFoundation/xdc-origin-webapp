@@ -421,9 +421,9 @@ function connectWalletPopup(props) {
                     </Box>
                   </BoxContainer>
                   <div>
-                    {browser?.name !== "chrome" ? (
+                    {(browser?.name !== "chrome" && browser?.name !== "edge") ? (
                         <p className="shown-browser-error">
-                          XDCPay wallet only supports Chrome browser.
+                          XDCPay wallet only supports Chrome and Edge browsers.
                         </p>
                     ) : (
                         <ButtonContainer>
