@@ -494,13 +494,20 @@ function TransferOwnershipContract(props) {
                             </Error>
                           </ErrorContainer>
                       ) : ""}
+                      {inputAddress === props.deployedContract?.smartContractAddress ? (
+                          <ErrorContainer>
+                            <Error>
+                              {validationsMessages.CURRENT_CONTACT_ADDRESS}
+                            </Error>
+                          </ErrorContainer>
+                      ) : ""}
                     </InputContainer>
                     </MidSection>
                     <ButtonContainer>
                       <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
-                      {(inputAddress !== "" && inputAddress !== userAddress.replace(/0x/, "xdc")) ? (
+                      {(inputAddress !== "" && inputAddress !== userAddress.replace(/0x/, "xdc")) && inputAddress !== props.deployedContract?.smartContractAddress ? (
                       <DeleteButton onClick={handleSteps}>
                         Transfer
                       </DeleteButton>
