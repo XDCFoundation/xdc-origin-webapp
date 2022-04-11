@@ -481,13 +481,20 @@ function MintContract(props) {
                             </Error>
                           </ErrorContainer>
                         ) : ""}
+                        {inputAddress === userAddress.replace(/0x/, "xdc") ? (
+                          <ErrorContainer>
+                            <Error>
+                              {validationsMessages.CURRENT_TOKEN_OWNER}
+                            </Error>
+                          </ErrorContainer>
+                      ) : ""}
                       </InputContainer>
                     </MidSection>
                     <ButtonContainer>
                       <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
-                      {inputToken !== null && inputAddress !== null ? (
+                      {inputToken !== null && inputAddress !== null && inputAddress !== userAddress.replace(/0x/, "xdc") ? (
                         <DeleteButton onClick={handleSteps}>Mint</DeleteButton>
                       ) : (
                         <DeleteButtonDisable>Mint</DeleteButtonDisable>
