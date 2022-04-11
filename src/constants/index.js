@@ -71,6 +71,7 @@ export const validationsMessages = {
     DISABLE_METAMSK_ERROR: "Disable Metamask and Login To XDCPay",
     WALLET_DETAILS_UPDATE_MESSAGE: "XDCPay Wallet Details Has Been Updated",
     CURRENT_TOKEN_OWNER: "This Address Is The Current Token Owner",
+    CURRENT_CONTACT_ADDRESS: "Address Cannot be The Current Contract Address",
     TOKEN_ADDED_SUCCESS: "Token Added To XDCPay Wallet",
     TOKEN_ADDED_FAILURE: "Unable To Add Token To XDCPay Wallet",
     TOKEN_ALREADY_ADDED_SUCCESS: "Token Already Added To XDCPay Wallet",
