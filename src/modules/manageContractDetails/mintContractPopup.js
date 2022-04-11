@@ -481,13 +481,20 @@ function MintContract(props) {
                             </Error>
                           </ErrorContainer>
                         ) : ""}
+                        {inputAddress === props.deployedContract?.smartContractAddress ? (
+                          <ErrorContainer>
+                            <Error>
+                              {validationsMessages.CURRENT_CONTACT_ADDRESS}
+                            </Error>
+                          </ErrorContainer>
+                      ) : ""}
                       </InputContainer>
                     </MidSection>
                     <ButtonContainer>
                       <CancelButton onClick={() => props.handleClose(false)}>
                         Cancel
                       </CancelButton>
-                      {inputToken !== null && inputAddress !== null ? (
+                      {inputToken !== null && inputAddress !== null && inputAddress !== props.deployedContract?.smartContractAddress ? (
                         <DeleteButton onClick={handleSteps}>Mint</DeleteButton>
                       ) : (
                         <DeleteButtonDisable>Mint</DeleteButtonDisable>
