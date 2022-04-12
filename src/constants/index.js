@@ -72,6 +72,7 @@ export const validationsMessages = {
     WALLET_DETAILS_UPDATE_MESSAGE: "XDCPay Wallet Details Has Been Updated",
     CURRENT_TOKEN_OWNER: "This Address Is The Current Token Owner",
     CURRENT_CONTACT_ADDRESS: "Address cannot be a contract address",
+    CONTACT_ADDRESS_TRANSFER_ERROR: "This address is the contract address",
     TOKEN_ADDED_SUCCESS: "Token Added To XDCPay Wallet",
     TOKEN_ADDED_FAILURE: "Unable To Add Token To XDCPay Wallet",
     TOKEN_ALREADY_ADDED_SUCCESS: "Token Already Added To XDCPay Wallet",
