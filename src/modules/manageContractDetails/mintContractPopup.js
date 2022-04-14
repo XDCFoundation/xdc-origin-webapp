@@ -488,7 +488,7 @@ function MintContract(props) {
                             </Error>
                           </ErrorContainer>
                       ) : ""}
-                      {inputAddress === "xdc0000000000000000000000000000000000000000" ? (
+                      {inputAddress !== null && inputAddress.includes("xdc0000000000000000000000000000000000000000") ? (
                           <ErrorContainer>
                             <Error>
                               {validationsMessages.INVALID_ADDRESS_ERROR}
@@ -504,7 +504,7 @@ function MintContract(props) {
                       {inputToken !== null &&
                        inputAddress !== null &&
                        inputAddress !== props.deployedContract?.smartContractAddress &&
-                       inputAddress !== "xdc0000000000000000000000000000000000000000" ? (
+                       !inputAddress.includes("xdc0000000000000000000000000000000000000000") ? (
                         <DeleteButton onClick={handleSteps}>Mint</DeleteButton>
                       ) : (
                         <DeleteButtonDisable>Mint</DeleteButtonDisable>

@@ -501,7 +501,7 @@ function TransferOwnershipContract(props) {
                             </Error>
                           </ErrorContainer>
                       ) : ""}
-                      {inputAddress === "xdc0000000000000000000000000000000000000000" ? (
+                      {inputAddress !== null && inputAddress.includes("xdc0000000000000000000000000000000000000000") ? (
                           <ErrorContainer>
                             <Error>
                               {validationsMessages.INVALID_ADDRESS_ERROR}
@@ -517,7 +517,7 @@ function TransferOwnershipContract(props) {
                       {(inputAddress !== "" &&
                         inputAddress !== userAddress.replace(/0x/, "xdc")) &&
                         inputAddress !== props.deployedContract?.smartContractAddress &&
-                        inputAddress !== "xdc0000000000000000000000000000000000000000" ? (
+                        !inputAddress.includes("xdc0000000000000000000000000000000000000000") ? (
                       <DeleteButton onClick={handleSteps}>
                         Transfer
                       </DeleteButton>
