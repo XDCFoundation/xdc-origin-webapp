@@ -477,7 +477,7 @@ function TransferOwnershipContract(props) {
                     <InputContainer>
                       <InputDiv
                         type="text"
-                        placeholder="New owner address"
+                        placeholder="Enter new owner's account address"
                         onChange={(e) => setInputAddress(e.target.value)}
                       />
                       {inputAddress !== "" && !inputAddress.includes("xdc") ? (
