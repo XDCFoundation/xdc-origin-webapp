@@ -94,8 +94,8 @@ const ImageDiv = styled.div`
 
 const Img = styled.img`
   display: flex;
-  width: 23px;
-  height: 24px;
+  /* width: 23px;
+  height: 24px; */
   justify-content: center;
   align-items: center;
   opacity: 1;
@@ -108,7 +108,7 @@ const Img = styled.img`
 const Description = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 13px 0px 0px 0px;
+  padding: 7px 0px 6px 0px;
   text-align: left;
   font: normal normal 600 17px/20px Inter;
   letter-spacing: 0px;
