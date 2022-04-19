@@ -1,5 +1,6 @@
 import { httpService } from "../utility/httpService";
-import {httpConstants} from "../constants"
+import {httpConstants} from "../constants";
+import axios from "axios";
 
 
 export default {
@@ -7,13 +8,21 @@ export default {
   deleteContract,
   getXrc20TokenById,
   getDeployedXrc20Token,
-  updateDeployedXrc20Token
+  updateDeployedXrc20Token,
+  uploadFileToS3,
   };
 
 
   function getHeaders() {
     return {
       "Content-Type": httpConstants.CONTENT_TYPE.APPLICATION_JSON,
+      skip: true,
+    };
+  }
+
+  function getFileUploadHeaders() {
+    return {
+      "Content-Type": httpConstants.CONTENT_TYPE.MULTIPART_FORM_DATA,
       skip: true,
     };
   }
@@ -152,4 +161,29 @@ async function updateDeployedXrc20Token(requestData) {
       .catch(function (err) {
         return Promise.reject(err);
       });
+}
+
+async function uploadFileToS3(requestData) {
+  let uploadResponse;
+  let url =
+    process.env.REACT_APP_CONTRACT_MANAGEMENT_SERVICE_ORIGIN_URL +
+    httpConstants.API_END_POINT.UPLOAD_FILE_TO_S3;
+    
+    await axios
+    .post(url, requestData)
+    .then((response) => { 
+      if (
+        !response.data.success || 
+        response.data.responseCode !== 200 ||
+        !response.data.responseData ||
+        response.data.responseData.length === 0
+      )
+        uploadResponse = response.data;
+      uploadResponse = response.data;
+    })
+    .catch(function (err) {
+      return Promise.reject(err);
+    });
+  
+    return uploadResponse;
 }
