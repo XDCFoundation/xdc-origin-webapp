@@ -120,7 +120,7 @@ export default function UploadTokenImage(props) {
   const [crop, setCrop] = React.useState({ x: 1, y: 1 });
   const [zoom, setZoom] = React.useState(1);
 
-  const s3Bucket = process.env.REACT_APP_S3_BUCKET_NAME
+  const s3Bucket = '';
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
