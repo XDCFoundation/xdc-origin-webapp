@@ -476,7 +476,7 @@ function MintContract(props) {
                           // readOnly
                           value={inputAddress}
                           type="text"
-                          placeholder="Address to be added"
+                          placeholder="Enter a valid account address"
                           onChange={(e) => setInputAddress(e.target.value)}
                         />
                         {inputAddress !== null && !inputAddress.includes("xdc") ? (
