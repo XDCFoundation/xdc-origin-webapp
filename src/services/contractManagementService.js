@@ -20,14 +20,6 @@ export default {
     };
   }
 
-  function getFileUploadHeaders() {
-    return {
-      "Content-Type": httpConstants.CONTENT_TYPE.MULTIPART_FORM_DATA,
-      skip: true,
-    };
-  }
-
-
 
 async function getDraftFailedXrc20Token(requestData) {
     let url =
