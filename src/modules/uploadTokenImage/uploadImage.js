@@ -4,10 +4,10 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "react-seekbar-component/dist/index.css";
 import { useDropzone } from "react-dropzone";
-import AWSServices from "../../services/aws-service";
 import Cropper from "react-easy-crop";
-import GetCroppedImg from "./cropImage";
 import { CircularProgress} from "@material-ui/core";
+import { contractManagementService } from "../../services";
+import Utility from "../../utility";
 
 const Header = styled.div`
   display: flex;
@@ -201,8 +201,6 @@ const Span = styled.span`
   color: #1f1f1f;
 `;
 
-const zoomStep = 0.05;
-const maxScale = 5;
 const minScale = 1;
 const defaultScale = minScale;
 
@@ -211,36 +209,16 @@ export default function UploadTokenImage(props) {
   const [upload, setUpload] = React.useState(false);
 
   const [scale, setScale] = React.useState(defaultScale);
-  const [file, setFile] = React.useState({});
+  const [file, setFile] = React.useState(null);
   const [filePreview, setFilePreview] = React.useState({});
   const [croppedAreaPixels, setCroppedAreaPixels] = React.useState(null);
-  const [croppedImage, setCroppedImage] = React.useState("");
   const [crop, setCrop] = React.useState({ x: 1, y: 1 });
   const [zoom, setZoom] = React.useState(1);
   const [isUploading, setIsUploading] = React.useState(false);
 
-  const s3Bucket = process.env.REACT_APP_S3_BUCKET_NAME;
-
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
-
-  const zoomIn = () => {
-    setScale(scale + zoomStep);
-    if (scale >= maxScale) {
-      setScale(maxScale);
-    }
-  };
-  const zoomOut = () => {
-    setScale(scale - zoomStep);
-    if (scale <= minScale) {
-      setScale(minScale);
-    }
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -253,44 +231,33 @@ export default function UploadTokenImage(props) {
     setUpload(true);
   };
 
-  const uploadFileToAWS = async (croppedImage) => {
-    handleClose();
-    handleClickUpload();
-    setScale(defaultScale);
-    const awsFile = await new AWSServices().uploadFileToS3(
-      file.key,
-      croppedImage,
-      s3Bucket
-    );
-    let obtainUrl =
-      "https://xdc-mycontract-s3-dev.s3.amazonaws.com/" +
-      awsFile.sourceFileName;
-    props.handleUploadClose(obtainUrl);
-    setIsUploading(false);
-  };
 
   const showCroppedImage = useCallback(async () => {
-    try {
       setIsUploading(true);
-      const croppedImage = await GetCroppedImg(filePreview, croppedAreaPixels);
-      setFile({ content: croppedImage });
-      setCroppedImage(croppedImage);
-      uploadFileToAWS(croppedImage);
-    } catch (e) {
+      const imageData = new FormData();
+      imageData.append('image', file);
 
+    let [error, uploadImageRes] = await Utility.parseResponse(
+      contractManagementService.uploadFileToS3(imageData)
+    );
+
+    if(uploadImageRes.responseData !== null || uploadImageRes.responseData !== undefined) {
+      setFile({ content: uploadImageRes.responseData });
+      props.handleUploadClose(uploadImageRes.responseData);
+      setTimeout(() => {
+        handleClose();
+        setIsUploading(false);
+        handleClickUpload();
+      }, 2500);
     }
   });
 
   const RenderUi = () => {
     const onDrop = useCallback(async (acceptedFiles) => {
       handleCloseUpload();
-      let content = acceptedFiles[0]?.path;
-      let key = `${"userId"}/${"token-image"}/${
-        JSON.stringify(new Date().getTime()) + ".png"
-      }`;
       if (acceptedFiles[0]?.path) {
         setFilePreview(URL.createObjectURL(acceptedFiles[0]));
-        setFile({ key: key, content: content });
+        setFile(acceptedFiles[0]);
       }
     });
 
@@ -350,6 +317,11 @@ export default function UploadTokenImage(props) {
             </Content>
           ) : (
             <Content>
+              {isUploading ? (
+                <Loader>
+                  <CircularProgress />
+                </Loader>
+              ) : ""}
               <TokenImage>
                 <Cropper
                   image={filePreview}

@@ -112,7 +112,7 @@ const TextDiv = styled.div`
   display: flex;
   flex-direction: row;
   text-align: left;
-  font: normal normal medium 16px/20px Inter;
+  font: normal normal 500 16px/20px Inter;
   letter-spacing: 0px;
   color: #303134;
   opacity: 1;
@@ -132,7 +132,7 @@ const InputDiv = styled.input`
   ::placeholder {
     padding: 0px 0px 0px 7px;
     /* text-align: left; */
-    font: normal normal medium 14px/17px Inter;
+    font: normal normal 500 14px/17px Inter;
     letter-spacing: 0px;
     color: #a8acc1;
     opacity: 1;
@@ -183,7 +183,7 @@ const PopButton = styled.button`
   border: none;
   background: transparent;
   text-align: left;
-  font: normal normal medium 16px/20px Inter;
+  font: normal normal 500 16px/20px Inter;
   letter-spacing: 0px;
   color: #3163f0;
   opacity: 1;
@@ -204,7 +204,7 @@ const MobPopupBtn = styled.button`
   border: none;
   background: transparent;
   text-align: left;
-  font: normal normal medium 16px/20px Inter;
+  font: normal normal 500 16px/20px Inter;
   letter-spacing: 0px;
   color: #3163f0;
   opacity: 1;
@@ -258,7 +258,7 @@ const ImgDiv = styled.img`
 
 const ContinueText = styled.div`
   text-align: left;
-  font: normal normal medium 18px/21px Inter;
+  font: normal normal 500 18px/21px Inter;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
@@ -292,7 +292,7 @@ const Span = styled.div`
 const ReplaceButton = styled.button`
   padding: 5px 0px 0px 30px;
   text-align: left;
-  font: normal normal medium 14px/17px Inter;
+  font: normal normal 50 14px/17px Inter;
   letter-spacing: 0px;
   color: #3163f0;
   background: transparent;
@@ -302,7 +302,7 @@ const ReplaceButton = styled.button`
 const CustomReplaceButton = styled.button`
   padding: 5px 0px 0px 0px;
   text-align: left;
-  font: normal normal medium 14px/17px Inter;
+  font: normal normal 500 14px/17px Inter;
   letter-spacing: 0px;
   color: #3163f0;
   background: transparent;
@@ -376,7 +376,7 @@ const useStyles = makeStyles((theme) => ({
     resize: "none",
     "::placeholder": {
       padding: "0px 0px 0px 7px",
-      font: "normal normal medium 14px/17px Inter",
+      font: "normal normal 500 14px/17px Inter",
       letterSpacing: "0px",
       color: "#a8acc1",
       opacity: 1,

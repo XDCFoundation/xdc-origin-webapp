@@ -277,6 +277,11 @@ const useStyles = makeStyles({
     position: "absolute",
     top: 50,
     left: 727,
+    "@media screen and (min-width: 1024px) and (max-width: 1900px)": {
+      top: 50,
+      left: 'auto',
+      right: 'auto',
+    },
     "@media screen and (max-width: 768px)": {
       top: 47,
       left: 105,
