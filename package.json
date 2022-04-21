@@ -59,7 +59,7 @@
     "web3": "^1.6.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "env-cmd .env react-scripts start",
     "start-development": "env-cmd .env.development react-scripts start",
     "build": "react-scripts build",
     "development-build": "env-cmd .env.development react-scripts build",
