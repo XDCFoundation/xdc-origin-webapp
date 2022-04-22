@@ -304,7 +304,7 @@ function BurnContract(props) {
   let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
-    if(Number(inputToken) > Number(props.tokenInitialSupply) || inputToken < 1){
+    if(Number(inputToken) > Number(props.deployedContract.tokenCurrentSupply) || inputToken < 1){
       return;
     } else{
       setSteps(2);
@@ -367,8 +367,8 @@ function BurnContract(props) {
         })
         .on("error", function (error) {
           if(error.message.includes("transaction receipt")){ //the transaction is successful
-            // burnXRC20Token();
-            // setSteps(3);
+            burnXRC20Token();
+            setSteps(3);
           }
           else{
             if(error.message.includes("User denied transaction signature")){
@@ -428,7 +428,11 @@ function BurnContract(props) {
 
   return (
       <Dialog
-        onClose={props.handleClose}
+        onClose={(_, reason) => {
+          if (reason !== "backdropClick") {
+            props.handleClose();
+          }
+        }}
         aria-labelledby="simple-dialog-title"
         open={props.isOpen}
         classes={{
@@ -456,7 +460,7 @@ function BurnContract(props) {
                     <MidSection>
                       <InputContainer>
                         <InputDiv type="number" onChange={(e) => setInputToken(e.target.value)}/>
-                        {inputToken !== '' && (Number(inputToken) > Number(props.tokenInitialSupply) || inputToken < 1) ? (
+                        {inputToken !== '' && (Number(inputToken) > Number(props.deployedContract.tokenCurrentSupply) || inputToken < 1) ? (
                           <ErrorContainer>
                             <Error>
                               {validationsMessages.INITIAL_SUPPLY_LIMIT_FOR_BURN_ERROR}
