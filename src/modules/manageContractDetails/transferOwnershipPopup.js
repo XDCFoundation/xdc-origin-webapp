@@ -397,8 +397,8 @@ function TransferOwnershipContract(props) {
         })
         .on("error", function (error) {
           if(error.message.includes("transaction receipt")){ //the transaction is successful
-            // transferXRC20Token();
-            // setSteps(3);
+            transferXRC20Token();
+            setSteps(3);
           }
           else{
             if(error.message.includes("User denied transaction signature")){
@@ -453,7 +453,11 @@ function TransferOwnershipContract(props) {
 
   return (
       <Dialog
-        onClose={props.handleClose}
+        onClose={(_, reason) => {
+          if (reason !== "backdropClick") {
+            props.handleClose();
+          }
+        }}
         aria-labelledby="simple-dialog-title"
         open={props.isOpen}
         classes={{

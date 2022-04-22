@@ -285,8 +285,8 @@ function ResumeContract(props) {
         })
         .on("error", function (error) {
           if(error.message.includes("transaction receipt")){ //the transaction is successful
-            // pauseXRC20Token();
-            // setSteps(3);
+            pauseXRC20Token();
+            setSteps(3);
           }
           else{
             if(error.message.includes("User denied transaction signature")){
@@ -341,7 +341,11 @@ function ResumeContract(props) {
 
   return (
       <Dialog
-        onClose={props.handleClose}
+        onClose={(_, reason) => {
+          if (reason !== "backdropClick") {
+            props.handleClose();
+          }
+        }}
         aria-labelledby="simple-dialog-title"
         open={props.isOpen}
         classes={{
