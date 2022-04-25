@@ -261,6 +261,11 @@ const useStyles = makeStyles({
     position: "absolute",
     top: 50,
     left: 727,
+    "@media screen and (min-width: 1024px) and (max-width: 1900px)": {
+      top: 50,
+      left: 'auto',
+      right: 'auto',
+    },
     "@media screen and (max-width: 768px)": {
       top: 47,
       left: 105,
@@ -353,10 +358,10 @@ function MintContract(props) {
           //Not receiving the receipt event for mainnet currently
         })
         .on("confirmation", function (confirmationNumber, receipt) {
-          // if(receipt && confirmationNumber === 1){
-          //   mintXRC20Token();
-          //   setSteps(3);
-          // }
+          if(receipt && confirmationNumber === 1){
+            mintXRC20Token();
+            setSteps(3);
+          }
         })
         .on("error", function (error) {
           // if(error.message === 'Failed to check for transaction receipt:\n' +
@@ -427,7 +432,11 @@ function MintContract(props) {
   //   );
   return (
       <Dialog
-        onClose={props.handleClose}
+        onClose={(_, reason) => {
+          if (reason !== "backdropClick") {
+            props.handleClose();
+          }
+        }}
         aria-labelledby="simple-dialog-title"
         open={props.isOpen}
         classes={{
@@ -471,7 +480,7 @@ function MintContract(props) {
                           // readOnly
                           value={inputAddress}
                           type="text"
-                          placeholder="Address to be added"
+                          placeholder="Enter a valid account address"
                           onChange={(e) => setInputAddress(e.target.value)}
                         />
                         {inputAddress !== null && !inputAddress.includes("xdc") ? (
@@ -488,7 +497,7 @@ function MintContract(props) {
                             </Error>
                           </ErrorContainer>
                       ) : ""}
-                      {inputAddress === "xdc0000000000000000000000000000000000000000" ? (
+                      {inputAddress !== null && inputAddress.includes("xdc0000000000000000000000000000000000000000") ? (
                           <ErrorContainer>
                             <Error>
                               {validationsMessages.INVALID_ADDRESS_ERROR}
@@ -504,7 +513,7 @@ function MintContract(props) {
                       {inputToken !== null &&
                        inputAddress !== null &&
                        inputAddress !== props.deployedContract?.smartContractAddress &&
-                       inputAddress !== "xdc0000000000000000000000000000000000000000" ? (
+                       !inputAddress.includes("xdc0000000000000000000000000000000000000000") ? (
                         <DeleteButton onClick={handleSteps}>Mint</DeleteButton>
                       ) : (
                         <DeleteButtonDisable>Mint</DeleteButtonDisable>

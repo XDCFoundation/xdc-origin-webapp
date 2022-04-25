@@ -31,6 +31,7 @@ export const httpConstants = {
         MINT_BURN_XRC20_TOKEN: "mint-burn-xrc20Token",
         TRANSFER_OWNERSHIP: "transfer-ownership-xrc20-token",
         PAUSE_RESUME_XRC20_TOKEN:"pause-resume-xrc20-token",
+        UPLOAD_FILE_TO_S3:"/upload-xrc20-file-to-s3",
     },
 };
 export const apiBodyMessages = {

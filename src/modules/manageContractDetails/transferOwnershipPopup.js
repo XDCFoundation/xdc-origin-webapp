@@ -307,6 +307,11 @@ const useStyles = makeStyles({
     position: "absolute",
     top: 50,
     left: 727,
+    "@media screen and (min-width: 1024px) and (max-width: 1900px)": {
+      top: 50,
+      left: 'auto',
+      right: 'auto',
+    },
     "@media screen and (max-width: 768px)": {
       top: 47,
       left: 105,
@@ -385,10 +390,10 @@ function TransferOwnershipContract(props) {
         .on("receipt", function (receipt) {
         })
         .on("confirmation", function (confirmationNumber, receipt) {
-          // if(receipt && confirmationNumber === 1){
-          //   transferXRC20Token();
-          //   setSteps(3);
-          // }
+          if(receipt && confirmationNumber === 1){
+            transferXRC20Token();
+            setSteps(3);
+          }
         })
         .on("error", function (error) {
           if(error.message.includes("transaction receipt")){ //the transaction is successful
@@ -448,7 +453,11 @@ function TransferOwnershipContract(props) {
 
   return (
       <Dialog
-        onClose={props.handleClose}
+        onClose={(_, reason) => {
+          if (reason !== "backdropClick") {
+            props.handleClose();
+          }
+        }}
         aria-labelledby="simple-dialog-title"
         open={props.isOpen}
         classes={{
@@ -477,7 +486,7 @@ function TransferOwnershipContract(props) {
                     <InputContainer>
                       <InputDiv
                         type="text"
-                        placeholder="New owner address"
+                        placeholder="Enter new owner's account address"
                         onChange={(e) => setInputAddress(e.target.value)}
                       />
                       {inputAddress !== "" && !inputAddress.includes("xdc") ? (
@@ -501,7 +510,7 @@ function TransferOwnershipContract(props) {
                             </Error>
                           </ErrorContainer>
                       ) : ""}
-                      {inputAddress === "xdc0000000000000000000000000000000000000000" ? (
+                      {inputAddress !== null && inputAddress.includes("xdc0000000000000000000000000000000000000000") ? (
                           <ErrorContainer>
                             <Error>
                               {validationsMessages.INVALID_ADDRESS_ERROR}
@@ -517,7 +526,7 @@ function TransferOwnershipContract(props) {
                       {(inputAddress !== "" &&
                         inputAddress !== userAddress.replace(/0x/, "xdc")) &&
                         inputAddress !== props.deployedContract?.smartContractAddress &&
-                        inputAddress !== "xdc0000000000000000000000000000000000000000" ? (
+                        !inputAddress.includes("xdc0000000000000000000000000000000000000000") ? (
                       <DeleteButton onClick={handleSteps}>
                         Transfer
                       </DeleteButton>

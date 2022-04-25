@@ -72,7 +72,7 @@ async function getTxnHashDetails(requestData) {
 
   return httpService(
     httpConstants.METHOD_TYPE.POST,
-    { 'X-API-KEY': 'UYIQSLAYpd1i6aOAXL1okajcWJhoDQJr5KX82Zlu', "Content-Type": httpConstants.CONTENT_TYPE.APPLICATION_JSON },
+    { 'X-API-KEY': process.env.REACT_APP_X_API_KEY, "Content-Type": httpConstants.CONTENT_TYPE.APPLICATION_JSON },
     requestData,
     url
   )
@@ -98,7 +98,7 @@ async function getCoinMarketCap(requestData) {
 
   return httpService(
     httpConstants.METHOD_TYPE.GET,
-    { "Content-Type": httpConstants.CONTENT_TYPE.APPLICATION_JSON, 'X-API-KEY': 'UYIQSLAYpd1i6aOAXL1okajcWJhoDQJr5KX82Zlu'},
+    { "Content-Type": httpConstants.CONTENT_TYPE.APPLICATION_JSON, 'X-API-KEY': process.env.REACT_APP_X_API_KEY},
     {},
     url
   )
