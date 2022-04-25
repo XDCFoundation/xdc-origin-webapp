@@ -451,14 +451,14 @@ function generateCompanyLogoKey() {
 
 function uploadFileToS3(fileObject, fileName, mimeType, isPublic = false) {
     let config = {
-        accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-        secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY
+        accessKeyId: '',
+        secretAccessKey: ''
     }
     aws.config.update(config);
     const S3 = new aws.S3();
     const params = {
         Body: fileObject,
-        Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
+        Bucket: '',
         ContentType: mimeType,
         Key: fileName
     };
@@ -478,13 +478,13 @@ function getSignedUrl(fileName) {
     if (!fileName)
         return "";
     aws.config.update({
-        accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-        secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY
+        accessKeyId: '',
+        secretAccessKey: ''
     });
-    aws.config.region = process.env.REACT_APP_AWS_S3_BUCKET_REGION;
+    aws.config.region = '';
     const s3 = new aws.S3();
     const params = {
-        Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
+        Bucket: '',
         Key: fileName ? fileName : '',
         Expires: 600000,
     };

@@ -277,6 +277,11 @@ const useStyles = makeStyles({
     position: "absolute",
     top: 50,
     left: 727,
+    "@media screen and (min-width: 1024px) and (max-width: 1900px)": {
+      top: 50,
+      left: 'auto',
+      right: 'auto',
+    },
     "@media screen and (max-width: 768px)": {
       top: 47,
       left: 105,
@@ -299,7 +304,7 @@ function BurnContract(props) {
   let userAddress = props.userDetails?.accountDetails?.address || "";
 
   const handleSteps = () => {
-    if(Number(inputToken) > Number(props.tokenInitialSupply) || inputToken < 1){
+    if(Number(inputToken) > Number(props.deployedContract.tokenCurrentSupply) || inputToken < 1){
       return;
     } else{
       setSteps(2);
@@ -355,10 +360,10 @@ function BurnContract(props) {
         .on("receipt", function (receipt) {
         })
         .on("confirmation", function (confirmationNumber, receipt) {
-          // if(receipt && confirmationNumber === 1){
-          //   burnXRC20Token();
-          //   setSteps(3);
-          // }
+          if(receipt && confirmationNumber === 1){
+            burnXRC20Token();
+            setSteps(3);
+          }
         })
         .on("error", function (error) {
           if(error.message.includes("transaction receipt")){ //the transaction is successful
@@ -423,7 +428,11 @@ function BurnContract(props) {
 
   return (
       <Dialog
-        onClose={props.handleClose}
+        onClose={(_, reason) => {
+          if (reason !== "backdropClick") {
+            props.handleClose();
+          }
+        }}
         aria-labelledby="simple-dialog-title"
         open={props.isOpen}
         classes={{
@@ -451,7 +460,7 @@ function BurnContract(props) {
                     <MidSection>
                       <InputContainer>
                         <InputDiv type="number" onChange={(e) => setInputToken(e.target.value)}/>
-                        {inputToken !== '' && (Number(inputToken) > Number(props.tokenInitialSupply) || inputToken < 1) ? (
+                        {inputToken !== '' && (Number(inputToken) > Number(props.deployedContract.tokenCurrentSupply) || inputToken < 1) ? (
                           <ErrorContainer>
                             <Error>
                               {validationsMessages.INITIAL_SUPPLY_LIMIT_FOR_BURN_ERROR}
